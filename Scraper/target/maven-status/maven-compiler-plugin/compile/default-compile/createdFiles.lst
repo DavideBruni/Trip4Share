@@ -1,0 +1,7 @@
+org\example\Main.class
+org\example\model\Organizer.class
+org\example\model\Review.class
+org\example\model\Trip.class
+org\example\scraper\ScraperTrustPilot.class
+org\example\model\Itinerary.class
+org\example\scraper\ScraperSiVola.class
