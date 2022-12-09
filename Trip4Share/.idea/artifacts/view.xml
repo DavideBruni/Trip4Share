@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="view">
+    <output-path>$PROJECT_DIR$/src/main/java/it/unipi/dii/lsmd/frontend</output-path>
+    <root id="root" />
+  </artifact>
+</component>
