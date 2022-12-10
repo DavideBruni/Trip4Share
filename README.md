@@ -7,7 +7,7 @@ Large Scale and Multi-structured Database Project Work @ University of Pisa
     <li> Tomcat Server (install from <a href="https://tomcat.apache.org/download-90.cgi"> here </a>) <strong> Windows installer is recommended</strong> </li>       
 </ul>
 
-<h2> Step to make work Tomcat with IntelliJ </h2>
+<h2> Step to make Tomcat work with IntelliJ </h2>
 
 <ol> 
     <li> Open project </li>
