@@ -1,0 +1,6 @@
+{
+  "redisHost" : "localhost",
+  "redisPort" : 6379,
+  "mongoHost" : "localhost",
+  "mongoPort" : 27018
+}
