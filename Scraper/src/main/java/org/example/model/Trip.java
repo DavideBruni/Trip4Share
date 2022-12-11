@@ -104,6 +104,23 @@ public class Trip {
         return nonCompreso;
     }
 
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", tags=" + tags +
+                ", itinerary=" + itinerary +
+                ", departureDate=" + departureDate +
+                ", returnDate=" + returnDate +
+                ", price=" + price +
+                ", compreso=" + compreso +
+                ", nonCompreso=" + nonCompreso +
+                ", info='" + info + '\'' +
+                ", destination='" + destination + '\'' +
+                '}';
+    }
+
     public void setNonCompreso(List<String> nonCompreso) {
         this.nonCompreso = nonCompreso;
     }
