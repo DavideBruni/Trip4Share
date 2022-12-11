@@ -1,5 +1,7 @@
 package it.unipi.dii.lsmd.controller;
 
+import it.unipi.dii.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.dii.lsmd.model.Service;
 import it.unipi.dii.lsmd.model.User;
 import it.unipi.dii.lsmd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class LoginController {
 
     @Autowired
-    UserRepository userRepository;
+    Service ser;
 
     @GetMapping("/")
     public String viewLogin(){
@@ -25,14 +27,14 @@ public class LoginController {
     public RedirectView login(@RequestParam(value = "username") String username,
                               @RequestParam(value = "password") String password, RedirectAttributes redirectAttributes){
 
-        User u = userRepository.findFirstByUsernameAndPassword(username,password);
+        AuthenticatedUserDTO a = ser.authenticate(username,password);
         final RedirectView redirectView;
-        if(u.getUsername().equals("admin"))
+        if(a.getUsername().equals("admin"))
             redirectView = new RedirectView("/admin");
         else
             redirectView = new RedirectView("/profile");
 
-        redirectAttributes.addFlashAttribute("user", u);
+        redirectAttributes.addFlashAttribute("user", a);
         return redirectView;
     }
 }
