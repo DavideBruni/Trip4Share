@@ -23,7 +23,6 @@ public class ScraperTrustPilot {
         for(Element x : elements){
             // get reviewer
             String fullname = x.getElementsByTag("a").first().getElementsByTag("span").first().text();
-            System.out.println(fullname);
             Organizer u;
             if(fullname.indexOf(" ") != -1) {
                 String name = fullname.substring(0, fullname.indexOf(" "));
@@ -37,9 +36,7 @@ public class ScraperTrustPilot {
             //get review
             Element div = x.getElementsByTag("section").first().getElementsByTag("div").first();
             int rating = Integer.parseInt(div.attr("data-service-review-rating"));
-            System.out.println(rating);
             String dateS =div.getElementsByTag("time").first().attr("datetime");
-            System.out.println(dateS);
             Date date = formatter.parse(dateS);
             Element textReviewElem = x.getElementsByTag("section").first().getElementsByClass("styles_reviewContent__0Q2Tg").first();
             Element titleElem = textReviewElem.getElementsByTag("h2").first();
@@ -47,10 +44,8 @@ public class ScraperTrustPilot {
             String text = null;
             try {
                 title = titleElem.text();
-                System.out.println(title);
                 Element textElem = textReviewElem.getElementsByTag("p").first();
                 text = textElem.text();
-                System.out.println(text);
             }catch (Exception e){}
 
             Review r = new Review(text,title,date,rating);
