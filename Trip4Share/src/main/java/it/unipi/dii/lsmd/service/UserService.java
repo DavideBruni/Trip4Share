@@ -1,6 +1,7 @@
-package it.unipi.dii.lsmd.model;
+package it.unipi.dii.lsmd.service;
 
 import it.unipi.dii.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.dii.lsmd.model.User;
 import it.unipi.dii.lsmd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
