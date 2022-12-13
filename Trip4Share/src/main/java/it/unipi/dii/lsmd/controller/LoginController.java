@@ -1,9 +1,7 @@
 package it.unipi.dii.lsmd.controller;
 
 import it.unipi.dii.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.dii.lsmd.model.Service;
-import it.unipi.dii.lsmd.model.User;
-import it.unipi.dii.lsmd.repository.UserRepository;
+import it.unipi.dii.lsmd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +14,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class LoginController {
 
     @Autowired
-    Service ser;
+    UserService ser;
 
     @GetMapping("/")
     public String viewLogin(){

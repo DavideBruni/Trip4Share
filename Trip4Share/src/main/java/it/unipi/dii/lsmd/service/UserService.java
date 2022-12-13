@@ -4,9 +4,10 @@ import it.unipi.dii.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.dii.lsmd.model.User;
 import it.unipi.dii.lsmd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@org.springframework.stereotype.Service
-public class Service {
+@Service
+public class UserService {
     @Autowired
     private UserRepository userRepository;
 
