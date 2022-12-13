@@ -8,6 +8,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends MongoRepository<RegisteredUser,String> {
-    RegisteredUser findFirstByUsernameAndPassword(String username, String password);
+
+    //TODO it must return a user
+    //RegisteredUser findFirstByUsernameAndPassword(String username, String password);
+
+    RegisteredUser findFirstByUsername(String username);
+
 
 }

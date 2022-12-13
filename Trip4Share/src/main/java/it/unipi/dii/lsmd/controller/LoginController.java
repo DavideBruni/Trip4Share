@@ -13,14 +13,19 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/login")
 public class LoginController {
 
+    /*
     @Autowired
     UserService ser;
+     */
 
-    @GetMapping("/")
+
+    @GetMapping("")
     public String viewLogin(){
         return "login";
     }
 
+
+    /*
     @GetMapping("/login")
     public RedirectView login(@RequestParam(value = "username") String username,
                               @RequestParam(value = "password") String password, RedirectAttributes redirectAttributes){
@@ -35,4 +40,5 @@ public class LoginController {
         redirectAttributes.addFlashAttribute("user", a);
         return redirectView;
     }
+     */
 }
