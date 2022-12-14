@@ -11,30 +11,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
 
-    protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        System.out.println("GET Operation");
+
+        String targetJSP = "/WEB-INF/pages/login.jsp";
+
+        RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
+        requestDispatcher.forward(httpServletRequest, httpServletResponse);
+    }
+
+
+    @Override
+    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        System.out.println("POST Operation");
+        String targetJSP = "WEB-INF/pages/login.jsp";
+
+        String username = httpServletRequest.getParameter("username");
+        String password = httpServletRequest.getParameter("password");
 
         UserServiceImpl userService = new UserServiceImpl();
         AuthenticatedUserDTO authenticatedUserDTO = null;
 
-        // LOGIN
+        try {
+            if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
+                authenticatedUserDTO = userService.authenticate(username, password);
+                httpServletResponse.sendRedirect("user");
 
-        try{
-            authenticatedUserDTO = userService.authenticate("Vincenzo0", "vldcvwgj");
-        }catch(Exception e){
-            System.out.println(e);
+            } else {
+                httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
+            }
+        } catch (Exception e) {
+            //logger.error("Error during login operation.",e);
+            httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
         }
-        System.out.println(authenticatedUserDTO.getEmail());
 
 
     }
 
-    @Override
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        processRequest(httpServletRequest, httpServletResponse);
-    }
+
 }
