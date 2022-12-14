@@ -38,9 +38,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
         User user = null;
 
-        Bson query = match(and(eq("username", username), eq("password", password)));
-        Bson select = project(fields(excludeId()));
-
+        Bson query = and(eq("username", username), eq("password", password));
         Document result = users.find(query).first();
 
         try{
@@ -54,7 +52,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
                 user = registeredUser;
             }
         }catch (NullPointerException e){
-            // TODO - return UserNotFound page?
+            System.out.println("Error 404: user not found!");   // TODO - return UserNotFound page?
             return null;
         }
         user.setName(result.getString("name"));

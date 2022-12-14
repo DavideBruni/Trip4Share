@@ -8,6 +8,15 @@ public class RegisteredUser extends User{
     private List<Review> reviews;
     private List<String> sponken_languages;
     private String nationality;
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public RegisteredUser(){
         reviews = new ArrayList<Review>();

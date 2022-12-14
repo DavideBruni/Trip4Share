@@ -1,15 +1,23 @@
 package it.unipi.lsmd.config;
 
-public class AppServletContextListener {
+import it.unipi.lsmd.dao.base.BaseDAOMongo;
 
-    /*
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+@WebListener
+public class AppServletContextListener implements ServletContextListener {
+
+
     public void contextInitialized(ServletContextEvent sce) {
-        logger.info("Initializing datasources connection pools.");
-        BaseDAOMongo.initPool();
-        BaseDAORedis.initPool();
-        BaseDAONeo4J.initPool();
+        BaseDAOMongo.init();
     }
-     */
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+
+    }
 
 
 }
