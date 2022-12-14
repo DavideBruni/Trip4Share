@@ -1,4 +1,7 @@
 package it.unipi.lsmd.dao.base;
 
-public class BaseDAOMongo {
+public abstract class BaseDAOMongo {
+
+
+
 }
