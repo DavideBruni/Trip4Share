@@ -6,6 +6,7 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Values;
+import org.neo4j.driver.exceptions.value.Uncoercible;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,21 +28,26 @@ public class TripDAONeo4j extends BaseDAONeo4J {
                     Record r = result.next();
                     Trip t = new Trip();
                     t.setDestination(r.get("t.destination").asString());
-                    System.out.println(t.getDestination());
-                    t.setDepartureDate(r.get("t.departureDate").asLocalDate());
-                    t.setReturnDate(r.get("t.returnDate").asLocalDate());
                     t.setTitle(r.get("t.title").asString());
                     t.setImg(r.get("it.mgUrl").asString());
-                    t.setDeleted(r.get("t.deleted").asBoolean());
-                    trips.add(t);
+                    try {
+                        t.setDeleted(r.get("t.deleted").asBoolean());
+                        t.setDepartureDate(r.get("t.departureDate").asLocalDate());
+                        t.setReturnDate(r.get("t.returnDate").asLocalDate());
+                    }catch (Uncoercible uncoercible){
+                        t.setDeleted(Boolean.FALSE);
+                        t.setDepartureDate(null);
+                        t.setReturnDate(null);
+                    }finally {
+                        trips.add(t);
+                    }
                 }
                 return trips;
             });
+        }catch (Exception e){
+            return new ArrayList<>();
         }
         return tripsList;
     }
-    @Override
-    public void close() throws Exception {
-        getConnection().close();
-    }
+
 }

@@ -23,4 +23,8 @@ public abstract class BaseDAONeo4J implements AutoCloseable{
         return driver;
     }
 
+    public void close() throws Exception {
+        getConnection().close();
+    }
+
 }

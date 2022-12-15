@@ -13,6 +13,9 @@ public class TripServiceImpl implements TripService {
     public List<TripHomeDTO> getTripsOrganizedByFollowers(String username) {
         TripDAONeo4j tripDAONeo4j = new TripDAONeo4j();
         List<Trip> trips = tripDAONeo4j.getTripsOrganizedByFollower(username);
+        if(trips == null || trips.isEmpty()){
+            return new ArrayList<TripHomeDTO>();
+        }
         List<TripHomeDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripHomeDTO tripHomeDTO = new TripHomeDTO();
