@@ -1,5 +1,6 @@
 package it.unipi.lsmd.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,13 +10,31 @@ public class Trip {
     private String description;
     private String destination;
     private float price;
-    private Date departureDate;
-    private Date returnDate;
+    private LocalDate departureDate;
+    private LocalDate returnDate;
     private ArrayList<String> tags;
     private ArrayList<DailySchedule> itinerary;
     private ArrayList<String> whatsIncluded;
     private ArrayList<String> whatsNotIncluded;
     private String info;
+    private String img;
+    private Boolean deleted;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public String getTitle() {
         return title;
@@ -49,19 +68,19 @@ public class Trip {
         this.price = price;
     }
 
-    public Date getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
-    public Date getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 
