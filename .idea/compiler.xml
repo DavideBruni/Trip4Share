@@ -9,5 +9,8 @@
         <module name="Trip4Share" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Trip4Share" target="9" />
+    </bytecodeTargetLevel>
   </component>
 </project>

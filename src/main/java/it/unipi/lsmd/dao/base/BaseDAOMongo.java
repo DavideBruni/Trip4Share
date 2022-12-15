@@ -18,6 +18,7 @@ public abstract class BaseDAOMongo {
         // TODO - add auth ?
 
         client = MongoClients.create(uri);
+        System.out.println("MongoDB: Connected");
     }
 
     public static MongoDatabase getConnection(){
