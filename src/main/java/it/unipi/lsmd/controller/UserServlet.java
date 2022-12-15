@@ -33,10 +33,12 @@ public class UserServlet extends HttpServlet {
 
         String targetJSP = "/WEB-INF/pages/user.jsp";
         String username = httpServletRequest.getParameter("username");
+        httpServletRequest.setAttribute("itsMe", true);
 
         // if it's not user's own profile
         if(!username.equals(authenticatedUserDTO.getUsername())){
             authenticatedUserDTO = userService.getUser(username);
+            httpServletRequest.setAttribute("itsMe", false);
         }
 
         // send authenticatedUserDTO to front-end

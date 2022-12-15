@@ -13,6 +13,7 @@
 <body>
     <%
         RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute("user");
+        Boolean itsMe = (Boolean) request.getAttribute("itsMe");
 
         if(user == null){%>
 
@@ -21,7 +22,12 @@
     <%  }else{ %>
             Profile of
             <%= user.getUsername() %>
-            it's you!
+            <%
+                if (itsMe){ %>
+                    it's you!
+            <%  }
+            %>
+
     <%  }
 
     %>
