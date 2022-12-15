@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/user")
-public class UserServlet extends HttpServlet {
+@WebServlet("/admin")
+public class AdminServlet  extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        String targetJSP = "/WEB-INF/pages/user.jsp";
+        String targetJSP = "/WEB-INF/pages/admin.jsp";
+
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
