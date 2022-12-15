@@ -44,6 +44,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         try{
             if (result.getString("type").equals("admin")){
                 user = new Admin(result.getString("username"));
+
             }else{
                 RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
                 registeredUser.setNationality(result.getString("nationality"));

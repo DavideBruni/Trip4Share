@@ -8,7 +8,7 @@ public abstract class User {
     private String username;
     private String email;
     private String password;    // TODO - useless?
-    private String type;        // TODO - useless?
+    private String role;        // TODO - useless?
 
     public void setName(String name) {
         this.name = name;
@@ -46,8 +46,8 @@ public abstract class User {
         return password;
     }
 
-    public String getType() {
-        return type;
+    public String getRole() {
+        return role;
     }
 
     public void setPassword(String password) {

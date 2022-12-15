@@ -1,6 +1,7 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.SecurityUtils;
 
@@ -18,6 +19,15 @@ import java.util.Enumeration;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
+    protected void redirectUser(HttpServletResponse httpServletResponse, AuthenticatedUserDTO authenticatedUserDTO) throws IOException {
+        if(authenticatedUserDTO instanceof RegisteredUserDTO){
+            httpServletResponse.sendRedirect("user");
+        }else{
+            httpServletResponse.sendRedirect("admin");
+        }
+    }
+
+
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
         System.out.println("Received: " + httpServletRequest.getMethod());
@@ -27,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 
         // check if user is already authenticated
         if(authenticatedUserDTO != null){
-            httpServletResponse.sendRedirect("user");
+            redirectUser(httpServletResponse, authenticatedUserDTO);
             return;
         }
 
@@ -50,8 +60,7 @@ public class LoginServlet extends HttpServlet {
                     HttpSession session = httpServletRequest.getSession(true);
                     session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
 
-                    // once logged in redirect to user's profile
-                    httpServletResponse.sendRedirect("user");
+                    redirectUser(httpServletResponse, authenticatedUserDTO);
 
                 } else {
                     httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");

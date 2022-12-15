@@ -2,7 +2,9 @@ package it.unipi.lsmd.service.impl;
 
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.UserDAO;
+import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
 
@@ -17,19 +19,26 @@ public class UserServiceImpl {
     public AuthenticatedUserDTO authenticate(String username, String password){
 
         User user = userDAO.authenticate(username, password);
-        AuthenticatedUserDTO authenticatedUser = new AuthenticatedUserDTO();
-        authenticatedUser.setUsername(user.getUsername());
-        authenticatedUser.setFirstName(user.getName());
-        authenticatedUser.setLastName(user.getSurname());
-        authenticatedUser.setEmail(user.getEmail());
+        AuthenticatedUserDTO authenticatedUserDTO;
 
         if(user instanceof RegisteredUser){
+            RegisteredUserDTO registeredUserDTO = new RegisteredUserDTO();
             RegisteredUser registeredUser = (RegisteredUser) user;
-            authenticatedUser.setNationality(registeredUser.getNationality());
-            authenticatedUser.setPhone(registeredUser.getPhone());
+            registeredUserDTO.setNationality(registeredUser.getNationality());
+            registeredUserDTO.setPhone(registeredUser.getPhone());
+
+            authenticatedUserDTO = registeredUserDTO;
+        }else{
+            AdminDTO adminDTO = new AdminDTO();
+            authenticatedUserDTO = adminDTO;
         }
 
-        return authenticatedUser;
+        authenticatedUserDTO.setUsername(user.getUsername());
+        authenticatedUserDTO.setFirstName(user.getName());
+        authenticatedUserDTO.setLastName(user.getSurname());
+        authenticatedUserDTO.setEmail(user.getEmail());
+
+        return authenticatedUserDTO;
     }
 
 }
