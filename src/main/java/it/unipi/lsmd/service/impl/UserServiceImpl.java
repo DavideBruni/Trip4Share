@@ -10,6 +10,7 @@ import it.unipi.lsmd.dto.SuggestedUserDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.service.UserService;
+import it.unipi.lsmd.utils.UserUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,26 +28,12 @@ public class UserServiceImpl implements UserService {
     public AuthenticatedUserDTO authenticate(String username, String password){
 
         User user = userDAO.authenticate(username, password);
-        AuthenticatedUserDTO authenticatedUserDTO;
+        return UserUtils.userModelToDTO(user);
+    }
 
-        if(user instanceof RegisteredUser){
-            RegisteredUserDTO registeredUserDTO = new RegisteredUserDTO();
-            RegisteredUser registeredUser = (RegisteredUser) user;
-            registeredUserDTO.setNationality(registeredUser.getNationality());
-            registeredUserDTO.setPhone(registeredUser.getPhone());
-
-            authenticatedUserDTO = registeredUserDTO;
-        }else{
-            AdminDTO adminDTO = new AdminDTO();
-            authenticatedUserDTO = adminDTO;
-        }
-
-        authenticatedUserDTO.setUsername(user.getUsername());
-        authenticatedUserDTO.setFirstName(user.getName());
-        authenticatedUserDTO.setLastName(user.getSurname());
-        authenticatedUserDTO.setEmail(user.getEmail());
-
-        return authenticatedUserDTO;
+    public AuthenticatedUserDTO getUser(String username){
+        RegisteredUser user = userDAO.getUser(username);
+        return UserUtils.userModelToDTO(user);
     }
 
     public List<SuggestedUserDTO> getSuggestedUsers(String username){

@@ -1,4 +1,4 @@
-<%--
+<%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -11,6 +11,12 @@
     <title>User</title>
 </head>
 <body>
-    Welcome User!
+    <%
+        RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute("user");
+    %>
+    Welcome
+    <%= user.getUsername() %>
+
+
 </body>
 </html>
