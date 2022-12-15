@@ -12,6 +12,7 @@ public class SecurityUtils {
 
     public static final String AUTHENTICATED_USER_KEY = "authenticatedUser";
 
+
     public static AuthenticatedUserDTO getAuthenticatedUser(HttpServletRequest request){
         HttpSession session = request.getSession();
         return (AuthenticatedUserDTO)session.getAttribute(AUTHENTICATED_USER_KEY);

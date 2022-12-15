@@ -13,10 +13,18 @@
 <body>
     <%
         RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute("user");
-    %>
-    Welcome
-    <%= user.getUsername() %>
 
+        if(user == null){%>
+
+            User not found!
+
+    <%  }else{ %>
+            Profile of
+            <%= user.getUsername() %>
+            it's you!
+    <%  }
+
+    %>
 
 </body>
 </html>

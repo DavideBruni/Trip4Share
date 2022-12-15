@@ -12,6 +12,10 @@ public class UserUtils {
 
     public static AuthenticatedUserDTO userModelToDTO(User user_model){
 
+        if(user_model == null){
+            return null;
+        }
+
         AuthenticatedUserDTO authenticatedUserDTO;
 
         if(user_model instanceof RegisteredUser){
