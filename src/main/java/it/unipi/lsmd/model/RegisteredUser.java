@@ -9,6 +9,25 @@ public class RegisteredUser extends User{
     private List<String> sponken_languages;
     private String nationality;
     private String phone;
+    private List<RegisteredUser> follower;
+    private List<RegisteredUser> following;
+
+
+    public List<RegisteredUser> getFollower() {
+        return follower;
+    }
+
+    public void setFollower(List<RegisteredUser> follower) {
+        this.follower = follower;
+    }
+
+    public List<RegisteredUser> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<RegisteredUser> following) {
+        this.following = following;
+    }
 
     public String getPhone() {
         return phone;

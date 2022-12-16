@@ -16,15 +16,15 @@ import static org.neo4j.driver.Values.parameters;
 
 public class RegisteredUserDAONeo4j extends BaseDAONeo4J implements RegisteredUserDAO {
 
-    public List<RegisteredUser> getSuggestedUser(String username){
+    public List<RegisteredUser> getSuggestedUser(String username, int nUser){
         List<RegisteredUser> suggested;
         try (Session session = getConnection().session()) {
             suggested = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (u1:RegisteredUser {username:$username})-[:FOLLOW]->(u2:RegisteredUser)," +
                                 "(u2)-[:FOLLOW]->(u3:RegisteredUser) WHERE u1.username <> u3.username AND " +
-                                "(NOT (u1)-[:FOLLOW]->(u3)) RETURN u3.username",
-                        parameters("username", username));
-                List users = new ArrayList<>();
+                                "(NOT (u1)-[:FOLLOW]->(u3)) RETURN u3.username LIMIT $limit",
+                        parameters("username", username, "limit",nUser));
+                List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();
                     RegisteredUser ru = new RegisteredUser();
@@ -37,5 +37,28 @@ public class RegisteredUserDAONeo4j extends BaseDAONeo4J implements RegisteredUs
             return new ArrayList<>();
         }
         return suggested;
+    }
+
+    @Override
+    public List<RegisteredUser> getFollowers(String username){
+        List<RegisteredUser> followers;
+        try (Session session = getConnection().session()) {
+            followers = session.readTransaction(tx -> {
+                Result result = tx.run("MATCH (u1:RegisteredUser {username:$username})-[:FOLLOW]->(u2:RegisteredUser)"+
+                                "RETURN u2.username",
+                        parameters("username", username));
+                List<RegisteredUser> users = new ArrayList<>();
+                while (result.hasNext()) {
+                    Record r = result.next();
+                    RegisteredUser ru = new RegisteredUser();
+                    ru.setUsername(r.get("u3.username").asString());
+                    users.add(ru);
+                }
+                return users;
+            });
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
+        return followers;
     }
 }

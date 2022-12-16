@@ -1,11 +1,13 @@
 package it.unipi.lsmd.controller;
 
 
-import it.unipi.lsmd.dto.SuggestedUserDTO;
+import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
+import it.unipi.lsmd.utils.PagesUtilis;
+import it.unipi.lsmd.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,20 +28,23 @@ public class HomeServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Show Trips
-        //TODO - Use session variables
-        // TODO - Handle pagination
-        // TODO - Handle session empty/not started
-        String usernameFromSession = "fausto";
-        String targetJSP = "/WEB-INF/pages/home.jsp";
-        List<TripHomeDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession);
-        request.setAttribute("trips",trips);
+        // TODO - Handle pagination Trip Pagination (Populate Neo4j with good relation)
+        try {
+            String usernameFromSession = SecurityUtils.getAuthenticatedUser(request).getUsername();
+            String targetJSP = "/WEB-INF/pages/home.jsp";
+            List<TripHomeDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession);
+            request.setAttribute("trips",trips);
 
-        //Show Suggested user
-        List<SuggestedUserDTO> suggested = userService.getSuggestedUsers(usernameFromSession);
-        request.setAttribute("suggested",suggested);
+            //Show Suggested user
+            List<OtherUserDTO> suggested = userService.getSuggestedUsers(usernameFromSession,PagesUtilis.SUGGESTED_USER_HOME);
+            request.setAttribute("suggested",suggested);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
-        requestDispatcher.forward(request, response);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
+            requestDispatcher.forward(request, response);
+        }catch (NullPointerException ne){
+            response.sendRedirect(request.getContextPath());
+        }
+
     }
 
     @Override

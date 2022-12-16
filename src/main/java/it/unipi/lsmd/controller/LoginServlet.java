@@ -1,6 +1,7 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -57,10 +59,12 @@ public class LoginServlet extends HttpServlet {
 
                 if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
                     authenticatedUserDTO = userService.authenticate(username, password);
+                    List<OtherUserDTO> followers = userService.getFollowers(username);
 
                     // set user as authenticated
                     HttpSession session = httpServletRequest.getSession(true);
                     session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
+                    session.setAttribute(SecurityUtils.USERS_FOLLOWERS_KEY,followers);
 
                     redirectUser(httpServletResponse, authenticatedUserDTO);
 
