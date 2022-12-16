@@ -40,7 +40,7 @@ public class RegisteredUserDAONeo4j extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public List<RegisteredUser> getFollowers(String username){
+    public List<RegisteredUser> getFollowing(String username){
         List<RegisteredUser> followers;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {

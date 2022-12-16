@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
 
                 if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
                     authenticatedUserDTO = userService.authenticate(username, password);
-                    List<OtherUserDTO> followers = userService.getFollowers(username);
+                    List<OtherUserDTO> followers = userService.getFollowing(username);
 
                     // set user as authenticated
                     HttpSession session = httpServletRequest.getSession(true);

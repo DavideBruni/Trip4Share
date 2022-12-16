@@ -13,5 +13,5 @@ public interface UserService {
 
     List<OtherUserDTO> getSuggestedUsers(String username, int nUsers);
 
-    List<OtherUserDTO> getFollowers(String username);
+    List<OtherUserDTO> getFollowing(String username);
 }

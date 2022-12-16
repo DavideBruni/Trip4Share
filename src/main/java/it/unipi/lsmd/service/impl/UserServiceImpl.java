@@ -50,8 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<OtherUserDTO> getFollowers(String username) {
-        List<RegisteredUser> users = registeredUserDAO.getFollowers(username);
+    public List<OtherUserDTO> getFollowing(String username) {
+        List<RegisteredUser> users = registeredUserDAO.getFollowing(username);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
