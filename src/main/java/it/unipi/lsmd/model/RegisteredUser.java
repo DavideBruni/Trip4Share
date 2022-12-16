@@ -10,14 +10,6 @@ public class RegisteredUser extends User{
     private String nationality;
     private String phone;
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public RegisteredUser(){
         reviews = new ArrayList<Review>();
         sponken_languages = new ArrayList<String>();
@@ -28,6 +20,16 @@ public class RegisteredUser extends User{
         reviews = new ArrayList<Review>();
         sponken_languages = new ArrayList<String>();
     }
+
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
 
     public List<Review> getReviews() {
         return reviews;
