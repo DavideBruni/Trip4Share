@@ -1,6 +1,7 @@
 package it.unipi.lsmd.dto;
 
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Review;
 
 import java.util.ArrayList;
 
@@ -9,9 +10,12 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private String nationality;
     private ArrayList<String> spoken_languages;
     private String phone;
+    private ArrayList<ReviewDTO> reviews;
+
 
     public RegisteredUserDTO(){
         spoken_languages = new ArrayList<String>();
+        reviews = new ArrayList<ReviewDTO>();
     }
 
     public String getNationality() {
@@ -36,5 +40,17 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void addReview(ReviewDTO review){
+        this.reviews.add(review);
+    }
+
+    public void setReviews(ArrayList<ReviewDTO> reviews){
+        this.reviews = reviews;
+    }
+
+    public ArrayList<ReviewDTO> getReviews(){
+        return this.reviews;
     }
 }

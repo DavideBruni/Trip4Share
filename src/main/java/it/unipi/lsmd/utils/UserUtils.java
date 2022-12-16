@@ -5,8 +5,11 @@ import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import org.bson.Document;
+
+import java.util.ArrayList;
 
 public class UserUtils {
 
@@ -24,7 +27,12 @@ public class UserUtils {
 
             registeredUserDTO.setNationality(registeredUser.getNationality());
             registeredUserDTO.setPhone(registeredUser.getPhone());
-            // TODO - add reviews and spoken_languages
+
+            try{
+                for(Review review : registeredUser.getReviews()){
+                    registeredUserDTO.addReview(ReviewUtils.reviewModelToDTO(review));
+                }
+            }catch (NullPointerException e){}
 
             authenticatedUserDTO = registeredUserDTO;
         }else{
@@ -50,7 +58,16 @@ public class UserUtils {
         }else{
             RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
             registeredUser.setNationality(result.getString("nationality"));
-            // TODO - add reviews, spoken languages ecc
+
+            try{
+                ArrayList<Document> reviews = result.get("reviews", ArrayList.class);
+                for(Document r : reviews){
+                    registeredUser.addReview(ReviewUtils.reviewFromDocument(r));
+                }
+            } catch (Exception e) {
+
+            }
+
             user = registeredUser;
         }
         user.setName(result.getString("name"));

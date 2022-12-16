@@ -15,20 +15,28 @@
         RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute("user");
         Boolean itsMe = (Boolean) request.getAttribute("itsMe");
 
-        if(user == null){%>
-
+        if(user == null){
+        %>
             User not found!
-
-    <%  }else{ %>
+        <%
+        }else{ %>
             Profile of
             <%= user.getUsername() %>
             <%
                 if (itsMe){ %>
                     it's you!
             <%  }
-            %>
 
-    <%  }
+            try{
+            %>
+                Reviews:
+            <%= user.getReviews().get(0) %>
+            <%
+            }catch(IndexOutOfBoundsException e){ %>
+                No reviews available
+            <%}
+        }
+
 
     %>
 
