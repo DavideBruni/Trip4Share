@@ -60,4 +60,10 @@ public class UserServiceImpl implements UserService {
         }
         return followers;
     }
+
+    @Override
+    public List<OtherUserDTO> searchUsers(String username, int limit, int page) {
+        // TO-DO
+        return null;
+    }
 }
