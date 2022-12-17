@@ -7,10 +7,13 @@ import it.unipi.lsmd.dao.UserDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
+import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.mongodb.client.model.Aggregates.match;
@@ -42,25 +45,30 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         Document result = users.find(query).first();
 
         try{
-            if (result.getString("type").equals("admin")){
-                user = new Admin(result.getString("username"));
-
-            }else{
-                RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
-                registeredUser.setNationality(result.getString("nationality"));
-                //registeredUser.setReviews();
-                //registeredUser.setSponken_languages();
-                user = registeredUser;
-            }
+            user = UserUtils.userFromDocument(result);
         }catch (NullPointerException e){
-            System.out.println("Error 404: user not found!");   // TODO - return UserNotFound page?
             return null;
         }
-        user.setName(result.getString("name"));
-        user.setSurname(result.getString("surname"));
-        user.setEmail(result.getString("email"));
 
         return user;
+    }
 
+    @Override
+    public RegisteredUser getUser(String username) {
+
+        MongoDatabase database = getConnection();
+        MongoCollection<Document> users = database.getCollection("users");
+
+        RegisteredUser user = null;
+
+        Bson query = and(eq("username", username));
+        Document result = users.find(query).first();
+
+        User u = UserUtils.userFromDocument(result);
+        if(u instanceof Admin){
+            return null;
+        }else{
+            return (RegisteredUser) u;
+        }
     }
 }

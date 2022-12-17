@@ -3,13 +3,12 @@ package it.unipi.lsmd.service.impl;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
-import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
-import it.unipi.lsmd.dto.SuggestedUserDTO;
+import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.service.UserService;
+import it.unipi.lsmd.utils.UserUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,40 +23,41 @@ public class UserServiceImpl implements UserService {
         registeredUserDAO = DAOLocator.getRegisteredUserDAO();
     }
 
+    @Override
     public AuthenticatedUserDTO authenticate(String username, String password){
 
         User user = userDAO.authenticate(username, password);
-        AuthenticatedUserDTO authenticatedUserDTO;
-
-        if(user instanceof RegisteredUser){
-            RegisteredUserDTO registeredUserDTO = new RegisteredUserDTO();
-            RegisteredUser registeredUser = (RegisteredUser) user;
-            registeredUserDTO.setNationality(registeredUser.getNationality());
-            registeredUserDTO.setPhone(registeredUser.getPhone());
-
-            authenticatedUserDTO = registeredUserDTO;
-        }else{
-            AdminDTO adminDTO = new AdminDTO();
-            authenticatedUserDTO = adminDTO;
-        }
-
-        authenticatedUserDTO.setUsername(user.getUsername());
-        authenticatedUserDTO.setFirstName(user.getName());
-        authenticatedUserDTO.setLastName(user.getSurname());
-        authenticatedUserDTO.setEmail(user.getEmail());
-
-        return authenticatedUserDTO;
+        return UserUtils.userModelToDTO(user);
     }
 
-    public List<SuggestedUserDTO> getSuggestedUsers(String username){
-        List<RegisteredUser> users = registeredUserDAO.getSuggestedUser(username);
-        List<SuggestedUserDTO> suggested = new ArrayList<>();
+
+    @Override
+    public AuthenticatedUserDTO getUser(String username){
+        RegisteredUser user = userDAO.getUser(username);
+        return UserUtils.userModelToDTO(user);
+    }
+
+    @Override
+    public List<OtherUserDTO> getSuggestedUsers(String username, int nUser){
+        List<RegisteredUser> users = registeredUserDAO.getSuggestedUser(username,nUser);
+        List<OtherUserDTO> suggested = new ArrayList<>();
         for(RegisteredUser r : users){
-            SuggestedUserDTO suggestedUserDTO = new SuggestedUserDTO();
-            suggestedUserDTO.setUsername(r.getUsername());
-            suggested.add(suggestedUserDTO);
+            OtherUserDTO otherUserDTO = new OtherUserDTO();
+            otherUserDTO.setUsername(r.getUsername());
+            suggested.add(otherUserDTO);
         }
         return suggested;
     }
 
+    @Override
+    public List<OtherUserDTO> getFollowing(String username) {
+        List<RegisteredUser> users = registeredUserDAO.getFollowing(username);
+        List<OtherUserDTO> followers = new ArrayList<>();
+        for(RegisteredUser r : users){
+            OtherUserDTO otherUserDTO = new OtherUserDTO();
+            otherUserDTO.setUsername(r.getUsername());
+            followers.add(otherUserDTO);
+        }
+        return followers;
+    }
 }

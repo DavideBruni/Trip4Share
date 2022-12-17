@@ -2,6 +2,8 @@ package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.service.ServiceLocator;
+import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.SecurityUtils;
 
@@ -21,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 
     protected void redirectUser(HttpServletResponse httpServletResponse, AuthenticatedUserDTO authenticatedUserDTO) throws IOException {
         if(authenticatedUserDTO instanceof RegisteredUserDTO){
-            httpServletResponse.sendRedirect("user");
+            httpServletResponse.sendRedirect("user?username="+authenticatedUserDTO.getUsername());
         }else{
             httpServletResponse.sendRedirect("admin");
         }
@@ -33,7 +35,8 @@ public class LoginServlet extends HttpServlet {
         System.out.println("Received: " + httpServletRequest.getMethod());
 
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
-        UserServiceImpl userService = new UserServiceImpl();
+        UserService userService = ServiceLocator.getUserService();
+        String targetJSP = "/WEB-INF/pages/login.jsp";
 
         // check if user is already authenticated
         if(authenticatedUserDTO != null){
@@ -44,7 +47,6 @@ public class LoginServlet extends HttpServlet {
 
         if(httpServletRequest.getMethod().equals("GET")){
 
-            String targetJSP = "/WEB-INF/pages/login.jsp";
             RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
             requestDispatcher.forward(httpServletRequest, httpServletResponse);
 
@@ -56,19 +58,29 @@ public class LoginServlet extends HttpServlet {
                 if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
                     authenticatedUserDTO = userService.authenticate(username, password);
 
-                    // set user as authenticated
-                    HttpSession session = httpServletRequest.getSession(true);
-                    session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
 
-                    redirectUser(httpServletResponse, authenticatedUserDTO);
+                    // TODO - controllare anche come ha fatto davide
+                    if(authenticatedUserDTO == null){
+                        httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
+
+                    }else{
+                        // set user as authenticated
+                        HttpSession session = httpServletRequest.getSession(true);
+                        session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
+
+                        redirectUser(httpServletResponse, authenticatedUserDTO);
+                        return;
+                    }
+
 
                 } else {
                     httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
                 }
             } catch (Exception e) {
-                //logger.error("Error during login operation.",e);
                 httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
             }
+            RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
+            requestDispatcher.forward(httpServletRequest, httpServletResponse);
         }
 
 

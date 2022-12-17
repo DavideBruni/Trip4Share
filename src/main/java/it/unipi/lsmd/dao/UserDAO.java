@@ -10,4 +10,6 @@ public interface UserDAO {
 
     User authenticate(String username, String password);
 
+    RegisteredUser getUser(String username);
+
 }

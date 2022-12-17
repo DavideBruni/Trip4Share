@@ -1,6 +1,6 @@
 package it.unipi.lsmd.dto;
 
-public class SuggestedUserDTO {
+public class OtherUserDTO {
     private String username;
 
     public String getUsername() {

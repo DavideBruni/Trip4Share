@@ -1,8 +1,6 @@
-package it.unipi.lsmd.model;
+package it.unipi.lsmd.dto;
 
-import java.util.Date;
-
-public class Review {
+public class ReviewDTO {
 
     private String text;
     private String title;
@@ -39,5 +37,16 @@ public class Review {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ReviewDTO{" +
+                "text='" + text + '\'' +
+                ", title='" + title + '\'' +
+                ", date='" + date + '\'' +
+                ", rating=" + rating +
+                '}';
     }
 }
