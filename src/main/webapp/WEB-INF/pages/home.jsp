@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmd.dto.TripHomeDTO" %>
-<%@ page import="it.unipi.lsmd.dto.SuggestedUserDTO" %><%--
+<%@ page import="it.unipi.lsmd.dto.OtherUserDTO" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -15,7 +15,7 @@
 <body>
 <%
     List<TripHomeDTO> trips = (List<TripHomeDTO>) request.getAttribute("trips");
-    List<SuggestedUserDTO> suggested = (List<SuggestedUserDTO>) request.getAttribute("suggested");
+    List<OtherUserDTO> suggested = (List<OtherUserDTO>) request.getAttribute("suggested");
     if(trips==null || trips.isEmpty()){%>
         Nessun viaggio presente!
    <% }else{
@@ -30,7 +30,7 @@
     if(suggested==null || suggested.isEmpty()){%>
         Nessun utente presente!
 <% }else{
-    for(SuggestedUserDTO s : suggested){ %>
+    for(OtherUserDTO s : suggested){ %>
 Username:
 <%= s.getUsername() %>
 <br>
