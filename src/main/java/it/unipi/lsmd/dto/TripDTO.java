@@ -20,7 +20,6 @@ public class TripDTO {
     private String info;
     private String img;
     private Boolean deleted;    // TODO - useless ?
-    // TODO - add others
 
 
     public TripDTO(){

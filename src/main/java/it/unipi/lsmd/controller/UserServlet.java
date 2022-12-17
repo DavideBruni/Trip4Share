@@ -36,7 +36,7 @@ public class UserServlet extends HttpServlet {
         httpServletRequest.setAttribute("itsMe", true);
 
         // if it's not user's own profile
-        if(!username.equals(authenticatedUserDTO.getUsername())){
+        if(username != null && !username.equals(authenticatedUserDTO.getUsername())){
             authenticatedUserDTO = userService.getUser(username);
             httpServletRequest.setAttribute("itsMe", false);
         }
