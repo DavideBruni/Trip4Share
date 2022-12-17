@@ -9,7 +9,7 @@ public class Trip {
     private String title;
     private String description;
     private String destination;
-    private float price;
+    private double price;
     private LocalDate departureDate;
     private LocalDate returnDate;
     private ArrayList<String> tags;
@@ -60,11 +60,11 @@ public class Trip {
         this.destination = destination;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -1,11 +1,11 @@
 package it.unipi.lsmd.dao.neo4j;
 
 import it.unipi.lsmd.dao.base.BaseDAONeo4J;
+import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
-import org.neo4j.driver.Values;
 import org.neo4j.driver.exceptions.value.Uncoercible;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
 
-public class TripDAONeo4j extends BaseDAONeo4J {
+public class TripNeo4jDAO extends BaseDAONeo4J{
 
     public List<Trip> getTripsOrganizedByFollower(String follower) {
         List<Trip> tripsList;
@@ -49,5 +49,4 @@ public class TripDAONeo4j extends BaseDAONeo4J {
         }
         return tripsList;
     }
-
 }
