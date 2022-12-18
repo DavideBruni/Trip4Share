@@ -51,6 +51,9 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
 
     @Override
     public void removeFromWishlist(String username, String trip_id) {
-        return;
+        String key = username+":"+trip_id;
+        try(Jedis jedis = getConnection()){
+            jedis.del(key);
+        }
     }
 }
