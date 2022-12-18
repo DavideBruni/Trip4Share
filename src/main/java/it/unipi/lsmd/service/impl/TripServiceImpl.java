@@ -1,6 +1,9 @@
 package it.unipi.lsmd.service.impl;
 
-import it.unipi.lsmd.dao.neo4j.TripDAONeo4j;
+import it.unipi.lsmd.dao.DAOLocator;
+import it.unipi.lsmd.dao.TripDAO;
+import it.unipi.lsmd.dao.TripDetailsDAO;
+import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.TripService;
@@ -14,18 +17,19 @@ import java.util.List;
 
 public class TripServiceImpl implements TripService {
 
+    private TripDetailsDAO tripDetailsDAO;
     private TripDAO tripDAO;
 
     public TripServiceImpl(){
+        tripDetailsDAO = DAOLocator.getTripDetailsDAO();
         tripDAO = DAOLocator.getTripDAO();
     }
 
     @Override
     public List<TripHomeDTO> getTripsOrganizedByFollowers(String username) {
-        TripNeo4jDAO tripNeo4JDAO = new TripNeo4jDAO();
-        List<Trip> trips = tripNeo4JDAO.getTripsOrganizedByFollower(username);
+        List<Trip> trips = tripDAO.getTripsOrganizedByFollower(username);
         if(trips == null || trips.isEmpty()){
-            return new ArrayList<TripHomeDTO>();
+            return new ArrayList<>();
         }
         List<TripHomeDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
@@ -43,7 +47,7 @@ public class TripServiceImpl implements TripService {
     }
 
     public TripDTO getTrip(String id){
-        Trip trip = tripDAO.getTrip(id);
+        Trip trip = tripDetailsDAO.getTrip(id);
         return TripUtils.tripModelToDTO(trip);
     }
 
@@ -51,7 +55,6 @@ public class TripServiceImpl implements TripService {
     public List<TripHomeDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {
         Date depDate = null;
         Date retDate = null;
-        TripMongoDAO tripMongoDAO = new TripMongoDAO();
         try {
             depDate =new SimpleDateFormat("dd-MM-yyyy").parse(departureDate);
             try{
@@ -60,7 +63,7 @@ public class TripServiceImpl implements TripService {
         } catch (ParseException e) {
             depDate = new Date();
         }finally{
-            List<Trip> trips= tripMongoDAO.getTripsByDestination(destination,depDate,retDate,size,page);
+            List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination,depDate,retDate,size,page);
             List<TripHomeDTO> tripsDTO = new ArrayList<>();
             for(Trip t : trips){
                 TripHomeDTO tDTO = TripUtils.parseTrip(t);
@@ -75,7 +78,6 @@ public class TripServiceImpl implements TripService {
     public List<TripHomeDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page) {
         Date depDate = null;
         Date retDate = null;
-        TripMongoDAO tripMongoDAO = new TripMongoDAO();
         try {
             depDate =new SimpleDateFormat("dd-MM-yyyy").parse(departureDate);
             try{
@@ -84,7 +86,7 @@ public class TripServiceImpl implements TripService {
         } catch (ParseException e) {
             depDate = new Date();
         }finally{
-            List<Trip> trips= tripMongoDAO.getTripsByTag(tag,depDate,retDate,size,page);
+            List<Trip> trips= tripDetailsDAO.getTripsByTag(tag,depDate,retDate,size,page);
             List<TripHomeDTO> tripsDTO = new ArrayList<>();
             for(Trip t : trips){
                 TripHomeDTO tDTO = TripUtils.parseTrip(t);

@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao.neo4j;
 
+import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.base.BaseDAONeo4J;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
@@ -13,8 +14,9 @@ import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
 
-public class TripNeo4jDAO extends BaseDAONeo4J{
+public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
 
+    @Override
     public List<Trip> getTripsOrganizedByFollower(String follower) {
         List<Trip> tripsList;
         try (Session session = getConnection().session()) {

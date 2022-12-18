@@ -28,7 +28,11 @@ public class HomeServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Show Trips
-        // TODO - Handle pagination Trip Pagination (Populate Neo4j with good relation)
+        if(request.getSession()==null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+            response.sendRedirect(request.getContextPath());
+            return;
+        }
+            // TODO - Handle pagination Trip Pagination (Populate Neo4j with good relation)
         try {
             String usernameFromSession = SecurityUtils.getAuthenticatedUser(request).getUsername();
             String targetJSP = "/WEB-INF/pages/home.jsp";

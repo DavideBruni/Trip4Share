@@ -19,7 +19,8 @@ public class LogoutServlet extends HttpServlet {
 
         HttpSession session = httpServletRequest.getSession(true);
         if(session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) != null){
-            session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, null);
+            session.removeAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
+            session.invalidate();
             httpServletResponse.sendRedirect("login");
         }else{
             httpServletResponse.sendRedirect("index");

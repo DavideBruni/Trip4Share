@@ -40,7 +40,5 @@ Username:
 %>
 
 
-
-    Welcome: <b><%= request.getRemoteUser() %>
 </body>
 </html>
