@@ -1,9 +1,9 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.service.ServiceLocator;
-import it.unipi.lsmd.service.UserService;
-import it.unipi.lsmd.service.impl.UserServiceImpl;
+import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.SecurityUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -14,12 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/user")
-public class UserServlet extends HttpServlet {
+@WebServlet("/trip")
+public class TripServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-
 
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
 
@@ -29,22 +28,16 @@ public class UserServlet extends HttpServlet {
             return;
         }
 
-        UserService userService = ServiceLocator.getUserService();
+        TripService tripService = ServiceLocator.getTripService();
 
-        String targetJSP = "/WEB-INF/pages/user.jsp";
-        String username = httpServletRequest.getParameter("username");
-        httpServletRequest.setAttribute("itsMe", true);
+        String targetJSP = "/WEB-INF/pages/trip.jsp";
+        String trip_id = httpServletRequest.getParameter("id");
 
-        // if it's not user's own profile
-        if(username != null && !username.equals(authenticatedUserDTO.getUsername())){
-            authenticatedUserDTO = userService.getUser(username);
-            httpServletRequest.setAttribute("itsMe", false);
-        }
-
-        // send authenticatedUserDTO to front-end
-        httpServletRequest.setAttribute("user", authenticatedUserDTO);
+        TripDTO trip = tripService.getTrip(trip_id);
+        httpServletRequest.setAttribute("trip", trip);
 
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
+
     }
 }
