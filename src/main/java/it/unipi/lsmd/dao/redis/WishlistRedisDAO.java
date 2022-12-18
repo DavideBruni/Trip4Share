@@ -5,6 +5,7 @@ import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.base.BaseDAORedis;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
+import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import java.time.Duration;
@@ -39,15 +40,17 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
         String key = username+":"+trip_id;
 
         try(Jedis jedis = getConnection()){
-            Gson jsonDoc  = new Gson();
-            jedis.set(key, jsonDoc.toJson(data));
+            //Gson jsonDoc  = new Gson();
+            JSONObject json = new JSONObject(data);
+
+            jedis.set(key, String.valueOf(json));
             jedis.expire(key, ttl);
         }
 
     }
 
     @Override
-    public void removeFromWishlist(Trip trip) {
-
+    public void removeFromWishlist(String username, String trip_id) {
+        return;
     }
 }

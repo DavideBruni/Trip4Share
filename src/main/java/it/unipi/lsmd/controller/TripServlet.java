@@ -52,6 +52,7 @@ public class TripServlet extends HttpServlet {
                 map.put("return_date", (LocalDate) trip.getReturnDate());
 
                 tripService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, map);
+                // TODO - increase counter in MongoDB
 
             }else if(action.equals("remove")){
                 System.out.println("remove from wishlist");

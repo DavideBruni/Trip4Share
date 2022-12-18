@@ -10,6 +10,6 @@ public interface WishlistDAO {
 
     void create(Wishlist wishlist);
     void addToWishlist(String username, String trip_id, HashMap<String, Object> data);
-    void removeFromWishlist(Trip trip);
+    void removeFromWishlist(String username, String trip_id);
 
 }

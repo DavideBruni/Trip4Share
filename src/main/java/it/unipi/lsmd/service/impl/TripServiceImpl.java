@@ -56,4 +56,9 @@ public class TripServiceImpl implements TripService {
     public void addToWishlist(String username, String trip_id, HashMap<String, Object> data){
         wishlistDAO.addToWishlist(username, trip_id, data);
     }
+
+    @Override
+    public void removeFromWishlist(String username, String trip_id) {
+        wishlistDAO.removeFromWishlist(username, trip_id);
+    }
 }

@@ -13,4 +13,6 @@ public interface TripService {
     public TripDTO getTrip(String id);
 
     public void addToWishlist(String username, String trip_id, HashMap<String, Object> data);
+
+    public void removeFromWishlist(String username, String trip_id);
 }
