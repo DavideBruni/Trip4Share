@@ -1,7 +1,6 @@
 package it.unipi.lsmd.service.impl;
 
-import it.unipi.lsmd.dao.mongo.TripMongoDAO;
-import it.unipi.lsmd.dao.neo4j.TripNeo4jDAO;
+import it.unipi.lsmd.dao.neo4j.TripDAONeo4j;
 import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.TripService;
@@ -14,6 +13,13 @@ import java.util.Date;
 import java.util.List;
 
 public class TripServiceImpl implements TripService {
+
+    private TripDAO tripDAO;
+
+    public TripServiceImpl(){
+        tripDAO = DAOLocator.getTripDAO();
+    }
+
     @Override
     public List<TripHomeDTO> getTripsOrganizedByFollowers(String username) {
         TripNeo4jDAO tripNeo4JDAO = new TripNeo4jDAO();
@@ -34,6 +40,11 @@ public class TripServiceImpl implements TripService {
             tripsDTO.add(tripHomeDTO);
         }
         return tripsDTO;
+    }
+
+    public TripDTO getTrip(String id){
+        Trip trip = tripDAO.getTrip(id);
+        return TripUtils.tripModelToDTO(trip);
     }
 
     @Override

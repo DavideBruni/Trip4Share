@@ -13,6 +13,40 @@ import java.util.ArrayList;
 
 public class UserUtils {
 
+    public static User userFromDocument(Document result){
+
+        if(result == null){
+            return null;
+        }
+
+        User user;
+
+        if(result.getString("type").equals("admin")){
+            Admin admin = new Admin(result.getString("username"));
+            user = admin;
+        }else{
+            RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
+            registeredUser.setNationality(result.getString("nationality"));
+
+            try{
+                ArrayList<Document> reviews = result.get("reviews", ArrayList.class);
+                for(Document r : reviews){
+                    registeredUser.addReview(ReviewUtils.reviewFromDocument(r));
+                }
+            } catch (Exception e) {
+                // TODO - add something?
+            }
+
+            user = registeredUser;
+        }
+        user.setName(result.getString("name"));
+        user.setSurname(result.getString("surname"));
+        user.setEmail(result.getString("email"));
+
+        return user;
+    }
+
+
     public static AuthenticatedUserDTO userModelToDTO(User user_model){
 
         if(user_model == null){
@@ -48,33 +82,5 @@ public class UserUtils {
         return authenticatedUserDTO;
     }
 
-    public static User userFromDocument(Document result){
-
-        User user;
-
-        if(result.getString("type").equals("admin")){
-            Admin admin = new Admin(result.getString("username"));
-            user = admin;
-        }else{
-            RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
-            registeredUser.setNationality(result.getString("nationality"));
-
-            try{
-                ArrayList<Document> reviews = result.get("reviews", ArrayList.class);
-                for(Document r : reviews){
-                    registeredUser.addReview(ReviewUtils.reviewFromDocument(r));
-                }
-            } catch (Exception e) {
-
-            }
-
-            user = registeredUser;
-        }
-        user.setName(result.getString("name"));
-        user.setSurname(result.getString("surname"));
-        user.setEmail(result.getString("email"));
-
-        return user;
-    }
 
 }

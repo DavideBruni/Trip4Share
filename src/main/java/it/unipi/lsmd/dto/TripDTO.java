@@ -1,47 +1,35 @@
-package it.unipi.lsmd.model;
+package it.unipi.lsmd.dto;
+
+import it.unipi.lsmd.model.DailySchedule;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class Trip {
+public class TripDTO {
 
     private String title;
     private String description;
     private String destination;
-    private double price;
+    private float price;
     private LocalDate departureDate;
     private LocalDate returnDate;
     private ArrayList<String> tags;
-    private ArrayList<DailySchedule> itinerary;
+    private ArrayList<DailyScheduleDTO> itinerary;
     private ArrayList<String> whatsIncluded;
     private ArrayList<String> whatsNotIncluded;
     private String info;
     private String img;
-    private Boolean deleted;
+    private Boolean deleted;    // TODO - useless ?
 
-    public Trip(){
+
+    public TripDTO(){
         tags = new ArrayList<String>();
-        itinerary = new ArrayList<DailySchedule>();
+        itinerary = new ArrayList<DailyScheduleDTO>();
         whatsIncluded = new ArrayList<String>();
         whatsNotIncluded = new ArrayList<String>();
     }
 
-    public String getImg() {
-        return img;
-    }
 
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
 
     public String getTitle() {
         return title;
@@ -67,11 +55,11 @@ public class Trip {
         this.destination = destination;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -99,12 +87,16 @@ public class Trip {
         this.tags = tags;
     }
 
-    public ArrayList<DailySchedule> getItinerary() {
+    public ArrayList<DailyScheduleDTO> getItinerary() {
         return itinerary;
     }
 
-    public void setItinerary(ArrayList<DailySchedule> itinerary) {
+    public void setItinerary(ArrayList<DailyScheduleDTO> itinerary) {
         this.itinerary = itinerary;
+    }
+
+    public void addItinerary(DailyScheduleDTO itinerary){
+        this.itinerary.add(itinerary);
     }
 
     public ArrayList<String> getWhatsIncluded() {
@@ -131,24 +123,21 @@ public class Trip {
         this.info = info;
     }
 
-    @Override
-    public String toString() {
-        return "Trip{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", destination='" + destination + '\'' +
-                ", price=" + price +
-                ", departureDate=" + departureDate +
-                ", returnDate=" + returnDate +
-                ", tags=" + tags +
-                ", itinerary=" + itinerary +
-                ", whatsIncluded=" + whatsIncluded +
-                ", whatsNotIncluded=" + whatsNotIncluded +
-                ", info='" + info + '\'' +
-                '}';
+    public String getImg() {
+        return img;
     }
 
-    public void addItinerary(DailySchedule itinerary) {
-        this.itinerary.add(itinerary);
+    public void setImg(String img) {
+        this.img = img;
     }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    // TODO - add toString method
 }
