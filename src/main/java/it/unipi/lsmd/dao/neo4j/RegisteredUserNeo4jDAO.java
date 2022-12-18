@@ -3,18 +3,16 @@ package it.unipi.lsmd.dao.neo4j;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.base.BaseDAONeo4J;
 import it.unipi.lsmd.model.RegisteredUser;
-import it.unipi.lsmd.model.Trip;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
-import org.neo4j.driver.exceptions.value.Uncoercible;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
 
-public class RegisteredUserDAONeo4j extends BaseDAONeo4J implements RegisteredUserDAO {
+public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUserDAO {
 
     public List<RegisteredUser> getSuggestedUser(String username, int nUser){
         List<RegisteredUser> suggested;
@@ -51,7 +49,7 @@ public class RegisteredUserDAONeo4j extends BaseDAONeo4J implements RegisteredUs
                 while (result.hasNext()) {
                     Record r = result.next();
                     RegisteredUser ru = new RegisteredUser();
-                    ru.setUsername(r.get("u3.username").asString());
+                    ru.setUsername(r.get("u2.username").asString());
                     users.add(ru);
                 }
                 return users;
