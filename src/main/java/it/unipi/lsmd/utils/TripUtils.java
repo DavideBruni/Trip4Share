@@ -27,7 +27,8 @@ public interface TripUtils {
         TripHomeDTO tDTO= new TripHomeDTO();
         tDTO.setDestination(t.getDestination());
         tDTO.setTitle(t.getTitle());
-        tDTO.setDeleted(t.getDeleted());
+        if(t.getDeleted()!=null)
+            tDTO.setDeleted(t.getDeleted());
         tDTO.setDepartureDate(t.getDepartureDate());
         tDTO.setReturnDate(t.getReturnDate());
         tDTO.setImgUrl(t.getImg());

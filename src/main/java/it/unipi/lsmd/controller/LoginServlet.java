@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
                     // set user as authenticated
                     HttpSession session = httpServletRequest.getSession(true);
                     session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
-                    session.setAttribute(SecurityUtils.USERS_FOLLOWERS_KEY,followers);
+                    //session.setAttribute(SecurityUtils.USERS_FOLLOWERS_KEY,followers);
 
                     redirectUser(httpServletResponse, authenticatedUserDTO);
 

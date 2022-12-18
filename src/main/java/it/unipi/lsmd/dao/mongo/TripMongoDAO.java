@@ -2,12 +2,15 @@ package it.unipi.lsmd.dao.mongo;
 
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.utils.TripUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+
+import javax.print.Doc;
 import java.util.*;
 
 import static com.mongodb.client.model.Aggregates.*;
@@ -36,8 +39,9 @@ public class TripMongoDAO extends BaseDAOMongo{
             res = collection.aggregate(Arrays.asList(m1,l1,p1));
         }
         List<Trip> trips = new ArrayList<>();
-        while(res.iterator().hasNext()){
-            Document doc = res.iterator().next();
+        MongoCursor<Document> it = res.iterator();
+        while(it.hasNext()){
+            Document doc = it.next();
             Trip t = TripUtils.tripFromDocument(doc);
             trips.add(t);
         }
@@ -49,9 +53,9 @@ public class TripMongoDAO extends BaseDAOMongo{
         MongoCollection<Document> collection = database.getCollection("trips");
         Bson m1;
         if(returnDate == null){
-            m1 = match(and(in(tag,"tags"),gte("departureDate", departureDate)));
+            m1 = match(and(in("tags",tag),gte("departureDate", departureDate)));
         }else{
-            m1 = match(and(in(tag,"tags"),gte("departureDate", departureDate),
+            m1 = match(and(in("tags",tag),gte("departureDate", departureDate),
                     lte("returnDate",returnDate)));
         }
         Bson l1 = limit(size);
@@ -64,8 +68,9 @@ public class TripMongoDAO extends BaseDAOMongo{
             res = collection.aggregate(Arrays.asList(m1,l1,p1));
         }
         List<Trip> trips = new ArrayList<>();
-        while(res.iterator().hasNext()){
-            Document doc = res.iterator().next();
+        MongoCursor<Document> it = res.iterator();
+        while(it.hasNext()){
+            Document doc = it.next();
             Trip t = TripUtils.tripFromDocument(doc);
             trips.add(t);
         }

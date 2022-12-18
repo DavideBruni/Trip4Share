@@ -19,7 +19,7 @@ Nessun viaggio presente!
     <% }else{
             for(TripHomeDTO t : trips){ %>
 Title:
-    <%= t.getTitle() %>
+    <%= t.getTitle()%>
 <br> Destination
     <%= t.getDestination()  %>
     <br>

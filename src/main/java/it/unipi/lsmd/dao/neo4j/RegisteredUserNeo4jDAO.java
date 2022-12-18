@@ -49,7 +49,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                 while (result.hasNext()) {
                     Record r = result.next();
                     RegisteredUser ru = new RegisteredUser();
-                    ru.setUsername(r.get("u3.username").asString());
+                    ru.setUsername(r.get("u2.username").asString());
                     users.add(ru);
                 }
                 return users;
