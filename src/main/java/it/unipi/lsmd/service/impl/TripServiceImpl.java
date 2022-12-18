@@ -2,6 +2,7 @@ package it.unipi.lsmd.service.impl;
 
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
+import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.neo4j.TripDAONeo4j;
 import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.dto.TripHomeDTO;
@@ -10,14 +11,18 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TripServiceImpl implements TripService {
 
     private TripDAO tripDAO;
+    private WishlistDAO wishlistDAO;
 
     public TripServiceImpl(){
         tripDAO = DAOLocator.getTripDAO();
+        wishlistDAO = DAOLocator.getWishlistDAO();
     }
 
     @Override
@@ -45,5 +50,10 @@ public class TripServiceImpl implements TripService {
     public TripDTO getTrip(String id){
         Trip trip = tripDAO.getTrip(id);
         return TripUtils.tripModelToDTO(trip);
+    }
+
+    @Override
+    public void addToWishlist(String username, String trip_id, HashMap<String, Object> data){
+        wishlistDAO.addToWishlist(username, trip_id, data);
     }
 }

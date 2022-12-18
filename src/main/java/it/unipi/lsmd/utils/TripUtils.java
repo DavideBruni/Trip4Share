@@ -45,6 +45,7 @@ public class TripUtils {
 
         Trip trip = new Trip();
 
+        trip.setId(result.get("_id").toString());
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
         trip.setDestination(result.getString("destination"));
@@ -58,30 +59,19 @@ public class TripUtils {
         String return_date = result.getString("returnDate");
         trip.setReturnDate(LocalDate.parse(return_date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        try{
-            ArrayList<String> tags = result.get("tags", ArrayList.class);
-            trip.setTags(tags);
-        } catch (Exception e) {
-            // TODO - add something?
+        ArrayList<String> tags = result.get("tags", ArrayList.class);
+        trip.setTags(tags);
+
+        ArrayList<Document> itinerary = result.get("itinerary", ArrayList.class);
+        for(Document i : itinerary){
+            trip.addItinerary(dailyScheduleFromDocument(i));
         }
 
+        ArrayList<String> whatsIncluded = result.get("compreso", ArrayList.class);
+        trip.setWhatsIncluded(whatsIncluded);
 
-        try{
-            ArrayList<Document> itinerary = result.get("itinerary", ArrayList.class);
-            for(Document i : itinerary){
-                trip.addItinerary(dailyScheduleFromDocument(i));
-            }
-        } catch (Exception e) { }
-
-        try{
-            ArrayList<String> whatsIncluded = result.get("compreso", ArrayList.class);
-            trip.setWhatsIncluded(whatsIncluded);
-        } catch (Exception e) { }
-
-        try{
-            ArrayList<String> whatsNotIncluded = result.get("nonCompreso", ArrayList.class);
-            trip.setWhatsNotIncluded(whatsNotIncluded);
-        } catch (Exception e) { }
+        ArrayList<String> whatsNotIncluded = result.get("nonCompreso", ArrayList.class);
+        trip.setWhatsNotIncluded(whatsNotIncluded);
 
         trip.setInfo(result.getString("info"));
 

@@ -24,10 +24,15 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDAO {
 
         Trip trip = null;
 
-        Bson query = eq("_id", new ObjectId(id));
-        Document result = trips.find(query).first();
+        try{
+            Bson query = eq("_id", new ObjectId(id));
+            Document result = trips.find(query).first();
 
-        trip = TripUtils.tripFromDocument(result);
+            trip = TripUtils.tripFromDocument(result);
+
+        }catch (IllegalArgumentException e){
+
+        }
 
         return trip;
     }
