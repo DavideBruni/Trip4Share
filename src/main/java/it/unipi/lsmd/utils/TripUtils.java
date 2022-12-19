@@ -110,4 +110,16 @@ public interface TripUtils {
 
         return tripDTO;
     }
+
+    static Trip destinationFromDocument(Document doc) {
+        Trip t = new Trip();
+        t.setDestination(doc.getString("_id"));
+        try {
+            double agg = doc.getDouble("agg");
+            t.setPrice(agg);
+        }catch (Exception exc){
+            t.setPrice(0.00);
+        }
+        return t;
+    }
 }

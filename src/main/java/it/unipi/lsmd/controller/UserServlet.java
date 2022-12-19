@@ -19,10 +19,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-
-
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
-
         // check if user is authenticated
         if(authenticatedUserDTO == null){
             httpServletResponse.sendRedirect("login");

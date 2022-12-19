@@ -3,6 +3,7 @@ package it.unipi.lsmd.service.impl;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.TripDetailsDAO;
+import it.unipi.lsmd.dto.PriceDestinationDTO;
 import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.model.Trip;
@@ -94,5 +95,71 @@ public class TripServiceImpl implements TripService {
             }
             return tripsDTO;
         }
+    }
+
+    @Override
+    public List<String> mostPopularDestinations(int page, int objectPerPageSearch) {
+        return tripDetailsDAO.mostPopularDestinations(page, objectPerPageSearch);
+    }
+
+    @Override
+    public List<String> mostPopularDestinationsByTag(String tag, int page, int objectPerPageSearch) {
+        List<String> trips= tripDetailsDAO.mostPopularDestinationsByTag(tag,page,objectPerPageSearch );
+        return trips;
+    }
+
+    @Override
+    public List<String> mostPopularDestinationsByPrice(double start, double end, int page, int objectPerPageSearch) {
+        return tripDetailsDAO.mostPopularDestinationsByPrice(start, end,page,objectPerPageSearch);
+    }
+
+    @Override
+    public List<String> mostPopularDestinationsByPeriod(String start, String end, int page, int objectPerPageSearch) {
+        Date depDate = null;
+        Date retDate = null;
+        try {
+            depDate =new SimpleDateFormat("dd-MM-yyyy").parse(start);
+            try{
+                retDate = new SimpleDateFormat("dd-MM-yyyy").parse(end);
+            }catch (ParseException ex){ }
+        } catch (ParseException e) {
+            depDate = new Date();
+        }
+        return tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate,page,objectPerPageSearch);
+    }
+
+    @Override
+    public List<PriceDestinationDTO> cheapestDestinationsByAvg(int page, int objectPerPageSearch) {
+        List<Trip> trips = tripDetailsDAO.cheapestDestinationsByAvg(page, objectPerPageSearch);
+        List<PriceDestinationDTO> dest = new ArrayList<>();
+        for(Trip trip : trips) {
+            PriceDestinationDTO d = new PriceDestinationDTO();
+            d.setPrice(trip.getPrice());
+            d.setDestination(trip.getDestination());
+            dest.add(d);
+        }
+        return dest;
+
+    }
+
+    @Override
+    public  List<TripHomeDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch) {
+        Date depDate = null;
+        Date retDate = null;
+        try {
+            depDate =new SimpleDateFormat("dd-MM-yyyy").parse(start);
+            try{
+                retDate = new SimpleDateFormat("dd-MM-yyyy").parse(end);
+            }catch (ParseException ex){ }
+        } catch (ParseException e) {
+            depDate = new Date();
+        }
+        List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,page, objectPerPageSearch);
+        List<TripHomeDTO> tripsDTO = new ArrayList<>();
+        for(Trip t : trips){
+            TripHomeDTO tDTO = TripUtils.parseTrip(t);
+            tripsDTO.add(tDTO);
+        }
+        return tripsDTO;
     }
 }

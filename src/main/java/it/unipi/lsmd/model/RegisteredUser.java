@@ -6,7 +6,7 @@ import java.util.List;
 public class RegisteredUser extends User{
 
     private List<Review> reviews;
-    private List<String> sponken_languages;
+    private List<String> spoken_languages;
     private String nationality;
     private String phone;
     private List<RegisteredUser> follower;
@@ -31,13 +31,13 @@ public class RegisteredUser extends User{
 
     public RegisteredUser(){
         reviews = new ArrayList<Review>();
-        sponken_languages = new ArrayList<String>();
+        spoken_languages = new ArrayList<String>();
     }
 
     public RegisteredUser(String username){
         super.setUsername(username);
         reviews = new ArrayList<Review>();
-        sponken_languages = new ArrayList<String>();
+        spoken_languages = new ArrayList<String>();
     }
 
 
@@ -62,12 +62,12 @@ public class RegisteredUser extends User{
         this.reviews = reviews;
     }
 
-    public List<String> getSponken_languages() {
-        return sponken_languages;
+    public List<String> getSpoken_languages() {
+        return spoken_languages;
     }
 
-    public void setSponken_languages(List<String> sponken_languages) {
-        this.sponken_languages = sponken_languages;
+    public void setSpoken_languages(List<String> spoken_languages) {
+        this.spoken_languages = spoken_languages;
     }
 
     public String getNationality() {
