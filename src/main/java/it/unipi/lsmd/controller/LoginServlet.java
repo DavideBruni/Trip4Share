@@ -1,5 +1,6 @@
 package it.unipi.lsmd.controller;
 
+import it.unipi.lsmd.dao.neo4j.RegisteredUserNeo4jDAO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
@@ -58,9 +59,8 @@ public class LoginServlet extends HttpServlet {
                 if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
                     authenticatedUserDTO = userService.authenticate(username, password);
 
-
                     // TODO - controllare anche come ha fatto davide
-                    if(authenticatedUserDTO == null){
+                        if(authenticatedUserDTO == null){
                         httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
 
                     }else{

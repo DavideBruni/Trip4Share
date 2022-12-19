@@ -2,6 +2,7 @@ package it.unipi.lsmd.utils;
 
 import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
@@ -10,6 +11,7 @@ import it.unipi.lsmd.model.User;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserUtils {
 
@@ -67,6 +69,23 @@ public class UserUtils {
                     registeredUserDTO.addReview(ReviewUtils.reviewModelToDTO(review));
                 }
             }catch (NullPointerException e){}
+            List<OtherUserDTO> follows = new ArrayList<>();
+            List<RegisteredUser> followsModel = ((RegisteredUser) user_model).getFollowing();
+            for(RegisteredUser r : followsModel){
+                OtherUserDTO o = new OtherUserDTO();
+                o.setUsername(r.getUsername());
+                follows.add(o);
+            }
+            registeredUserDTO.setFollowing(follows);
+            follows.clear();
+            followsModel = ((RegisteredUser) user_model).getFollower();
+            for(RegisteredUser r : followsModel){
+                OtherUserDTO o = new OtherUserDTO();
+                o.setUsername(r.getUsername());
+                follows.add(o);
+            }
+            registeredUserDTO.setFollowers(follows);
+
 
             authenticatedUserDTO = registeredUserDTO;
         }else{
