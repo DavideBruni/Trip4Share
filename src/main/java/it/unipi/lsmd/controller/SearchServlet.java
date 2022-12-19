@@ -53,7 +53,7 @@ public class SearchServlet extends HttpServlet {
     private RequestDispatcher searchUser(HttpServletRequest request,String value,int page){
         List<OtherUserDTO> searchedUsers = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute("users_founded", searchedUsers);
-        return  request.getRequestDispatcher("/WEB-INF/pages/users.jsp");
+        return  request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }
 
     private RequestDispatcher searchDest(HttpServletRequest request,String value,int page){
@@ -61,14 +61,14 @@ public class SearchServlet extends HttpServlet {
         String retDate = request.getParameter("retDate");
         List<TripHomeDTO> trips = tripService.getTripsByDestination(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute("trips", trips);
-        return request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
+        return request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }
     private RequestDispatcher searchTags(HttpServletRequest request,String value,int page){
         String depDate = request.getParameter("depDate");
         String retDate = request.getParameter("retDate");
         List<TripHomeDTO> trips = tripService.getTripsByTag(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute("trips", trips);
-        return request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
+        return request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }
 
 

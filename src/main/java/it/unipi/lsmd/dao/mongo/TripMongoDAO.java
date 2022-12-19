@@ -242,7 +242,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson m1 = match(and(gte("departureDate",start),lte("returnDate",end)));
         Bson s1 = sort(ascending("price"));
         Bson g1 = group("$destination",first("doc_with_max_ver","$$ROOT"));
-        Bson r1 = replaceWith("doc_with_max_ver");
+        Bson r1 = replaceWith("$doc_with_max_ver");
         Bson l1 = limit(objectPerPageSearch);
         AggregateIterable<Document> res;
         if (page != 1) {

@@ -1,5 +1,6 @@
 <%@ page import="it.unipi.lsmd.dto.TripHomeDTO" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="it.unipi.lsmd.dto.PriceDestinationDTO" %><%--
   Created by IntelliJ IDEA.
   User: david
   Date: 17/12/2022
@@ -14,17 +15,36 @@
 <body>
     <%
     List<TripHomeDTO> trips = (List<TripHomeDTO>) request.getAttribute("trips");
-    if(trips==null || trips.isEmpty()){%>
-Nessun viaggio presente!
-    <% }else{
-            for(TripHomeDTO t : trips){ %>
-Title:
-    <%= t.getTitle()%>
-<br> Destination
-    <%= t.getDestination()  %>
-    <br>
+    List<String> destinations = (List<String>) request.getAttribute("destinations");
+    List<PriceDestinationDTO> dest_price = (List<PriceDestinationDTO>) request.getAttribute("dest&price");
+    if(trips!=null && !trips.isEmpty()){
+        for(TripHomeDTO t : trips){ %>
+            Title:
+            <%= t.getTitle()%>
+            <br> Destination
+            <%= t.getDestination()  %>
+            <br>
 <%
-            }
-        }%>
+                }
+    }else if(destinations!=null && !destinations.isEmpty()){
+            for(String d : destinations){ %>
+                Dest:
+                    <%= d%>
+<br>
+    <%
+                }
+    }else if(dest_price!=null && !dest_price.isEmpty()){
+        for(PriceDestinationDTO pd : dest_price){ %>
+Destination:
+    <%= pd.getDestination()%>
+<br> Price:
+    <%= pd.getPrice()  %>
+<br>
+<%
+        }
+    }else{  %>
+    Nessun risultato trovato
+    <%
+    }%>
 </body>
 </html>

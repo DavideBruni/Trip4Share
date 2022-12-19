@@ -31,14 +31,17 @@ public class ExploreServlet extends HttpServlet {
                 requestDispatcher = mostPopularDestinations(request, 1);
             }else{
                 String searchFor = request.getParameter("searchFor");
+
                 int page = 1;
                 try {
                     page = Integer.parseInt(request.getParameter("page"));
                 }catch (IllegalArgumentException e){
                     response.sendRedirect(request.getContextPath()+"/home");
                 }
-                if (searchFor.equalsIgnoreCase(String.valueOf(PagesUtilis.SEARCH_TYPE.TAGS))){
-                    String tag = request.getParameter( "tag");
+                if(searchFor==null){
+                  requestDispatcher =mostPopularDestinations(request, page);
+                }else if (searchFor.equalsIgnoreCase(String.valueOf(PagesUtilis.SEARCH_TYPE.TAGS))){
+                    String tag = request.getParameter("tag");
                     requestDispatcher = mostPopularByTag(request,tag,page);
                 }else if(searchFor.equalsIgnoreCase(String.valueOf(PagesUtilis.SEARCH_TYPE.PRICE))){
                     double start = Double.parseDouble(request.getParameter("start"));
@@ -50,12 +53,10 @@ public class ExploreServlet extends HttpServlet {
                     requestDispatcher = mostPopularByPeriod(request,start,end,page);
                 }else if(searchFor.equalsIgnoreCase(String.valueOf(PagesUtilis.SEARCH_TYPE.CHEAP_DEST))){
                     requestDispatcher = cheapestDestinationsByAvg(request,page);
-                }else if(searchFor.equalsIgnoreCase(String.valueOf(PagesUtilis.SEARCH_TYPE.CHEAPEST))){
+                }else{
                     String start = request.getParameter("start");
                     String end = request.getParameter("end");
                     requestDispatcher = cheapestDestinations(request,start, end,page);
-                }else{
-                    requestDispatcher =mostPopularDestinations(request, page);
                 }
             }// no parameters, show  trip sort by likes
             requestDispatcher.forward(request, response);
@@ -65,25 +66,25 @@ public class ExploreServlet extends HttpServlet {
 
     private RequestDispatcher cheapestDestinations(HttpServletRequest request, String start, String end, int page) {
         List<TripHomeDTO> trips = tripService.cheapestTripForDestinationInPeriod(start,end,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", trips);
+        request.setAttribute("trips", trips);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
     private RequestDispatcher cheapestDestinationsByAvg(HttpServletRequest request, int page) {
-        List<PriceDestinationDTO> trips = tripService.cheapestDestinationsByAvg(page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", trips);
+        List<PriceDestinationDTO> destinations = tripService.cheapestDestinationsByAvg(page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        request.setAttribute("dest&price", destinations);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
     private RequestDispatcher mostPopularByPeriod(HttpServletRequest request, String start, String end, int page) {
-        List<String> trips = tripService.mostPopularDestinationsByPeriod(start, end ,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", trips);
+        List<String> destinations = tripService.mostPopularDestinationsByPeriod(start, end ,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        request.setAttribute("destinations", destinations);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
     private RequestDispatcher mostPopularByPrice(HttpServletRequest request, double start, double end, int page) {
-        List<String> trips = tripService.mostPopularDestinationsByPrice(start, end ,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", trips);
+        List<String> destinations = tripService.mostPopularDestinationsByPrice(start, end ,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        request.setAttribute("destinations", destinations);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
@@ -94,8 +95,8 @@ public class ExploreServlet extends HttpServlet {
     }
 
     private RequestDispatcher mostPopularDestinations(HttpServletRequest request, int page) {
-        List<String> trips = tripService.mostPopularDestinations(page,PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", trips);
+        List<String> destinations = tripService.mostPopularDestinations(page,PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        request.setAttribute("destinations", destinations);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 

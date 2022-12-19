@@ -16,16 +16,29 @@
 
     <%
     List<OtherUserDTO> users = (List<OtherUserDTO>) request.getAttribute("users_founded");
-    if(users==null || users.isEmpty()){%>
-Nessun utente trovato!
+    List<TripHomeDTO> trips = (List<TripHomeDTO>) request.getAttribute("trips");
+    if((users==null && trips == null) || (users.isEmpty() && trips.isEmpty())){%>
+            Nessun risultato trovato!
     <% }else{
+        if(users!=null && !users.isEmpty()){
             for(OtherUserDTO o : users){ %>
 Username:
     <%= o.getUsername() %>
 <br>
 <%
             }
-        }
+        }else{
+                for(TripHomeDTO t : trips){
+                    %>
+    Title:
+    <%= t.getTitle() %>
+    <br>
+    <%
+                }
+            }
+
+    }
+
     %>
 
 </body>
