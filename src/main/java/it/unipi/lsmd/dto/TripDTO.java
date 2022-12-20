@@ -8,7 +8,7 @@ public class TripDTO {
     private String title;
     private String description;
     private String destination;
-    private float price;
+    private double price;
     private LocalDate departureDate;
     private LocalDate returnDate;
     private ArrayList<String> tags;
@@ -17,7 +17,6 @@ public class TripDTO {
     private ArrayList<String> whatsNotIncluded;
     private String info;
     private String img;
-    private Boolean deleted;    // TODO - useless ?
 
 
     public TripDTO(){
@@ -53,11 +52,11 @@ public class TripDTO {
         this.destination = destination;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -127,14 +126,6 @@ public class TripDTO {
 
     public void setImg(String img) {
         this.img = img;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
     }
 
     // TODO - add toString method

@@ -1,6 +1,5 @@
 package it.unipi.lsmd.dao.base;
 
-import com.mongodb.client.MongoDatabase;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -26,5 +25,6 @@ public abstract class BaseDAONeo4J implements AutoCloseable{
     public void close() throws Exception {
         getConnection().close();
     }
+
 
 }

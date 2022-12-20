@@ -2,8 +2,10 @@ package it.unipi.lsmd.dao;
 
 import it.unipi.lsmd.model.Trip;
 
-public interface TripDAO {
+import java.util.List;
 
-    Trip getTrip(String id);
+public interface TripDAO {
+    List<Trip> getTripsOrganizedByFollower(String follower, int size, int page);
+    List<Trip> getSuggestedTrip(String username);
 
 }

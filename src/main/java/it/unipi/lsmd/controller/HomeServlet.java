@@ -23,21 +23,34 @@ import java.util.List;
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(HomeServlet.class);
-    private TripService tripService = ServiceLocator.getTripService();
-    private UserService userService = ServiceLocator.getUserService();
+    private final TripService tripService = ServiceLocator.getTripService();
+    private final UserService userService = ServiceLocator.getUserService();
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Show Trips
-        // TODO - Handle pagination Trip Pagination (Populate Neo4j with good relation)
+        if(request.getSession()==null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+            response.sendRedirect(request.getContextPath());
+            return;
+        }
+        int page;
+        try{
+            page = Integer.parseInt(request.getParameter("page"));
+        }catch (IllegalArgumentException e){
+            page = 1;
+        }
+
         try {
             String usernameFromSession = SecurityUtils.getAuthenticatedUser(request).getUsername();
             String targetJSP = "/WEB-INF/pages/home.jsp";
-            List<TripHomeDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession);
+            List<TripHomeDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession,PagesUtilis.OBJECT_PER_PAGE_SEARCH,page);
             request.setAttribute("trips",trips);
 
             //Show Suggested user
             List<OtherUserDTO> suggested = userService.getSuggestedUsers(usernameFromSession,PagesUtilis.SUGGESTED_USER_HOME);
-            request.setAttribute("suggested",suggested);
+            request.setAttribute("suggestedUser",suggested);
+
+            List<TripHomeDTO> suggested_trips = tripService.getSuggestedTrips(usernameFromSession);
+            request.setAttribute("suggestedTrips",suggested_trips);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
             requestDispatcher.forward(request, response);

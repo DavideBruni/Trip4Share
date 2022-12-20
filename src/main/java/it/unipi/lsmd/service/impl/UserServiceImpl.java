@@ -3,30 +3,41 @@ package it.unipi.lsmd.service.impl;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
+import it.unipi.lsmd.dao.mongo.UserMongoDAO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.OtherUserDTO;
+import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.UserUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private RegisteredUserDAO registeredUserDAO;
+    private UserMongoDAO userMongoDAO;
 
     public UserServiceImpl(){
         userDAO = DAOLocator.getUserDAO();
         registeredUserDAO = DAOLocator.getRegisteredUserDAO();
+        userMongoDAO = new UserMongoDAO();
     }
 
     @Override
     public AuthenticatedUserDTO authenticate(String username, String password){
 
         User user = userDAO.authenticate(username, password);
+        if(user instanceof RegisteredUser){
+            ((RegisteredUser) user).setFollowing(registeredUserDAO.getFollowing(username));
+        }
         return UserUtils.userModelToDTO(user);
     }
 
@@ -60,4 +71,18 @@ public class UserServiceImpl implements UserService {
         }
         return followers;
     }
+
+    @Override
+    public List<OtherUserDTO> searchUsers(String username, int limit, int page) {
+        // TO-DO
+        List<RegisteredUser> users = userMongoDAO.searchUser(username,limit,page);
+        List<OtherUserDTO> followers = new ArrayList<>();
+        for(RegisteredUser r : users){
+            OtherUserDTO otherUserDTO = new OtherUserDTO();
+            otherUserDTO.setUsername(r.getUsername());
+            followers.add(otherUserDTO);
+        }
+        return followers;
+    }
+
 }
