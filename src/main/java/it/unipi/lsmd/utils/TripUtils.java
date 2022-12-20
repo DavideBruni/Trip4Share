@@ -6,7 +6,6 @@ import org.bson.Document;
 import it.unipi.lsmd.dto.DailyScheduleDTO;
 import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.model.DailySchedule;
-import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.Trip;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.exceptions.value.Uncoercible;
@@ -59,9 +58,12 @@ public interface TripUtils {
             return null;
         }
         Trip trip = new Trip();
+
+        trip.setId(result.get("_id").toString());
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
         trip.setDestination(result.getString("destination"));
+        
         //TODO
         // trip.setImg(result.getString("imgUrl"));
         if(result.getInteger("price")!=null) {
@@ -70,14 +72,15 @@ public interface TripUtils {
         }
         trip.setDepartureDate(convertToLocalDateViaInstant(result.getDate("departureDate")));
         trip.setReturnDate(convertToLocalDateViaInstant(result.getDate("returnDate")));
+
         ArrayList<String> tags = result.get("tags", ArrayList.class);
         trip.setTags(tags);
 
         ArrayList<Document> itinerary = result.get("itinerary", ArrayList.class);
+
         if(itinerary!=null)
             for(Document i : itinerary)
                 trip.addItinerary(dailyScheduleFromDocument(i));
-
 
         ArrayList<String> whatsIncluded = result.get("compreso", ArrayList.class);
         trip.setWhatsIncluded(whatsIncluded);

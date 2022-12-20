@@ -1,7 +1,5 @@
 package it.unipi.lsmd.dto;
 
-import it.unipi.lsmd.model.DailySchedule;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 

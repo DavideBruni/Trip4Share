@@ -12,6 +12,7 @@ import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,10 +53,12 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     }
 
     @Override
+
     public RegisteredUser getUser(String username) {
         MongoDatabase database = getConnection();
         MongoCollection<Document> users = database.getCollection("users");
         Bson query = eq("username", username);
+
         Document result = users.find(query).first();
         User u = UserUtils.userFromDocument(result);
         if(u instanceof Admin){

@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Trip {
 
+    private String id;
     private String title;
     private String description;
     private String destination;
@@ -26,6 +27,9 @@ public class Trip {
         whatsIncluded = new ArrayList<String>();
         whatsNotIncluded = new ArrayList<String>();
     }
+
+    public String getId(){return this.id;}
+    public void setId(String id){this.id = id;}
 
     public String getImg() {
         return img;

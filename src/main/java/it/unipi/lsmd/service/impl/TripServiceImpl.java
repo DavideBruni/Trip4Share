@@ -2,8 +2,12 @@ package it.unipi.lsmd.service.impl;
 
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
+
+import it.unipi.lsmd.dao.WishlistDAO;
+import it.unipi.lsmd.dao.neo4j.TripDAONeo4j;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dto.PriceDestinationDTO;
+
 import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.model.Trip;
@@ -13,17 +17,22 @@ import it.unipi.lsmd.utils.TripUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.Date;
+
 import java.util.List;
 
 public class TripServiceImpl implements TripService {
 
     private TripDetailsDAO tripDetailsDAO;
     private TripDAO tripDAO;
+    private WishlistDAO wishlistDAO;
 
     public TripServiceImpl(){
         tripDetailsDAO = DAOLocator.getTripDetailsDAO();
         tripDAO = DAOLocator.getTripDAO();
+        wishlistDAO = DAOLocator.getWishlistDAO();
     }
 
     @Override
@@ -53,6 +62,20 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    public void addToWishlist(String username, String trip_id, HashMap<String, Object> data){
+        wishlistDAO.addToWishlist(username, trip_id, data);
+    }
+
+    @Override
+    public void removeFromWishlist(String username, String trip_id) {
+        wishlistDAO.removeFromWishlist(username, trip_id);
+    }
+
+    @Override
+    public ArrayList<TripDTO> getWishlist(String username) {
+        // TODO cast Trip to TripDTO
+        wishlistDAO.viewUserWishlist(username);
+        return null;
     public List<TripHomeDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {
         Date depDate = null;
         Date retDate = null;

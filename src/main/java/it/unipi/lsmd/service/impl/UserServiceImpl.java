@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public AuthenticatedUserDTO getUser(String username){
-        RegisteredUser user = userDAO.getUser(username);
+    public AuthenticatedUserDTO getUser(String user_id){
+        RegisteredUser user = userDAO.getUser(user_id);
         return UserUtils.userModelToDTO(user);
     }
 
