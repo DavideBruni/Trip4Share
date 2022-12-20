@@ -4,8 +4,8 @@ import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.neo4j.TripDAONeo4j;
-import it.unipi.lsmd.dto.TripDetailsDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.TripDTO;
+import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
@@ -25,15 +25,15 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripSummaryDTO> getTripsOrganizedByFollowers(String username) {
+    public List<TripHomeDTO> getTripsOrganizedByFollowers(String username) {
         TripDAONeo4j tripDAONeo4j = new TripDAONeo4j();
         List<Trip> trips = tripDAONeo4j.getTripsOrganizedByFollower(username);
         if(trips == null || trips.isEmpty()){
-            return new ArrayList<TripSummaryDTO>();
+            return new ArrayList<TripHomeDTO>();
         }
-        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
+        List<TripHomeDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
-            TripSummaryDTO tripHomeDTO = new TripSummaryDTO();
+            TripHomeDTO tripHomeDTO = new TripHomeDTO();
             tripHomeDTO.setDestination(t.getDestination());
             tripHomeDTO.setDeleted(t.getDeleted());
             tripHomeDTO.setDepartureDate(t.getDepartureDate());
@@ -46,9 +46,9 @@ public class TripServiceImpl implements TripService {
         return tripsDTO;
     }
 
-    public TripDetailsDTO getTrip(String id){
+    public TripDTO getTrip(String id){
         Trip trip = tripDAO.getTrip(id);
-        return TripUtils.tripModelToDetailedDTO(trip);
+        return TripUtils.tripModelToDTO(trip);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public ArrayList<TripDetailsDTO> getWishlist(String username) {
+    public ArrayList<TripDTO> getWishlist(String username) {
         // TODO cast Trip to TripDTO
         wishlistDAO.viewUserWishlist(username);
         return null;

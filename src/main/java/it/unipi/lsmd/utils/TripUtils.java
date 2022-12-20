@@ -1,7 +1,7 @@
 package it.unipi.lsmd.utils;
 
 import it.unipi.lsmd.dto.DailyScheduleDTO;
-import it.unipi.lsmd.dto.TripDetailsDTO;
+import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Trip;
 import org.bson.Document;
@@ -77,13 +77,13 @@ public class TripUtils {
         return trip;
     }
 
-    public static TripDetailsDTO tripModelToDetailedDTO(Trip trip) {
+    public static TripDTO tripModelToDTO(Trip trip) {
 
         if(trip == null){
             return null;
         }
 
-        TripDetailsDTO tripDTO = new TripDetailsDTO();
+        TripDTO tripDTO = new TripDTO();
 
         tripDTO.setTitle(trip.getTitle());
         tripDTO.setDescription(trip.getDescription());

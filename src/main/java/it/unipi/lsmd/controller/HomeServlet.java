@@ -2,7 +2,7 @@ package it.unipi.lsmd.controller;
 
 
 import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.TripHomeDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
@@ -32,7 +32,7 @@ public class HomeServlet extends HttpServlet {
         try {
             String usernameFromSession = SecurityUtils.getAuthenticatedUser(request).getUsername();
             String targetJSP = "/WEB-INF/pages/home.jsp";
-            List<TripSummaryDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession);
+            List<TripHomeDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession);
             request.setAttribute("trips",trips);
 
             //Show Suggested user
