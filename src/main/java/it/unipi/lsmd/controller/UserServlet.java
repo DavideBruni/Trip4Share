@@ -42,7 +42,7 @@ public class UserServlet extends HttpServlet {
         }
 
         // send authenticatedUserDTO to front-end
-        httpServletRequest.setAttribute("user", authenticatedUserDTO);
+        httpServletRequest.setAttribute("user", authenticatedUserDTO.getId());
 
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
