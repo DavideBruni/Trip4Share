@@ -4,12 +4,11 @@ import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
 
 import it.unipi.lsmd.dao.WishlistDAO;
-import it.unipi.lsmd.dao.neo4j.TripDAONeo4j;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dto.PriceDestinationDTO;
 
-import it.unipi.lsmd.dto.TripDTO;
-import it.unipi.lsmd.dto.TripHomeDTO;
+import it.unipi.lsmd.dto.TripDetailsDTO;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
@@ -36,29 +35,29 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripHomeDTO> getTripsOrganizedByFollowers(String username, int size, int page) {
+    public List<TripSummaryDTO> getTripsOrganizedByFollowers(String username, int size, int page) {
         List<Trip> trips = tripDAO.getTripsOrganizedByFollower(username, size, page);
         if(trips == null || trips.isEmpty()){
             return new ArrayList<>();
         }
-        List<TripHomeDTO> tripsDTO = new ArrayList<>();
+        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
-            TripHomeDTO tripHomeDTO = new TripHomeDTO();
-            tripHomeDTO.setDestination(t.getDestination());
-            tripHomeDTO.setDeleted(t.getDeleted());
-            tripHomeDTO.setDepartureDate(t.getDepartureDate());
-            tripHomeDTO.setReturnDate(t.getReturnDate());
-            tripHomeDTO.setTitle(t.getTitle());
-            tripHomeDTO.setImgUrl(t.getImg());
+            TripSummaryDTO tripSummaryDTO = new TripSummaryDTO();
+            tripSummaryDTO.setDestination(t.getDestination());
+            tripSummaryDTO.setDeleted(t.getDeleted());
+            tripSummaryDTO.setDepartureDate(t.getDepartureDate());
+            tripSummaryDTO.setReturnDate(t.getReturnDate());
+            tripSummaryDTO.setTitle(t.getTitle());
+            tripSummaryDTO.setImgUrl(t.getImg());
 
-            tripsDTO.add(tripHomeDTO);
+            tripsDTO.add(tripSummaryDTO);
         }
         return tripsDTO;
     }
 
-    public TripDTO getTrip(String id){
+    public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
-        return TripUtils.tripModelToDTO(trip);
+        return TripUtils.tripModelToDetailedDTO(trip);
     }
 
     @Override
@@ -72,11 +71,13 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public ArrayList<TripDTO> getWishlist(String username) {
+    public ArrayList<TripDetailsDTO> getWishlist(String username) {
         // TODO cast Trip to TripDTO
         wishlistDAO.viewUserWishlist(username);
         return null;
-    public List<TripHomeDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {
+    }
+
+    public List<TripSummaryDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {
         Date depDate = null;
         Date retDate = null;
         try {
@@ -88,9 +89,9 @@ public class TripServiceImpl implements TripService {
             depDate = new Date();
         }finally{
             List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination,depDate,retDate,size,page);
-            List<TripHomeDTO> tripsDTO = new ArrayList<>();
+            List<TripSummaryDTO> tripsDTO = new ArrayList<>();
             for(Trip t : trips){
-                TripHomeDTO tDTO = TripUtils.parseTrip(t);
+                TripSummaryDTO tDTO = TripUtils.parseTrip(t);
                 tripsDTO.add(tDTO);
             }
             return tripsDTO;
@@ -99,7 +100,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripHomeDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page) {
+    public List<TripSummaryDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page) {
         Date depDate = null;
         Date retDate = null;
         try {
@@ -111,9 +112,9 @@ public class TripServiceImpl implements TripService {
             depDate = new Date();
         }finally{
             List<Trip> trips= tripDetailsDAO.getTripsByTag(tag,depDate,retDate,size,page);
-            List<TripHomeDTO> tripsDTO = new ArrayList<>();
+            List<TripSummaryDTO> tripsDTO = new ArrayList<>();
             for(Trip t : trips){
-                TripHomeDTO tDTO = TripUtils.parseTrip(t);
+                TripSummaryDTO tDTO = TripUtils.parseTrip(t);
                 tripsDTO.add(tDTO);
             }
             return tripsDTO;
@@ -166,7 +167,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public  List<TripHomeDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch) {
+    public  List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch) {
         Date depDate = null;
         Date retDate = null;
         try {
@@ -178,21 +179,21 @@ public class TripServiceImpl implements TripService {
             depDate = new Date();
         }
         List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,page, objectPerPageSearch);
-        List<TripHomeDTO> tripsDTO = new ArrayList<>();
+        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
-            TripHomeDTO tDTO = TripUtils.parseTrip(t);
+            TripSummaryDTO tDTO = TripUtils.parseTrip(t);
             tripsDTO.add(tDTO);
         }
         return tripsDTO;
     }
 
     @Override
-    public List<TripHomeDTO> getSuggestedTrips(String username) {
+    public List<TripSummaryDTO> getSuggestedTrips(String username) {
         List<Trip> trips_model = tripDAO.getSuggestedTrip(username);
-        List<TripHomeDTO> trips = new ArrayList<>();
+        List<TripSummaryDTO> trips = new ArrayList<>();
         for(Trip t : trips_model){
-            TripHomeDTO tripHomeDTO = TripUtils.parseTrip(t);
-            trips.add(tripHomeDTO);
+            TripSummaryDTO tripSummaryDTO = TripUtils.parseTrip(t);
+            trips.add(tripSummaryDTO);
         }
         return trips;
     }

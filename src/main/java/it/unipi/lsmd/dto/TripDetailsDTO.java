@@ -3,7 +3,7 @@ package it.unipi.lsmd.dto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class TripDTO {
+public class TripDetailsDTO {
 
     private String title;
     private String description;
@@ -19,7 +19,7 @@ public class TripDTO {
     private String img;
 
 
-    public TripDTO(){
+    public TripDetailsDTO(){
         tags = new ArrayList<String>();
         itinerary = new ArrayList<DailyScheduleDTO>();
         whatsIncluded = new ArrayList<String>();

@@ -2,7 +2,6 @@ package it.unipi.lsmd.service;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.TripHomeDTO;
 
 import java.util.List;
 

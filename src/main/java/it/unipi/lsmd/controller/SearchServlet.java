@@ -1,7 +1,7 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.TripHomeDTO;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
@@ -59,14 +59,14 @@ public class SearchServlet extends HttpServlet {
     private RequestDispatcher searchDest(HttpServletRequest request,String value,int page){
         String depDate = request.getParameter("depDate");
         String retDate = request.getParameter("retDate");
-        List<TripHomeDTO> trips = tripService.getTripsByDestination(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
+        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute("trips", trips);
         return request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }
     private RequestDispatcher searchTags(HttpServletRequest request,String value,int page){
         String depDate = request.getParameter("depDate");
         String retDate = request.getParameter("retDate");
-        List<TripHomeDTO> trips = tripService.getTripsByTag(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
+        List<TripSummaryDTO> trips = tripService.getTripsByTag(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute("trips", trips);
         return request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }

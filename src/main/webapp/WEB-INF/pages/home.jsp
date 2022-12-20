@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="it.unipi.lsmd.dto.TripHomeDTO" %>
+<%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
 <%@ page import="it.unipi.lsmd.dto.OtherUserDTO" %><%--
   Created by IntelliJ IDEA.
   User: grill
@@ -14,12 +14,12 @@
 </head>
 <body>
 <%
-    List<TripHomeDTO> trips = (List<TripHomeDTO>) request.getAttribute("trips");
+    List<TripSummaryDTO> trips = (List<TripSummaryDTO>) request.getAttribute("trips");
     List<OtherUserDTO> suggested = (List<OtherUserDTO>) request.getAttribute("suggested");
     if(trips==null || trips.isEmpty()){%>
         Nessun viaggio presente!
    <% }else{
-            for(TripHomeDTO t : trips){ %>
+            for(TripSummaryDTO t : trips){ %>
         Title:
         <%= t.getTitle() %>
         <br> Destination

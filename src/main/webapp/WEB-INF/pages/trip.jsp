@@ -1,5 +1,5 @@
 <%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %>
-<%@ page import="it.unipi.lsmd.dto.TripDTO" %><%--
+<%@ page import="it.unipi.lsmd.dto.TripDetailsDTO" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -13,7 +13,7 @@
 </head>
 <body>
     <%
-        TripDTO trip = (TripDTO) request.getAttribute("trip");
+        TripDetailsDTO trip = (TripDetailsDTO) request.getAttribute("trip");
 
         if(trip == null){
             %>

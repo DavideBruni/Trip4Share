@@ -1,10 +1,9 @@
 package it.unipi.lsmd.utils;
 
-import it.unipi.lsmd.dto.TripHomeDTO;
-import it.unipi.lsmd.model.*;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import org.bson.Document;
 import it.unipi.lsmd.dto.DailyScheduleDTO;
-import it.unipi.lsmd.dto.TripDTO;
+import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Trip;
 import org.neo4j.driver.Record;
@@ -12,14 +11,13 @@ import org.neo4j.driver.exceptions.value.Uncoercible;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
 public interface TripUtils {
 
-    static TripHomeDTO parseTrip(Trip t){
-        TripHomeDTO tDTO= new TripHomeDTO();
+    static TripSummaryDTO parseTrip(Trip t){
+        TripSummaryDTO tDTO= new TripSummaryDTO();
         tDTO.setDestination(t.getDestination());
         tDTO.setTitle(t.getTitle());
         tDTO.setDepartureDate(t.getDepartureDate());
@@ -91,13 +89,13 @@ public interface TripUtils {
         return trip;
     }
 
-    static TripDTO tripModelToDTO(Trip trip) {
+    static TripDetailsDTO tripModelToDetailedDTO(Trip trip) {
 
         if(trip == null){
             return null;
         }
 
-        TripDTO tripDTO = new TripDTO();
+        TripDetailsDTO tripDTO = new TripDetailsDTO();
 
         tripDTO.setTitle(trip.getTitle());
         tripDTO.setDescription(trip.getDescription());
@@ -116,6 +114,8 @@ public interface TripUtils {
 
         return tripDTO;
     }
+
+    // TODO - create method TripSummaryDTO tripModelToSummaryDTO(Trip trip) {
 
     static Trip destinationFromDocument(Document doc) {
         Trip t = new Trip();

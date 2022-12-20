@@ -1,7 +1,7 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.PriceDestinationDTO;
-import it.unipi.lsmd.dto.TripHomeDTO;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.PagesUtilis;
@@ -65,7 +65,7 @@ public class ExploreServlet extends HttpServlet {
     }
 
     private RequestDispatcher cheapestDestinations(HttpServletRequest request, String start, String end, int page) {
-        List<TripHomeDTO> trips = tripService.cheapestTripForDestinationInPeriod(start,end,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        List<TripSummaryDTO> trips = tripService.cheapestTripForDestinationInPeriod(start,end,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
         request.setAttribute("trips", trips);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }

@@ -1,4 +1,4 @@
-<%@ page import="it.unipi.lsmd.dto.TripHomeDTO" %>
+<%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmd.dto.PriceDestinationDTO" %><%--
   Created by IntelliJ IDEA.
@@ -14,11 +14,11 @@
 </head>
 <body>
     <%
-    List<TripHomeDTO> trips = (List<TripHomeDTO>) request.getAttribute("trips");
+    List<TripSummaryDTO> trips = (List<TripSummaryDTO>) request.getAttribute("trips");
     List<String> destinations = (List<String>) request.getAttribute("destinations");
     List<PriceDestinationDTO> dest_price = (List<PriceDestinationDTO>) request.getAttribute("dest&price");
     if(trips!=null && !trips.isEmpty()){
-        for(TripHomeDTO t : trips){ %>
+        for(TripSummaryDTO t : trips){ %>
             Title:
             <%= t.getTitle()%>
             <br> Destination
