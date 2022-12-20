@@ -13,7 +13,6 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private String phone;
     private ArrayList<ReviewDTO> reviews;
     private List<OtherUserDTO> following;
-    private List<OtherUserDTO> followers;
 
 
     public RegisteredUserDTO(){
@@ -65,11 +64,4 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
         this.following = following;
     }
 
-    public List<OtherUserDTO> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(List<OtherUserDTO> followers) {
-        this.followers = followers;
-    }
 }
