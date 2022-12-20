@@ -1,7 +1,7 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.TripDTO;
+import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Map;
 
 @WebServlet("/trip")
 public class TripServlet extends HttpServlet {
@@ -36,7 +35,7 @@ public class TripServlet extends HttpServlet {
         String targetJSP = "/WEB-INF/pages/trip.jsp";
         String trip_id = httpServletRequest.getParameter("id");
 
-        TripDTO trip = tripService.getTrip(trip_id);
+        TripDetailsDTO trip = tripService.getTrip(trip_id);
         httpServletRequest.setAttribute("trip", trip);
 
         String action = httpServletRequest.getParameter("action");

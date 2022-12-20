@@ -4,8 +4,8 @@ import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.neo4j.TripDAONeo4j;
-import it.unipi.lsmd.dto.TripDTO;
-import it.unipi.lsmd.dto.TripHomeDTO;
+import it.unipi.lsmd.dto.TripDetailsDTO;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
@@ -13,7 +13,6 @@ import it.unipi.lsmd.utils.TripUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TripServiceImpl implements TripService {
 
@@ -26,15 +25,15 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripHomeDTO> getTripsOrganizedByFollowers(String username) {
+    public List<TripSummaryDTO> getTripsOrganizedByFollowers(String username) {
         TripDAONeo4j tripDAONeo4j = new TripDAONeo4j();
         List<Trip> trips = tripDAONeo4j.getTripsOrganizedByFollower(username);
         if(trips == null || trips.isEmpty()){
-            return new ArrayList<TripHomeDTO>();
+            return new ArrayList<TripSummaryDTO>();
         }
-        List<TripHomeDTO> tripsDTO = new ArrayList<>();
+        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
-            TripHomeDTO tripHomeDTO = new TripHomeDTO();
+            TripSummaryDTO tripHomeDTO = new TripSummaryDTO();
             tripHomeDTO.setDestination(t.getDestination());
             tripHomeDTO.setDeleted(t.getDeleted());
             tripHomeDTO.setDepartureDate(t.getDepartureDate());
@@ -47,9 +46,9 @@ public class TripServiceImpl implements TripService {
         return tripsDTO;
     }
 
-    public TripDTO getTrip(String id){
+    public TripDetailsDTO getTrip(String id){
         Trip trip = tripDAO.getTrip(id);
-        return TripUtils.tripModelToDTO(trip);
+        return TripUtils.tripModelToDetailedDTO(trip);
     }
 
     @Override
@@ -60,5 +59,12 @@ public class TripServiceImpl implements TripService {
     @Override
     public void removeFromWishlist(String username, String trip_id) {
         wishlistDAO.removeFromWishlist(username, trip_id);
+    }
+
+    @Override
+    public ArrayList<TripDetailsDTO> getWishlist(String username) {
+        // TODO cast Trip to TripDTO
+        wishlistDAO.viewUserWishlist(username);
+        return null;
     }
 }

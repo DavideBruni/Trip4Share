@@ -1,9 +1,8 @@
 package it.unipi.lsmd.dto;
 
-import javax.print.attribute.standard.Destination;
 import java.time.LocalDate;
 
-public class TripHomeDTO {
+public class TripSummaryDTO {
     private String destination;
     private LocalDate departureDate;
     private LocalDate returnDate;

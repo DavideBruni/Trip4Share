@@ -39,6 +39,7 @@ public class UserUtils {
 
             user = registeredUser;
         }
+        user.setId(result.get("_id").toString());
         user.setName(result.getString("name"));
         user.setSurname(result.getString("surname"));
         user.setEmail(result.getString("email"));

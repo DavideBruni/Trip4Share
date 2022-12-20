@@ -9,7 +9,7 @@ public interface UserService {
 
     AuthenticatedUserDTO authenticate(String username, String password);
 
-    AuthenticatedUserDTO getUser(String username);
+    AuthenticatedUserDTO getUser(String user_id);
 
     List<OtherUserDTO> getSuggestedUsers(String username, int nUsers);
 

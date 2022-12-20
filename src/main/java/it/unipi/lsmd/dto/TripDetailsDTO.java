@@ -1,11 +1,9 @@
 package it.unipi.lsmd.dto;
 
-import it.unipi.lsmd.model.DailySchedule;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class TripDTO {
+public class TripDetailsDTO {
 
     private String title;
     private String description;
@@ -22,7 +20,7 @@ public class TripDTO {
     private Boolean deleted;    // TODO - useless ?
 
 
-    public TripDTO(){
+    public TripDetailsDTO(){
         tags = new ArrayList<String>();
         itinerary = new ArrayList<DailyScheduleDTO>();
         whatsIncluded = new ArrayList<String>();
