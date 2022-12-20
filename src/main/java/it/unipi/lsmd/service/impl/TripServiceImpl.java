@@ -27,8 +27,8 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripHomeDTO> getTripsOrganizedByFollowers(String username) {
-        List<Trip> trips = tripDAO.getTripsOrganizedByFollower(username);
+    public List<TripHomeDTO> getTripsOrganizedByFollowers(String username, int size, int page) {
+        List<Trip> trips = tripDAO.getTripsOrganizedByFollower(username, size, page);
         if(trips == null || trips.isEmpty()){
             return new ArrayList<>();
         }
@@ -161,5 +161,16 @@ public class TripServiceImpl implements TripService {
             tripsDTO.add(tDTO);
         }
         return tripsDTO;
+    }
+
+    @Override
+    public List<TripHomeDTO> getSuggestedTrips(String username) {
+        List<Trip> trips_model = tripDAO.getSuggestedTrip(username);
+        List<TripHomeDTO> trips = new ArrayList<>();
+        for(Trip t : trips_model){
+            TripHomeDTO tripHomeDTO = TripUtils.parseTrip(t);
+            trips.add(tripHomeDTO);
+        }
+        return trips;
     }
 }

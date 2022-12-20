@@ -9,4 +9,8 @@ public interface RegisteredUserDAO {
     List<RegisteredUser> getFollowing(String username);
 
     List<RegisteredUser> getFollower(String username);
+
+    int getNumberOfFollower(String username);
+
+    int getNumberOfFollowing(String username);
 }

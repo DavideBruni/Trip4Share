@@ -7,7 +7,7 @@ import it.unipi.lsmd.dto.TripHomeDTO;
 import java.util.List;
 
 public interface TripService {
-    List<TripHomeDTO> getTripsOrganizedByFollowers(String username);
+    List<TripHomeDTO> getTripsOrganizedByFollowers(String username, int size, int page);
     List<TripHomeDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page);
     List<TripHomeDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page);
     TripDTO getTrip(String id);
@@ -23,4 +23,5 @@ public interface TripService {
     List<PriceDestinationDTO> cheapestDestinationsByAvg(int page, int objectPerPageSearch);
 
     List<TripHomeDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch);
+    List<TripHomeDTO> getSuggestedTrips(String username);
 }

@@ -8,6 +8,9 @@ import it.unipi.lsmd.dto.TripDTO;
 import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.Trip;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.exceptions.value.Uncoercible;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -121,5 +124,23 @@ public interface TripUtils {
             t.setPrice(0.00);
         }
         return t;
+    }
+
+    static Trip tripFromRecord(Record r){
+        Trip t = new Trip();
+        t.setDestination(r.get("t.destination").asString());
+        t.setTitle(r.get("t.title").asString());
+        t.setImg(r.get("t.imgUrl").asString());
+        try {
+            t.setDeleted(r.get("t.deleted").asBoolean());
+            t.setDepartureDate(r.get("t.departureDate").asLocalDate());
+            t.setReturnDate(r.get("t.returnDate").asLocalDate());
+        }catch (Uncoercible uncoercible){
+            t.setDeleted(Boolean.FALSE);
+            t.setDepartureDate(null);
+            t.setReturnDate(null);
+        }finally {
+            return t;
+        }
     }
 }

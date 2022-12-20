@@ -83,4 +83,41 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         return followers;
     }
 
+    @Override
+    public int getNumberOfFollower(String username){
+        int followers = 0;
+        try (Session session = getConnection().session()) {
+            followers = session.readTransaction(tx -> {
+                Result result = tx.run(" MATCH (user:RegisteredUser {username:$username})"+
+                                " WITH size((user)<-[:FOLLOW]-()) as in RETURN in",
+                        parameters("username", username));
+                if(result.hasNext())
+                    return result.next().get("in").asInt();
+                else
+                    return 0;
+            });
+        }catch(Exception e){
+                return 0;
+            }
+        return followers;
+    }
+
+    @Override
+    public int getNumberOfFollowing(String username){
+        int followers = 0;
+        try (Session session = getConnection().session()) {
+            followers = session.readTransaction(tx -> {
+                Result result = tx.run(" MATCH (user:RegisteredUser {username:$username})"+
+                                " WITH size((user)-[:FOLLOW]->()) as in RETURN out",
+                        parameters("username", username));
+                if(result.hasNext())
+                    return result.next().get("out").asInt();
+                else
+                    return 0;
+            });
+        }catch(Exception e){
+            return 0;
+        }
+        return followers;
+    }
 }
