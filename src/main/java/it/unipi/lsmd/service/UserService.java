@@ -16,5 +16,6 @@ public interface UserService {
     List<OtherUserDTO> getFollowing(String username);
 
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
+    double getRating(String username);
 
 }

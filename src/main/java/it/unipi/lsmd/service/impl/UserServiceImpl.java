@@ -3,7 +3,6 @@ package it.unipi.lsmd.service.impl;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
-import it.unipi.lsmd.dao.mongo.UserMongoDAO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.model.RegisteredUser;
@@ -18,12 +17,10 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private RegisteredUserDAO registeredUserDAO;
-    private UserMongoDAO userMongoDAO;
 
     public UserServiceImpl(){
         userDAO = DAOLocator.getUserDAO();
         registeredUserDAO = DAOLocator.getRegisteredUserDAO();
-        userMongoDAO = new UserMongoDAO();
     }
 
     @Override
@@ -70,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<OtherUserDTO> searchUsers(String username, int limit, int page) {
         // TO-DO
-        List<RegisteredUser> users = userMongoDAO.searchUser(username,limit,page);
+        List<RegisteredUser> users = userDAO.searchUser(username,limit,page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -80,4 +77,8 @@ public class UserServiceImpl implements UserService {
         return followers;
     }
 
+    @Override
+    public double getRating(String username) {
+        return userDAO.avgRating(username);
+    }
 }

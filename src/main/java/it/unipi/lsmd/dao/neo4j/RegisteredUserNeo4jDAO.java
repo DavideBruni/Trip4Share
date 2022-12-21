@@ -2,6 +2,7 @@ package it.unipi.lsmd.dao.neo4j;
 
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.base.BaseDAONeo4J;
+import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.model.RegisteredUser;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -119,5 +120,46 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
             return 0;
         }
         return followers;
+    }
+
+    @Override
+    public void saveRegistereduser(RegisteredUser user) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+            session.writeTransaction(tx -> {
+                tx.run("CREATE (x:RegisteredUser { username: $username})",
+                        parameters("username",user.getUsername())).consume();
+                    return null;
+            });
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+            session.writeTransaction(tx -> {
+                tx.run("MATCH (x:RegisteredUser {username: $username}) -[f1:FOLLOW]->(), (x)<-[f2:FOLLOW]-()" +
+                                "DELETE f1,f2",
+                        parameters("username",user.getUsername())).consume();
+                return null;
+            });
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+            session.writeTransaction(tx -> {
+                tx.run("MATCH (x:RegisteredUser {username: $username})<-[:ORGANIZED_BY]-(t:Trip)" +
+                                "WHERE t.departureDate > date() SET t.deleted = TRUE return t",
+                        parameters("username",user.getUsername())).consume();
+                return null;
+            });
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
     }
 }

@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao;
 
+import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.model.RegisteredUser;
 
 import java.util.List;
@@ -13,4 +14,10 @@ public interface RegisteredUserDAO {
     int getNumberOfFollower(String username);
 
     int getNumberOfFollowing(String username);
+
+    void saveRegistereduser(RegisteredUser user) throws Neo4jException;
+
+    void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException;
+
+    void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException;
 }

@@ -12,16 +12,14 @@ import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
+import static com.mongodb.client.model.Accumulators.avg;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Projections.include;
 
 public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
@@ -88,5 +86,20 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             searchRes.add(u);
         }
         return searchRes;
+    }
+
+    @Override
+    public double avgRating(String username){
+        MongoDatabase database = getConnection();
+        MongoCollection<Document> collection = database.getCollection("users");
+        Bson m1 = match(eq("username", username));
+        Bson u1 = unwind("reviews");
+        Bson g1 = group("$username",avg("rating","$reviews.value"));
+        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1,u1,g1));
+        MongoCursor<Document> result = res.iterator();
+        if(result.hasNext()){
+            return result.next().getDouble("rating");
+        }
+        return 0.0;
     }
 }
