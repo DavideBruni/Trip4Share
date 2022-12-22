@@ -21,7 +21,7 @@ public class AdminServlet  extends HttpServlet {
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
 
         if(!(authenticatedUserDTO instanceof AdminDTO)){
-            httpServletResponse.sendRedirect("index");  // TODO - choose where to redirect!
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath());
             return;
         }
 

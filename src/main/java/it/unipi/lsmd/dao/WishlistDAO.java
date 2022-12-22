@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public interface WishlistDAO {
 
-    void addToWishlist(String user_id, String trip_id, HashMap<String, Object> data);
-    void removeFromWishlist(String user_id, String trip_id);
-    ArrayList<Trip> viewUserWishlist(String user_id);
+    void addToWishlist(String username, String trip_id, HashMap<String, Object> data);
+    void removeFromWishlist(String username, String trip_id);
+    ArrayList<Trip> viewUserWishlist(String username);
 }

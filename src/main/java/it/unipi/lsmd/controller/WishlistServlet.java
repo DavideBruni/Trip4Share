@@ -25,7 +25,7 @@ public class WishlistServlet extends HttpServlet {
         }
 
         TripService tripService = ServiceLocator.getTripService();
-        tripService.getWishlist(authenticatedUserDTO.getId());
+        tripService.getWishlist(authenticatedUserDTO.getUsername());
 
     }
 }

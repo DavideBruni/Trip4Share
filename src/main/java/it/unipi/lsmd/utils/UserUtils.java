@@ -70,6 +70,7 @@ public class UserUtils {
                     registeredUserDTO.addReview(ReviewUtils.reviewModelToDTO(review));
                 }
             }catch (NullPointerException e){}
+            /*
             List<OtherUserDTO> follows = new ArrayList<>();
             List<RegisteredUser> followsModel = ((RegisteredUser) user_model).getFollowing();
             for(RegisteredUser r : followsModel){
@@ -79,6 +80,7 @@ public class UserUtils {
             }
             registeredUserDTO.setFollowing(follows);
             follows.clear();
+
             followsModel = ((RegisteredUser) user_model).getFollower();
             for(RegisteredUser r : followsModel){
                 OtherUserDTO o = new OtherUserDTO();
@@ -86,7 +88,7 @@ public class UserUtils {
                 follows.add(o);
             }
             registeredUserDTO.setFollowers(follows);
-
+            */
 
             authenticatedUserDTO = registeredUserDTO;
         }else{

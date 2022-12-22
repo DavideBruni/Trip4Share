@@ -19,19 +19,14 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
 
     public static final String REDIS_APP_NAMESPACE = "trip4share";
 
-    private String getShoppingCartKeyInNS(String username){
-        return REDIS_APP_NAMESPACE + ":" + username;
-    }
-
 
     @Override
-    public void addToWishlist(String user_id, String trip_id, HashMap<String, Object> data) {
+    public void addToWishlist(String username, String trip_id, HashMap<String, Object> data) {
 
         LocalDate departure_date = (LocalDate) data.get("departure_date");
         long ttl = abs(ChronoUnit.DAYS.between(departure_date, LocalDate.now())) * 86400; // seconds per day
-        System.out.println(ttl);
 
-        String key = user_id+":"+trip_id;
+        String key = REDIS_APP_NAMESPACE + ":" + username + ":" + trip_id;
 
         try(Jedis jedis = getConnection()){
             // TODO - save a TripHomeDTO object
@@ -44,25 +39,25 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
     }
 
     @Override
-    public void removeFromWishlist(String user_id, String trip_id) {
-        String key = user_id+":"+trip_id;
+    public void removeFromWishlist(String username, String trip_id) {
+        String key = REDIS_APP_NAMESPACE + ":" + username + ":" + trip_id;
         try(Jedis jedis = getConnection()){
             jedis.del(key);
         }
     }
 
     @Override
-    public ArrayList<Trip> viewUserWishlist(String user_id) {
+    public ArrayList<Trip> viewUserWishlist(String username) {
         ArrayList<Trip> trips = new ArrayList<Trip>();
 
         try(Jedis jedis = getConnection()){
-            Set<String> keys = jedis.keys(user_id+":*");
+            String key = REDIS_APP_NAMESPACE + ":" + username + "*";
+            Set<String> keys = jedis.keys(key);
             for(String trip : keys){
                 System.out.println(trip);
                 System.out.println(jedis.get(trip));
             }
         }
-
         return trips;
     }
 }

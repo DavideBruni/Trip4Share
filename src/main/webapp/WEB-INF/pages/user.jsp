@@ -1,4 +1,5 @@
-<%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %><%--
+<%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %>
+<%@ page import="it.unipi.lsmd.utils.SecurityUtils" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -12,7 +13,7 @@
 </head>
 <body>
     <%
-        RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute("user");
+        RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
         Boolean itsMe = (Boolean) request.getAttribute("itsMe");
 
         if(user == null){

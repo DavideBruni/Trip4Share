@@ -29,17 +29,17 @@ public class UserServlet extends HttpServlet {
         UserService userService = ServiceLocator.getUserService();
 
         String targetJSP = "/WEB-INF/pages/user.jsp";
-        String user_id = httpServletRequest.getParameter("user");
+        String username = httpServletRequest.getParameter("username");
         httpServletRequest.setAttribute("itsMe", true);
 
         // if it's not user's own profile
-        if(user_id != null && !user_id.equals(authenticatedUserDTO.getId())){
-            authenticatedUserDTO = userService.getUser(user_id);
+        if(username != null && !username.equals(authenticatedUserDTO.getUsername())){
+            authenticatedUserDTO = userService.getUser(username);
             httpServletRequest.setAttribute("itsMe", false);
         }
 
         // send authenticatedUserDTO to front-end
-        httpServletRequest.setAttribute("user", authenticatedUserDTO.getId());
+        httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
 
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);

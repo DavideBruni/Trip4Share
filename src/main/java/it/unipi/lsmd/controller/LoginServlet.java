@@ -60,14 +60,14 @@ public class LoginServlet extends HttpServlet {
                     authenticatedUserDTO = userService.authenticate(username, password);
 
                     // TODO - controllare anche come ha fatto davide
-                        if(authenticatedUserDTO == null){
+                    if(authenticatedUserDTO == null){
                         httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
 
                     }else{
                         // set user as authenticated
                         HttpSession session = httpServletRequest.getSession(true);
                         session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
-
+                        session.setAttribute("itsMe", true);
                         redirectUser(httpServletResponse, authenticatedUserDTO);
                         return;
                     }

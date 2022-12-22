@@ -27,9 +27,11 @@ public class UserServiceImpl implements UserService {
     public AuthenticatedUserDTO authenticate(String username, String password){
 
         User user = userDAO.authenticate(username, password);
+        /*
         if(user instanceof RegisteredUser){
             ((RegisteredUser) user).setFollowing(registeredUserDAO.getFollowing(username));
         }
+         */
         return UserUtils.userModelToDTO(user);
     }
 
