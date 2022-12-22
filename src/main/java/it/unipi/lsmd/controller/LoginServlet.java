@@ -33,8 +33,6 @@ public class LoginServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        System.out.println("Received: " + httpServletRequest.getMethod());
-
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
         UserService userService = ServiceLocator.getUserService();
         String targetJSP = "/WEB-INF/pages/login.jsp";
