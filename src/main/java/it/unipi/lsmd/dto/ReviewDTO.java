@@ -7,6 +7,16 @@ public class ReviewDTO {
     private String date;    //TODO- cast to date in dataset
     private int rating;
 
+    private String author;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getText() {
         return text;
     }

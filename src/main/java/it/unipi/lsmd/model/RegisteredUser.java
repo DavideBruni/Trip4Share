@@ -1,10 +1,12 @@
 package it.unipi.lsmd.model;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 public class RegisteredUser extends User{
 
+    private LocalDate birthdate;
     private List<Review> reviews;
     private List<String> spoken_languages;
     private String nationality;
@@ -66,5 +68,13 @@ public class RegisteredUser extends User{
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 }

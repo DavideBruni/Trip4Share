@@ -56,6 +56,7 @@ public class LoginServlet extends HttpServlet {
 
                 if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
                     authenticatedUserDTO = userService.authenticate(username, password);
+                    System.out.println(authenticatedUserDTO);
 
                     // TODO - controllare anche come ha fatto davide
                     if(authenticatedUserDTO == null){
@@ -75,6 +76,7 @@ public class LoginServlet extends HttpServlet {
                     httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
                 }
             } catch (Exception e) {
+                System.out.println(e);
                 httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
             }
             RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);

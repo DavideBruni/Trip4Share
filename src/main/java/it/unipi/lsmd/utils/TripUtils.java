@@ -81,9 +81,9 @@ public interface TripUtils {
             for(Document i : itinerary)
                 trip.addItinerary(dailyScheduleFromDocument(i));
 
-        ArrayList<String> whatsIncluded = result.get("compreso", ArrayList.class);
+        ArrayList<String> whatsIncluded = result.get("whatsIncluded", ArrayList.class);
         trip.setWhatsIncluded(whatsIncluded);
-        ArrayList<String> whatsNotIncluded = result.get("nonCompreso", ArrayList.class);
+        ArrayList<String> whatsNotIncluded = result.get("whatsNotIncluded", ArrayList.class);
         trip.setWhatsNotIncluded(whatsNotIncluded);
         trip.setInfo(result.getString("info"));
 

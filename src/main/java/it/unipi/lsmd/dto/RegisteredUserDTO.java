@@ -3,6 +3,7 @@ package it.unipi.lsmd.dto;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Review;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private String phone;
     private ArrayList<ReviewDTO> reviews;
     private List<OtherUserDTO> following;
+
+    private LocalDate birthdate;
 
 
     public RegisteredUserDTO(){
@@ -64,4 +67,11 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
         this.following = following;
     }
 
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
 }
