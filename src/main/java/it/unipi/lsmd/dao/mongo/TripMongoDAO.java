@@ -25,6 +25,10 @@ import static com.mongodb.client.model.Sorts.descending;
 
 public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
+    @Override
+    public List<Trip> getTripsByDestination(String destination, int size, int page){
+       return null;
+    }
     public List<Trip> getTripsByDestination(String destination, Date departureDate, Date returnDate, int size, int page) {
         MongoDatabase database = getConnection();
         MongoCollection<Document> collection = database.getCollection("trips");
@@ -88,9 +92,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         MongoDatabase database = getConnection();
         MongoCollection<Document> trips = database.getCollection("trips");
-
         Trip trip = null;
-
         try{
             Bson query = eq("_id", new ObjectId(id));
             Document result = trips.find(query).first();

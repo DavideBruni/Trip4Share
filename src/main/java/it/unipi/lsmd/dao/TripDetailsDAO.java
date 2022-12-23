@@ -9,6 +9,9 @@ public interface TripDetailsDAO {
 
     Trip getTrip(String id);
     List<Trip> getTripsByTag(String tag, Date departureDate, Date returnDate, int size, int page);
+
+    List<Trip> getTripsByDestination(String destination, int size, int page);
+
     List<Trip> getTripsByDestination(String destination, Date departureDate, Date returnDate, int size, int page);
 
     List<String> mostPopularDestinations(int page, int objectPerPageSearch);

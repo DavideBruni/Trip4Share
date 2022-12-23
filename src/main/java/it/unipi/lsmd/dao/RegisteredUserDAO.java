@@ -15,7 +15,8 @@ public interface RegisteredUserDAO {
 
     int getNumberOfFollowing(String username);
 
-    void saveRegistereduser(RegisteredUser user) throws Neo4jException;
+
+    void createRegistereduser(RegisteredUser user) throws Neo4jException;
 
     void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException;
 

@@ -109,4 +109,26 @@ public interface UserUtils {
     }
 
 
+    static Document documentFromUser(User u) {
+        try{
+            Document doc = new Document();
+            doc.append("username",u.getUsername());
+            doc.append("append",u.getName());
+            doc.append("surname",u.getSurname());
+            doc.append("email",u.getEmail());
+            doc.append("password",u.getPassword());
+            doc.append("type",u.getRole());
+
+            if(u instanceof RegisteredUser){
+                ((RegisteredUser) u).getNationality();
+                ((RegisteredUser) u).getSpoken_languages();
+                ((RegisteredUser) u).getBirthdate();
+                ((RegisteredUser) u).getPhone();
+                ((RegisteredUser) u).getBio();
+            }
+            return doc;
+        }catch(NullPointerException ne){
+            return null;
+        }
+    }
 }

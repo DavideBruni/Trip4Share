@@ -12,6 +12,7 @@ public class RegisteredUser extends User{
     private String nationality;
     private String phone;
     private List<RegisteredUser> following;
+    private String bio;
 
     public List<RegisteredUser> getFollowing() {
         return following;
@@ -76,5 +77,13 @@ public class RegisteredUser extends User{
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

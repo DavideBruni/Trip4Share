@@ -17,4 +17,8 @@ public interface UserDAO {
     List<RegisteredUser> searchUser(String username, int limit, int page);
 
     double avgRating(String username);
+
+    boolean createUser(User u);
+
+    boolean deleteUser(User u);
 }

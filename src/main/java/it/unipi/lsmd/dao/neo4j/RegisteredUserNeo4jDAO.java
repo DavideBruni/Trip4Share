@@ -1,9 +1,12 @@
 package it.unipi.lsmd.dao.neo4j;
 
+import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
+import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.base.BaseDAONeo4J;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Trip;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
@@ -123,13 +126,21 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public void saveRegistereduser(RegisteredUser user) throws Neo4jException {
+    public void createRegistereduser(RegisteredUser user) throws Neo4jException {
         try (Session session = getConnection().session()) {
-            session.writeTransaction(tx -> {
-                tx.run("CREATE (x:RegisteredUser { username: $username})",
-                        parameters("username",user.getUsername())).consume();
-                    return null;
+            Result res = session.readTransaction(tx->{
+                return tx.run("RETURN EXISTS((:RegisteredUser {username: $username})) as ex",
+                        parameters("username",user.getUsername()));
             });
+            if(!res.next().get("ex").asBoolean()){  //username is new
+                session.writeTransaction(tx -> {
+                    tx.run("CREATE (x:RegisteredUser { username: $username})",
+                            parameters("username",user.getUsername())).consume();
+                        return null;
+                });
+            }else{
+                throw new Exception();
+            }
         }catch (Exception e){
             throw new Neo4jException(e.getMessage());
         }
@@ -139,11 +150,12 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     public void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException {
         try (Session session = getConnection().session()) {
             session.writeTransaction(tx -> {
-                tx.run("MATCH (x:RegisteredUser {username: $username}) -[f1:FOLLOW]->(), (x)<-[f2:FOLLOW]-()" +
-                                "DELETE f1,f2",
-                        parameters("username",user.getUsername())).consume();
-                return null;
-            });
+                    tx.run("MATCH (x:RegisteredUser {username: $username}) -[f1:FOLLOW]->(), (x)<-[f2:FOLLOW]-()" +
+                                    "DELETE f1,f2",
+                            parameters("username", user.getUsername())).consume();
+                    return null;
+                });
+
         }catch (Exception e){
             throw new Neo4jException(e.getMessage());
         }
@@ -152,12 +164,17 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     @Override
     public void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException {
         try (Session session = getConnection().session()) {
-            session.writeTransaction(tx -> {
-                tx.run("MATCH (x:RegisteredUser {username: $username})<-[:ORGANIZED_BY]-(t:Trip)" +
-                                "WHERE t.departureDate > date() SET t.deleted = TRUE return t",
-                        parameters("username",user.getUsername())).consume();
-                return null;
+            Result r =session.readTransaction(tx -> {
+                Result x = tx.run("MATCH (x:RegisteredUser {username: $username})<-[:ORGANIZED_BY]-(t:Trip)" +
+                                "WHERE t.departureDate > date() return t.id",
+                        parameters("username",user.getUsername()));
+                return x;
             });
+            while(r.hasNext()){
+                Trip t= new Trip();
+                t.setId(String.valueOf(r.next().get("t.id")));
+                DAOLocator.getTripDAO().deleteTrip(t);
+            }
         }catch (Exception e){
             throw new Neo4jException(e.getMessage());
         }

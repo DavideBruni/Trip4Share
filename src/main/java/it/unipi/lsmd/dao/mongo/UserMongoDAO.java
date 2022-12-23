@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao.mongo;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -12,6 +13,7 @@ import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +26,7 @@ import static com.mongodb.client.model.Projections.include;
 
 public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
+    private final MongoCollection<Document> collection = getConnection().getCollection("users");
     @Override
     public RegisteredUser register(RegisteredUser user) {
         return null;
@@ -35,11 +38,9 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
     public User authenticate(String username, String password) {
 
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> users = database.getCollection("users");
         User user;
         Bson query = and(eq("username", username), eq("password", password));
-        Document result = users.find(query).first();
+        Document result = collection.find(query).first();
 
         try{
             user = UserUtils.userFromDocument(result);
@@ -53,11 +54,10 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
 
     public RegisteredUser getUser(String username) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> users = database.getCollection("users");
+
         Bson query = eq("username", username);
 
-        Document result = users.find(query).first();
+        Document result = collection.find(query).first();
         User u = UserUtils.userFromDocument(result);
         if(u instanceof Admin){
             return null;
@@ -67,8 +67,6 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     }
 
     public List<RegisteredUser> searchUser(String username, int limit, int page){
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("users");
         Bson m1 = match(and(regex("username",".*"+username+".*","i"),eq("type","user")));
         Bson l1 = limit(limit);
         AggregateIterable<Document> res;
@@ -90,8 +88,6 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
     @Override
     public double avgRating(String username){
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("users");
         Bson m1 = match(eq("username", username));
         Bson u1 = unwind("reviews");
         Bson g1 = group("$username",avg("rating","$reviews.value"));
@@ -101,5 +97,30 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             return result.next().getDouble("rating");
         }
         return 0.0;
+    }
+
+    @Override
+    public boolean createUser(User u){
+        Document doc =UserUtils.documentFromUser(u);
+        if(doc!=null){
+            try{
+                collection.insertOne(doc);
+                return true;
+            }catch(MongoException me){
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteUser(User u){
+        try {
+            Bson q1 = eq("username",u.getUsername());
+            collection.deleteOne(q1);
+        }catch(MongoException me){
+            return false;
+        }
+        return true;
     }
 }

@@ -94,7 +94,7 @@ public class TripServiceImpl implements TripService {
             List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination,depDate,retDate,size,page);
             List<TripSummaryDTO> tripsDTO = new ArrayList<>();
             for(Trip t : trips){
-                TripSummaryDTO tDTO = TripUtils.parseTrip(t);
+                TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
                 tripsDTO.add(tDTO);
             }
             return tripsDTO;
@@ -117,7 +117,7 @@ public class TripServiceImpl implements TripService {
             List<Trip> trips= tripDetailsDAO.getTripsByTag(tag,depDate,retDate,size,page);
             List<TripSummaryDTO> tripsDTO = new ArrayList<>();
             for(Trip t : trips){
-                TripSummaryDTO tDTO = TripUtils.parseTrip(t);
+                TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
                 tripsDTO.add(tDTO);
             }
             return tripsDTO;
@@ -184,7 +184,7 @@ public class TripServiceImpl implements TripService {
         List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,page, objectPerPageSearch);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
-            TripSummaryDTO tDTO = TripUtils.parseTrip(t);
+            TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
             tripsDTO.add(tDTO);
         }
         return tripsDTO;
@@ -195,7 +195,7 @@ public class TripServiceImpl implements TripService {
         List<Trip> trips_model = tripDAO.getSuggestedTrip(username);
         List<TripSummaryDTO> trips = new ArrayList<>();
         for(Trip t : trips_model){
-            TripSummaryDTO tripSummaryDTO = TripUtils.parseTrip(t);
+            TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(t);
             trips.add(tripSummaryDTO);
         }
         return trips;
@@ -236,4 +236,11 @@ public class TripServiceImpl implements TripService {
         }
         return true;
     }
+
+    /*
+    public boolean updateTrip(TripDetailsDTO trip){
+
+    }
+
+     */
 }

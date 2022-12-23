@@ -20,16 +20,6 @@ import java.util.List;
 
 public interface TripUtils {
 
-    static TripSummaryDTO parseTrip(Trip t){
-        TripSummaryDTO tDTO= new TripSummaryDTO();
-        tDTO.setDestination(t.getDestination());
-        tDTO.setTitle(t.getTitle());
-        tDTO.setDepartureDate(t.getDepartureDate());
-        tDTO.setReturnDate(t.getReturnDate());
-        tDTO.setImgUrl(t.getImg());
-        return tDTO;
-    }
-
     private static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -224,6 +214,7 @@ public interface TripUtils {
             List<Document> retValue = new ArrayList();
             for(DailySchedule d : itinerary)
                 retValue.add(documentFromDailySchedule(d));
+            return retValue;
         }
         return null;
     }
