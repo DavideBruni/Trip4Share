@@ -1,6 +1,7 @@
 package it.unipi.lsmd.utils;
 
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
 import it.unipi.lsmd.dto.DailyScheduleDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
@@ -14,6 +15,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.List;
+
 
 public interface TripUtils {
 
@@ -173,6 +176,70 @@ public interface TripUtils {
             t.setReturnDate(null);
         }finally {
             return t;
+        }
+    }
+
+    static Document documentFromTrip(Trip t) throws IncompleteTripException {
+        Document doc = new Document();
+        IncompleteTripException iex = new IncompleteTripException();
+        try{
+            if(t.getDestination()==null)
+                throw iex;
+            if(t.getTitle()==null)
+                throw iex;
+            if(t.getPrice()==0)
+                throw iex;
+            if(t.getDepartureDate()==null)
+                throw iex;
+            if(t.getReturnDate()==null)
+                throw iex;
+        }catch (NullPointerException ne){
+            throw iex;
+        }
+        doc.append("destination",t.getDestination());
+        doc.append("title",t.getTitle());
+        doc.append("departureDate",t.getDepartureDate());
+        doc.append("returnDate",t.getReturnDate());
+        doc.append("price",t.getPrice());
+        if(t.getImg()!=null)
+            doc.append("imgUrl",t.getImg());
+        if(t.getInfo()!=null)
+            doc.append("info",t.getInfo());
+        if(t.getDescription()!=null)
+            doc.append("description",t.getDescription());
+        if(t.getTags()!=null && !t.getTags().isEmpty())
+            doc.append("tags",t.getTags());
+        if(t.getWhatsIncluded()!=null && !t.getWhatsIncluded().isEmpty())
+            doc.append("whatsIncluded",t.getWhatsIncluded());
+        if(t.getWhatsNotIncluded()!=null && !t.getWhatsNotIncluded().isEmpty())
+            doc.append("whatsNotIncluded",t.getWhatsNotIncluded());
+        if(t.getItinerary()!=null && !t.getItinerary().isEmpty())
+            doc.append("itinerary",documentsFromItinerary(t.getItinerary()));
+
+        return doc;
+    }
+
+    static List<Document> documentsFromItinerary(List<DailySchedule> itinerary) throws IncompleteTripException {
+        if(itinerary!=null){
+            List<Document> retValue = new ArrayList();
+            for(DailySchedule d : itinerary)
+                retValue.add(documentFromDailySchedule(d));
+        }
+        return null;
+    }
+
+    static Document documentFromDailySchedule(DailySchedule d) throws IncompleteTripException {
+        try{
+            Document doc = new Document();
+            doc.append("day",d.getDay());
+            doc.append("title",d.getTitle());
+            if(d.getSubtitle()!=null)
+                doc.append("subtitle",d.getSubtitle());
+            if(d.getDescription()!=null)
+                doc.append("description",d.getDescription());
+            return doc;
+        }catch(NullPointerException ne){
+            throw new IncompleteTripException();
         }
     }
 }

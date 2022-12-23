@@ -3,6 +3,8 @@ package it.unipi.lsmd.service;
 import it.unipi.lsmd.dto.PriceDestinationDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Trip;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,4 +33,8 @@ public interface TripService {
 
     List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch);
     List<TripSummaryDTO> getSuggestedTrips(String username);
+
+    boolean addTrip(Trip t, RegisteredUser organizer);
+
+    boolean deleteTrip(Trip t);
 }

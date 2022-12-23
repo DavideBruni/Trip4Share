@@ -14,9 +14,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserUtils {
+public interface UserUtils {
 
-    public static User userFromDocument(Document result){
+    static User userFromDocument(Document result){
 
         if(result == null){
             return null;
@@ -53,7 +53,7 @@ public class UserUtils {
     }
 
 
-    public static AuthenticatedUserDTO userModelToDTO(User user_model){
+    static AuthenticatedUserDTO userModelToDTO(User user_model){
 
         if(user_model == null){
             return null;

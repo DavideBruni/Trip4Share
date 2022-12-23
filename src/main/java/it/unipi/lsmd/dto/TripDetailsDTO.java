@@ -2,6 +2,7 @@ package it.unipi.lsmd.dto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TripDetailsDTO {
 
@@ -11,10 +12,10 @@ public class TripDetailsDTO {
     private double price;
     private LocalDate departureDate;
     private LocalDate returnDate;
-    private ArrayList<String> tags;
-    private ArrayList<DailyScheduleDTO> itinerary;
-    private ArrayList<String> whatsIncluded;
-    private ArrayList<String> whatsNotIncluded;
+    private List<String> tags;
+    private List<DailyScheduleDTO> itinerary;
+    private List<String> whatsIncluded;
+    private List<String> whatsNotIncluded;
     private String info;
     private String img;
 
@@ -76,19 +77,19 @@ public class TripDetailsDTO {
         this.returnDate = returnDate;
     }
 
-    public ArrayList<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public ArrayList<DailyScheduleDTO> getItinerary() {
+    public List<DailyScheduleDTO> getItinerary() {
         return itinerary;
     }
 
-    public void setItinerary(ArrayList<DailyScheduleDTO> itinerary) {
+    public void setItinerary(List<DailyScheduleDTO> itinerary) {
         this.itinerary = itinerary;
     }
 
@@ -96,19 +97,19 @@ public class TripDetailsDTO {
         this.itinerary.add(itinerary);
     }
 
-    public ArrayList<String> getWhatsIncluded() {
+    public List<String> getWhatsIncluded() {
         return whatsIncluded;
     }
 
-    public void setWhatsIncluded(ArrayList<String> whatsIncluded) {
+    public void setWhatsIncluded(List<String> whatsIncluded) {
         this.whatsIncluded = whatsIncluded;
     }
 
-    public ArrayList<String> getWhatsNotIncluded() {
+    public List<String> getWhatsNotIncluded() {
         return whatsNotIncluded;
     }
 
-    public void setWhatsNotIncluded(ArrayList<String> whatsNotIncluded) {
+    public void setWhatsNotIncluded(List<String> whatsNotIncluded) {
         this.whatsNotIncluded = whatsNotIncluded;
     }
 

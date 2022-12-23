@@ -2,24 +2,21 @@ package it.unipi.lsmd.service.impl;
 
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
-
 import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.TripDetailsDAO;
+import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dto.PriceDestinationDTO;
-
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.Date;
-
 import java.util.List;
 
 public class TripServiceImpl implements TripService {
@@ -202,5 +199,41 @@ public class TripServiceImpl implements TripService {
             trips.add(tripSummaryDTO);
         }
         return trips;
+    }
+
+    // change Parameter to DTO
+    @Override
+    public boolean addTrip(Trip t, RegisteredUser organizer){
+        String id = tripDetailsDAO.addTrip(t);
+        if(id!=null){
+            t.setId(id);
+            try {
+                tripDAO.addTrip(t,organizer);
+                return true;
+            } catch (Neo4jException e) {
+                //logger errore neo4j
+                if(!tripDetailsDAO.deleteTrip(t))
+                    System.err.println("Errore mongo");
+                return false;
+            }
+        }
+        return false;
+    }
+
+    // change Parameter to DTO
+    @Override
+    public boolean deleteTrip(Trip t){
+        try {
+            tripDAO.deleteTrip(t);
+            if(tripDetailsDAO.deleteTrip(t)){
+                return true;
+            }else{
+                tripDAO.setNotDeleted(t);
+            }
+        } catch (Neo4jException e) {
+            System.err.println("Errore neo4j");
+            return false;
+        }
+        return true;
     }
 }

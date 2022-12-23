@@ -2,7 +2,7 @@ package it.unipi.lsmd.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 public class Trip {
 
@@ -13,10 +13,10 @@ public class Trip {
     private double price;
     private LocalDate departureDate;
     private LocalDate returnDate;
-    private ArrayList<String> tags;
-    private ArrayList<DailySchedule> itinerary;
-    private ArrayList<String> whatsIncluded;
-    private ArrayList<String> whatsNotIncluded;
+    private List<String> tags;
+    private List<DailySchedule> itinerary;
+    private List<String> whatsIncluded;
+    private List<String> whatsNotIncluded;
     private String info;
     private String img;
     private Boolean deleted;
@@ -95,35 +95,35 @@ public class Trip {
         this.returnDate = returnDate;
     }
 
-    public ArrayList<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public ArrayList<DailySchedule> getItinerary() {
+    public List<DailySchedule> getItinerary() {
         return itinerary;
     }
 
-    public void setItinerary(ArrayList<DailySchedule> itinerary) {
+    public void setItinerary(List<DailySchedule> itinerary) {
         this.itinerary = itinerary;
     }
 
-    public ArrayList<String> getWhatsIncluded() {
+    public List<String> getWhatsIncluded() {
         return whatsIncluded;
     }
 
-    public void setWhatsIncluded(ArrayList<String> whatsIncluded) {
+    public void setWhatsIncluded(List<String> whatsIncluded) {
         this.whatsIncluded = whatsIncluded;
     }
 
-    public ArrayList<String> getWhatsNotIncluded() {
+    public List<String> getWhatsNotIncluded() {
         return whatsNotIncluded;
     }
 
-    public void setWhatsNotIncluded(ArrayList<String> whatsNotIncluded) {
+    public void setWhatsNotIncluded(List<String> whatsNotIncluded) {
         this.whatsNotIncluded = whatsNotIncluded;
     }
 

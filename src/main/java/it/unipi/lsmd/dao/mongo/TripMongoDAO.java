@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao.mongo;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -8,6 +9,7 @@ import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.utils.TripUtils;
+import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -260,5 +262,33 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             trips.add(t);
         }
         return trips;
+    }
+
+    @Override
+    public String addTrip(Trip t){
+        MongoDatabase database = getConnection();
+        MongoCollection<Document> collection = database.getCollection("trips");
+        try {
+            Document doc = TripUtils.documentFromTrip(t);
+            return collection.insertOne(doc).getInsertedId().asObjectId().getValue().toString();
+        }catch(IncompleteTripException iexc){
+            //stampare un log di errore
+            return null;
+        }catch(MongoException me){
+            return null;
+        }
+    }
+
+    @Override
+    public boolean deleteTrip(Trip t){
+        MongoDatabase database = getConnection();
+        MongoCollection<Document> collection = database.getCollection("trips");
+        try {
+            Bson q1 = eq("_id",new ObjectId(t.getId()));
+            collection.deleteOne(q1);
+        }catch(MongoException me){
+            return false;
+        }
+        return true;
     }
 }
