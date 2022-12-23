@@ -5,8 +5,10 @@ import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
+import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.utils.TripUtils;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
@@ -25,10 +27,10 @@ import static com.mongodb.client.model.Sorts.descending;
 
 public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
+    private final MongoCollection<Document> collection = getConnection().getCollection("trips");
     @Override
     public List<Trip> getTripsByDestination(String destination, int size, int page){
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
         Bson m1=  match(eq("destination", destination));
         Bson l1 = limit(size);
         Bson p1 = project(fields(excludeId(), include("destination", "title", "departureDate", "returnDate")));
@@ -49,8 +51,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         return trips;
     }
     public List<Trip> getTripsByDestination(String destination, Date departureDate, Date returnDate, int size, int page) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
         Bson m1;
         if (returnDate == null) {
             m1 = match(and(eq("destination", destination), gte("departureDate", departureDate)));
@@ -78,8 +79,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     public List<Trip> getTripsByTag(String tag, Date departureDate, Date returnDate, int size, int page) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
         Bson m1;
         if (returnDate == null) {
             m1 = match(and(in("tags", tag), gte("departureDate", departureDate)));
@@ -125,8 +125,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<String> mostPopularDestinations(int page, int objectPerPageSearch) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
 
         // aggregate([{$group : {"_id":"$destination" total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson g1 = group("$destination",sum("total_like","$like"));
@@ -151,8 +150,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<String> mostPopularDestinationsByTag(String tag, int page, int objectPerPageSearch) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
 
         // aggregate([{$match : { tags : {$eq : ... }}}, {$group : {"_id":"$destination",
         // total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
@@ -180,8 +178,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<String> mostPopularDestinationsByPrice(double start, double end, int page, int objectPerPageSearch) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
 
 
         Bson m1 = match(and(gte("price",start),lte("price",end)));
@@ -208,8 +205,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<String> mostPopularDestinationsByPeriod(Date depDate, Date retDate, int page, int objectPerPageSearch) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
         Bson m1 = match(and(gte("departureDate",depDate),lte("returnDate",retDate)));
         Bson g1 = group("$destination",sum("total_like","$like"));
         Bson s1 = sort(descending("total_like"));
@@ -234,8 +230,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<Trip> cheapestDestinationsByAvg(int page, int objectPerPageSearch) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
 
         Bson s1 = sort(ascending("price"));
         Bson g1 = group("$destination",avg("agg","$price"));
@@ -259,8 +254,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<Trip> cheapestTripForDestinationInPeriod(Date start, Date end,int page, int objectPerPageSearch) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
 // db.trips.aggregate([{$match : {$and : {"departureDate" : {$gte : new Date()}},{"returnDate" : {$lte : new Date('2024-12-12')}}} }},{ $sort: { price : 1 } }, { $group: { _id: "$destination", doc_with_max_ver: { $first: "$$ROOT" } } },{ $replaceWith: "$doc_with_max_ver" }
         Bson m1 = match(and(gte("departureDate",start),lte("returnDate",end)));
         Bson s1 = sort(ascending("price"));
@@ -287,8 +281,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public String addTrip(Trip t){
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
+
         try {
             Document doc = TripUtils.documentFromTrip(t);
             return collection.insertOne(doc).getInsertedId().asObjectId().getValue().toString();
@@ -302,8 +295,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public boolean deleteTrip(Trip t){
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> collection = database.getCollection("trips");
         try {
             Bson q1 = eq("_id",new ObjectId(t.getId()));
             collection.deleteOne(q1);
@@ -311,5 +302,45 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean updateTrip(Trip newTrip, Trip oldTrip) {
+        try{
+            Document q1 = new Document().append("_id", new ObjectId(newTrip.getId()));
+            Bson q2 = attributeToUpdate(newTrip, oldTrip);
+            collection.updateOne(q1, q2);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+    private Bson attributeToUpdate(Trip newTrip, Trip oldTrip) {
+        List<Bson> query = new ArrayList<>();
+        if(!newTrip.getItinerary().equals(oldTrip.getItinerary()))
+           query.add(Updates.set("itinerary",newTrip.getItinerary()));
+        if(!newTrip.getTags().equals(oldTrip.getTags()))
+            query.add(Updates.set("tags",newTrip.getTags()));
+        if(!newTrip.getWhatsNotIncluded().equals(oldTrip.getWhatsNotIncluded()))
+            query.add(Updates.set("whatsNotIncluded",newTrip.getWhatsNotIncluded()));
+        if(!newTrip.getWhatsIncluded().equals(oldTrip.getWhatsIncluded()))
+            query.add(Updates.set("whatsIncluded",newTrip.getWhatsIncluded()));
+        if(newTrip.getDestination()!= oldTrip.getDestination())
+            query.add(Updates.set("destination",newTrip.getDestination()));
+        if(newTrip.getTitle()!= oldTrip.getTitle())
+            query.add(Updates.set("title",newTrip.getDestination()));
+        if(newTrip.getDescription()!= oldTrip.getDescription())
+            query.add(Updates.set("description",newTrip.getDescription()));
+        if(newTrip.getInfo()!= oldTrip.getInfo())
+            query.add(Updates.set("info",newTrip.getInfo()));
+        if(newTrip.getPrice()!= oldTrip.getPrice())
+            query.add(Updates.set("price",newTrip.getPrice()));
+        if(newTrip.getDepartureDate()!= oldTrip.getDepartureDate())
+            query.add(Updates.set("departureDate",newTrip.getDepartureDate()));
+        if(newTrip.getReturnDate()!= oldTrip.getReturnDate())
+            query.add(Updates.set("returnDate",newTrip.getReturnDate()));
+        query.add(Updates.set("imgUrl",newTrip.getImg()));
+        return Updates.combine(query);
     }
 }

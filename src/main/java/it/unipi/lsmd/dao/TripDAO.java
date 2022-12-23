@@ -15,4 +15,6 @@ public interface TripDAO {
     void deleteTrip(Trip t) throws Neo4jException;
 
     void setNotDeleted(Trip t) throws Neo4jException;
+
+    void updateTrip(Trip newTrip) throws Neo4jException;
 }

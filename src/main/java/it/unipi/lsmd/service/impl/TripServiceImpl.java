@@ -262,10 +262,26 @@ public class TripServiceImpl implements TripService {
         return false;
     }
 
-    /*
-    public boolean updateTrip(TripDetailsDTO trip){
-
+    @Override
+    public boolean updateTrip(TripDetailsDTO newTrip, TripDetailsDTO oldTrip){
+    //    if(newTrip.getId()==oldTrip.getId()) {
+            Trip n_trip = TripUtils.tripModelFromTripDetailsDTO(newTrip);
+            Trip o_trip = TripUtils.tripModelFromTripDetailsDTO(oldTrip);
+            boolean flag = DAOLocator.getTripDetailsDAO().updateTrip(n_trip,o_trip);
+            if(flag){
+                try {
+                    // always update imgs, we don't know if they are equal or not
+                    DAOLocator.getTripDAO().updateTrip(n_trip);
+                    return true;
+                } catch (Neo4jException e) {
+                    //logger errore neo4j
+                    return false;
+                }
+            }
+            return false;
+     //   }
+        //return false;
     }
 
-     */
+
 }

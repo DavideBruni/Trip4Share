@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao;
 
+import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.model.Trip;
 
 import java.util.Date;
@@ -29,4 +30,6 @@ public interface TripDetailsDAO {
     String addTrip(Trip t);
 
     boolean deleteTrip(Trip t);
+
+    boolean updateTrip(Trip newTrip, Trip oldTrip);
 }

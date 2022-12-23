@@ -130,4 +130,9 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             throw new Neo4jException(e.getMessage());
         }
     }
+
+    @Override
+    public void updateTrip(Trip newTrip) throws Neo4jException {
+
+    }
 }

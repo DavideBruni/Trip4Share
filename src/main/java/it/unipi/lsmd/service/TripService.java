@@ -4,11 +4,7 @@ import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.dto.PriceDestinationDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
-import it.unipi.lsmd.model.RegisteredUser;
-import it.unipi.lsmd.model.Trip;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public interface TripService {
@@ -39,4 +35,6 @@ public interface TripService {
     boolean addTrip(TripDetailsDTO tripDetailsDTO, OtherUserDTO organizer);
 
     boolean deleteTrip(TripDetailsDTO t);
+
+    boolean updateTrip(TripDetailsDTO newTrip, TripDetailsDTO oldTrip);
 }
