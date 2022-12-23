@@ -1,5 +1,7 @@
 package it.unipi.lsmd.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
@@ -7,6 +9,7 @@ import it.unipi.lsmd.dto.DailyScheduleDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Trip;
+import org.json.JSONObject;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.exceptions.value.Uncoercible;
 
@@ -53,7 +56,6 @@ public interface TripUtils {
         return dailyScheduleDTO;
     }
 
-
     static Trip tripFromDocument(Document result){
 
         if(result == null){
@@ -93,16 +95,15 @@ public interface TripUtils {
         return trip;
     }
 
-    static Trip tripFromMap(Map<String, Object> map){
+    static Trip tripFromTripSummary(TripSummaryDTO tripSummary){
         Trip trip = new Trip();
-        trip.setTitle((String) map.get("title"));
-        trip.setDestination((String) map.get("destination"));
-        trip.setDepartureDate(LocalDate.parse((String) map.get("departureDate")));
-        trip.setReturnDate(LocalDate.parse((String) map.get("returnDate")));
+        trip.setTitle(tripSummary.getTitle());
+        trip.setDestination(tripSummary.getDestination());
+        trip.setDepartureDate(tripSummary.getDepartureDate());
+        trip.setReturnDate(tripSummary.getReturnDate());
 
         return trip;
     }
-
 
     static TripDetailsDTO tripModelToDetailedDTO(Trip trip) {
 
@@ -140,15 +141,41 @@ public interface TripUtils {
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
+        tripDTO.setImgUrl(trip.getImg());
 
         return tripDTO;
     }
 
+    static TripSummaryDTO tripSummaryFromTripDetails(TripDetailsDTO trip){
+        TripSummaryDTO tripDTO = new TripSummaryDTO();
 
+        tripDTO.setTitle(trip.getTitle());
+        tripDTO.setDestination(trip.getDestination());
+        tripDTO.setDepartureDate(trip.getDepartureDate());
+        tripDTO.setReturnDate(trip.getReturnDate());
+        tripDTO.setImgUrl(trip.getImg());
 
+        return tripDTO;
+    }
 
-    // TODO - create method TripSummaryDTO tripModelToSummaryDTO(Trip trip) {
+    static String tripToJSONString(Trip trip){
 
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+
+        return gson.toJson(trip);
+    }
+
+    static Trip tripFromJSONString(String jsonString){
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+
+        return gson.fromJson(jsonString, Trip.class);
+    }
+
+    
     static Trip destinationFromDocument(Document doc) {
         Trip t = new Trip();
         t.setDestination(doc.getString("_id"));

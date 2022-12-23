@@ -58,9 +58,10 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public void addToWishlist(String username, String trip_id, HashMap<String, Object> data){
+    public void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary){
+        Trip trip = TripUtils.tripFromTripSummary(tripSummary);
+        wishlistDAO.addToWishlist(username, trip_id, trip);
         // TODO - add also on MONGO
-        wishlistDAO.addToWishlist(username, trip_id, data);
     }
 
     @Override
