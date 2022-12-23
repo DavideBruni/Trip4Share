@@ -7,7 +7,6 @@ public abstract class AuthenticatedUserDTO {
 
     private String id;  // TODO - is useless if save the session using ID and not AuthenticatedUserDTO instance
 
-
     private String username;
     private String firstName;
     private String lastName;

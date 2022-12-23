@@ -260,4 +260,34 @@ public interface TripUtils {
             throw new IncompleteTripException();
         }
     }
+
+    static Trip tripModelFromTripDetailsDTO(TripDetailsDTO tripDetailsDTO) {
+        Trip t = new Trip();
+        t.setDepartureDate(tripDetailsDTO.getDepartureDate());
+        t.setReturnDate(tripDetailsDTO.getReturnDate());
+        t.setImg(tripDetailsDTO.getImg());
+        t.setDescription(tripDetailsDTO.getDescription());
+        t.setDestination(tripDetailsDTO.getDestination());
+        t.setTitle(tripDetailsDTO.getTitle());
+        t.setTags(tripDetailsDTO.getTags());
+        t.setItinerary(itineraryDTOtoModel(tripDetailsDTO.getItinerary()));
+        t.setWhatsIncluded(tripDetailsDTO.getWhatsIncluded());
+        t.setWhatsNotIncluded(tripDetailsDTO.getWhatsNotIncluded());
+        return t;
+    }
+
+    static List<DailySchedule> itineraryDTOtoModel(List<DailyScheduleDTO> itinerary) {
+        List<DailySchedule> i = new ArrayList<>();
+        if(itinerary!=null){
+            for(DailyScheduleDTO d : itinerary){
+                DailySchedule dailySchedule = new DailySchedule();
+                dailySchedule.setTitle(d.getTitle());
+                dailySchedule.setDay(d.getDay());
+                dailySchedule.setSubtitle(d.getSubtitle());
+                dailySchedule.setDescription(d.getDescription());
+                i.add(dailySchedule);
+            }
+        }
+        return i;
+    }
 }

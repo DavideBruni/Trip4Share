@@ -27,7 +27,26 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<Trip> getTripsByDestination(String destination, int size, int page){
-       return null;
+        MongoDatabase database = getConnection();
+        MongoCollection<Document> collection = database.getCollection("trips");
+        Bson m1=  match(eq("destination", destination));
+        Bson l1 = limit(size);
+        Bson p1 = project(fields(excludeId(), include("destination", "title", "departureDate", "returnDate")));
+        AggregateIterable<Document> res;
+        if (page != 1) {
+            Bson s1 = skip((page - 1) * size);
+            res = collection.aggregate(Arrays.asList(m1, l1, s1, p1));
+        } else {
+            res = collection.aggregate(Arrays.asList(m1, l1, p1));
+        }
+        List<Trip> trips = new ArrayList<>();
+        MongoCursor<Document> it = res.iterator();
+        while (it.hasNext()) {
+            Document doc = it.next();
+            Trip t = TripUtils.tripFromDocument(doc);
+            trips.add(t);
+        }
+        return trips;
     }
     public List<Trip> getTripsByDestination(String destination, Date departureDate, Date returnDate, int size, int page) {
         MongoDatabase database = getConnection();

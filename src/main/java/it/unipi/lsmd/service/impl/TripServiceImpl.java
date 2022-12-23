@@ -2,11 +2,11 @@ package it.unipi.lsmd.service.impl;
 
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
-import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
+import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.dto.PriceDestinationDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
@@ -16,17 +16,17 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
 
 public class TripServiceImpl implements TripService {
 
-    private TripDetailsDAO tripDetailsDAO;
-    private TripDAO tripDAO;
-    private WishlistRedisDAO wishlistRedisDAO;
-    private WishlistMongoDAO wishlistMongoDAO;
+    private final TripDetailsDAO tripDetailsDAO;
+    private final TripDAO tripDAO;
+    private final WishlistRedisDAO wishlistRedisDAO;
+    private final WishlistMongoDAO wishlistMongoDAO;
 
     public TripServiceImpl(){
         tripDetailsDAO = DAOLocator.getTripDetailsDAO();
@@ -210,8 +210,8 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripSummaryDTO> getSuggestedTrips(String username) {
-        List<Trip> trips_model = tripDAO.getSuggestedTrip(username);
+    public List<TripSummaryDTO> getSuggestedTrips(String username, int numTrips) {
+        List<Trip> trips_model = tripDAO.getSuggestedTrip(username, numTrips);
         List<TripSummaryDTO> trips = new ArrayList<>();
         for(Trip t : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(t);
@@ -220,14 +220,16 @@ public class TripServiceImpl implements TripService {
         return trips;
     }
 
-    // change Parameter to DTO
     @Override
-    public boolean addTrip(Trip t, RegisteredUser organizer){
+    public boolean addTrip(TripDetailsDTO tripDetailsDTO, OtherUserDTO organizer){
+        Trip t = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
         String id = tripDetailsDAO.addTrip(t);
         if(id!=null){
             t.setId(id);
             try {
-                tripDAO.addTrip(t,organizer);
+                RegisteredUser r = new RegisteredUser();
+                r.setUsername(organizer.getUsername());
+                tripDAO.addTrip(t,r);
                 return true;
             } catch (Neo4jException e) {
                 //logger errore neo4j
@@ -241,19 +243,23 @@ public class TripServiceImpl implements TripService {
 
     // change Parameter to DTO
     @Override
-    public boolean deleteTrip(Trip t){
-        try {
-            tripDAO.deleteTrip(t);
-            if(tripDetailsDAO.deleteTrip(t)){
-                return true;
-            }else{
-                tripDAO.setNotDeleted(t);
+    public boolean deleteTrip(TripDetailsDTO t) {
+        if (LocalDate.now().isBefore(t.getDepartureDate())) {
+            try {
+                Trip trip = TripUtils.tripModelFromTripDetailsDTO(t);
+                tripDAO.deleteTrip(trip);
+                if (tripDetailsDAO.deleteTrip(trip)) {
+                    return true;
+                } else {
+                    tripDAO.setNotDeleted(trip);
+                }
+            } catch (Neo4jException e) {
+                System.err.println("Errore neo4j");
+                return false;
             }
-        } catch (Neo4jException e) {
-            System.err.println("Errore neo4j");
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /*

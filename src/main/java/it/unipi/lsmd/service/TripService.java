@@ -1,5 +1,6 @@
 package it.unipi.lsmd.service;
 
+import it.unipi.lsmd.dto.OtherUserDTO;
 import it.unipi.lsmd.dto.PriceDestinationDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
@@ -32,9 +33,10 @@ public interface TripService {
     List<PriceDestinationDTO> cheapestDestinationsByAvg(int page, int objectPerPageSearch);
 
     List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch);
-    List<TripSummaryDTO> getSuggestedTrips(String username);
+    List<TripSummaryDTO> getSuggestedTrips(String username, int numTrips);
 
-    boolean addTrip(Trip t, RegisteredUser organizer);
+    // change Parameter to DTO
+    boolean addTrip(TripDetailsDTO tripDetailsDTO, OtherUserDTO organizer);
 
-    boolean deleteTrip(Trip t);
+    boolean deleteTrip(TripDetailsDTO t);
 }

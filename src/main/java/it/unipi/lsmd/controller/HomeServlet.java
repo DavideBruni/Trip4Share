@@ -46,10 +46,10 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("trips",trips);
 
             //Show Suggested user
-            List<OtherUserDTO> suggested = userService.getSuggestedUsers(usernameFromSession,PagesUtilis.SUGGESTED_USER_HOME);
+            List<OtherUserDTO> suggested = userService.getSuggestedUsers(usernameFromSession,PagesUtilis.SUGGESTED_USERS);
             request.setAttribute("suggestedUser",suggested);
 
-            List<TripSummaryDTO> suggested_trips = tripService.getSuggestedTrips(usernameFromSession);
+            List<TripSummaryDTO> suggested_trips = tripService.getSuggestedTrips(usernameFromSession, PagesUtilis.SUGGESTED_TRAVELS);
             request.setAttribute("suggestedTrips",suggested_trips);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);

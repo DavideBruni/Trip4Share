@@ -12,6 +12,14 @@ public class TripSummaryDTO {
     private String Title;
     private String imgUrl;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String organizer_username;
 
     public void setDestination(String destination) {

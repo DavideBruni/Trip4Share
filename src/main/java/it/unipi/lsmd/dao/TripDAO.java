@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TripDAO {
     List<Trip> getTripsOrganizedByFollower(String follower, int size, int page);
-    List<Trip> getSuggestedTrip(String username);
+    List<Trip> getSuggestedTrip(String username, int numTrips);
 
     void addTrip(Trip t, RegisteredUser organizer) throws Neo4jException;
 
