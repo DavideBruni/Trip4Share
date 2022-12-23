@@ -5,6 +5,7 @@ import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.OtherUserDTO;
+import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.service.UserService;
@@ -82,5 +83,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public double getRating(String username) {
         return userDAO.avgRating(username);
+    }
+
+
+    // change Parameter to DTO
+    @Override
+    public boolean addUser(User u) {
+        if(u instanceof Admin)
+            return addAdmin((Admin)u );
+        else
+            return addRegisteredUser((RegisteredUser) u);
+    }
+
+    private boolean addRegisteredUser(RegisteredUser u) {
+        return false;
+    }
+
+    private boolean addAdmin(Admin u) {
+        return true;
     }
 }

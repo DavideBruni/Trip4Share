@@ -3,7 +3,11 @@ package it.unipi.lsmd.controller;
 import it.unipi.lsmd.dao.neo4j.RegisteredUserNeo4jDAO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.model.DailySchedule;
+import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.ServiceLocator;
+import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -17,7 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {

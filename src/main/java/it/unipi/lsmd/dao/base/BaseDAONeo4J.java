@@ -16,7 +16,7 @@ public abstract class BaseDAONeo4J implements AutoCloseable{
 
     protected static Driver getConnection(){
         if(driver == null) {
-            String uri = "neo4j://" + NEO4J_HOST + ":" + NEO4J_PORT;
+            String uri = "bolt://" + NEO4J_HOST + ":" + NEO4J_PORT;
             driver = GraphDatabase.driver(uri, AuthTokens.basic(NEO4J_USERNAME, NEO4J_PSW));
         }
         return driver;
