@@ -3,12 +3,16 @@ package it.unipi.lsmd.dto;
 import java.time.LocalDate;
 
 public class TripSummaryDTO {
+
+    private String id;
     private String destination;
     private LocalDate departureDate;
     private LocalDate returnDate;
     private boolean deleted;
     private String Title;
     private String imgUrl;
+
+    private String organizer_username;
 
     public void setDestination(String destination) {
         this.destination = destination;

@@ -14,7 +14,6 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private String phone;
     private ArrayList<ReviewDTO> reviews;
     private List<OtherUserDTO> following;
-
     private LocalDate birthdate;
 
 

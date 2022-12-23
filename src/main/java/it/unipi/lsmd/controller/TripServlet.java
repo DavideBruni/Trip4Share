@@ -2,9 +2,11 @@ package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import it.unipi.lsmd.utils.TripUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,21 +46,12 @@ public class TripServlet extends HttpServlet {
             if(action.equals("add")){
                 System.out.println("add to wishlist");
 
-                // create a map
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("title", trip.getTitle());
-                map.put("departure_date", (LocalDate)trip.getDepartureDate());
-                map.put("return_date", (LocalDate) trip.getReturnDate());
-
-                tripService.addToWishlist(authenticatedUserDTO.getId(), trip_id, map);
-                // TODO - increase counter in MongoDB
+                TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
+                tripService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
 
             }else if(action.equals("remove")){
                 System.out.println("remove from wishlist");
-                tripService.removeFromWishlist(authenticatedUserDTO.getId(), trip_id);
-
-                // TODO - decrease counter in MongoDB
-
+                tripService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
             }
 
 

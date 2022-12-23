@@ -1,6 +1,9 @@
 <%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %>
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
-<%@ page import="it.unipi.lsmd.dto.ReviewDTO" %><%--
+<%@ page import="it.unipi.lsmd.dto.ReviewDTO" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
+<%@ page import="java.util.Arrays" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -14,15 +17,66 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 
     <%
         RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
     %>
-    <title><%= user.getUsername() %>'s Profile</title></head>
+    <title><%= user.getUsername() %>'s Profile</title>
+
+</head>
+
 <body>
+<!-- header -->
+<header>
+    <!-- header inner -->
+    <div class="header">
+        <div class="header_white_section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="header_information">
+                            <ul>
+                                <li><img src="images/1.png" alt="#"/> 145.street road new York</li>
+                                <li><img src="images/2.png" alt="#"/> +71  5678954378</li>
+                                <li><img src="images/3.png" alt="#"/> Demo@hmail.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                    <div class="full">
+                        <div class="center-desk">
+                            <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#" height="auto"></a> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                    <div class="menu-area">
+                        <div class="limit-box">
+                            <nav class="main-menu">
+                                <ul class="menu-area-main">
+                                    <li class="active"> <a href="registered_home.html">Home</a> </li>
+                                    <li><a href="search.html">Search Trips</a></li>
+                                    <li><a href="search.html">Logout</a></li>
+                                    <li><a href="modify_info.html">Modify Your profile</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header inner -->
+</header>
+<!-- end header -->
 <div class="padding justify-content-center">
     <div >
         <!-- Column -->
@@ -39,17 +93,16 @@
                 <%
                     if(!itsMe){
                 %>
-                    <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Follow</a>
+                <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Follow</a>
                 <%}else{%>
-                    <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Edit Profile</a>
+                <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Edit Profile</a>
                 <%}%>
-
                 <div class="row text-center m-t-20">
                     <div class="col-lg-6 col-md-6 m-t-20">
-                        <h3 class="m-b-0 font-light">434K</h3><small>Followers</small>
+                        <h3 class="m-b-0 font-light white">434K</h3><small>Followers</small>
                     </div>
                     <div class="col-lg-6 col-md-6 m-t-20">
-                        <h3 class="m-b-0 font-light">5454</h3><small>Following</small>
+                        <h3 class="m-b-0 font-light white">5454</h3><small>Following</small>
                     </div>
                 </div>
             </div>
@@ -68,27 +121,34 @@
     <li class="nav-item">
         <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-c" role="tab" aria-controls="pills-contact" aria-selected="false">Past Trips</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" id="pills-contact-tab2" data-toggle="pill" href="#pills-d" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
-    </li>
+    <%
+        if(itsMe){
+    %>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-contact-tab1" data-toggle="pill" href="#pills-d" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
+            </li>
+    <%
+        }
+    %>
 </ul>
 <div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active" id="pills-a" role="tabpanel" aria-labelledby="pills-home-tab">
+    <div class="tab-pane fade show active" id="pills-a" role="tabpanel" aria-labelledby="pills-home-tab" aria-expanded="true">
         <div class="container" >
             <hr class="invis3">
             <div class = "row justify-content-center ">
+
                 <%
                     for(int i = 0; i < 3 && i < user.getReviews().size(); i++){
                         ReviewDTO reviewDTO = user.getReviews().get(i);
-                    %>
-                        <div class="card" style="width: 18rem;">
+                %>
+                <div class="card" style="width: 18rem;">
 
-                            <div class="card-body">
-                                <h5 class="card-title"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h5>
-                                <p class="card-text"><%= reviewDTO.getText() %></p>
-                                <a href=<%="user?username=" + reviewDTO.getAuthor() %>><%= reviewDTO.getAuthor() %></a>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h5>
+                        <p class="card-text"><%= reviewDTO.getText() %></p>
+                        <a href=<%="user?username=" + reviewDTO.getAuthor() %>><%= reviewDTO.getAuthor() %></a>
+                    </div>
+                </div>
                 <%  }
                 %>
             </div>
@@ -129,7 +189,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <h4><a href="#" class="post-headline">2</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -156,7 +216,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
+                                    <h4><a href="#" class="post-headline">b</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -184,7 +244,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <h4><a href="#" class="post-headline">6</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -211,7 +271,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
+                                    <h4><a href="#" class="post-headline">a</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -238,95 +298,255 @@
 
 
     </div>
-    <div class="tab-pane fade show active" id="pills-c" role="tabpanel" aria-labelledby="pills-home-tab">
+    <div class="tab-pane fade  " id="pills-c" role="tabpanel" aria-labelledby="pills-home-tab">
         <div class="container" >
-            <hr class="invis3">
-            <div class = "row justify-content-center ">
-                <div class="card" style="width: 18rem;">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="row">
+                <div class="col-12 ">
+                    <hr class="invis3">
+                    <!-- Single Blog Area  -->
+                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6">
+                                <div class="single-blog-thumbnail">
+                                    <img src="images/blog-image.jpg" alt="">
+                                    <div class="post-date">
+                                        <a href="#">12 <span>march</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <!-- Blog Content -->
+                                <div class="single-blog-content">
+                                    <div class="line"></div>
+                                    <a href="#" class="post-tag">Lifestyle</a>
+                                    <h4><a href="#" class="post-headline">5</a></h4>
+                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
+                                    <div class="post-meta">
+                                        <p>By <a href="#">james smith</a></p>
+                                        <p>3 comments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <hr class="invis3">
+                    <!-- Single Blog Area  -->
+                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="1000ms">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6">
+                                <div class="single-blog-thumbnail">
+                                    <img src="images/blog-image.jpg" alt="">
+                                    <div class="post-date">
+                                        <a href="#">12 <span>march</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <!-- Blog Content -->
+                                <div class="single-blog-content">
+                                    <div class="line"></div>
+                                    <a href="#" class="post-tag">Lifestyle</a>
+                                    <h4><a href="#" class="post-headline">f</a></h4>
+                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
+                                    <div class="post-meta">
+                                        <p>By <a href="#">james smith</a></p>
+                                        <p>3 comments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card" style="width: 18rem;">
+                    <hr class="invis3">
 
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <!-- Single Blog Area  -->
+                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="1000ms">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6">
+                                <div class="single-blog-thumbnail">
+                                    <img src="images/blog-image.jpg" alt="">
+                                    <div class="post-date">
+                                        <a href="#">12 <span>march</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <!-- Blog Content -->
+                                <div class="single-blog-content">
+                                    <div class="line"></div>
+                                    <a href="#" class="post-tag">Lifestyle</a>
+                                    <h4><a href="#" class="post-headline">4</a></h4>
+                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
+                                    <div class="post-meta">
+                                        <p>By <a href="#">james smith</a></p>
+                                        <p>3 comments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <hr class="invis3">
+                    <!-- Single Blog Area  -->
+                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1000ms">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6">
+                                <div class="single-blog-thumbnail">
+                                    <img src="images/blog-image.jpg" alt="">
+                                    <div class="post-date">
+                                        <a href="#">12 <span>march</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <!-- Blog Content -->
+                                <div class="single-blog-content">
+                                    <div class="line"></div>
+                                    <a href="#" class="post-tag">Lifestyle</a>
+                                    <h4><a href="#" class="post-headline">e</a></h4>
+                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
+                                    <div class="post-meta">
+                                        <p>By <a href="#">james smith</a></p>
+                                        <p>3 comments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item"><a class="page-link" href="#">View More</a></li>
+                                </ul>
+                            </nav>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
                 </div>
             </div>
-            <hr class="invis3">
-            <div class="row">
-                <div class="col-md-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item"><a class="page-link" href="#">View More</a></li>
-                        </ul>
-                    </nav>
-                </div><!-- end col -->
-            </div><!-- end row -->
-
-
         </div>
 
     </div>
-    <div class="tab-pane fade show active" id="pills-d" role="tabpanel" aria-labelledby="pills-home-tab">
+    <div class="tab-pane fade  " id="pills-d" role="tabpanel" aria-labelledby="pills-home-tab">
         <div class="container" >
-            <hr class="invis3">
-            <div class = "row justify-content-center ">
-                <div class="card" style="width: 18rem;">
+            <div class="row">
+                <div class="col-12 ">
+                    <hr class="invis3">
 
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
+                    <%
+                        if(itsMe){
+                            ArrayList<TripSummaryDTO> wishlist = (ArrayList<TripSummaryDTO>) request.getAttribute(SecurityUtils.WISHLIST_KEY);
+                            for(int i = 0; i < 5 && i < wishlist.size(); i++){
+                    %>
 
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <!-- Trip in wishlist  -->
+                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6">
+                                <div class="single-blog-thumbnail">
+                                    <img src="images/blog-image.jpg" alt="">
+                                    <div class="post-date">
+                                        <a href="#">12 <span>march</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <!-- Blog Content -->
+                                <div class="single-blog-content">
+                                    <div class="line"></div>
+                                    <a href="#" class="post-tag"><%= wishlist.get(i).getDestination() %></a>
+                                    <h4><a href="#" class="post-headline"><%= wishlist.get(i).getTitle() %></a></h4>
+                                    <p> Departure Date:<%= wishlist.get(i).getDepartureDate() %>
+                                        Return Date: <%= wishlist.get(i).getReturnDate() %>
+                                    </p>
+                                    <div class="post-meta">
+                                        <p>By <a href="#">author?</a></p>
+                                        <p>3 comments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card" style="width: 18rem;">
+                    <hr class="invis3">
+                    <%
+                            }
+                        }
+                    %>
 
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item"><a class="page-link" href="#">View More</a></li>
+                                </ul>
+                            </nav>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
                 </div>
             </div>
-            <hr class="invis3">
-            <div class="row">
-                <div class="col-md-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item"><a class="page-link" href="#">View More</a></li>
-                        </ul>
-                    </nav>
-                </div><!-- end col -->
-            </div><!-- end row -->
-
-
         </div>
 
     </div>
 </div>
 
+<!-- footer -->
+<footer>
+    <div id="contact" class="footer">
+        <div class="container">
+            <div class="row pdn-top-30">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <ul class="location_icon">
+                        <li> <a href="#"><img src="icon/facebook.png"></a></li>
+                        <li> <a href="#"><img src="icon/Twitter.png"></a></li>
+                        <li> <a href="#"><img src="icon/linkedin.png"></a></li>
+                        <li> <a href="#"><img src="icon/instagram.png"></a></li>
+                    </ul>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                    <div class="Follow">
+                        <h3>CONTACT US</h3>
+                        <span>123 Second Street Fifth <br>Avenue,<br>
+                       Manhattan, New York<br>
+                       +987 654 3210</span>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                    <div class="Follow">
+                        <h3>ADDITIONAL LINKS</h3>
+                        <ul class="link">
+                            <li> <a href="#">About us</a></li>
+                            <li> <a href="#">Terms and conditions</a></li>
+                            <li> <a href="#"> Privacy policy</a></li>
+                            <li> <a href="#">News</a></li>
+                            <li> <a href="#"> Contact us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="Follow">
+                        <h3> Contact</h3>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <input class="Newsletter" placeholder="Name" type="text">
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <input class="Newsletter" placeholder="Email" type="text">
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <textarea class="textarea" placeholder="comment" type="text">Comment</textarea>
+                            </div>
+                        </div>
+                        <button class="Subscribe">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    <p>Copyright 2019 All Right Reserved By <a href="https://html.design/">Free html Templates</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- end footer -->
 
-</body></html>
+</body>

@@ -29,17 +29,15 @@ public interface UserUtils {
             user = admin;
         }else{
             RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
-            registeredUser.setNationality(result.getString("nationality"));
-
             registeredUser.setBirthdate(LocalDate.parse(result.getString("birthdate")));
+            registeredUser.setNationality(result.getString("nationality"));
+            ArrayList<String> spokenLanguages = result.get("spoken_languages", ArrayList.class);
+            registeredUser.setSpoken_languages(spokenLanguages);
 
-            try{
-                ArrayList<Document> reviews = result.get("reviews", ArrayList.class);
-                for(Document r : reviews){
+            ArrayList<Document> reviews = result.get("reviews", ArrayList.class);
+            if(reviews != null){
+                for(Document r : reviews)
                     registeredUser.addReview(ReviewUtils.reviewFromDocument(r));
-                }
-            } catch (Exception e) {
-                // TODO - add something?
             }
 
             user = registeredUser;
@@ -66,6 +64,7 @@ public interface UserUtils {
             RegisteredUser registeredUser = (RegisteredUser) user_model;
 
             registeredUserDTO.setNationality(registeredUser.getNationality());
+            registeredUserDTO.setSpoken_languages(registeredUser.getSpoken_languages());
             registeredUserDTO.setPhone(registeredUser.getPhone());
             registeredUserDTO.setBirthdate(registeredUser.getBirthdate());
 

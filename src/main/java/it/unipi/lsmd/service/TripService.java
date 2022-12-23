@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface TripService {
 
-    void addToWishlist(String username, String trip_id, HashMap<String, Object> data);
+    void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary);
     void removeFromWishlist(String username, String trip_id);
     ArrayList<TripSummaryDTO> getWishlist(String username);
 

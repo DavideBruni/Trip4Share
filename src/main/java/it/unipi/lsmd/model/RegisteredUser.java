@@ -8,7 +8,7 @@ public class RegisteredUser extends User{
 
     private LocalDate birthdate;
     private List<Review> reviews;
-    private List<String> spoken_languages;
+    private ArrayList<String> spoken_languages;
     private String nationality;
     private String phone;
     private List<RegisteredUser> following;
@@ -55,11 +55,11 @@ public class RegisteredUser extends User{
         this.reviews = reviews;
     }
 
-    public List<String> getSpoken_languages() {
+    public ArrayList<String> getSpoken_languages() {
         return spoken_languages;
     }
 
-    public void setSpoken_languages(List<String> spoken_languages) {
+    public void setSpoken_languages(ArrayList<String> spoken_languages) {
         this.spoken_languages = spoken_languages;
     }
 
