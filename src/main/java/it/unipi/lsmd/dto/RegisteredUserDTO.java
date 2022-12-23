@@ -16,10 +16,19 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private List<OtherUserDTO> following;
     private LocalDate birthdate;
 
+    private String bio;
 
     public RegisteredUserDTO(){
         spoken_languages = new ArrayList<String>();
         reviews = new ArrayList<ReviewDTO>();
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public String getNationality() {

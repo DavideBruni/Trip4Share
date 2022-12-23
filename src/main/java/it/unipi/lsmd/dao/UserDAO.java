@@ -21,4 +21,6 @@ public interface UserDAO {
     boolean createUser(User u);
 
     boolean deleteUser(User u);
+
+    boolean updateRegisteredUser(RegisteredUser new_user, RegisteredUser old_user);
 }

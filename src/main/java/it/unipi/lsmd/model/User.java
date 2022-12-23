@@ -20,6 +20,20 @@ public abstract class User {
     private String password;    // TODO - useless?
     private String role;        // TODO - useless?
 
+    private String profile_pic;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

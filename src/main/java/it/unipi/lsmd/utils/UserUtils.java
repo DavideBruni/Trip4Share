@@ -130,4 +130,31 @@ public interface UserUtils {
             return null;
         }
     }
+
+    static RegisteredUser registeredUserFromDTO(RegisteredUserDTO userDTO) {
+        RegisteredUser r = new RegisteredUser();
+        r.setUsername(userDTO.getUsername());
+        r.setId(userDTO.getId());
+        r.setPhone(userDTO.getPhone());
+        r.setEmail(userDTO.getEmail());
+        r.setNationality(userDTO.getNationality());
+        r.setName(userDTO.getFirstName());
+        r.setSurname(userDTO.getLastName());
+        r.setSpoken_languages(userDTO.getSpoken_languages());
+        r.setBio(userDTO.getBio());
+        r.setBirthdate(userDTO.getBirthdate());
+        return r;
+    }
+
+    static Admin adminFromDTO(AdminDTO u) {
+        Admin a = new Admin();
+        a.setUsername(u.getUsername());
+        a.setName(u.getFirstName());
+        a.setSurname(u.getLastName());
+        a.setRole("admin");
+        // a.setProfile_pic(u.getProfilePic());
+        // a.setPassword(u.getPassword());
+        a.setEmail(u.getEmail());
+        return a;
+    }
 }

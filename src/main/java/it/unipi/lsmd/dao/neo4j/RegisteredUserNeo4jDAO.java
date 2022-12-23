@@ -2,7 +2,6 @@ package it.unipi.lsmd.dao.neo4j;
 
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
-import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.base.BaseDAONeo4J;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.model.RegisteredUser;
@@ -135,8 +134,9 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
             });
             if(!res.next().get("ex").asBoolean()){  //username is new
                 session.writeTransaction(tx -> {
-                    tx.run("CREATE (x:RegisteredUser { username: $username})",
-                            parameters("username",user.getUsername())).consume();
+                    tx.run("CREATE (x:RegisteredUser { username: $username, profile_pic: $pic})",
+                            parameters("username",user.getUsername(),
+                                    "pic",user.getProfile_pic())).consume();
                         return null;
                 });
             }else{
@@ -176,6 +176,21 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                 t.setId(String.valueOf(r.next().get("t.id")));
                 DAOLocator.getTripDAO().deleteTrip(t);
             }
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateRegisteredUser(RegisteredUser registeredUser) throws Neo4jException{
+        try (Session session = getConnection().session()) {
+            session.writeTransaction(tx -> {
+                Result x = tx.run("MATCH (r:RegisteredUser {username: $username})" +
+                                "SET r.profile_pic = $pic return r",
+                        parameters("username",registeredUser.getUsername(),
+                                "pic", registeredUser.getProfile_pic()));
+                return x;
+            });
         }catch (Exception e){
             throw new Neo4jException(e.getMessage());
         }
