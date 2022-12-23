@@ -59,6 +59,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void addToWishlist(String username, String trip_id, HashMap<String, Object> data){
+        // TODO - add also on MONGO
         wishlistDAO.addToWishlist(username, trip_id, data);
     }
 
@@ -68,10 +69,15 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public ArrayList<TripDetailsDTO> getWishlist(String username) {
-        // TODO cast Trip to TripDTO
-        wishlistDAO.viewUserWishlist(username);
-        return null;
+    public ArrayList<TripSummaryDTO> getWishlist(String username) {
+
+        ArrayList<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
+
+        for(Trip t : wishlistDAO.getUserWishlist(username)){
+            trips.add(TripUtils.tripSummaryDTOFromModel(t));
+        }
+
+        return trips;
     }
 
     public List<TripSummaryDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {

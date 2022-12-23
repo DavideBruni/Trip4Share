@@ -15,6 +15,7 @@ public class ReviewUtils {
 
         Review review = new Review();
 
+        review.setAuthor(result.getString("author"));
         review.setTitle(result.getString("title"));
         review.setText(result.getString("text"));
         review.setRating(result.getInteger("value"));
@@ -27,6 +28,7 @@ public class ReviewUtils {
 
         ReviewDTO reviewDTO = new ReviewDTO();
 
+        reviewDTO.setAuthor(review_model.getAuthor());
         reviewDTO.setTitle(review_model.getTitle());
         reviewDTO.setText(review_model.getText());
         reviewDTO.setRating(review_model.getRating());

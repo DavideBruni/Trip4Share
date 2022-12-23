@@ -11,6 +11,7 @@ import java.util.Enumeration;
 public class SecurityUtils {
 
     public static final String AUTHENTICATED_USER_KEY = "authenticatedUser";
+    public static final String WISHLIST_KEY = "wishlist";
     public static final String USERS_FOLLOWERS_KEY = "followers";
 
 

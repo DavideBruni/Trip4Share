@@ -14,7 +14,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.List;
+
 
 public interface TripUtils {
 
@@ -82,14 +84,25 @@ public interface TripUtils {
             for(Document i : itinerary)
                 trip.addItinerary(dailyScheduleFromDocument(i));
 
-        ArrayList<String> whatsIncluded = result.get("compreso", ArrayList.class);
+        ArrayList<String> whatsIncluded = result.get("whatsIncluded", ArrayList.class);
         trip.setWhatsIncluded(whatsIncluded);
-        ArrayList<String> whatsNotIncluded = result.get("nonCompreso", ArrayList.class);
+        ArrayList<String> whatsNotIncluded = result.get("whatsNotIncluded", ArrayList.class);
         trip.setWhatsNotIncluded(whatsNotIncluded);
         trip.setInfo(result.getString("info"));
 
         return trip;
     }
+
+    static Trip tripFromMap(Map<String, Object> map){
+        Trip trip = new Trip();
+        trip.setTitle((String) map.get("title"));
+        trip.setDestination((String) map.get("destination"));
+        trip.setDepartureDate(LocalDate.parse((String) map.get("departureDate")));
+        trip.setReturnDate(LocalDate.parse((String) map.get("returnDate")));
+
+        return trip;
+    }
+
 
     static TripDetailsDTO tripModelToDetailedDTO(Trip trip) {
 
@@ -116,6 +129,23 @@ public interface TripUtils {
 
         return tripDTO;
     }
+
+    static TripSummaryDTO tripSummaryDTOFromModel(Trip trip){
+        if(trip == null){
+            return null;
+        }
+
+        TripSummaryDTO tripDTO = new TripSummaryDTO();
+        tripDTO.setTitle(trip.getTitle());
+        tripDTO.setDestination(trip.getDestination());
+        tripDTO.setDepartureDate(trip.getDepartureDate());
+        tripDTO.setReturnDate(trip.getReturnDate());
+
+        return tripDTO;
+    }
+
+
+
 
     // TODO - create method TripSummaryDTO tripModelToSummaryDTO(Trip trip) {
 

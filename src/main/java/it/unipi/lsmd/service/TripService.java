@@ -14,7 +14,7 @@ public interface TripService {
 
     void addToWishlist(String username, String trip_id, HashMap<String, Object> data);
     void removeFromWishlist(String username, String trip_id);
-    ArrayList<TripDetailsDTO> getWishlist(String username);
+    ArrayList<TripSummaryDTO> getWishlist(String username);
 
     List<TripSummaryDTO> getTripsOrganizedByFollowers(String username, int size, int page);
     List<TripSummaryDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page);

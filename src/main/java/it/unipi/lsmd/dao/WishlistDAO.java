@@ -10,5 +10,5 @@ public interface WishlistDAO {
 
     void addToWishlist(String username, String trip_id, HashMap<String, Object> data);
     void removeFromWishlist(String username, String trip_id);
-    ArrayList<Trip> viewUserWishlist(String username);
+    ArrayList<Trip> getUserWishlist(String username);
 }

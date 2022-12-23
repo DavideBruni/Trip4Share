@@ -10,6 +10,7 @@ import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import org.bson.Document;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public interface UserUtils {
         }else{
             RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
             registeredUser.setNationality(result.getString("nationality"));
+
+            registeredUser.setBirthdate(LocalDate.parse(result.getString("birthdate")));
 
             try{
                 ArrayList<Document> reviews = result.get("reviews", ArrayList.class);
@@ -64,6 +67,7 @@ public interface UserUtils {
 
             registeredUserDTO.setNationality(registeredUser.getNationality());
             registeredUserDTO.setPhone(registeredUser.getPhone());
+            registeredUserDTO.setBirthdate(registeredUser.getBirthdate());
 
             try{
                 for(Review review : registeredUser.getReviews()){
