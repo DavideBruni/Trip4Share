@@ -21,6 +21,7 @@ public class LogoutServlet extends HttpServlet {
         if(session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) != null){
             session.removeAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
             session.invalidate();
+            // TODO - reindirizzare alla home dell'unregistered
             httpServletResponse.sendRedirect("login");
         }else{
             httpServletResponse.sendRedirect("index");

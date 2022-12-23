@@ -48,14 +48,10 @@ public class TripServlet extends HttpServlet {
 
                 TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
                 tripService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
-                // TODO - increase counter in MongoDB
 
             }else if(action.equals("remove")){
                 System.out.println("remove from wishlist");
-                tripService.removeFromWishlist(authenticatedUserDTO.getId(), trip_id);
-
-                // TODO - decrease counter in MongoDB
-
+                tripService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
             }
 
 

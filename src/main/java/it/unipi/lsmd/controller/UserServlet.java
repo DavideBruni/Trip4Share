@@ -1,7 +1,9 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
+import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
@@ -36,6 +39,10 @@ public class UserServlet extends HttpServlet {
         if(username != null && !username.equals(authenticatedUserDTO.getUsername())){
             authenticatedUserDTO = userService.getUser(username);
             httpServletRequest.setAttribute("itsMe", false);
+        }else{
+            TripService tripService = ServiceLocator.getTripService();
+            ArrayList<TripSummaryDTO> wishlist = tripService.getWishlist(authenticatedUserDTO.getUsername());
+            httpServletRequest.setAttribute(SecurityUtils.WISHLIST_KEY, wishlist);
         }
 
         // send authenticatedUserDTO to front-end

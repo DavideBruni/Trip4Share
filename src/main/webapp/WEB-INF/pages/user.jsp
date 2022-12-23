@@ -1,6 +1,9 @@
 <%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %>
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
-<%@ page import="it.unipi.lsmd.dto.ReviewDTO" %><%--
+<%@ page import="it.unipi.lsmd.dto.ReviewDTO" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
+<%@ page import="java.util.Arrays" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -118,9 +121,15 @@
     <li class="nav-item">
         <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-c" role="tab" aria-controls="pills-contact" aria-selected="false">Past Trips</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" id="pills-contact-tab1" data-toggle="pill" href="#pills-d" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
-    </li>
+    <%
+        if(itsMe){
+    %>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-contact-tab1" data-toggle="pill" href="#pills-d" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
+            </li>
+    <%
+        }
+    %>
 </ul>
 <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active" id="pills-a" role="tabpanel" aria-labelledby="pills-home-tab" aria-expanded="true">
@@ -180,7 +189,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <h4><a href="#" class="post-headline">2</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -207,7 +216,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
+                                    <h4><a href="#" class="post-headline">b</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -235,7 +244,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <h4><a href="#" class="post-headline">6</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -262,7 +271,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
+                                    <h4><a href="#" class="post-headline">a</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -310,7 +319,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <h4><a href="#" class="post-headline">5</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -337,7 +346,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
+                                    <h4><a href="#" class="post-headline">f</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -365,7 +374,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <h4><a href="#" class="post-headline">4</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -392,7 +401,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
+                                    <h4><a href="#" class="post-headline">e</a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
                                         <p>By <a href="#">james smith</a></p>
@@ -422,7 +431,14 @@
             <div class="row">
                 <div class="col-12 ">
                     <hr class="invis3">
-                    <!-- Single Blog Area  -->
+
+                    <%
+                        if(itsMe){
+                            ArrayList<TripSummaryDTO> wishlist = (ArrayList<TripSummaryDTO>) request.getAttribute(SecurityUtils.WISHLIST_KEY);
+                            for(int i = 0; i < 5 && i < wishlist.size(); i++){
+                    %>
+
+                    <!-- Trip in wishlist  -->
                     <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
                         <div class="row align-items-center">
                             <div class="col-12 col-md-6">
@@ -437,11 +453,13 @@
                                 <!-- Blog Content -->
                                 <div class="single-blog-content">
                                     <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
+                                    <a href="#" class="post-tag"><%= wishlist.get(i).getDestination() %></a>
+                                    <h4><a href="#" class="post-headline"><%= wishlist.get(i).getTitle() %></a></h4>
+                                    <p> Departure Date:<%= wishlist.get(i).getDepartureDate() %>
+                                        Return Date: <%= wishlist.get(i).getReturnDate() %>
+                                    </p>
                                     <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
+                                        <p>By <a href="#">author?</a></p>
                                         <p>3 comments</p>
                                     </div>
                                 </div>
@@ -449,87 +467,10 @@
                         </div>
                     </div>
                     <hr class="invis3">
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="invis3">
-
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="invis3">
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <%
+                            }
+                        }
+                    %>
 
                     <div class="row">
                         <div class="col-md-12">

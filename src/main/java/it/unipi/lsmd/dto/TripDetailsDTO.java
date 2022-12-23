@@ -6,6 +6,7 @@ import java.util.List;
 
 public class TripDetailsDTO {
 
+    private String organizer_username;
     private String title;
     private String description;
     private String destination;

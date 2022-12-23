@@ -67,9 +67,8 @@ public interface TripUtils {
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
         trip.setDestination(result.getString("destination"));
-        
-        //TODO
-        // trip.setImg(result.getString("imgUrl"));
+
+        //TODO - trip.setImg(result.getString("imgUrl"));
         if(result.getInteger("price")!=null) {
             Integer price = result.getInteger("price");
             trip.setPrice(price);
@@ -114,6 +113,7 @@ public interface TripUtils {
         TripDetailsDTO tripDTO = new TripDetailsDTO();
 
         tripDTO.setTitle(trip.getTitle());
+        tripDTO.setDestination(trip.getDestination());
         tripDTO.setDescription(trip.getDescription());
         tripDTO.setPrice(trip.getPrice());
         tripDTO.setDepartureDate(trip.getDepartureDate());
