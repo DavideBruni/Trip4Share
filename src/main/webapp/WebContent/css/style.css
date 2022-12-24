@@ -280,7 +280,6 @@ button {
      color: #114c7d;
      font-weight: 400;
      font-size: 28px;
-     background-image: url('../images/fevicon.png');
      background-repeat: no-repeat;
      padding-left: 55px;
      letter-spacing: -0.5px;
@@ -1083,7 +1082,6 @@ ul.top_icon li a {
 }
 
 
-}
 .main-menu ul li:last-child a {
      padding-right: 0;
 }
@@ -1365,19 +1363,19 @@ ul.top_icon li a {
 }
 .heroslider .slider-01 {
      width: 100%;
-     background-image: url(../images/slider-01.jpg);
+     background-image: url(../images/1.jpg);
      background-size: cover;
      background-position: center;
 }
 .heroslider .slider-02 {
      width: 100%;
-     background-image: url(../images/slider-02.jpg);
+     background-image: url(../images/2.jpg);
      background-size: cover;
      background-position: center;
 }
 .heroslider .slider-03 {
      width: 100%;
-     background-image: url(../images/slider-03.jpg);
+     background-image: url(../images/3.jpg);
      background-size: cover;
      background-position: center;
 }
@@ -1785,7 +1783,7 @@ input[type="radio"] .styled:checked+label::after {
      -moz-background-size: 100% 20px;
      background-size: 100% 20px;
      background-image: -webkit-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -webkit-linear-gradient(left, #077f9b 0%, #0c1e43 100%);
-     background-image: -moz-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -moz-linear-gradient(left, #077f9b 0%, #0c1e434 100%);
+     background-image: -moz-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -moz-linear-gradient(left, #077f9b 0%, #0c1e43 100%);
      background-image: -o-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -o-linear-gradient(left, #077f9b 0%, #0c1e43 100%);
      background-image: linear-gradient(to right, #077f9b 0%, #0c1e43 100%), linear-gradient(to right, #077f9b 0%, #0c1e43 100%);
      max-width: 1004px;

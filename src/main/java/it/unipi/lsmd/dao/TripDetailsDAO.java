@@ -32,4 +32,6 @@ public interface TripDetailsDAO {
     boolean deleteTrip(Trip t);
 
     boolean updateTrip(Trip newTrip, Trip oldTrip);
+
+    List<Trip> mostPopularTrips(int tripNumberIndex);
 }

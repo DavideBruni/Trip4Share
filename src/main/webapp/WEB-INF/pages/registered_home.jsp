@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
    <head>
       <!-- basic -->
@@ -6,13 +7,8 @@
       <!-- mobile metas -->
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-      <!-- site metas -->
-      <title>Suggested Destination</title>
-      <meta name="keywords" content="">
-      <meta name="description" content="">
-      <meta name="author" content="">
       <!-- bootstrap css -->
-      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="WebContent/css/bootstrap.min.css">
       <!-- style css -->
       <link rel="stylesheet" href="css/style.css">
       <!-- Responsive-->
@@ -66,8 +62,8 @@
                                     
                                   
                                     <li class="active"> <a href="#"> Welcome, username!</a></li>
-                                    <li><a href="profile.html">Profile</a> </li>
-                                    <li><a href="search.html">Search</a></li>
+                                    <li><a href="../profile.html">Profile</a> </li>
+                                    <li><a href="../search.html">Search</a></li>
                                  </ul>
                               </nav>
                            </div>
@@ -309,7 +305,7 @@
                <div class="col-md-12">
                   <nav aria-label="Page navigation">
                      <ul class="pagination justify-content-end">
-                           <li class="page-item"><a class="page-link" href="trip_board.html">View More</a></li>
+                           <li class="page-item"><a class="page-link" href="../trip_board.html">View More</a></li>
                      </ul>
                   </nav>
                </div><!-- end col -->

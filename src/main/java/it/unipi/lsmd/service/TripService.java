@@ -37,4 +37,6 @@ public interface TripService {
     boolean deleteTrip(TripDetailsDTO t);
 
     boolean updateTrip(TripDetailsDTO newTrip, TripDetailsDTO oldTrip);
+
+    List<TripSummaryDTO> mostPopularTrips(int tripNumberIndex);
 }

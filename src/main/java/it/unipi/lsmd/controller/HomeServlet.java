@@ -41,7 +41,7 @@ public class HomeServlet extends HttpServlet {
 
         try {
             String usernameFromSession = SecurityUtils.getAuthenticatedUser(request).getUsername();
-            String targetJSP = "/WEB-INF/pages/home.jsp";
+            String targetJSP = "/WEB-INF/pages/registered_home.jsp";
             List<TripSummaryDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession,PagesUtilis.OBJECT_PER_PAGE_SEARCH,page);
             request.setAttribute("trips",trips);
 
