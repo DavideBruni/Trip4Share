@@ -51,7 +51,7 @@
                               <ul class="menu-area-main">
                                  <!-- <li class="active"> <a href="#">Home</a> </li> -->
                                  <li> <a href="signup.html">Sign Up</a> </li>
-                                 <li><a href="signin.html">Sign In</a></li>
+                                 <li><a href="login">Sign In</a></li>
                                  <li><a href="search.html">Search Trips</a></li>
                               </ul>
                            </nav>
@@ -112,9 +112,10 @@
                         <% for(TripSummaryDTO t : mostPopulars){ %>
                         <div class="item">
                            <img class="img-responsive" src="<%= t.getImgUrl()%>" alt="Image of a trip" />
-                           <h3><a class=""text-decoration-none href=<%="/trip?id="+t.getId()%>> <%= t.getTitle() %></a><</h3>
+                           <h3><a class=""text-decoration-none href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %></a><</h3>
                            <p>Destination: <%= t.getDestination()%> <br>
-                              Partenza: <%=t.getDepartureDate()%> | Ritorno: <%=t.getReturnDate()%>
+                              Departure Date: <%=t.getDepartureDate()%> <br>
+                              Return Date: <%=t.getReturnDate()%>
                            </p>
                         </div>
                         <% } %>
@@ -151,9 +152,10 @@
                         <% for(TripSummaryDTO t : cheapest){ %>
                         <div class="item">
                            <img class="img-responsive" src="<%= t.getImgUrl()%>" alt="Image of a trip" />
-                           <h3> <a class="text-decoration-none" href=<%="/trip?id="+t.getId()%>> <%= t.getTitle() %> </a></h3>
+                           <h3> <a class="text-decoration-none" href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %> </a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
-                              Partenza: <%=t.getDepartureDate()%> | Ritorno: <%=t.getReturnDate()%>
+                              Departure Date: <%=t.getDepartureDate()%> <br>
+                              Return Date: <%=t.getReturnDate()%>
                            </p>
                         </div>
                         <% } %>

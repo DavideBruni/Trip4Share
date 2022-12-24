@@ -72,12 +72,26 @@ public class TripSummaryDTO {
     }
 
 
-
     public int getLike_counter() {
         return like_counter;
     }
 
     public void setLike_counter(int like_counter) {
         this.like_counter = like_counter;
+    }
+
+    @Override
+    public String toString() {
+        return "TripSummaryDTO{" +
+                "id='" + id + '\'' +
+                ", destination='" + destination + '\'' +
+                ", departureDate=" + departureDate +
+                ", returnDate=" + returnDate +
+                ", deleted=" + deleted +
+                ", Title='" + Title + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", like_counter=" + like_counter +
+                ", organizer_username='" + organizer_username + '\'' +
+                '}';
     }
 }

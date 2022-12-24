@@ -48,7 +48,7 @@ public interface TripUtils {
         }
         Trip trip = new Trip();
 
-        trip.setId(result.get("_id").toString());
+        trip.setId(result.getObjectId("_id").toHexString());
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
         trip.setDestination(result.getString("destination"));
@@ -88,6 +88,7 @@ public interface TripUtils {
 
         TripDetailsDTO tripDTO = new TripDetailsDTO();
 
+        tripDTO.setId(trip.getId());
         tripDTO.setTitle(trip.getTitle());
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDescription(trip.getDescription());
@@ -116,6 +117,7 @@ public interface TripUtils {
         }
 
         TripSummaryDTO tripDTO = new TripSummaryDTO();
+        tripDTO.setId(trip.getId());
         tripDTO.setTitle(trip.getTitle());
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDepartureDate(trip.getDepartureDate());
@@ -130,6 +132,7 @@ public interface TripUtils {
         TripSummaryDTO tripDTO = new TripSummaryDTO();
 
         tripDTO.setTitle(trip.getTitle());
+        tripDTO.setId(trip.getId());
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
@@ -141,6 +144,8 @@ public interface TripUtils {
 
     static Trip tripFromTripSummary(TripSummaryDTO tripSummary){
         Trip trip = new Trip();
+
+        trip.setId(tripSummary.getId());
         trip.setTitle(tripSummary.getTitle());
         trip.setDestination(tripSummary.getDestination());
         trip.setDepartureDate(tripSummary.getDepartureDate());

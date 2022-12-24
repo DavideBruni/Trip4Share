@@ -454,7 +454,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag"><%= wishlist.get(i).getDestination() %></a>
-                                    <h4><a href="#" class="post-headline"><%= wishlist.get(i).getTitle() %></a></h4>
+                                    <h4><a href=<%="trip?id="+wishlist.get(i).getId()%> class="post-headline"><%= wishlist.get(i).getTitle() %></a></h4>
                                     <p> Departure Date:<%= wishlist.get(i).getDepartureDate() %>
                                         Return Date: <%= wishlist.get(i).getReturnDate() %>
                                     </p>
@@ -476,7 +476,7 @@
                         <div class="col-md-12">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item"><a class="page-link" href="#">View More</a></li>
+                                    <li class="page-item"><a class="page-link" href="wishlist">View More</a></li>
                                 </ul>
                             </nav>
                         </div><!-- end col -->

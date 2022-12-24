@@ -24,7 +24,8 @@
     }else {
         for(TripSummaryDTO trip : trips){ %>
             Title:
-            <%= trip.getTitle()%>
+            <%= trip.toString()%>
+
         <%}
     }
     %>

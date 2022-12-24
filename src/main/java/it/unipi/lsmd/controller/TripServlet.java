@@ -27,10 +27,12 @@ public class TripServlet extends HttpServlet {
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
 
         // check if user is authenticated
+        /*
         if(authenticatedUserDTO == null){
             httpServletResponse.sendRedirect("login");
             return;
         }
+         */
 
         TripService tripService = ServiceLocator.getTripService();
 
@@ -40,22 +42,26 @@ public class TripServlet extends HttpServlet {
         TripDetailsDTO trip = tripService.getTrip(trip_id);
         httpServletRequest.setAttribute("trip", trip);
 
-        String action = httpServletRequest.getParameter("action");
-        try{
+        if(authenticatedUserDTO != null) {
 
-            if(action.equals("add")){
-                System.out.println("add to wishlist");
+            String action = httpServletRequest.getParameter("action");
+            try {
 
-                TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
-                tripService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
+                if (action.equals("add")) {
+                    System.out.println("add to wishlist");
 
-            }else if(action.equals("remove")){
-                System.out.println("remove from wishlist");
-                tripService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
+                    TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
+                    tripService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
+
+                } else if (action.equals("remove")) {
+                    System.out.println("remove from wishlist");
+                    tripService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
+                }
+
+
+            } catch (NullPointerException e) {
             }
-
-
-        }catch (NullPointerException e){ }
+        }
 
 
 
