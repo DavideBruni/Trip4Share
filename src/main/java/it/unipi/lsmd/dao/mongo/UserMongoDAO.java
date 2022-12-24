@@ -129,7 +129,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
     public boolean updateRegisteredUser(RegisteredUser new_user, RegisteredUser old_user) {
         try {
-            Document q1 = new Document().append("_id", new ObjectId(new_user.getId()));
+            Document q1 = new Document().append("_id", new ObjectId(new_user.getUsername()));
             Bson q2 = attributeToUpdate(new_user, old_user);
             collection.updateOne(q1, q2);
             return true;

@@ -7,7 +7,7 @@ import java.util.List;
 public class Trip {
 
     private String id;
-    private String organizer;
+    private RegisteredUser organizer;
     private String title;
     private String description;
     private String destination;
@@ -33,11 +33,11 @@ public class Trip {
     public String getId(){return this.id;}
     public void setId(String id){this.id = id;}
 
-    public String getOrganizer() {
+    public RegisteredUser getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(String organizer) {
+    public void setOrganizer(RegisteredUser organizer) {
         this.organizer = organizer;
     }
 

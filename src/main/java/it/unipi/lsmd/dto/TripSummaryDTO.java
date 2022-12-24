@@ -12,6 +12,7 @@ public class TripSummaryDTO {
     private String Title;
     private String imgUrl;
     private int like_counter;
+    private RegisteredUserDTO organizer;
 
     public String getId() {
         return id;
@@ -21,7 +22,6 @@ public class TripSummaryDTO {
         this.id = id;
     }
 
-    private String organizer_username;
 
     public void setDestination(String destination) {
         this.destination = destination;
@@ -72,12 +72,19 @@ public class TripSummaryDTO {
     }
 
 
-
     public int getLike_counter() {
         return like_counter;
     }
 
     public void setLike_counter(int like_counter) {
         this.like_counter = like_counter;
+    }
+
+    public RegisteredUserDTO getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(RegisteredUserDTO organizer) {
+        this.organizer = organizer;
     }
 }

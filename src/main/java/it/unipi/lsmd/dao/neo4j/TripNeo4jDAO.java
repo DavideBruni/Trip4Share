@@ -137,18 +137,19 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
     }
 
     @Override
-    public String getOrganizer(String trip_id) throws Neo4jException {
-        String username;
+    public RegisteredUser getOrganizer(Trip trip) throws Neo4jException {
+        RegisteredUser user = new RegisteredUser();
         try (Session session = getConnection().session()) {
-            username = session.readTransaction(tx -> {
-                Result result = tx.run("(t:Trip{id: $id})<-[:JOIN]- (r:RegisteredUser)" +
-                                "RETURN r.username as organizer LIMIT 1",
-                        parameters("id", trip_id));
+            String username = session.readTransaction(tx -> {
+                Result result = tx.run("(t:Trip{id: $id})<-[:JOIN]- (r:RegisteredUser) " +
+                                "RETURN r.username as organizer",
+                        parameters("id", trip.getId()));
                 return result.next().get("organizer").asString();
             });
+            user.setUsername(username);
         }catch (Exception e){
-            return null;
+            throw new Neo4jException();
         }
-        return username;
+        return user;
     }
 }

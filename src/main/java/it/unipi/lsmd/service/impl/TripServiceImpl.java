@@ -4,16 +4,16 @@ import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
+import it.unipi.lsmd.dao.neo4j.TripNeo4jDAO;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.PriceDestinationDTO;
-import it.unipi.lsmd.dto.TripDetailsDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
+import it.unipi.lsmd.utils.UserUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -28,11 +28,14 @@ public class TripServiceImpl implements TripService {
     private final WishlistRedisDAO wishlistRedisDAO;
     private final WishlistMongoDAO wishlistMongoDAO;
 
+    private final TripNeo4jDAO organizerNeoDAO;
+
     public TripServiceImpl(){
         tripDetailsDAO = DAOLocator.getTripDetailsDAO();
         tripDAO = DAOLocator.getTripDAO();
         wishlistRedisDAO = new WishlistRedisDAO();
         wishlistMongoDAO = new WishlistMongoDAO();
+        organizerNeoDAO = new TripNeo4jDAO();
     }
 
     @Override
@@ -50,6 +53,7 @@ public class TripServiceImpl implements TripService {
             tripSummaryDTO.setReturnDate(t.getReturnDate());
             tripSummaryDTO.setTitle(t.getTitle());
             tripSummaryDTO.setImgUrl(t.getImg());
+            tripSummaryDTO.setOrganizer((RegisteredUserDTO) UserUtils.userModelToDTO(t.getOrganizer()));
 
             tripsDTO.add(tripSummaryDTO);
         }
@@ -58,6 +62,12 @@ public class TripServiceImpl implements TripService {
 
     public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
+        try {
+            trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
+        } catch (Neo4jException e) {
+            System.out.println("Error - No organizer found");
+            trip.setOrganizer(null);
+        }
         return TripUtils.tripModelToDetailedDTO(trip);
     }
 
@@ -92,8 +102,13 @@ public class TripServiceImpl implements TripService {
 
         ArrayList<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
 
-        for(Trip t : wishlistRedisDAO.getUserWishlist(username)){
-            trips.add(TripUtils.tripSummaryDTOFromModel(t));
+        for(Trip trip : wishlistRedisDAO.getUserWishlist(username)){
+            try {
+                trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
+            } catch (Neo4jException e) {
+                trip.setOrganizer(null);
+            }
+            trips.add(TripUtils.tripSummaryDTOFromModel(trip));
         }
 
         return trips;

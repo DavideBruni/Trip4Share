@@ -13,7 +13,6 @@ public class RegisteredUser extends User{
     private String phone;
     private List<RegisteredUser> following;
     private String bio;
-
     private double avg_rating;
 
     public List<RegisteredUser> getFollowing() {

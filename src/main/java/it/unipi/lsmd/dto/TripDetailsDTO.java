@@ -1,12 +1,14 @@
 package it.unipi.lsmd.dto;
 
+import it.unipi.lsmd.model.RegisteredUser;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TripDetailsDTO {
 
-    private String organizer_username;
+    private String id;
     private String title;
     private String description;
     private String destination;
@@ -19,8 +21,8 @@ public class TripDetailsDTO {
     private List<String> whatsNotIncluded;
     private String info;
     private String img;
-
     private int like_counter;
+    private RegisteredUserDTO organizer;
 
 
     public TripDetailsDTO(){
@@ -31,6 +33,13 @@ public class TripDetailsDTO {
     }
 
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -132,12 +141,12 @@ public class TripDetailsDTO {
         this.img = img;
     }
 
-    public String getOrganizer_username() {
-        return organizer_username;
+    public RegisteredUserDTO getOrganizer() {
+        return organizer;
     }
 
-    public void setOrganizer_username(String organizer_username) {
-        this.organizer_username = organizer_username;
+    public void setOrganizer(RegisteredUserDTO organizer) {
+        this.organizer = organizer;
     }
 
     public int getLike_counter() {
@@ -151,7 +160,7 @@ public class TripDetailsDTO {
     @Override
     public String toString() {
         return "TripDetailsDTO{" +
-                "organizer_username='" + organizer_username + '\'' +
+                "organizer_username='" + organizer.getUsername() + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", destination='" + destination + '\'' +

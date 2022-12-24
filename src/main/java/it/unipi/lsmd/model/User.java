@@ -3,16 +3,6 @@ package it.unipi.lsmd.model;
 
 public abstract class User {
 
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     private String name;
     private String surname;
     private String username;
