@@ -197,7 +197,7 @@ public class TripServiceImpl implements TripService {
             try{
                 retDate = new SimpleDateFormat("dd-MM-yyyy").parse(end);
             }catch (ParseException ex){ }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             depDate = new Date();
         }
         List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,page, objectPerPageSearch);
@@ -283,5 +283,13 @@ public class TripServiceImpl implements TripService {
         //return false;
     }
 
-
+    @Override
+    public List<TripSummaryDTO> mostPopularTrips(int tripNumberIndex) {
+        List<Trip> trips = tripDetailsDAO.mostPopularTrips(tripNumberIndex);
+        List<TripSummaryDTO> ret = new ArrayList<>();
+        for(Trip t : trips){
+            ret.add(TripUtils.tripSummaryDTOFromModel(t));
+        }
+        return ret;
+    }
 }
