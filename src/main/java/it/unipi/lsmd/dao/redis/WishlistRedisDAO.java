@@ -55,7 +55,7 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
         ArrayList<Trip> trips = new ArrayList<Trip>();
 
         try(Jedis jedis = getConnection()){
-            String key = REDIS_APP_NAMESPACE + ":" + username + "*";
+            String key = REDIS_APP_NAMESPACE + ":" + username + ":*";
             Set<String> keys = jedis.keys(key);
             for(String k : keys){
 
@@ -65,4 +65,6 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
         }
         return trips;
     }
+
+
 }
