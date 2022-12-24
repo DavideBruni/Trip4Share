@@ -22,6 +22,7 @@ import java.util.List;
 import static com.mongodb.client.model.Accumulators.avg;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.exclude;
 import static com.mongodb.client.model.Projections.include;
 
 public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
@@ -40,7 +41,8 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
         User user;
         Bson query = and(eq("username", username), eq("password", password));
-        Document result = collection.find(query).first();
+        Bson projection = exclude("email", "password");
+        Document result = collection.find(query).projection(projection).first();
 
         try{
             user = UserUtils.userFromDocument(result);
@@ -52,12 +54,12 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     }
 
     @Override
-
     public RegisteredUser getUser(String username) {
 
         Bson query = eq("username", username);
+        Bson projection = exclude("email", "password");
 
-        Document result = collection.find(query).first();
+        Document result = collection.find(query).projection(projection).first();
         User u = UserUtils.userFromDocument(result);
         if(u instanceof Admin){
             return null;

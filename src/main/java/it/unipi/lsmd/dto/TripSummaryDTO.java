@@ -11,6 +11,7 @@ public class TripSummaryDTO {
     private boolean deleted;
     private String Title;
     private String imgUrl;
+    private int like_counter;
 
     public String getId() {
         return id;
@@ -46,6 +47,10 @@ public class TripSummaryDTO {
         this.imgUrl = imgUrl;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
     public String getDestination() {
         return destination;
     }
@@ -66,7 +71,13 @@ public class TripSummaryDTO {
         return Title;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+
+
+    public int getLike_counter() {
+        return like_counter;
+    }
+
+    public void setLike_counter(int like_counter) {
+        this.like_counter = like_counter;
     }
 }

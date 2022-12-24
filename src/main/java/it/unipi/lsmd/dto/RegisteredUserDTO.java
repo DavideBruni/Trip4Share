@@ -15,7 +15,6 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private ArrayList<ReviewDTO> reviews;
     private List<OtherUserDTO> following;
     private LocalDate birthdate;
-
     private String bio;
 
     public RegisteredUserDTO(){

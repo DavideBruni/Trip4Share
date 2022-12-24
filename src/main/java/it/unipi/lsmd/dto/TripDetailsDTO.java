@@ -20,6 +20,8 @@ public class TripDetailsDTO {
     private String info;
     private String img;
 
+    private int like_counter;
+
 
     public TripDetailsDTO(){
         tags = new ArrayList<String>();
@@ -130,5 +132,39 @@ public class TripDetailsDTO {
         this.img = img;
     }
 
-    // TODO - add toString method
+    public String getOrganizer_username() {
+        return organizer_username;
+    }
+
+    public void setOrganizer_username(String organizer_username) {
+        this.organizer_username = organizer_username;
+    }
+
+    public int getLike_counter() {
+        return like_counter;
+    }
+
+    public void setLike_counter(int like_counter) {
+        this.like_counter = like_counter;
+    }
+
+    @Override
+    public String toString() {
+        return "TripDetailsDTO{" +
+                "organizer_username='" + organizer_username + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", destination='" + destination + '\'' +
+                ", price=" + price +
+                ", departureDate=" + departureDate +
+                ", returnDate=" + returnDate +
+                ", tags=" + tags +
+                ", itinerary=" + itinerary.toString() +
+                ", whatsIncluded=" + whatsIncluded +
+                ", whatsNotIncluded=" + whatsNotIncluded +
+                ", info='" + info + '\'' +
+                ", img='" + img + '\'' +
+                ", like_counter=" + like_counter +
+                '}';
+    }
 }

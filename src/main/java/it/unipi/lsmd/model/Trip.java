@@ -20,6 +20,7 @@ public class Trip {
     private String info;
     private String img;
     private Boolean deleted;
+    private int like_counter;
 
     public Trip(){
         tags = new ArrayList<String>();
@@ -111,6 +112,10 @@ public class Trip {
         this.itinerary = itinerary;
     }
 
+    public void addItinerary(DailySchedule itinerary) {
+        this.itinerary.add(itinerary);
+    }
+
     public List<String> getWhatsIncluded() {
         return whatsIncluded;
     }
@@ -135,6 +140,15 @@ public class Trip {
         this.info = info;
     }
 
+
+    public int getLike_counter() {
+        return like_counter;
+    }
+
+    public void setLike_counter(int like_counter) {
+        this.like_counter = like_counter;
+    }
+
     @Override
     public String toString() {
         return "Trip{" +
@@ -152,7 +166,5 @@ public class Trip {
                 '}';
     }
 
-    public void addItinerary(DailySchedule itinerary) {
-        this.itinerary.add(itinerary);
-    }
+
 }
