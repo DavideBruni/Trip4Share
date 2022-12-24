@@ -15,6 +15,9 @@ public class SecurityUtils {
     public static final String USERS_FOLLOWERS_KEY = "followers";
     public static final String CHEAPEST_TRIPS = "cheapest";
     public static final String MOST_POPULAR = "most_populars";
+    public static final String FOLLOWING_USER_TRIPS = "trip";
+    public static final String SUGGESTED_USERS = "suggested_users";
+    public static final String SUGGESTED_TRIPS = "suggested_trips";
 
 
     public static AuthenticatedUserDTO getAuthenticatedUser(HttpServletRequest request){

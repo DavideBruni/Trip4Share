@@ -1,3 +1,7 @@
+<%@ page import="it.unipi.lsmd.dto.AuthenticatedUserDTO" %>
+<%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
+<%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
    <head>
@@ -10,17 +14,17 @@
       <!-- bootstrap css -->
       <link rel="stylesheet" href="WebContent/css/bootstrap.min.css">
       <!-- style css -->
-      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="WebContent/css/style.css">
       <!-- Responsive-->
-      <link rel="stylesheet" href="css/responsive.css">
+      <link rel="stylesheet" href="WebContent/css/responsive.css">
       <!-- fevicon -->
-      <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <link rel="icon" href="WebContent/images/fevicon.png" type="image/gif" />
       <!-- Scrollbar Custom CSS -->
-      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <link rel="stylesheet" href="WebContent/css/jquery.mCustomScrollbar.min.css">
       <!-- Tweaks for older IEs-->
       <!-- owl stylesheets --> 
-      <link rel="stylesheet" href="css/owl.carousel.min.css">
-      <link rel="stylesheet" href="css/owl.theme.default.min.css">
+      <link rel="stylesheet" href="WebContent/css/owl.carousel.min.css">
+      <link rel="stylesheet" href="WebContent/css/owl.theme.default.min.css">
       <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -36,9 +40,9 @@
                         <div class="col-md-12">
                            <div class="header_information">
                               <ul>
-                                 <li><img src="images/1.png" alt="#"/> 145.street road new York</li>
-                                 <li><img src="images/2.png" alt="#"/> +71  5678954378</li>
-                                 <li><img src="images/3.png" alt="#"/> Demo@hmail.com</li>
+                                 <li><img src="WebContent/images/1.png" alt="#"/> 145.street road new York</li>
+                                 <li><img src="WebContent/images/2.png" alt="#"/> +71  5678954378</li>
+                                 <li><img src="WebContent/images/3.png" alt="#"/> Demo@hmail.com</li>
                               </ul>
                            </div>
                         </div>
@@ -50,7 +54,7 @@
                      <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
                         <div class="full">
                            <div class="center-desk">
-                              <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#"></a> </div>
+                              <div class="logo"> <a href="index.html"><img src="WebContent/images/logo.png" alt="#"></a> </div>
                            </div>
                         </div>
                      </div>
@@ -59,10 +63,15 @@
                            <div class="limit-box">
                               <nav class="main-menu">
                                  <ul class="menu-area-main">
-                                    
-                                  
-                                    <li class="active"> <a href="#"> Welcome, username!</a></li>
-                                    <li><a href="../profile.html">Profile</a> </li>
+
+                                    <%
+                                       AuthenticatedUserDTO userDTO = (AuthenticatedUserDTO) session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
+
+                                    %>
+                                    <% if(userDTO.getUsername()!=null) { %>
+                                    <li class="active"> Welcome  <%= userDTO.getUsername()%></li>
+                                    <%}%>
+                                    <li><a href=<%="/user?username="+userDTO.getUsername()%>>Profile</a> </li>
                                     <li><a href="../search.html">Search</a></li>
                                  </ul>
                               </nav>
@@ -77,98 +86,41 @@
          <!-- end header -->      
       
 <body class="main-layout">
- 
+ <!-- Suggested travels -->
+ <%
+    List<TripSummaryDTO> suggestedTrips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.SUGGESTED_TRIPS);
+    if(suggestedTrips!= null && !suggestedTrips.isEmpty()){
+ %>
           <div class="row">
 
             <div id="travel" class="traveling pl-2">
                <div class="container col-12">
                   <div class="row">
                      <div class="col-12">
-                    
                         <div class="titlepage">
                            <h3 >Suggested Travels </h3>
                         </div>
                      </div>
                   </div>
                   <div class="row">
-                     <div class="col-1">
-                        <!-- <div class="traveling-box">
-                           <i><img src="icon/travel-icon.png" alt="icon"/></i>
-                           <p>Different Countrys</p>                       
-                        </div> -->
-                     </div>
-                     <div class="col-1">
+                     <div class="col-1"> </div>
+                     <% for(TripSummaryDTO t : suggestedTrips){ %>
+                     <div class="col-2">
                         <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
+                           <!--<i><img src=<%=t.getImgUrl()%> alt="icon"/></i>-->
+                            <i><img src="WebContent/icon/travel-icon.png" alt="icon" width="60%"/></i>
+                            <strong><h6>
+                              <%=t.getDestination() %>
+                           </h6></strong>
+                        <h7>
+                              <%= "From:<br>"+t.getDepartureDate()+"<br>to:<br>"+t.getReturnDate() %>
+                        </h7>
                         </div>
                      </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon3.png" alt="icon"/></i>
-                        
-                           <p> Mountains Tours </p>
-                           
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon4.png" alt="icon"/></i>
-                           <p>Summer Rest</p>
-                         
-                           
-                        </div>
-                        
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div>
-                     </div>
-                     <div class="col-1">
-                        <!-- <div class="traveling-box">
-                           <i><img src="icon/travel-icon2.png" alt="icon"/></i>
-                           <p>Mountains Tours</p>
-                        </div> -->
-                     </div>   
-                     
+                     <% }%>
+
+                     <div class="col-1"> </div>
+
                   </div>
                </div>
              </div>
@@ -176,25 +128,34 @@
 
          </div>
 
+ <% } %>
+ <!-- End suggested travels -->
       
       
 <div class="row">
    <div class="container col-9">
       <div class="titlepage">
-         <h2>People you follow organized</h2>
+         <h2>Organized trips by people you follow</h2>
       </div>
+       <%
+           List<TripSummaryDTO> trips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.FOLLOWING_USER_TRIPS);
+           if(trips!= null && !trips.isEmpty()){
+       %>
       <div class="row">
          <div class="col-12 ">
-            <hr class="invis3">
+            <% for(TripSummaryDTO t : trips){ %>
+             <hr class="invis3">
             <!-- Single Blog Area  -->
             <div>
                   <div class="row align-items-center">
                      <div class="col-1"></div>
                      <div class="col-5">
                         <div class="single-blog-thumbnail">
-                              <img src="images/blog-image.jpg" alt="">
+                              <img src=<%= t.getImgUrl() %> alt="Immagine di viaggio">
                               <div class="post-date">
-                                 <a href="#">12 <span>march</span></a>
+                                  <span>From: <%= t.getDepartureDate()%></span>
+                                  <br>
+                                  <span>To: <%= t.getReturnDate()%></span>
                               </div>
                         </div>
                    
@@ -204,103 +165,18 @@
                         <!-- Blog Content -->
                         <div class="single-blog-content">
                               <div class="line"></div>
-                              <a href="#" class="post-tag">Lifestyle</a>
-                              <h4><a href="#" class="post-headline">Party people in the house</a></h4>
-                              <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
+                              <a href="#" class="post-tag"><%=t.getDestination()%></a>
+                              <h4><a href="#" class="post-headline"><%=t.getTitle()%></a></h4>
                               <div class="post-meta">
                                  <p>By <a href="#">james smith</a></p>
-                                 <p>3 comments</p>
+                                 <p><%=t.getLike_counter()%> likes</p>
                               </div>
                         </div>
                      </div>
                   </div>
             </div>
-            <hr class="invis3">
-            <!-- Single Blog Area  -->
-            <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="1000ms">
-                  <div class="row align-items-center">
-                     <div class="col-1"></div>
-                     <div class="col-5">
-                        <div class="single-blog-thumbnail">
-                              <img src="images/blog-image.jpg" alt="">
-                              <div class="post-date">
-                                 <a href="#">12 <span>march</span></a>
-                              </div>
-                        </div>
-                     </div>
-                     <div class="col-12 col-md-6">
-                        <!-- Blog Content -->
-                        <div class="single-blog-content">
-                              <div class="line"></div>
-                              <a href="#" class="post-tag">Lifestyle</a>
-                              <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                              <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                              <div class="post-meta">
-                                 <p>By <a href="#">james smith</a></p>
-                                 <p>3 comments</p>
-                              </div>
-                        </div>
-                     </div>
-                  </div>
-            </div>
-            <hr class="invis3">
-        
-            <!-- Single Blog Area  -->
-            <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="1000ms">
-                  <div class="row align-items-center">
-                     <div class="col-1"></div>
-                     <div class="col-5">
-                        <div class="single-blog-thumbnail">
-                              <img src="images/blog-image.jpg" alt="">
-                              <div class="post-date">
-                                 <a href="#">12 <span>march</span></a>
-                              </div>
-                        </div>
-                     </div>
-                     <div class="col-12 col-md-6">
-                        <!-- Blog Content -->
-                        <div class="single-blog-content">
-                              <div class="line"></div>
-                              <a href="#" class="post-tag">Lifestyle</a>
-                              <h4><a href="#" class="post-headline">Party people in the house</a></h4>
-                              <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                              <div class="post-meta">
-                                 <p>By <a href="#">james smith</a></p>
-                                 <p>3 comments</p>
-                              </div>
-                        </div>
-                     </div>
-                  </div>
-            </div>
-            <hr class="invis3">
-            <!-- Single Blog Area  -->
-            <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1000ms">
-                  <div class="row align-items-center">
-                     <div class="col-1"></div>
-                     <div class="col-5">
-                        <div class="single-blog-thumbnail">
-                              <img src="images/blog-image.jpg" alt="">
-                              <div class="post-date">
-                                 <a href="#">12 <span>march</span></a>
-                              </div>
-                        </div>
-                     </div>
-                     <div class="col-12 col-md-6">
-                        <!-- Blog Content -->
-                        <div class="single-blog-content">
-                              <div class="line"></div>
-                              <a href="#" class="post-tag">Lifestyle</a>
-                              <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                              <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                              <div class="post-meta">
-                                 <p>By <a href="#">james smith</a></p>
-                                 <p>3 comments</p>
-                              </div>
-                        </div>
-                     </div>
-                  </div>
-            </div>
-            
+             <%}%>
+
             <div class="row">
                <div class="col-md-12">
                   <nav aria-label="Page navigation">
@@ -312,6 +188,7 @@
          </div><!-- end row -->      
          </div>
       </div>
+       <%}%>
    </div>
 
   
@@ -325,7 +202,7 @@
                <div class="list-group">
                   <a href="single.html" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="w-100 justify-content-between">
-                           <img src="icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >
+                           <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >
                            <h5 class="mb-1">5 Beautiful buildings you need to before dying</h5>
                            <small>12 Jan, 2016</small>
                         </div>
@@ -333,14 +210,14 @@
       
                   <a href="single.html" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="w-100 justify-content-between">
-                           <img src="icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >                                 <h5 class="mb-1">Let's make an introduction for creative life</h5>
+                           <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >                                 <h5 class="mb-1">Let's make an introduction for creative life</h5>
                            <small>11 Jan, 2016</small>
                         </div>
                   </a>
       
                   <a href="single.html" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="w-100 last-item justify-content-between">
-                           <img src="icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >                                 <h5 class="mb-1">Did you see the most beautiful sea in the world?</h5>
+                           <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >                                 <h5 class="mb-1">Did you see the most beautiful sea in the world?</h5>
                            <small>07 Jan, 2016</small>
                         </div>
                   </a>
@@ -361,10 +238,10 @@
               <div class="row pdn-top-30">
                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <ul class="location_icon">
-                       <li> <a href="#"><img src="icon/facebook.png"></a></li>
-                       <li> <a href="#"><img src="icon/Twitter.png"></a></li>
-                       <li> <a href="#"><img src="icon/linkedin.png"></a></li>
-                       <li> <a href="#"><img src="icon/instagram.png"></a></li>
+                       <li> <a href="#"><img src="WebContent/icon/facebook.png"></a></li>
+                       <li> <a href="#"><img src="WebContent/icon/Twitter.png"></a></li>
+                       <li> <a href="#"><img src="WebContent/icon/linkedin.png"></a></li>
+                       <li> <a href="#"><img src="WebContent/icon/instagram.png"></a></li>
                     </ul>
                  </div>
                  <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
@@ -415,16 +292,16 @@
      </footer>
       <!-- end footer -->
       <!-- Javascript files-->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/popper.min.js"></script>
-      <script src="js/bootstrap.bundle.min.js"></script>
-      <script src="js/jquery-3.0.0.min.js"></script>
-      <script src="js/plugin.js"></script>
+      <script src="WebContent/js/jquery.min.js"></script>
+      <script src="WebContent/js/popper.min.js"></script>
+      <script src="WebContent/js/bootstrap.bundle.min.js"></script>
+      <script src="WebContent/js/jquery-3.0.0.min.js"></script>
+      <script src="WebContent/js/plugin.js"></script>
       <!-- sidebar -->
-      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
+      <script src="WebContent/js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="WebContent/js/custom.js"></script>
       <!-- javascript --> 
-      <script src="js/owl.carousel.js"></script>
+      <script src="WebContent/js/owl.carousel.js"></script>
       <script>
          $(document).ready(function() {
             var owl = $('.owl-carousel');
