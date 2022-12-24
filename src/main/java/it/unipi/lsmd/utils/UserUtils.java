@@ -11,7 +11,9 @@ import it.unipi.lsmd.model.User;
 import org.bson.Document;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public interface UserUtils {
@@ -29,10 +31,10 @@ public interface UserUtils {
             user = admin;
         }else{
             RegisteredUser registeredUser = new RegisteredUser(result.getString("username"));
-            registeredUser.setBirthdate(LocalDate.parse(result.getString("birthdate")));
             registeredUser.setNationality(result.getString("nationality"));
             ArrayList<String> spokenLanguages = result.get("spoken_languages", ArrayList.class);
             registeredUser.setSpoken_languages(spokenLanguages);
+            registeredUser.setBirthdate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("birthdate")));
 
             ArrayList<Document> reviews = result.get("reviews", ArrayList.class);
             if(reviews != null){

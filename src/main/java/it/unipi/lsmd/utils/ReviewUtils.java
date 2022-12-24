@@ -7,7 +7,10 @@ import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import org.bson.Document;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReviewUtils {
 
@@ -19,7 +22,7 @@ public class ReviewUtils {
         review.setTitle(result.getString("title"));
         review.setText(result.getString("text"));
         review.setRating(result.getInteger("value"));
-        review.setDate(result.getString("date"));
+        review.setDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("date")));
 
         return review;
     }

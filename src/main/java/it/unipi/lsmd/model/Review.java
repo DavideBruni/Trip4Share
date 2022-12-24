@@ -1,12 +1,13 @@
 package it.unipi.lsmd.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Review {
 
     private String text;
     private String title;
-    private String date;    //TODO- cast to date in dataset
+    private LocalDate date;
     private int rating;
     private String author;
 
@@ -34,11 +35,11 @@ public class Review {
         this.title = title;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

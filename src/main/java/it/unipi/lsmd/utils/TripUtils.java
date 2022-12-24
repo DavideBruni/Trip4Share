@@ -23,11 +23,6 @@ import java.util.List;
 
 public interface TripUtils {
 
-    private static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-    }
     static DailySchedule dailyScheduleFromDocument(Document result){
         DailySchedule dailySchedule = new DailySchedule();
         dailySchedule.setTitle(result.getString("title"));
@@ -64,8 +59,8 @@ public interface TripUtils {
             Integer price = result.getInteger("price");
             trip.setPrice(price);
         }
-        trip.setDepartureDate(convertToLocalDateViaInstant(result.getDate("departureDate")));
-        trip.setReturnDate(convertToLocalDateViaInstant(result.getDate("returnDate")));
+        trip.setDepartureDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("departureDate")));
+        trip.setReturnDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("returnDate")));
 
         ArrayList<String> tags = result.get("tags", ArrayList.class);
         trip.setTags(tags);
