@@ -67,6 +67,7 @@ public interface UserUtils {
             registeredUserDTO.setSpoken_languages(registeredUser.getSpoken_languages());
             registeredUserDTO.setPhone(registeredUser.getPhone());
             registeredUserDTO.setBirthdate(registeredUser.getBirthdate());
+            registeredUserDTO.setAvg_rating(registeredUser.getAvg_rating());
 
             try{
                 for(Review review : registeredUser.getReviews()){
@@ -143,6 +144,7 @@ public interface UserUtils {
         r.setSpoken_languages(userDTO.getSpoken_languages());
         r.setBio(userDTO.getBio());
         r.setBirthdate(userDTO.getBirthdate());
+        r.setAvg_rating(userDTO.getAvg_rating());
         return r;
     }
 
