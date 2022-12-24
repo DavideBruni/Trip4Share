@@ -186,20 +186,22 @@ public interface TripUtils {
     }
 
     static Trip tripFromRecord(Record r){
-        Trip t = new Trip();
-        t.setDestination(r.get("t.destination").asString());
-        t.setTitle(r.get("t.title").asString());
-        t.setImg(r.get("t.imgUrl").asString());
+        Trip trip = new Trip();
+        trip.setDestination(r.get("t.destination").asString());
+        trip.setTitle(r.get("t.title").asString());
+        trip.setImg(r.get("t.imgUrl").asString());
+        trip.setOrganizer(r.get("organizer").asString());
+
         try {
-            t.setDeleted(r.get("t.deleted").asBoolean());
-            t.setDepartureDate(r.get("t.departureDate").asLocalDate());
-            t.setReturnDate(r.get("t.returnDate").asLocalDate());
+            trip.setDeleted(r.get("t.deleted").asBoolean());
+            trip.setDepartureDate(r.get("t.departureDate").asLocalDate());
+            trip.setReturnDate(r.get("t.returnDate").asLocalDate());
         }catch (Uncoercible uncoercible){
-            t.setDeleted(Boolean.FALSE);
-            t.setDepartureDate(null);
-            t.setReturnDate(null);
+            trip.setDeleted(Boolean.FALSE);
+            trip.setDepartureDate(null);
+            trip.setReturnDate(null);
         }finally {
-            return t;
+            return trip;
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 public class Trip {
 
     private String id;
+    private String organizer;
     private String title;
     private String description;
     private String destination;
@@ -31,6 +32,14 @@ public class Trip {
 
     public String getId(){return this.id;}
     public void setId(String id){this.id = id;}
+
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
 
     public String getImg() {
         return img;
