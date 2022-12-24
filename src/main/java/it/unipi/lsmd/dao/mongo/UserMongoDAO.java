@@ -91,7 +91,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
     public double avgRating(String username){
         Bson m1 = match(eq("username", username));
-        Bson u1 = unwind("reviews");
+        Bson u1 = unwind("$reviews");
         Bson g1 = group("$username",avg("rating","$reviews.value"));
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1,u1,g1));
         MongoCursor<Document> result = res.iterator();

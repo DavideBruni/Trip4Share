@@ -31,18 +31,20 @@ public class UserServiceImpl implements UserService {
     public AuthenticatedUserDTO authenticate(String username, String password){
 
         User user = userDAO.authenticate(username, password);
-        /*
+
         if(user instanceof RegisteredUser){
-            ((RegisteredUser) user).setFollowing(registeredUserDAO.getFollowing(username));
+            ((RegisteredUser) user).setAvg_rating(userDAO.avgRating(username));
+            //((RegisteredUser) user).setFollowing(registeredUserDAO.getFollowing(username));
         }
-         */
+
         return UserUtils.userModelToDTO(user);
     }
 
 
     @Override
-    public AuthenticatedUserDTO getUser(String user_id){
-        RegisteredUser user = userDAO.getUser(user_id);
+    public AuthenticatedUserDTO getUser(String username){
+        RegisteredUser user = userDAO.getUser(username);
+        user.setAvg_rating(userDAO.avgRating(username));
         return UserUtils.userModelToDTO(user);
     }
 
