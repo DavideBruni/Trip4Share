@@ -57,8 +57,9 @@ public interface TripUtils {
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
         trip.setDestination(result.getString("destination"));
+        trip.setLike_counter(result.getInteger("likes"));
+        trip.setImg(result.getString("imgUrl"));
 
-        //TODO - trip.setImg(result.getString("imgUrl"));
         if(result.getInteger("price")!=null) {
             Integer price = result.getInteger("price");
             trip.setPrice(price);
@@ -84,16 +85,6 @@ public interface TripUtils {
         return trip;
     }
 
-    static Trip tripFromTripSummary(TripSummaryDTO tripSummary){
-        Trip trip = new Trip();
-        trip.setTitle(tripSummary.getTitle());
-        trip.setDestination(tripSummary.getDestination());
-        trip.setDepartureDate(tripSummary.getDepartureDate());
-        trip.setReturnDate(tripSummary.getReturnDate());
-
-        return trip;
-    }
-
     static TripDetailsDTO tripModelToDetailedDTO(Trip trip) {
 
         if(trip == null){
@@ -111,6 +102,7 @@ public interface TripUtils {
         tripDTO.setTags(trip.getTags());
         tripDTO.setWhatsIncluded(trip.getWhatsIncluded());
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
+        tripDTO.setLike_counter(trip.getLike_counter());
 
         try{
             for(DailySchedule dailySchedule : trip.getItinerary()){
@@ -121,7 +113,9 @@ public interface TripUtils {
         return tripDTO;
     }
 
+    // TODO - change name in tripModelToSummaryDTO
     static TripSummaryDTO tripSummaryDTOFromModel(Trip trip){
+
         if(trip == null){
             return null;
         }
@@ -131,6 +125,7 @@ public interface TripUtils {
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
+        tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setImgUrl(trip.getImg());
 
         return tripDTO;
@@ -144,8 +139,20 @@ public interface TripUtils {
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setImgUrl(trip.getImg());
+        tripDTO.setLike_counter(tripDTO.getLike_counter());
 
         return tripDTO;
+    }
+
+    static Trip tripFromTripSummary(TripSummaryDTO tripSummary){
+        Trip trip = new Trip();
+        trip.setTitle(tripSummary.getTitle());
+        trip.setDestination(tripSummary.getDestination());
+        trip.setDepartureDate(tripSummary.getDepartureDate());
+        trip.setReturnDate(tripSummary.getReturnDate());
+        trip.setLike_counter(tripSummary.getLike_counter());
+
+        return trip;
     }
 
     static String tripToJSONString(Trip trip){

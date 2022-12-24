@@ -14,6 +14,8 @@ public class RegisteredUser extends User{
     private List<RegisteredUser> following;
     private String bio;
 
+    private double avg_rating;
+
     public List<RegisteredUser> getFollowing() {
         return following;
     }
@@ -85,5 +87,13 @@ public class RegisteredUser extends User{
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public double getAvg_rating() {
+        return avg_rating;
+    }
+
+    public void setAvg_rating(double avg_rating) {
+        this.avg_rating = avg_rating;
     }
 }

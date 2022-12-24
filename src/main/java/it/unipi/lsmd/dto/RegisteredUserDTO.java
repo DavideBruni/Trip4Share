@@ -15,8 +15,8 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private ArrayList<ReviewDTO> reviews;
     private List<OtherUserDTO> following;
     private LocalDate birthdate;
-
     private String bio;
+    private double avg_rating;
 
     public RegisteredUserDTO(){
         spoken_languages = new ArrayList<String>();
@@ -81,5 +81,13 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public double getAvg_rating() {
+        return avg_rating;
+    }
+
+    public void setAvg_rating(double avg_rating) {
+        this.avg_rating = avg_rating;
     }
 }
