@@ -106,6 +106,7 @@
                 <div class="row">
                     <div class="col-12 col-lg-8">
                         <!-- Single Preparation Step -->
+
                         <h2>Itinerary</h2>
                         <%
                             for(DailyScheduleDTO dailyScheduleDTO : trip.getItinerary()){
