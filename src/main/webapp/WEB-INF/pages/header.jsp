@@ -1,4 +1,5 @@
-<%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %><%--
+<%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %>
+<%@ page import="it.unipi.lsmd.utils.SecurityUtils" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 25/12/2022

@@ -63,7 +63,7 @@
                         <% for(TripSummaryDTO t : mostPopulars){ %>
                         <div class="item">
                            <img class="img-responsive" src="<%= t.getImgUrl()%>" alt="Image of a trip" />
-                           <h3><a class=""text-decoration-none href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %></a><</h3>
+                           <h3><a class=""text-decoration-none href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %></a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
                               Return Date: <%=t.getReturnDate()%>
