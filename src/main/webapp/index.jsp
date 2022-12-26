@@ -15,59 +15,10 @@
    </head>
    <!-- body -->
    <body class="main-layout">
-     
-      <!-- header -->
-      <header>
-         <!-- header inner -->
-         <div class="header">
-            <div class="header_white_section">
-               <div class="container-fluid">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="header_information">
-                           <ul>
-                              <li><img src="WebContent/images/1.png" alt="#"/> 145.street road new York</li>
-                              <li><img src="WebContent/images/2.png" alt="#"/> +71  5678954378</li>
-                              <li><img src="WebContent/images/3.png" alt="#"/> Demo@hmail.com</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="container">
-               <div class="row">
-                  <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                     <div class="full">
-                        <div class="center-desk">
-                           <div class="logo"> <a href="index.jsp"><img src="WebContent/images/logo.png" alt="#" height="auto"></a> </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                     <div class="menu-area">
-                        <div class="limit-box">
-                           <nav class="main-menu">
-                              <ul class="menu-area-main">
-                                 <!-- <li class="active"> <a href="#">Home</a> </li> -->
-                                 <li> <a href="signup.html">Sign Up</a> </li>
-                                 <li><a href="signin.html">Sign In</a></li>
-                                 <li><a href="search.html">Search Trips</a></li>
-                              </ul>
-                           </nav>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <!-- end header inner -->
-      </header>
-      <!-- end header -->
-   
-   
 
-      <div class="banner-main">
+   <%@ include file="/WEB-INF/pages/header.jsp" %>
+
+   <div class="banner-main">
          <img src="WebContent/images/banner.jpg" alt="#"/>
          <div class="container">
             <div class="text-bg">
@@ -112,9 +63,10 @@
                         <% for(TripSummaryDTO t : mostPopulars){ %>
                         <div class="item">
                            <img class="img-responsive" src="<%= t.getImgUrl()%>" alt="Image of a trip" />
-                           <h3><a class=""text-decoration-none href=<%="/trip?id="+t.getId()%>> <%= t.getTitle() %></a><</h3>
+                           <h3><a class=""text-decoration-none href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %></a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
-                              Partenza: <%=t.getDepartureDate()%> | Ritorno: <%=t.getReturnDate()%>
+                              Departure Date: <%=t.getDepartureDate()%> <br>
+                              Return Date: <%=t.getReturnDate()%>
                            </p>
                         </div>
                         <% } %>
@@ -151,9 +103,10 @@
                         <% for(TripSummaryDTO t : cheapest){ %>
                         <div class="item">
                            <img class="img-responsive" src="<%= t.getImgUrl()%>" alt="Image of a trip" />
-                           <h3> <a class="text-decoration-none" href=<%="/trip?id="+t.getId()%>> <%= t.getTitle() %> </a></h3>
+                           <h3> <a class="text-decoration-none" href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %> </a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
-                              Partenza: <%=t.getDepartureDate()%> | Ritorno: <%=t.getReturnDate()%>
+                              Departure Date: <%=t.getDepartureDate()%> <br>
+                              Return Date: <%=t.getReturnDate()%>
                            </p>
                         </div>
                         <% } %>

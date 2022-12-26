@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TripDetailsDTO {
 
-    private String organizer_username;
+    private String id;
     private String title;
     private String description;
     private String destination;
@@ -30,7 +30,13 @@ public class TripDetailsDTO {
         whatsNotIncluded = new ArrayList<String>();
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -132,14 +138,6 @@ public class TripDetailsDTO {
         this.img = img;
     }
 
-    public String getOrganizer_username() {
-        return organizer_username;
-    }
-
-    public void setOrganizer_username(String organizer_username) {
-        this.organizer_username = organizer_username;
-    }
-
     public int getLike_counter() {
         return like_counter;
     }
@@ -151,7 +149,7 @@ public class TripDetailsDTO {
     @Override
     public String toString() {
         return "TripDetailsDTO{" +
-                "organizer_username='" + organizer_username + '\'' +
+                "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", destination='" + destination + '\'' +
@@ -159,7 +157,7 @@ public class TripDetailsDTO {
                 ", departureDate=" + departureDate +
                 ", returnDate=" + returnDate +
                 ", tags=" + tags +
-                ", itinerary=" + itinerary.toString() +
+                ", itinerary=" + itinerary +
                 ", whatsIncluded=" + whatsIncluded +
                 ", whatsNotIncluded=" + whatsNotIncluded +
                 ", info='" + info + '\'' +
