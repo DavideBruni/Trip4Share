@@ -4,17 +4,21 @@ import datetime
 import redis
 import json
 
-def convertDate(date):
+def convertDate(date, time=False):
+    if time:
+        return datetime.datetime.fromtimestamp(int(date['$date']['$numberLong']) / 1000).strftime('%Y-%m-%dT%H:%M:%S')
     return datetime.datetime.fromtimestamp(int(date['$date']['$numberLong'])/1000).strftime('%Y-%m-%d')
 
 
 def createJSON(json):
     data = {}
+    data['id'] = json['_id']['$oid']
     data['destination'] = json['destination']
     data['title'] = json['title']
     data['departureDate'] = convertDate(json['departureDate'])
     data['returnDate'] = convertDate(json['returnDate'])
     data['destination'] = json['destination']
+    data['last_modified'] = convertDate(json['last_modified'], time=True)
     # data['imgURL'] = json['imgURL']
     return data
 
