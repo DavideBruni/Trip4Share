@@ -180,4 +180,6 @@ public class Trip {
                 ", last_modified=" + last_modified +
                 '}';
     }
+
+
 }

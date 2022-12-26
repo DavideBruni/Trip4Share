@@ -7,6 +7,7 @@ import it.unipi.lsmd.utils.TripUtils;
 import redis.clients.jedis.Jedis;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Set;
@@ -67,4 +68,16 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
     }
 
 
+    @Override
+    public LocalDateTime getUpdateTime(String username, String trip_id) {
+        try(Jedis jedis = getConnection()){
+            String key = REDIS_APP_NAMESPACE + ":" + username + ":" + trip_id;
+            String raw_trip = jedis.get(key);
+            if(raw_trip == null)
+                return null;
+            return TripUtils.tripFromJSONString(raw_trip).getLast_modified();
+        }catch (Exception e){
+            return null;
+        }
+    }
 }

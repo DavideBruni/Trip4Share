@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @WebServlet("/trip")
@@ -40,14 +41,15 @@ public class TripServlet extends HttpServlet {
         String trip_id = httpServletRequest.getParameter("id");
 
         TripDetailsDTO trip = tripService.getTrip(trip_id);
-        httpServletRequest.setAttribute("trip", trip);
 
         if(authenticatedUserDTO != null) {
 
             String action = httpServletRequest.getParameter("action");
+            // TODO - ogni volta che apro una pagina trip va fatto il confronto? Oppure si puo' limitare in qualche modo?
+            LocalDateTime last_update = tripService.wishlistUpdateTime(authenticatedUserDTO.getUsername(), trip.getId());
             try {
 
-                if (action.equals("add")) {
+                if (action.equals("add") || trip.getLast_modified().isAfter(last_update)) {
                     System.out.println("add to wishlist");
 
                     TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
@@ -62,6 +64,8 @@ public class TripServlet extends HttpServlet {
             } catch (NullPointerException e) {
             }
         }
+        httpServletRequest.setAttribute("trip", trip);
+
 
 
 

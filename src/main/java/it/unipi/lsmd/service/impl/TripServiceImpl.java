@@ -17,6 +17,7 @@ import it.unipi.lsmd.utils.TripUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,10 +57,17 @@ public class TripServiceImpl implements TripService {
         return tripsDTO;
     }
 
+    @Override
     public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
         // TODO - add update tripSummaryDTO
-        return TripUtils.tripModelToDetailedDTO(trip);
+        TripDetailsDTO tripDetailsDTO = TripUtils.tripModelToDetailedDTO(trip);
+        //tripDetailsDTO.setOrganizer();
+        return tripDetailsDTO;
+    }
+
+    public LocalDateTime wishlistUpdateTime(String username, String trip_id){
+        return wishlistRedisDAO.getUpdateTime(username, trip_id);
     }
 
     @Override
