@@ -14,6 +14,7 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.exceptions.value.Uncoercible;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +62,7 @@ public interface TripUtils {
         }
         trip.setDepartureDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("departureDate")));
         trip.setReturnDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("returnDate")));
+        trip.setLast_modified(LocalDateTimeAdapter.convertToLocalDateTimeViaInstant(result.getDate("last_modified")));
 
         ArrayList<String> tags = result.get("tags", ArrayList.class);
         trip.setTags(tags);
@@ -99,6 +101,7 @@ public interface TripUtils {
         tripDTO.setWhatsIncluded(trip.getWhatsIncluded());
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
         tripDTO.setLike_counter(trip.getLike_counter());
+        tripDTO.setLast_modified(trip.getLast_modified());
 
         try{
             for(DailySchedule dailySchedule : trip.getItinerary()){
@@ -124,6 +127,7 @@ public interface TripUtils {
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setImgUrl(trip.getImg());
+        tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
     }
@@ -138,6 +142,7 @@ public interface TripUtils {
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setImgUrl(trip.getImg());
         tripDTO.setLike_counter(tripDTO.getLike_counter());
+        tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
     }
@@ -151,6 +156,7 @@ public interface TripUtils {
         trip.setDepartureDate(tripSummary.getDepartureDate());
         trip.setReturnDate(tripSummary.getReturnDate());
         trip.setLike_counter(tripSummary.getLike_counter());
+        trip.setLast_modified(tripSummary.getLast_modified());
 
         return trip;
     }
@@ -159,6 +165,7 @@ public interface TripUtils {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
         return gson.toJson(trip);
@@ -167,6 +174,7 @@ public interface TripUtils {
     static Trip tripFromJSONString(String jsonString){
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
         return gson.fromJson(jsonString, Trip.class);

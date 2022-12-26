@@ -58,6 +58,7 @@ public class TripServiceImpl implements TripService {
 
     public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
+        // TODO - add update tripSummaryDTO
         return TripUtils.tripModelToDetailedDTO(trip);
     }
 
@@ -72,8 +73,6 @@ public class TripServiceImpl implements TripService {
             // TODO - send error message -> trip already added
             System.out.println("Trip already in wishlist");
         }
-
-
     }
 
     @Override
@@ -98,6 +97,7 @@ public class TripServiceImpl implements TripService {
 
         return trips;
     }
+
 
     public List<TripSummaryDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {
         Date depDate = null;
