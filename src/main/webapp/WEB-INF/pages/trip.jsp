@@ -34,29 +34,48 @@
 
 
     <!-- Receipe Content Area -->
-    <div>
-        <div class="container justify-content-center text-center my-30  main-form">
+    <div class="main-form">
+        <div class="row">
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
+        </div>
+        <div class="container justify-content-center text-center my-30 ">
 
-
-            <div class="receipe-headline my-5">
-
-                <h2 class="pdn-top-40 mt-6 text-center triptitle"><%=trip.getTitle()%></h2>
-                <div class="receipe-duration">
-                    <h6>Price</h6>
-                    <h6>Departure Date</h6>
-                    <h6>Return Date</h6>
-                    <h6>Tags</h6>
-                    <p class="grey pull-right">Last Modified</p>
-
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <h2 class="pdn-top-40 mt-6 text-center triptitle pull-right ">TITLE AAAAAAAAAAAA</h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="black" class="bi bi-star mt-2" viewBox="0 0 16 16">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
                 </div>
-
             </div>
-            <img src="images/blog-image.jpg">
 
-            <div class="receipe-ratings my-5">
-                <h6>Description</h6>
+
+            <div class="col-1"></div>
+            <div class="receipe-headline my-5 col-10">
+
+                <div class="row">
+                    <div class="col-9">
+                        <img src="images/signin.jpg">
+                    </div>
+                    <div class="col-3 pull-right">
+                        <div class="receipe-duration margin_top_50 pdn-top-30 ">
+                            <h6>Price</h6>
+                            <h6>Departure Date</h6>
+                            <h6>Return Date</h6>
+                            <h6>Tags</h6>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+        </div>
+
+        <div class="col-1"></div>
+        <div class="receipe-ratings my-5 col-12">
+            <h6>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus magna purus, nec pharetra risus sagittis placerat. Integer aliquam quis nunc et laoreet. In hac habitasse platea dictumst. Praesent congue est eget magna euismod varius id egestas nulla. Suspendisse sollicitudin ligula purus, a auctor tortor pretium ut. Praesent ac dui diam. Nam malesuada turpis dolor, vel pulvinar nisl tincidunt at. Etiam vehicula dui arcu, vitae dapibus eros tincidunt ac. Suspendisse elementum sapien id tempus fringilla. Nam neque erat, interdum at tincidunt vitae, facilisis sit amet lorem. Duis mattis tincidunt felis, non feugiat arcu ornare a. In pharetra arcu nec massa consequat dapibus.</h6>
+        </div>
 
 
             <div class="mb-4">
@@ -76,6 +95,7 @@
                             </div>
 
                         </div>
+                        <hr class="invis3">
                         <%
                             }
                         %>
