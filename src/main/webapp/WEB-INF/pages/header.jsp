@@ -56,11 +56,11 @@
                                 <ul class="menu-area-main">
                                     <li class="active"> <a href="">Home</a> </li>
                                     <li> <a href="#about">Search</a> </li>
-                                    <li><a href="logout">Explore</a></li>
+                                    <li><a href="#">Explore</a></li>
                                     <%
                                         if(authenticatedUserDTO != null){
                                     %>
-                                    <li><a href=<%="user=username"+authenticatedUserDTO.getUsername()%>>Profile</a></li>
+                                    <li><a href=<%="user?username?"+authenticatedUserDTO.getUsername()%>>Profile</a></li>
                                     <li><a href="logout">Logout</a></li>
                                     <%
                                         }else{
