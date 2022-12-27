@@ -1,6 +1,4 @@
-<%@ page import="it.unipi.lsmd.dto.RegisteredUserDTO" %>
-<%@ page import="it.unipi.lsmd.dto.TripDetailsDTO" %>
-<%@ page import="it.unipi.lsmd.dto.DailyScheduleDTO" %><%--
+<%@ page import="it.unipi.lsmd.dto.*" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -152,8 +150,14 @@
             </div>
 
         <div class="row">
+          <% AuthenticatedUserDTO user = (AuthenticatedUserDTO) request.getAttribute("username");
+
+            if(user == trip.getOrganizer){
+          %>
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
+        <%}else{ %>
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Send Join Request</a>
+        <%}%>
         </div>
         <p class="grey pull-right ">Last Modified</p>
         </div>
