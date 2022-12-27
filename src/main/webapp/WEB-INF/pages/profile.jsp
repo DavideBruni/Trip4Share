@@ -18,9 +18,11 @@
 <script>
     $(document).on("click", "#somebutton", function() {
 
-                                                        $.get("someservlet", function(responseText) {   // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
-                                                            $("#pills-tabContent").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
-                                                        });
+                                                        $.get("/organizedtrip?username=<% %>", function(responseText) {
+                                                            $("#pills-tabContent").text(responseText);
+                                                    });
+
+
     });
 </script>
 
@@ -63,16 +65,16 @@
 
 <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-a" role="tab" aria-controls="pills-home" aria-selected="true">Reviews</a>
+        <a class="nav-link active" id="review-tab" data-toggle="pill" href="#pills-a" role="tab" aria-controls="pills-home" aria-selected="true">Reviews</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-b" role="tab" aria-controls="pills-profile" aria-selected="false">Organized Trips</a>
+        <a class="nav-link" id="organized-tab" data-toggle="pill" href="#pills-b" role="tab" aria-controls="pills-profile" aria-selected="false">Organized Trips</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-c" role="tab" aria-controls="pills-contact" aria-selected="false">Past Trips</a>
+        <a class="nav-link" id="past-tab" data-toggle="pill" href="#pills-c" role="tab" aria-controls="pills-contact" aria-selected="false">Past Trips</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="pills-wishlist-tab" data-toggle="pill" href="#pills-d" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
+        <a class="nav-link" id="wishlist-tab" data-toggle="pill" href="#pills-d" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
     </li>
 </ul>
 <div class="tab-content" id="pills-tabContent">
@@ -154,8 +156,8 @@
                                     <h4><a href="#" class="post-headline"><%=t.getTitle()%></a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
-                                        <p>By <a href="#"><%t.getOrganizer()%></a></p>
-                                        <p><%t.getLike_counter()%> likes</p>
+                                        <p>By <a href="#"><%t.getOrganizer();%></a></p>
+                                        <p> <% t.getLike_counter(); %> likes</p>
                                     </div>
                                 </div>
                             </div>
@@ -163,16 +165,16 @@
                     </div>
                     <hr class="invis3">
 
+
+
                     <%}%>
                     <div class="row pull-right">
                         <div class="col-md-12">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-start">
-                                    <li class="page-item"><a class="page-link" href="organizedtrip?username=<%authenticatedUserDTO.getUsername();%>page=1">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="organizedtrip?username=<%authenticatedUserDTO.getUsername();%>page=2">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="organizedtrip?username=<%authenticatedUserDTO.getUsername();%>page=2">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="organizedtrip?username=<%authenticatedUserDTO.getUsername();%>${currentPage - 1}">Previous</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="organizedtrip?username=<% authenticatedUserDTO.getUsername(); %> page=${currentPage + 1}">Next</a>
+                                        <a class="page-link" href="organizedtrip?username=<% authenticatedUserDTO.getUsername(); %>page=${currentPage + 1}">Next</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -188,11 +190,16 @@
     <% } %>
     <!-- End organized trip -->
     <!-- Past Trips -->
+    <%
+        List<TripSummaryDTO> past = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.PAST_TRIPS);
+        if(past!= null && !past.isEmpty()){
+    %>
     <div class="tab-pane fade  " id="pills-c" role="tabpanel" aria-labelledby="pills-home-tab">
         <div class="container" >
             <div class="row">
                 <div class="col-12 ">
                     <hr class="invis3">
+                    <% for(TripSummaryDTO t : organized){ %>
                     <!-- Single Blog Area  -->
                     <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
                         <div class="row align-items-center">
@@ -220,61 +227,9 @@
                         </div>
                     </div>
                     <hr class="invis3">
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="invis3">
 
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="invis3">
+
+
                     <!-- Single Blog Area  -->
                     <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1000ms">
                         <div class="row align-items-center">
@@ -321,7 +276,12 @@
         </div>
 
     </div>
+    <% } %>
     <!-- Wishlist -->
+    <%
+        List<TripSummaryDTO> wishlist = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.WISHLIST_KEY);
+        if(past!= null && !past.isEmpty()){
+    %>
     <div class="tab-pane fade  " id="pills-d" role="tabpanel" aria-labelledby="pills-home-tab">
         <div class="container" >
             <div class="row">
@@ -436,25 +396,13 @@
                         </div>
                     </div>
 
-                    <div class="row pull-right">
-                        <div class="col-md-12">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-start">
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div><!-- end col -->
-                    </div><!-- end row -->
+
                 </div>
             </div>
         </div>
 
     </div>
+    <% } %>
 </div>
 
 
