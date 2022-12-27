@@ -1,5 +1,7 @@
 package it.unipi.lsmd.model;
 
+import it.unipi.lsmd.dto.OtherUserDTO;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Trip {
     private Boolean deleted;
     private int like_counter;
     private LocalDateTime last_modified;
+    private RegisteredUser organizer;
 
     public Trip(){
         tags = new ArrayList<String>();
@@ -182,4 +185,11 @@ public class Trip {
     }
 
 
+    public void setOrganizer(RegisteredUser organizer) {
+        this.organizer = organizer;
+    }
+
+    public RegisteredUser getOrganizer() {
+        return organizer;
+    }
 }

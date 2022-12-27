@@ -14,6 +14,7 @@ public class TripSummaryDTO {
     private String imgUrl;
     private int like_counter;
     private LocalDateTime last_modified;
+    private String organizer;
 
     public String getId() {
         return id;
@@ -100,4 +101,8 @@ public class TripSummaryDTO {
                 ", like_counter=" + like_counter +
                 '}';
     }
+
+    public String getOrganizer() {return organizer; }
+
+    public void setOrganizer(String organizer) {this.organizer = organizer;}
 }

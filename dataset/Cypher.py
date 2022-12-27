@@ -48,14 +48,14 @@ class Neo4jDAO:
     def _create_org_rel(tx,trip_id, username):
         result = tx.run("MATCH (r:RegisteredUser),(t:Trip) "
                         "WHERE r.username = $username AND t._id = $_id "
-                        "CREATE (t)-[o:JOIN]->(r) "
+                        "CREATE (t)-[o:ORGANIZED_BY]->(r) "
                         "RETURN type(o)",username=username, _id=trip_id)
         return result.single()[0]
 
     
     @staticmethod
     def _create_join_rel(tx,trip_id, username):
-        rand_n = random();
+        rand_n = random()
         if rand_n>0.05 and rand_n<0.10:
             status = "pending"
         elif rand_n < 0.05:

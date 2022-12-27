@@ -1,4 +1,4 @@
-<footer>
+<footer class="pt-4 ">
   <div id="contact" class="footer">
     <div class="container">
       <div class="row pdn-top-30">

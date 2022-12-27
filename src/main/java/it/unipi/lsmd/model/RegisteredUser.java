@@ -1,6 +1,8 @@
 package it.unipi.lsmd.model;
 
 
+import org.neo4j.driver.Value;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ public class RegisteredUser extends User{
     private String bio;
 
     private double avg_rating;
+
 
     public List<RegisteredUser> getFollowing() {
         return following;

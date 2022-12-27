@@ -3,6 +3,7 @@ package it.unipi.lsmd.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
 import it.unipi.lsmd.dto.DailyScheduleDTO;
@@ -198,6 +199,8 @@ public interface TripUtils {
         t.setDestination(r.get("t.destination").asString());
         t.setTitle(r.get("t.title").asString());
         t.setImg(r.get("t.imgUrl").asString());
+        t.setId(r.get("t._id").asString());
+        t.setOrganizer(new RegisteredUser(String.valueOf(r.get("r2.username"))));
         try {
             t.setDeleted(r.get("t.deleted").asBoolean());
             t.setDepartureDate(r.get("t.departureDate").asLocalDate());

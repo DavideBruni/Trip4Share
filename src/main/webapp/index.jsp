@@ -46,7 +46,7 @@
          List<TripSummaryDTO> mostPopulars = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.MOST_POPULAR);
          if(mostPopulars!= null && !mostPopulars.isEmpty()){
       %>
-      <div class="Tours">
+      <div class="Tours pb-5 mb-5">
          <div class="container">
             <div class="row">
                <div class="col-md-12">
@@ -67,6 +67,7 @@
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
                               Return Date: <%=t.getReturnDate()%>
+                              Organized by <%=t.getOrganizer()%>
                            </p>
                         </div>
                         <% } %>
@@ -86,7 +87,7 @@
          List<TripSummaryDTO> cheapest = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.CHEAPEST_TRIPS);
          if(cheapest!= null && !cheapest.isEmpty()){
       %>
-       <div class="Tours pt-5 pb-5">
+       <div class="Tours pt-5 pb-5 mb-5">
          <div class="container">
             <div class="row">
                <div class="col-md-12">
@@ -107,6 +108,7 @@
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
                               Return Date: <%=t.getReturnDate()%>
+                              Organized by: <%=t.getOrganizer()%>
                            </p>
                         </div>
                         <% } %>

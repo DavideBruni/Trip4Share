@@ -51,7 +51,7 @@ public class TripServiceImpl implements TripService {
             tripSummaryDTO.setReturnDate(t.getReturnDate());
             tripSummaryDTO.setTitle(t.getTitle());
             tripSummaryDTO.setImgUrl(t.getImg());
-
+            tripSummaryDTO.setOrganizer(t.getOrganizer().getUsername());
             tripsDTO.add(tripSummaryDTO);
         }
         return tripsDTO;
