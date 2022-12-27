@@ -52,17 +52,23 @@ public interface TripUtils {
         trip.setId(result.getObjectId("_id").toHexString());
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
-        trip.setDestination(result.getString("destination"));
-        trip.setLike_counter(result.getInteger("likes"));
+        trip.setDestination(result.getString("destination").toUpperCase());
         trip.setImg(result.getString("imgUrl"));
 
-        if(result.getInteger("price")!=null) {
-            Integer price = result.getInteger("price");
-            trip.setPrice(price);
-        }
+        try{
+            trip.setLike_counter(result.getInteger("likes"));
+        }catch (NullPointerException e){ }
+
+        try{
+            trip.setPrice(result.getInteger("price"));
+        }catch (NullPointerException e){ }
+
         trip.setDepartureDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("departureDate")));
         trip.setReturnDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("returnDate")));
-        trip.setLast_modified(LocalDateTimeAdapter.convertToLocalDateTimeViaInstant(result.getDate("last_modified")));
+
+        try{
+            trip.setLast_modified(LocalDateTimeAdapter.convertToLocalDateTimeViaInstant(result.getDate("last_modified")));
+        }catch (NullPointerException e){ }
 
         ArrayList<String> tags = result.get("tags", ArrayList.class);
         trip.setTags(tags);

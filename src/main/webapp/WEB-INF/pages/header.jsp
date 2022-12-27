@@ -51,7 +51,7 @@
                             <nav class="main-menu">
                                 <ul class="menu-area-main">
                                     <li class="active"> <a href="">Home</a> </li>
-                                    <li> <a href="#about">Search</a> </li>
+                                    <li> <a href="search">Search</a> </li>
                                     <li><a href="#">Explore</a></li>
                                     <%
                                         if(authenticatedUserDTO != null){
