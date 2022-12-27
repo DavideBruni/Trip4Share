@@ -18,6 +18,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -108,24 +110,24 @@ public class TripServiceImpl implements TripService {
 
 
     public List<TripSummaryDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {
-        Date depDate = null;
-        Date retDate = null;
-        try {
-            depDate =new SimpleDateFormat("dd-MM-yyyy").parse(departureDate);
-            try{
-                retDate = new SimpleDateFormat("dd-MM-yyyy").parse(returnDate);
-            }catch (ParseException ex){ }
-        } catch (ParseException e) {
-            depDate = new Date();
-        }finally{
-            List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination,depDate,retDate,size,page);
-            List<TripSummaryDTO> tripsDTO = new ArrayList<>();
-            for(Trip t : trips){
-                TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
-                tripsDTO.add(tDTO);
-            }
-            return tripsDTO;
+
+        LocalDate depDate;
+        LocalDate retDate = null;
+        try{
+            depDate = LocalDate.parse(departureDate);
+            retDate = LocalDate.parse(returnDate);
+        }catch (DateTimeParseException e){
+            depDate = LocalDate.now();
         }
+
+        List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination,depDate,retDate,size,page);
+        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
+        for(Trip t : trips){
+            TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
+            System.out.println(tDTO);
+            tripsDTO.add(tDTO);
+        }
+        return tripsDTO;
 
     }
 

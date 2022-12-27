@@ -24,9 +24,6 @@
 
 <body class="main-layout ">
 <%@ include file="/WEB-INF/pages/header.jsp" %>
-<%
-    final int ELEMENTS_FOR_PAGE = 5;
-%>
 
 <div class="main-form .form-horizontal" >
     <div class="titlepage">
@@ -66,6 +63,8 @@
 
                             <label >Return Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="return_date">
+
+                            <button class="btn btn-primary pull-right mr-5" type="submit" value="submit">Search</button>
                         </form>
 
                     </div>
@@ -137,6 +136,8 @@
                         <form method="POST">
                             <label >Insert username</label>
                             <input  class="form-control" placeholder="" type="text" name="username" size="50">
+
+                            <button class="btn btn-primary pull-right mr-5" type="submit" value="submit">Search</button>
                         </form>
                     </div>
 
@@ -145,7 +146,6 @@
 
         </div>
 
-        <button class="btn btn-primary pull-right mr-5" type="submit">Save changes</button>
     </div>
 
 
@@ -153,7 +153,6 @@
     <%
         ArrayList<Object> results = (ArrayList<Object>) request.getAttribute(SecurityUtils.SEARCH_RESULTS);
         if(results != null && results.size() > 0){
-            int n_elements = results.size();
     %>
     <div class="titlepage">
         <h2>Results</h2>
@@ -195,30 +194,17 @@
                 </div>
                 <%
                         }
-                    }
+                    }else if(results.get(0) instanceof OtherUserDTO){
+                        for(Object result : results){
+                            OtherUserDTO user = (OtherUserDTO) result;
                 %>
 
+                <h4><a href=<%="user?username=" + user.getUsername()%>> <%=user.getUsername()%> </a></h4>
 
-                <div class="row pull-right">
-                    <div class="col-md-12 ">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-start">
-                                <%
-                                    for(int i = 1; i < Math.floor(n_elements / ELEMENTS_FOR_PAGE); i++){
-                                %>
-                                <li class="page-item"><a class="page-link" href=<%="search?page=" + i%>><%=i%>></a></li>
-                                <%
-                                    }
-                                %>
-
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
+                <%
+                        }
+                    }
+                %>
 
 
             </div>

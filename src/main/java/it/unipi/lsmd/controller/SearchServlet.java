@@ -6,6 +6,7 @@ import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.PagesUtilis;
+import it.unipi.lsmd.utils.SecurityUtils;
 import it.unipi.lsmd.utils.SessionUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -54,31 +55,25 @@ public class SearchServlet extends HttpServlet {
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 
-    private void processPOSTRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-
-
-
-    }
-
 
     private RequestDispatcher searchUser(HttpServletRequest request, String value, int page){
         List<OtherUserDTO> searchedUsers = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute("search_results", searchedUsers);
+        request.setAttribute(SecurityUtils.SEARCH_RESULTS, searchedUsers);
         return  request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }
 
     private RequestDispatcher searchDest(HttpServletRequest request, String value, int page){
         String depDate = request.getParameter("departure_date");
         String retDate = request.getParameter("return_date");
-        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute("search_results", trips);       // TODO - create constant "trips' in SecurityUtils
+        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
+        request.setAttribute(SecurityUtils.SEARCH_RESULTS, trips);       // TODO - create constant "trips' in SecurityUtils
         return request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }
     private RequestDispatcher searchTags(HttpServletRequest request,String value,int page){
         String depDate = request.getParameter("depDate");
         String retDate = request.getParameter("retDate");
         List<TripSummaryDTO> trips = tripService.getTripsByTag(value,depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute("search_results", trips);
+        request.setAttribute(SecurityUtils.SEARCH_RESULTS, trips);
         return request.getRequestDispatcher("/WEB-INF/pages/searchResult.jsp");
     }
 
