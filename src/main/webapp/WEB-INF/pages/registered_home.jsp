@@ -59,11 +59,14 @@
                         <div class="traveling-box">
                            <!--<i><img src="<%=t.getImgUrl()%>" alt="icon"/></i>-->
                             <i><img src="WebContent/icon/travel-icon.png" alt="icon" width="40%"/></i>
-                            <strong><h5>
-                              <%=t.getDestination() %>
-                           </h5></strong>
+                            <h5>
+                                <strong>
+                                    <a href=<%="trip?id="+t.getId()%> class="post-headline">
+                                        <%=t.getDestination() %></a>
+                                </strong>
+                           </h5>
                         <h6>
-                              <%= "From:<br>"+t.getDepartureDate()+"<br>to:<br>"+t.getReturnDate() %>
+                              <%= "<strong>From:</strong><br>"+t.getDepartureDate()+"<br><strong>to:</strong><br>"+t.getReturnDate() %>
                         </h6>
                         </div>
                      </div>
@@ -93,7 +96,8 @@
        %>
       <div class="row">
          <div class="col-12 ">
-            <% for(TripSummaryDTO t : trips){ %>
+            <% int i=0;
+                for(TripSummaryDTO t : trips){ %>
              <hr class="invis3">
             <!-- Single Blog Area  -->
             <div>
@@ -124,18 +128,21 @@
                      </div>
                   </div>
             </div>
-             <%}%>
+             <%
+                i++;
+                if(i == PagesUtilis.OBJECT_PER_PAGE_SEARCH)
+                break;}%>
 
             <div class="row">
                <div class="col-md-12">
                   <nav aria-label="Page navigation">
                      <ul class="pagination justify-content-end">
                          <% Integer pag = Integer.valueOf((Integer) request.getAttribute(SecurityUtils.PAGE));
-                             if(!pag.equals(1))  %>
-                            <li class="page-item"><a class="page-link" href="/home?page=<%=pag-1%>">Previous</a></li>
-                         <% if(trips.size() > PagesUtilis.OBJECT_PER_PAGE_SEARCH) %>
-                            <li class="page-item"><a class="page-link" href="/home?page=<%=pag+1%>">Next</a></li>
-
+                             if(pag!=1){  %>
+                            <li class="page-item"><a class="page-link" href="home?page=<%=pag-1%>">Previous</a></li>
+                         <%} if(trips.size() > PagesUtilis.OBJECT_PER_PAGE_SEARCH) {%>
+                            <li class="page-item"><a class="page-link" href="home?page=<%=pag+1%>">Next</a></li>
+                        <% }%>
                      </ul>
                   </nav>
                </div><!-- end col -->
@@ -159,13 +166,13 @@
             <div class="blog-list-widget">
                <div class="list-group">
                <% for(OtherUserDTO u : users){ %>
-                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="w-100 justify-content-between">
-                           <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >
+                       <div class="w-100 justify-content-between">
+                            <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >
+                           <a href=<%="user?username="+u.getUsername()%> class="list-group-item list-group-item-action flex-column align-items-start">
                            <h5 class="mb-1"><%=u.getUsername()%></h5>
-
+                           </a>
                         </div>
-                  </a>
+
                 <% } %>
                </div>
             </div>

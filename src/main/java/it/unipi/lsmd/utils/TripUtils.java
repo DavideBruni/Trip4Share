@@ -200,7 +200,7 @@ public interface TripUtils {
         t.setTitle(r.get("t.title").asString());
         t.setImg(r.get("t.imgUrl").asString());
         t.setId(r.get("t._id").asString());
-        t.setOrganizer(new RegisteredUser(String.valueOf(r.get("r2.username"))));
+        t.setOrganizer(new RegisteredUser(r.get("r2.username").asString()));
         try {
             t.setDeleted(r.get("t.deleted").asBoolean());
             t.setDepartureDate(r.get("t.departureDate").asLocalDate());
