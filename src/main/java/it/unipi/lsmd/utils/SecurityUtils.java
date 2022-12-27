@@ -19,6 +19,8 @@ public class SecurityUtils {
     public static final String SUGGESTED_USERS = "suggested_users";
     public static final String SUGGESTED_TRIPS = "suggested_trips";
 
+    // ho chiamato quella per i viaggi organizzato ORGANIZED_TRIPS
+    // mi deve mandare la pagina corrente e il numero totale
 
     public static AuthenticatedUserDTO getAuthenticatedUser(HttpServletRequest request){
         HttpSession session = request.getSession();

@@ -28,63 +28,11 @@
       <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-   </head>      
-      
-         <!-- header -->
-         <header>
-            <!-- header inner -->
-            <div class="header">
-               <div class="header_white_section">
-                  <div class="container-fluid">
-                     <div class="row">
-                        <div class="col-md-12">
-                           <div class="header_information">
-                              <ul>
-                                 <li><img src="WebContent/images/1.png" alt="#"/> 145.street road new York</li>
-                                 <li><img src="WebContent/images/2.png" alt="#"/> +71  5678954378</li>
-                                 <li><img src="WebContent/images/3.png" alt="#"/> Demo@hmail.com</li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="container">
-                  <div class="row">
-                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                        <div class="full">
-                           <div class="center-desk">
-                              <div class="logo"> <a href="index.html"><img src="WebContent/images/logo.png" alt="#"></a> </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                        <div class="menu-area">
-                           <div class="limit-box">
-                              <nav class="main-menu">
-                                 <ul class="menu-area-main">
+   </head>
 
-                                    <%
-                                       AuthenticatedUserDTO userDTO = (AuthenticatedUserDTO) session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
 
-                                    %>
-                                    <% if(userDTO.getUsername()!=null) { %>
-                                    <li class="active"> Welcome  <%= userDTO.getUsername()%></li>
-                                    <%}%>
-                                    <li><a href=<%="/user?username="+userDTO.getUsername()%>>Profile</a> </li>
-                                    <li><a href="../search.html">Search</a></li>
-                                 </ul>
-                              </nav>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <!-- end header inner -->
-         </header>
-         <!-- end header -->      
-      
+   <%@ include file="header.jsp" %>
+
 <body class="main-layout">
  <!-- Suggested travels -->
  <%
@@ -107,7 +55,7 @@
                      <% for(TripSummaryDTO t : suggestedTrips){ %>
                      <div class="col-2">
                         <div class="traveling-box">
-                           <!--<i><img src=<%=t.getImgUrl()%> alt="icon"/></i>-->
+                           <i><img src="<%=t.getImgUrl()%>" alt="icon"/></i>
                             <i><img src="WebContent/icon/travel-icon.png" alt="icon" width="60%"/></i>
                             <strong><h6>
                               <%=t.getDestination() %>
@@ -151,7 +99,7 @@
                      <div class="col-1"></div>
                      <div class="col-5">
                         <div class="single-blog-thumbnail">
-                              <img src=<%= t.getImgUrl() %> alt="Immagine di viaggio">
+                            <img src="<%= t.getImgUrl() %>" alt="Immagine di viaggio">
                               <div class="post-date">
                                   <span>From: <%= t.getDepartureDate()%></span>
                                   <br>
@@ -185,7 +133,7 @@
                      </ul>
                   </nav>
                </div><!-- end col -->
-         </div><!-- end row -->      
+         </div><!-- end row -->
          </div>
       </div>
        <%}%>
@@ -223,74 +171,17 @@
                   </a>
                </div>
             </div><!-- end blog-list -->
+
       </div><!-- end widget -->
+          <a class="text-right btn btn-primary bottone" href="" >Refresh</a>
       </div>
    </div>
 
 </div>
-        
-   
- 
-     <!-- footer -->
-     <footer>
-        <div id="contact" class="footer">
-           <div class="container">
-              <div class="row pdn-top-30">
-                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <ul class="location_icon">
-                       <li> <a href="#"><img src="WebContent/icon/facebook.png"></a></li>
-                       <li> <a href="#"><img src="WebContent/icon/Twitter.png"></a></li>
-                       <li> <a href="#"><img src="WebContent/icon/linkedin.png"></a></li>
-                       <li> <a href="#"><img src="WebContent/icon/instagram.png"></a></li>
-                    </ul>
-                 </div>
-                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                    <div class="Follow">
-                       <h3>CONTACT US</h3>
-                       <span>123 Second Street Fifth <br>Avenue,<br>
-                       Manhattan, New York<br>
-                       +987 654 3210</span>
-                    </div>
-                 </div>
-                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                    <div class="Follow">
-                       <h3>ADDITIONAL LINKS</h3>
-                       <ul class="link">
-                          <li> <a href="#">About us</a></li>
-                          <li> <a href="#">Terms and conditions</a></li>
-                          <li> <a href="#"> Privacy policy</a></li>
-                          <li> <a href="#">News</a></li>
-                          <li> <a href="#"> Contact us</a></li>
-                       </ul>
-                    </div>
-                 </div>
-                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="Follow">
-                       <h3> Contact</h3>
-                       <div class="row">
-                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                             <input class="Newsletter" placeholder="Name" type="text">
-                          </div>
-                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                             <input class="Newsletter" placeholder="Email" type="text">
-                          </div>
-                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                             <textarea class="textarea" placeholder="comment" type="text">Comment</textarea>
-                          </div>
-                       </div>
-                       <button class="Subscribe">Submit</button>
-                    </div>
-                 </div>
-              </div>
-              <div class="copyright">
-                 <div class="container">
-                    <p>Copyright 2019 All Right Reserved By <a href="https://html.design/">Free html Templates</a></p>
-                 </div>
-              </div>
-           </div>
-        </div>
-     </footer>
-      <!-- end footer -->
+
+
+ <%@ include file="footer.jsp" %>
+
       <!-- Javascript files-->
       <script src="WebContent/js/jquery.min.js"></script>
       <script src="WebContent/js/popper.min.js"></script>
@@ -323,6 +214,7 @@
             })
          })
       </script>
-      
+
+
 </body>   
 </html>

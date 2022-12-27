@@ -30,11 +30,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="header_information">
-                            <ul>
-                                <li><img src="images/1.png" alt="#"/> 145.street road new York</li>
-                                <li><img src="images/2.png" alt="#"/> +71  5678954378</li>
-                                <li><img src="images/3.png" alt="#"/> Demo@hmail.com</li>
-                            </ul>
+
                         </div>
                     </div>
                 </div>
@@ -60,7 +56,7 @@
                                     <%
                                         if(authenticatedUserDTO != null){
                                     %>
-                                    <li><a href=<%="user?username?"+authenticatedUserDTO.getUsername()%>>Profile</a></li>
+                                    <li><a href=<%="user?username="+authenticatedUserDTO.getUsername()%>>Profile</a></li>
                                     <li><a href="logout">Logout</a></li>
                                     <%
                                         }else{
