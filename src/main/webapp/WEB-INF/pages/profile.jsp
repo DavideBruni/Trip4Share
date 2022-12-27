@@ -2,6 +2,7 @@
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
 <%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -12,19 +13,14 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/profile.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <%
+    AuthenticatedUserDTO user = (AuthenticatedUserDTO) request.getAttribute("user");
+    %>
+    <title><%= user.getUsername() %></title>
 </head>
 
 <body>
-<script>
-    $(document).on("click", "#somebutton", function() {
-
-                                                        $.get("/organizedtrip?username=<% %>", function(responseText) {
-                                                            $("#pills-tabContent").text(responseText);
-                                                    });
-
-
-    });
-</script>
 
 <%@ include file="header.jsp" %>
 
@@ -65,21 +61,23 @@
 
 <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="review-tab" data-toggle="pill" href="#pills-a" role="tab" aria-controls="pills-home" aria-selected="true">Reviews</a>
+        <a class="nav-link active" id="review-tab" data-toggle="pill" href="#review-content" role="tab" aria-controls="pills-home" aria-selected="true">Reviews</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="organized-tab" data-toggle="pill" href="#pills-b" role="tab" aria-controls="pills-profile" aria-selected="false">Organized Trips</a>
+        <a class="nav-link" id="organized-tab" data-toggle="pill" href="#organized-content" role="tab" aria-controls="pills-profile" aria-selected="false">Organized Trips</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="past-tab" data-toggle="pill" href="#pills-c" role="tab" aria-controls="pills-contact" aria-selected="false">Past Trips</a>
+        <a class="nav-link" id="past-tab" data-toggle="pill" href="#past-content" role="tab" aria-controls="pills-contact" aria-selected="false">Past Trips</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="wishlist-tab" data-toggle="pill" href="#pills-d" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
+        <a class="nav-link" id="wishlist-tab" data-toggle="pill" href="#wishlist-content" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
     </li>
 </ul>
+
+
 <div class="tab-content" id="pills-tabContent">
-    <!-- Reviews -->
-    <div class="tab-pane fade show active" id="pills-a" role="tabpanel" aria-labelledby="pills-home-tab" aria-expanded="true">
+    <!-- Reviews DA METTERE LE INFORMAZIONI SULLE PRIME 3 RECENSIONI -->
+    <div class="tab-pane fade show active" id="review-content" role="tabpanel" aria-labelledby="pills-home-tab" aria-expanded="true">
         <div class="container" >
             <hr class="invis3">
             <div class = "row justify-content-center ">
@@ -113,7 +111,7 @@
                 <div class="col-md-12">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-end">
-                            <li class="page-item"><a class="page-link" href="review_board.html">View More</a></li>
+                            <li class="page-item"><a class="page-link" href="/reviews?user=<%user.getUsername();%>">View More</a></li>
                         </ul>
                     </nav>
                 </div><!-- end col -->
@@ -128,7 +126,7 @@
         List<TripSummaryDTO> organized = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.ORGANIZED_TRIPS);
         if(organized!= null && !organized.isEmpty()){
     %>
-    <div class="tab-pane fade" id="pills-b" role="tabpanel" aria-labelledby="pills-profile-tab">
+    <div class="tab-pane fade" id="organized-content" role="tabpanel" aria-labelledby="pills-profile-tab">
 
         <div class="container" >
             <div class="row">
@@ -172,9 +170,9 @@
                         <div class="col-md-12">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-start">
-                                    <li class="page-item"><a class="page-link" href="organizedtrip?username=<%authenticatedUserDTO.getUsername();%>${currentPage - 1}">Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="/organizedtrip?username=<%user.getUsername();%>${currentPage - 1}">Previous</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="organizedtrip?username=<% authenticatedUserDTO.getUsername(); %>page=${currentPage + 1}">Next</a>
+                                        <a class="page-link" href="/organizedtrip?username=<% user.getUsername(); %>page=${currentPage + 1}">Next</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -194,20 +192,22 @@
         List<TripSummaryDTO> past = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.PAST_TRIPS);
         if(past!= null && !past.isEmpty()){
     %>
-    <div class="tab-pane fade  " id="pills-c" role="tabpanel" aria-labelledby="pills-home-tab">
+    <div class="tab-pane fade  " id="past-content" role="tabpanel" aria-labelledby="pills-home-tab">
         <div class="container" >
             <div class="row">
                 <div class="col-12 ">
                     <hr class="invis3">
-                    <% for(TripSummaryDTO t : organized){ %>
+                    <% for(TripSummaryDTO t : past){ %>
                     <!-- Single Blog Area  -->
                     <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
                         <div class="row align-items-center">
                             <div class="col-12 col-md-6">
                                 <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
+                                    <i><img src="<%=t.getImgUrl()%>" alt="icon"/></i>
                                     <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
+                                        <span>From: <%= t.getDepartureDate()%></span>
+                                        <br>
+                                        <span>To: <%= t.getReturnDate()%></span>
                                     </div>
                                 </div>
                             </div>
@@ -215,57 +215,26 @@
                                 <!-- Blog Content -->
                                 <div class="single-blog-content">
                                     <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <a href="#" class="post-tag"><%=t.getDestination()%></a>
+                                    <h4><a href="#" class="post-headline"><%=t.getTitle()%></a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
+                                        <p>By <a href="#"><%t.getOrganizer();%></a></p>
+                                        <p><% t.getLike_counter(); %> likes</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr class="invis3">
-
-
-
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <%}%>
                     <div class="row pull-right">
                         <div class="col-md-12">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-start">
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="/history:page=${currentPage - 1}">Previous</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
+                                        <a class="page-link" href="/history:page=${currentPage + 1}">Next</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -280,21 +249,24 @@
     <!-- Wishlist -->
     <%
         List<TripSummaryDTO> wishlist = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.WISHLIST_KEY);
-        if(past!= null && !past.isEmpty()){
+        if(wishlist!= null && !wishlist.isEmpty()){
     %>
-    <div class="tab-pane fade  " id="pills-d" role="tabpanel" aria-labelledby="pills-home-tab">
+    <div class="tab-pane fade  " id="wishlist-content" role="tabpanel" aria-labelledby="pills-home-tab">
         <div class="container" >
             <div class="row">
                 <div class="col-12 ">
                     <hr class="invis3">
+                    <% for(TripSummaryDTO t : wishlist){ %>
                     <!-- Single Blog Area  -->
                     <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
                         <div class="row align-items-center">
                             <div class="col-12 col-md-6">
                                 <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
+                                    <i><img src="<%=t.getImgUrl()%>" alt="icon"/></i>
                                     <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
+                                        <span>From: <%= t.getDepartureDate()%></span>
+                                        <br>
+                                        <span>To: <%= t.getReturnDate()%></span>
                                     </div>
                                 </div>
                             </div>
@@ -302,101 +274,31 @@
                                 <!-- Blog Content -->
                                 <div class="single-blog-content">
                                     <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
+                                    <a href="#" class="post-tag"><%=t.getDestination()%></a>
+                                    <h4><a href="#" class="post-headline"><%=t.getTitle()%></a></h4>
                                     <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
                                     <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
+                                        <p>By <a href="#"><%t.getOrganizer();%></a></p>
+                                        <p><% t.getLike_counter(); %></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr class="invis3">
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.3s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="invis3">
-
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">Party people in the house</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="invis3">
-                    <!-- Single Blog Area  -->
-                    <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.6s" data-wow-duration="1000ms">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-thumbnail">
-                                    <img src="images/blog-image.jpg" alt="">
-                                    <div class="post-date">
-                                        <a href="#">12 <span>march</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <!-- Blog Content -->
-                                <div class="single-blog-content">
-                                    <div class="line"></div>
-                                    <a href="#" class="post-tag">Lifestyle</a>
-                                    <h4><a href="#" class="post-headline">We love colors in 2018</a></h4>
-                                    <p>Curabitur venenatis efficitur lorem sed tempor. Integer aliquet tempor cursus. Nullam vestibulum convallis risus vel condimentum. Nullam auctor lorem in libero luctus, vel volutpat quam tincidunt.</p>
-                                    <div class="post-meta">
-                                        <p>By <a href="#">james smith</a></p>
-                                        <p>3 comments</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
+                    <%}%>
+                    <div class="row pull-right">
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-start">
+                                    <li class="page-item"><a class="page-link" href="/wishlist:page=${currentPage + 1}">Previous</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/wishlist:page=${currentPage + 1}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
                 </div>
             </div>
         </div>
