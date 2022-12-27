@@ -34,7 +34,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         Bson m1=  match(eq("destination", destination));
         Bson l1 = limit(size);
-        Bson p1 = project(fields(excludeId(), include("destination", "title", "departureDate", "returnDate")));
+        Bson p1 = project(fields(include("_id","destination", "title", "departureDate", "returnDate")));
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
@@ -61,7 +61,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
                     lte("returnDate", returnDate)));
         }
         Bson l1 = limit(size);
-        Bson p1 = project(fields(excludeId(), include("destination", "title", "departureDate", "returnDate")));
+        Bson p1 = project(fields(include("_id","destination", "title", "departureDate", "returnDate")));
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
@@ -89,7 +89,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
                     lte("returnDate", returnDate)));
         }
         Bson l1 = limit(size);
-        Bson p1 = project(fields(excludeId(), include("destination", "title", "departureDate", "returnDate")));
+        Bson p1 = project(fields(include("_id","destination", "title", "departureDate", "returnDate")));
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
