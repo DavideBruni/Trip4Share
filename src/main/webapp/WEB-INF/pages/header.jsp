@@ -13,7 +13,6 @@
     //String fullname = null;
     boolean loggedUser = false;
     RegisteredUserDTO authenticatedUserDTO = null;
-    String shoppingCartNumItems = request.getAttribute("shoppingCartNumItems") != null ? request.getAttribute("shoppingCartNumItems").toString() : "";
     if (session != null && session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) != null){
         authenticatedUserDTO = (RegisteredUserDTO) session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
         loggedUser = true;
@@ -51,7 +50,7 @@
                             <nav class="main-menu">
                                 <ul class="menu-area-main">
                                     <li class="active"> <a href="">Home</a> </li>
-                                    <li> <a href="#about">Search</a> </li>
+                                    <li> <a href="search">Search</a> </li>
                                     <li><a href="#">Explore</a></li>
                                     <%
                                         if(authenticatedUserDTO != null){

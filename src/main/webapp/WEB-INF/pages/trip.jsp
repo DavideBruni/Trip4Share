@@ -33,9 +33,11 @@
 
     <!-- Receipe Content Area -->
     <div class="main-form">
+
         <div class="row">
             <a class="text-right btn btn-primary bottone" href="edittrip" >Modify your trip</a>
         </div>
+
         <div class="container justify-content-center text-center my-30 ">
 
             <div class="row justify-content-center">
@@ -116,7 +118,7 @@
                                     for(String string : trip.getWhatsIncluded()){
                                 %>
 
-                                <li ><%=string%></li>
+                                <li ><%="- " + string%></li>
 
                                 <%
                                     }
@@ -134,7 +136,7 @@
                                     for(String string : trip.getWhatsNotIncluded()){
                                 %>
 
-                                <li ><%=string%></li>
+                                <li ><%="- " + string%></li>
 
                                 <%
                                     }
@@ -145,9 +147,11 @@
                     </div>
 
                 </div>
-
-
             </div>
+
+        <%
+            if(session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) != null){
+        %>
 
         <div class="row">
           <% AuthenticatedUserDTO user = (AuthenticatedUserDTO) request.getAttribute("username");
@@ -159,6 +163,9 @@
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Send Join Request</a>
         <%}%>
         </div>
+        <%
+            }
+        %>
         <p class="grey pull-right ">Last Modified</p>
         </div>
 

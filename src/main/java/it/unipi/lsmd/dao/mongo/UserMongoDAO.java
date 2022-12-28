@@ -74,7 +74,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         AggregateIterable<Document> res;
         if(page!=1) {
             Bson s1 = skip((page - 1) * limit);
-            res =collection.aggregate(Arrays.asList(m1,l1,s1));
+            res =collection.aggregate(Arrays.asList(m1, s1, l1));
         }else{
             res = collection.aggregate(Arrays.asList(m1,l1));
         }
