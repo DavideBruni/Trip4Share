@@ -1,6 +1,7 @@
 package it.unipi.lsmd.model;
 
-import it.unipi.lsmd.dto.OtherUserDTO;
+import it.unipi.lsmd.model.enums.Status;
+import org.javatuples.Pair;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,14 +27,23 @@ public class Trip {
     private int like_counter;
     private LocalDateTime last_modified;
     private RegisteredUser organizer;
+    private List<Pair<RegisteredUser, Status>> joiners;
 
     public Trip(){
-        tags = new ArrayList<String>();
-        itinerary = new ArrayList<DailySchedule>();
-        whatsIncluded = new ArrayList<String>();
-        whatsNotIncluded = new ArrayList<String>();
+        tags = new ArrayList<>();
+        itinerary = new ArrayList<>();
+        whatsIncluded = new ArrayList<>();
+        whatsNotIncluded = new ArrayList<>();
+        joiners = new ArrayList<>();
     }
 
+    public List<Pair<RegisteredUser, Status>> getJoiners() {
+        return joiners;
+    }
+
+    public void setJoiners(List<Pair<RegisteredUser,Status>> joiners){
+        this.joiners=joiners;
+    }
     public String getId(){return this.id;}
     public void setId(String id){this.id = id;}
 

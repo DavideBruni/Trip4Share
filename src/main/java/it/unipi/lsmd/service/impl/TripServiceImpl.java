@@ -6,19 +6,18 @@ import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.PriceDestinationDTO;
-import it.unipi.lsmd.dto.TripDetailsDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
+import it.unipi.lsmd.model.enums.Status;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
+import org.javatuples.Pair;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -321,5 +320,28 @@ public class TripServiceImpl implements TripService {
             ret.add(TripUtils.tripSummaryDTOFromModel(t));
         }
         return ret;
+    }
+
+    @Override
+    public InvolvedPeopleDTO getOrganizerAndJoiners(String id){
+        if(id!=null) {
+            Trip t = new Trip();
+            t.setId(id);
+            t = tripDAO.getJoinersAndOrganizer(t);
+            if(t != null) {
+                InvolvedPeopleDTO inv = new InvolvedPeopleDTO();
+                inv.setOrganizer(t.getOrganizer().getUsername());
+                List<Pair<RegisteredUser, Status>> joiners = t.getJoiners();
+                for (Pair<RegisteredUser, Status> x : joiners) {
+                    OtherUserDTO o = new OtherUserDTO();
+                    o.setUsername(x.getValue0().getUsername());
+                    o.setPic(x.getValue0().getProfile_pic());
+                    Pair<OtherUserDTO, Status> j = new Pair<>(o, x.getValue1());
+                    inv.addJoiners(j);
+                }
+                return inv;
+            }
+        }
+        return null;
     }
 }

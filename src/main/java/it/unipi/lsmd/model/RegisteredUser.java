@@ -34,10 +34,15 @@ public class RegisteredUser extends User{
 
     public RegisteredUser(String username){
         super.setUsername(username);
-        reviews = new ArrayList<Review>();
-        spoken_languages = new ArrayList<String>();
+        reviews = new ArrayList<>();
+        spoken_languages = new ArrayList<>();
     }
 
+    public RegisteredUser(String username, String profile_pic){
+        super(username,profile_pic);
+        reviews = new ArrayList<>();
+        spoken_languages = new ArrayList<>();
+    }
 
     public String getPhone() {
         return phone;

@@ -5,7 +5,9 @@ import it.unipi.lsmd.dao.base.BaseDAONeo4J;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
+import it.unipi.lsmd.model.enums.Status;
 import it.unipi.lsmd.utils.TripUtils;
+import org.javatuples.Pair;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
@@ -72,7 +74,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         String retDate = t.getReturnDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         try (Session session = getConnection().session()) {
             session.writeTransaction(tx -> {
-                tx.run("CREATE (t:Trip {id: $id ,destination : $destination, title : $title, imgUrl : $imgUrl," +
+                tx.run("CREATE (t:Trip {_id: $id ,destination : $destination, title : $title, imgUrl : $imgUrl," +
                                 "departureDate : date($departureDate), returnDate: date($returnDate), deleted : FALSE})",
                         parameters("id", t.getId(),"destination",t.getDestination(), "title", t.getTitle(),
                                 "imgUrl",t.getImg(),"departureDate",depDate,"returnDate",retDate)).consume();
@@ -91,7 +93,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
     public void deleteTrip(Trip t) throws Neo4jException {
         try (Session session = getConnection().session()) {
             Result res = session.readTransaction(tx->{
-                return tx.run("RETURN EXISTS( (:Trip {id: $id})<-[:JOIN]-(:RegisteredUser)) as ex",
+                return tx.run("RETURN EXISTS( (:Trip {_id: $id})<-[:JOIN]-(:RegisteredUser)) as ex",
                         parameters("id",t.getId()));
             });
             if(!res.next().get("ex").asBoolean()){
@@ -121,7 +123,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         try (Session session = getConnection().session()) {
             session.writeTransaction(tx -> {
                  tx.run("MATCH (t:Trip), " +
-                        "WHERE t.id = $id " +
+                        "WHERE t._id = $id " +
                         "SET t.deleted = FALSE " +
                         "RETURN t", parameters("id", t.getId())).consume();
                 return null;
@@ -134,5 +136,38 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
     @Override
     public void updateTrip(Trip newTrip) throws Neo4jException {
 
+    }
+
+    @Override
+    public Trip getJoinersAndOrganizer(Trip t){
+        Trip trip;
+        try (Session session = getConnection().session()) {
+            trip = session.readTransaction(tx -> {
+                Result result = tx.run("MATCH (r1:RegisteredUser) -[j:JOIN]->(:Trip {_id : $id}) -[:ORGANIZED_BY]->(r2:RegisteredUser) " +
+                                "RETURN r1.username, r1.profile_pic, r2.username, j.status ORDER BY j.status",
+                        parameters("id", t.getId()));
+                Trip res = new Trip();
+                res.setId(t.getId());
+                List<Pair<RegisteredUser, Status>> joiners = new ArrayList<>();
+                boolean first = true;
+                while (result.hasNext()) {
+                    Record r = result.next();
+                    if (first) {
+                        RegisteredUser org = new RegisteredUser(r.get("r2.username").asString());
+                        res.setOrganizer(org);
+                        first = false;
+                    }
+                    Pair<RegisteredUser,Status> j = new Pair<>(new RegisteredUser(r.get("r1.username").asString(),
+                            r.get("r1.profile_pic").asString()),
+                            Status.valueOf(r.get("j.status").asString()));
+                    joiners.add(j);
+                }
+                res.setJoiners(joiners);
+                return res;
+            });
+        }catch (Exception e){
+            return null;
+        }
+        return trip;
     }
 }

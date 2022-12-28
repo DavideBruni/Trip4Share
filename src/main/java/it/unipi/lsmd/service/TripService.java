@@ -1,9 +1,6 @@
 package it.unipi.lsmd.service;
 
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.PriceDestinationDTO;
-import it.unipi.lsmd.dto.TripDetailsDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,4 +48,6 @@ public interface TripService {
     boolean updateTrip(TripDetailsDTO newTrip, TripDetailsDTO oldTrip);
 
     List<TripSummaryDTO> mostPopularTrips(int tripNumberIndex);
+
+    InvolvedPeopleDTO getOrganizerAndJoiners(String id);
 }

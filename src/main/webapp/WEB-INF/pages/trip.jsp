@@ -155,7 +155,7 @@
         <div class="row">
           <% AuthenticatedUserDTO user = (AuthenticatedUserDTO) request.getAttribute("username");
 
-            if(user == trip.getOrganizer){
+            if(user == trip.getOrganizer()){
           %>
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
         <%}else{ %>
