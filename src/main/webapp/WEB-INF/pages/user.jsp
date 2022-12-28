@@ -40,8 +40,8 @@
             %>
             <div class="card-body little-profile justify-content-center">
                 <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></div>
-                <h3 class="m-b-0"><%= user.getUsername() %></h3>
-                <h3 class="m-t-10"><%= user.getFirstName() %> <%= user.getLastName() %></h3>
+                <h3 class="m-b-0 white"><%= user.getUsername() %></h3>
+                <h3 class="m-t-10 white"><%= user.getFirstName() %> <%= user.getLastName() %></h3>
                 <p><%= user.getBirthdate() %></p>
 
                 <%
@@ -109,7 +109,7 @@
                 <div class="card" style="width: 18rem;">
 
                     <div class="card-body">
-                        <h5 class="card-title"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h5>
+                        <h4 class="card-title white"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h4>
                         <p class="card-text"><%= reviewDTO.getText() %></p>
                         <a href=<%="user?username=" + reviewDTO.getAuthor() %>><%= reviewDTO.getAuthor() %></a>
                     </div>
