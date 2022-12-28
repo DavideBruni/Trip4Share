@@ -38,7 +38,7 @@
             <%
                 Boolean itsMe = (Boolean) request.getAttribute("itsMe");
             %>
-            <div class="card-body little-profile text-center">
+            <div class="card-body little-profile justify-content-center">
                 <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></div>
                 <h3 class="m-b-0"><%= user.getUsername() %></h3>
                 <h3 class="m-t-10"><%= user.getFirstName() %> <%= user.getLastName() %></h3>
