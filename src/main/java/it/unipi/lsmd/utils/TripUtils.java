@@ -197,7 +197,7 @@ public interface TripUtils {
 
     static Trip tripFromRecord(Record r){
         Trip trip = new Trip();
-        trip.setId(r.get("id").asString());
+        trip.setId(r.get("t._id").asString());
         trip.setDestination(r.get("t.destination").asString());
         trip.setTitle(r.get("t.title").asString());
         trip.setImg(r.get("t.imgUrl").asString());

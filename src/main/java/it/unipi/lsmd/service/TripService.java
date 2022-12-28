@@ -1,9 +1,7 @@
 package it.unipi.lsmd.service;
 
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.PriceDestinationDTO;
-import it.unipi.lsmd.dto.TripDetailsDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +15,8 @@ public interface TripService {
     List<TripSummaryDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page);
     List<TripSummaryDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page);
     TripDetailsDTO getTrip(String id);
+
+    List<TripSummaryDTO> getTripsOrganizedByUser(RegisteredUserDTO user);
 
     List<String> mostPopularDestinations(int page, int objectPerPageSearch);
 

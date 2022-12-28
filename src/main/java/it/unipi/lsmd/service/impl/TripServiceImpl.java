@@ -65,10 +65,21 @@ public class TripServiceImpl implements TripService {
         try {
             trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
         } catch (Neo4jException e) {
-            System.out.println("Error - No organizer found");
+            System.out.println(e);
             trip.setOrganizer(null);
         }
         return TripUtils.tripModelToDetailedDTO(trip);
+    }
+
+
+    public List<TripSummaryDTO> getTripsOrganizedByUser(RegisteredUserDTO user){
+        List<Trip> trips_model = tripDAO.getTripOrganizedByUser(UserUtils.registeredUserFromDTO(user));
+        List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
+        for(Trip trip : trips_model){
+            TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
+            trips.add(tripSummaryDTO);
+        }
+        return trips;
     }
 
     @Override

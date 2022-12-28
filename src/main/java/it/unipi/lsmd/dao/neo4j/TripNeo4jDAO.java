@@ -138,18 +138,47 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
 
     @Override
     public RegisteredUser getOrganizer(Trip trip) throws Neo4jException {
+
         RegisteredUser user = new RegisteredUser();
         try (Session session = getConnection().session()) {
             String username = session.readTransaction(tx -> {
-                Result result = tx.run("(t:Trip{id: $id})<-[:JOIN]- (r:RegisteredUser) " +
+                Result result = tx.run("MATCH (t:Trip{_id: $id})-[:ORGANIZED_BY]->(r:RegisteredUser) " +
                                 "RETURN r.username as organizer",
                         parameters("id", trip.getId()));
                 return result.next().get("organizer").asString();
             });
             user.setUsername(username);
         }catch (Exception e){
+            System.out.println(e);
             throw new Neo4jException();
         }
         return user;
     }
+
+    public List<Trip> getTripOrganizedByUser(RegisteredUser organizer){
+
+        List<Trip> trip_list;
+
+        try (Session session = getConnection().session()) {
+            trip_list = session.readTransaction(tx -> {
+                Result result = tx.run("MATCH (t:Trip)-[:ORGANIZED_BY]->(r:RegisteredUser{username: $username}) " +
+                                "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r.username as organizer",
+                        parameters("username", organizer.getUsername()));
+                List<Trip> trips = new ArrayList<Trip>();
+                while(result.hasNext()){
+                    Record r = result.next();
+                    Trip trip = TripUtils.tripFromRecord(r);
+                    System.out.println(trip);
+                    trips.add(trip);
+                }
+                return trips;
+            });
+        }catch (Exception e){
+            System.out.println(e);
+            return new ArrayList<>();
+
+        }
+        return trip_list;
+    }
+
 }
