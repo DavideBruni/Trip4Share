@@ -49,7 +49,10 @@
                 %>
                 <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Follow</a>
                 <%}else{%>
+                <div class="row">
                 <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Edit Profile</a>
+                <a href="javascript:void(0)" class="m-t-10 ml-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Create new trip</a>
+                </div>
                 <%}%>
                 <div class="row text-center m-t-20">
                     <div class="col-lg-6 col-md-6 m-t-20">
