@@ -55,13 +55,21 @@
                 </div>
                 <%}%>
                 <div class="row text-center m-t-20">
-                    <div class="col-lg-6 col-md-6 m-t-20">
+                    <div class="col-4">
                         <h3 class="m-b-0 font-light white">434K</h3><small>Followers</small>
                     </div>
-                    <div class="col-lg-6 col-md-6 m-t-20">
+                    <div class="col-4">
                         <h3 class="m-b-0 font-light white">5454</h3><small>Following</small>
                     </div>
+                    <div class="col-4">
+                        <h3 class="m-b-0 font-light white">5454</h3><small>Average Rating</small>
+                    </div>
                 </div>
+            </div>
+            <div class="text-center">
+                <h4 class="m-t-10"> Nazionalità </h4>
+                <h4 class="m-t-10"> Lingue Parlate </h4>
+                <h4 class="m-t-10"> Bio</h4>
             </div>
         </div>
     </div>
