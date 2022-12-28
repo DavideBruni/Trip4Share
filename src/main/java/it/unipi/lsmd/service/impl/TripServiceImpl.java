@@ -344,4 +344,26 @@ public class TripServiceImpl implements TripService {
         }
         return null;
     }
+
+    @Override
+    public boolean manageTripRequest(String id, String username, String action) {
+            try{
+                Trip t = new Trip();
+                t.setId(id);
+                RegisteredUser r = new RegisteredUser(username);
+                if(action.equals("delete")) {
+                    tripDAO.removeJoin(t,r);
+                }else{
+                    if(action.equals("accept"))
+                        tripDAO.setStatusJoin(t,r,Status.accepted);
+                    else if(action.equals("reject"))
+                        tripDAO.setStatusJoin(t,r,Status.rejected);
+                    else
+                        return false;
+                }
+            }catch (Neo4jException exc){
+                return false;
+            }
+            return true;
+    }
 }

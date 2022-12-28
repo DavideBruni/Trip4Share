@@ -3,6 +3,7 @@ package it.unipi.lsmd.dao;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
+import it.unipi.lsmd.model.enums.Status;
 
 import java.util.List;
 
@@ -19,4 +20,9 @@ public interface TripDAO {
     void updateTrip(Trip newTrip) throws Neo4jException;
 
     Trip getJoinersAndOrganizer(Trip t);
+
+    void removeJoin(Trip t, RegisteredUser r) throws Neo4jException;
+
+    // TODO: set pending
+    void setStatusJoin(Trip t, RegisteredUser r, Status status) throws Neo4jException;
 }

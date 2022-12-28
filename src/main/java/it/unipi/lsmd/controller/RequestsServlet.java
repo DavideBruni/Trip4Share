@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/requests")
-public class RequestsController extends HttpServlet {
+public class RequestsServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         // only authenticated users can view it and only if id isn't null
-        if(id!=null && req.getSession()==null || req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+        if(id==null || req.getSession()==null || req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
             resp.sendRedirect(req.getContextPath());
             return;
         }
@@ -32,6 +32,7 @@ public class RequestsController extends HttpServlet {
              resp.sendRedirect(req.getContextPath());
         }else{
             req.setAttribute(SecurityUtils.JOINERS,inv.getJoiners());
+            req.setAttribute("id",id);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/pages/requests.jsp");
             requestDispatcher.forward(req, resp);
         }

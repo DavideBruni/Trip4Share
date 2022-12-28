@@ -79,7 +79,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
                         parameters("id", t.getId(),"destination",t.getDestination(), "title", t.getTitle(),
                                 "imgUrl",t.getImg(),"departureDate",depDate,"returnDate",retDate)).consume();
                 tx.run("MATCH (t:Trip), (r:RegisteredUser) " +
-                        "WHERE t.id = $id AND r.username = $username " +
+                        "WHERE t._id = $id AND r.username = $username " +
                         "CREATE (t)-[o:ORGANIZED_BY]->(r) " +
                         "RETURN type(o)", parameters("id", t.getId(),"username",organizer.getUsername())).consume();
                 return null;
@@ -100,14 +100,14 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
                 //nessun utente ha fatto join, posso cancellarlo anche da Neo4j
                 session.writeTransaction(tx -> {
                     tx.run("MATCH (t:Trip) " +
-                            "WHERE t.id = $id " +
+                            "WHERE t._id = $id " +
                             "DETACH DELETE t ",parameters("id", t.getId())).consume();
                     return null;
                 });
             }else {
                 session.writeTransaction(tx -> {
                     tx.run("MATCH (t:Trip) " +
-                            "WHERE t.id = $id " +
+                            "WHERE t._id = $id " +
                             "SET t.deleted = TRUE " +
                             "RETURN t", parameters("id", t.getId())).consume();
                     return null;
@@ -169,5 +169,48 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             return null;
         }
         return trip;
+    }
+
+    @Override
+    public void removeJoin(Trip t,RegisteredUser r) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+           session.writeTransaction(tx -> {
+                tx.run("MATCH (t:Trip)<-[j:JOIN]-(r:RegisteredUser) " +
+                        "WHERE t._id = $id AND r.username = $username " +
+                        "DELETE (j) ", parameters("id", t.getId(), "username", r.getUsername())).consume();
+                return null;
+           });
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+    }
+
+    // TODO: set pending
+    @Override
+    public void setStatusJoin(Trip t, RegisteredUser r, Status status) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+            if(status.equals(Status.pending)){
+                session.writeTransaction(tx -> {
+                            tx.run("MATCH (t:Trip), (r:RegisteredUser) " +
+                                    "WHERE t._id = $id AND r.username = $username " +
+                                    "CREATE (t)-[o:ORGANIZED_BY {status:$status}]->(r) " +
+                                    "RETURN type(o)", parameters("id", t.getId(), "username", r.getUsername(),
+                                    "status",Status.pending.name())).consume();
+                            return null;
+                        }
+                );
+            }else {
+                session.writeTransaction(tx -> {
+                            tx.run("MATCH (t:Trip)<-[j:JOIN]-(r:RegisteredUser) " +
+                                    "WHERE t._id = $id AND r.username = $username " +
+                                    "SET j.status = $status ", parameters("id", t.getId(), "username", r.getUsername(),
+                                    "status",status.name())).consume();
+                            return null;
+                        }
+                );
+            }
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
     }
 }

@@ -50,4 +50,6 @@ public interface TripService {
     List<TripSummaryDTO> mostPopularTrips(int tripNumberIndex);
 
     InvolvedPeopleDTO getOrganizerAndJoiners(String id);
+
+    boolean manageTripRequest(String id, String username, String action);
 }
