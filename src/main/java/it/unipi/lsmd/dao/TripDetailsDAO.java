@@ -10,11 +10,13 @@ import java.util.List;
 public interface TripDetailsDAO {
 
     Trip getTrip(String id);
-    List<Trip> getTripsByTag(String tag, Date departureDate, Date returnDate, int size, int page);
+    List<Trip> getTripsByTag(String tag, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
-    List<Trip> getTripsByDestination(String destination, int size, int page);
+    //List<Trip> getTripsByDestination(String destination, int size, int page);
 
     List<Trip> getTripsByDestination(String destination, LocalDate departureDate, LocalDate returnDate, int size, int page);
+
+    List<Trip> getTripsByPrice(int min_price, int max_price, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
     List<String> mostPopularDestinations(int page, int objectPerPageSearch);
 

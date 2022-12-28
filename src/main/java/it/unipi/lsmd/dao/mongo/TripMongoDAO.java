@@ -29,28 +29,7 @@ import static com.mongodb.client.model.Sorts.descending;
 public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     private final MongoCollection<Document> collection = getConnection().getCollection("trips");
-    @Override
-    public List<Trip> getTripsByDestination(String destination, int size, int page){
 
-        Bson m1=  match(eq("destination", destination));
-        Bson l1 = limit(size);
-        Bson p1 = project(fields(excludeId(), include("destination", "title", "departureDate", "returnDate")));
-        AggregateIterable<Document> res;
-        if (page != 1) {
-            Bson s1 = skip((page - 1) * size);
-            res = collection.aggregate(Arrays.asList(m1, l1, s1, p1));
-        } else {
-            res = collection.aggregate(Arrays.asList(m1, l1, p1));
-        }
-        List<Trip> trips = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            Trip t = TripUtils.tripFromDocument(doc);
-            trips.add(t);
-        }
-        return trips;
-    }
     public List<Trip> getTripsByDestination(String destination, LocalDate departureDate, LocalDate returnDate, int size, int page) {
 
         Bson m1;
@@ -65,7 +44,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
-            res = collection.aggregate(Arrays.asList(m1, l1, s1, p1));
+            res = collection.aggregate(Arrays.asList(m1, s1, l1, p1));
         } else {
             res = collection.aggregate(Arrays.asList(m1, l1, p1));
         }
@@ -79,7 +58,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         return trips;
     }
 
-    public List<Trip> getTripsByTag(String tag, Date departureDate, Date returnDate, int size, int page) {
+    public List<Trip> getTripsByTag(String tag, LocalDate departureDate, LocalDate returnDate, int size, int page) {
 
         Bson m1;
         if (returnDate == null) {
@@ -89,11 +68,48 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
                     lte("returnDate", returnDate)));
         }
         Bson l1 = limit(size);
-        Bson p1 = project(fields(excludeId(), include("destination", "title", "departureDate", "returnDate")));
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
-            res = collection.aggregate(Arrays.asList(m1, l1, s1, p1));
+            res = collection.aggregate(Arrays.asList(m1, s1, l1,  p1));
+        } else {
+            res = collection.aggregate(Arrays.asList(m1, l1, p1));
+        }
+        List<Trip> trips = new ArrayList<>();
+        MongoCursor<Document> it = res.iterator();
+        while (it.hasNext()) {
+            Document doc = it.next();
+            Trip t = TripUtils.tripFromDocument(doc);
+            trips.add(t);
+        }
+        return trips;
+    }
+
+    public List<Trip> getTripsByPrice(int min_price, int max_price, LocalDate departureDate, LocalDate returnDate, int size, int page) {
+
+        Bson m1;
+        if (returnDate == null) {
+            if(max_price > 0){
+                m1 = match(and(gte("price", min_price), lte("price", max_price), gte("departureDate", departureDate)));
+            }else{
+                m1 = match(and(gte("price", min_price), gte("departureDate", departureDate)));
+            }
+        } else {
+            if(max_price > 0){
+                m1 = match(and(gte("price", min_price), lte("price", max_price), gte("departureDate", departureDate),
+                        lte("returnDate", returnDate)));
+            }else{
+                m1 = match(and(gte("price", min_price), gte("departureDate", departureDate), lte("returnDate", returnDate)));
+            }
+
+        }
+        Bson l1 = limit(size);
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
+        AggregateIterable<Document> res;
+        if (page != 1) {
+            Bson s1 = skip((page - 1) * size);
+            res = collection.aggregate(Arrays.asList(m1, s1, l1,  p1));
         } else {
             res = collection.aggregate(Arrays.asList(m1, l1, p1));
         }

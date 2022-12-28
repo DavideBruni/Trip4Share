@@ -54,7 +54,7 @@
                 <div class=" pdn-top-30 row">
                     <div class=" col-4"></div>
                     <div class="col-4">
-                        <form method="POST">
+                        <form action="search" method="POST">
                             <label >Insert destination</label>
                             <input class="form-control" placeholder="" type="text" name="destination" size="50">
 
@@ -78,7 +78,7 @@
                     <div class=" col-4"></div>
                     <div class="col-4">
 
-                        <form method="POST">
+                        <form action="search" method="POST">
 
                             <label>Category</label>
                             <select class="form-control" name="tags">
@@ -88,13 +88,13 @@
                                 <option>Option 3</option>
                             </select>
 
-
-
                             <label >Departure Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="departure_date">
 
                             <label >Return Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="return_date">
+
+                            <button class="btn btn-primary pull-right mr-5" type="submit" value="submit">Search</button>
                         </form>
 
 
@@ -110,18 +110,20 @@
                     <div class=" col-4"></div>
                     <div class="col-4">
 
-                        <form method="POST">
+                        <form action="search" method="POST">
                             <label >Min Price</label>
-                            <input class="form-control" placeholder="00.0" type="text" name="00.0">
+                            <input class="form-control" placeholder="00.0" type="text" name="min_price">
 
                             <label >Max Price</label>
-                            <input class="form-control" placeholder="00.0" type="text" name="00.0">
+                            <input class="form-control" placeholder="00.0" type="text" name="max_price">
 
                             <label >Departure Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="departure_date">
 
                             <label >Return Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="return_date">
+
+                            <button class="btn btn-primary pull-right mr-5" type="submit" value="submit">Search</button>
                         </form>
                     </div>
 
@@ -133,7 +135,7 @@
                 <div class=" pdn-top-30 row">
                     <div class=" col-4"></div>
                     <div class="col-4">
-                        <form method="POST">
+                        <form action="search" method="POST">
                             <label >Insert username</label>
                             <input  class="form-control" placeholder="" type="text" name="username" size="50">
 
@@ -147,73 +149,6 @@
         </div>
 
     </div>
-
-
-
-    <%
-        ArrayList<Object> results = (ArrayList<Object>) request.getAttribute(SecurityUtils.SEARCH_RESULTS);
-        if(results != null && results.size() > 0){
-    %>
-    <div class="titlepage">
-        <h2>Results</h2>
-    </div>
-
-    <div class="container" >
-        <div class="row">
-            <div class="col-12 ">
-                <hr class="invis3">
-                <!-- Single Blog Area  -->
-                <%
-                    if(results.get(0) instanceof TripSummaryDTO){
-                        for(Object result : results){
-                            TripSummaryDTO trip = (TripSummaryDTO) result;
-                %>
-                <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
-                    <div class="row align-items-center">
-                        <div class="col-12 col-md-6">
-                            <div class="single-blog-thumbnail">
-                                <img src="images/blog-image.jpg" alt="">
-                                <div class="post-date">
-                                    <a>12 <span>march</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <!-- Blog Content -->
-                            <div class="single-blog-content">
-                                <div class="line"></div>
-                                <a class="post-tag"><%=trip.getDestination()%></a>
-                                <h4><a href=<%="trip?id=" + trip.getId()%> class="post-headline"> <%=trip.getTitle()%></a></h4>
-                                <p><%=trip.getDepartureDate()%> <br> <%=trip.getReturnDate()%> </p>
-                                <div class="post-meta">
-                                    <p>By <a href="#">james smith</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <%
-                        }
-                    }else if(results.get(0) instanceof OtherUserDTO){
-                        for(Object result : results){
-                            OtherUserDTO user = (OtherUserDTO) result;
-                %>
-
-                <h4><a href=<%="user?username=" + user.getUsername()%>> <%=user.getUsername()%> </a></h4>
-
-                <%
-                        }
-                    }
-                %>
-
-
-            </div>
-        </div>
-    </div>
-    <%
-        }
-    %>
-
 
 </div>
 

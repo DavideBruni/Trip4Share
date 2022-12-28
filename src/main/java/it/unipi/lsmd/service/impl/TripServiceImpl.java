@@ -120,11 +120,10 @@ public class TripServiceImpl implements TripService {
             depDate = LocalDate.now();
         }
 
-        List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination,depDate,retDate,size,page);
+        List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination, depDate, retDate, size, page);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
-            System.out.println(tDTO);
             tripsDTO.add(tDTO);
         }
         return tripsDTO;
@@ -133,24 +132,44 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<TripSummaryDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page) {
-        Date depDate = null;
-        Date retDate = null;
-        try {
-            depDate =new SimpleDateFormat("dd-MM-yyyy").parse(departureDate);
-            try{
-                retDate = new SimpleDateFormat("dd-MM-yyyy").parse(returnDate);
-            }catch (ParseException ex){ }
-        } catch (ParseException e) {
-            depDate = new Date();
-        }finally{
-            List<Trip> trips= tripDetailsDAO.getTripsByTag(tag,depDate,retDate,size,page);
-            List<TripSummaryDTO> tripsDTO = new ArrayList<>();
-            for(Trip t : trips){
-                TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
-                tripsDTO.add(tDTO);
-            }
-            return tripsDTO;
+
+        LocalDate depDate;
+        LocalDate retDate = null;
+        try{
+            depDate = LocalDate.parse(departureDate);
+            retDate = LocalDate.parse(returnDate);
+        }catch (DateTimeParseException e){
+            depDate = LocalDate.now();
         }
+
+        List<Trip> trips= tripDetailsDAO.getTripsByTag(tag, depDate, retDate, size, page);
+        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
+        for(Trip t : trips){
+            TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
+            tripsDTO.add(tDTO);
+        }
+        return tripsDTO;
+    }
+
+    @Override
+    public List<TripSummaryDTO> getTripsByPrice(int min_price, int max_price, String departureDate, String returnDate, int size, int page) {
+
+        LocalDate depDate;
+        LocalDate retDate = null;
+        try{
+            depDate = LocalDate.parse(departureDate);
+            retDate = LocalDate.parse(returnDate);
+        }catch (DateTimeParseException e){
+            depDate = LocalDate.now();
+        }
+
+        List<Trip> trips= tripDetailsDAO.getTripsByPrice(min_price, max_price, depDate, retDate, size, page);
+        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
+        for(Trip t : trips){
+            TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
+            tripsDTO.add(tDTO);
+        }
+        return tripsDTO;
     }
 
     @Override

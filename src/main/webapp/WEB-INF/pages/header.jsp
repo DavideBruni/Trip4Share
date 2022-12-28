@@ -13,7 +13,6 @@
     //String fullname = null;
     boolean loggedUser = false;
     RegisteredUserDTO authenticatedUserDTO = null;
-    String shoppingCartNumItems = request.getAttribute("shoppingCartNumItems") != null ? request.getAttribute("shoppingCartNumItems").toString() : "";
     if (session != null && session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) != null){
         authenticatedUserDTO = (RegisteredUserDTO) session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
         loggedUser = true;
