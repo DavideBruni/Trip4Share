@@ -12,6 +12,8 @@ public class SecurityUtils {
 
     public static final String AUTHENTICATED_USER_KEY = "authenticatedUser";
     public static final String WISHLIST_KEY = "wishlist";
+    public static final String REVIEWS_KEY = "reviews";
+
     public static final String USERS_FOLLOWERS_KEY = "followers";
     public static final String CHEAPEST_TRIPS = "cheapest";
     public static final String MOST_POPULAR = "most_populars";
