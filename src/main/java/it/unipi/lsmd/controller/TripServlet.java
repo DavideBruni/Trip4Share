@@ -41,7 +41,6 @@ public class TripServlet extends HttpServlet {
         String trip_id = httpServletRequest.getParameter("id");
 
         TripDetailsDTO trip = tripService.getTrip(trip_id);
-
         if(authenticatedUserDTO != null) {
 
             String action = httpServletRequest.getParameter("action");

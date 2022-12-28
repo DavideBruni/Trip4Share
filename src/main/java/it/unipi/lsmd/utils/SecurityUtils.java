@@ -19,6 +19,7 @@ public class SecurityUtils {
     public static final String SUGGESTED_USERS = "suggested_users";
     public static final String SUGGESTED_TRIPS = "suggested_trips";
     public static final String SEARCH_RESULTS = "search_results";
+    public static final String PAGE = "page";
 
     // ho chiamato quella per i viaggi organizzato ORGANIZED_TRIPS
     // mi deve mandare la pagina corrente e il numero totale
