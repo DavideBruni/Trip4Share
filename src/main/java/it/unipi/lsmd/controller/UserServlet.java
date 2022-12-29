@@ -1,9 +1,6 @@
 package it.unipi.lsmd.controller;
 
-import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
-import it.unipi.lsmd.dto.ReviewDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
@@ -45,6 +42,22 @@ public class UserServlet extends HttpServlet {
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Trips organized by "+ username);
         return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
     }
+
+    private RequestDispatcher getFollowers(HttpServletRequest request, String username, int page){
+        List<OtherUserDTO> followers = userService.getFollowers(username);
+        request.setAttribute(SecurityUtils.USER_RESULTS, followers);
+        request.setAttribute(SecurityUtils.PAGE, page);
+        request.setAttribute(SecurityUtils.TITLE_PAGE, username+"'s followers");
+        return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");    }
+
+    private RequestDispatcher getFollowing(HttpServletRequest request, String username, int page){
+        List<OtherUserDTO> following = userService.getFollowing(username);
+        request.setAttribute(SecurityUtils.USER_RESULTS, following);
+        request.setAttribute(SecurityUtils.PAGE, page);
+        request.setAttribute(SecurityUtils.TITLE_PAGE, username+"'s following");
+        return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");
+    }
+
 
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
@@ -89,6 +102,10 @@ public class UserServlet extends HttpServlet {
             requestDispatcher = getUserReviews(httpServletRequest, ((RegisteredUserDTO) authenticatedUserDTO).getReviews(), page);
         }else if(show != null && show.equals("organizedTrips")) {
             requestDispatcher = getOrganizedTrips(httpServletRequest, username, page);
+        }else if(show != null && show.equals("followers")){
+            requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), page);
+        }else if(show != null && show.equals("following")){
+            requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), page);
         }else{
             httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");

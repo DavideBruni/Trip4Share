@@ -49,6 +49,10 @@
 </head>
 
 <body class="justify-content-center main-layout">
+
+<%@ include file="/WEB-INF/pages/header.jsp" %>
+
+
     <%
         String title = (String) request.getAttribute(SecurityUtils.TITLE_PAGE);
     %>
@@ -58,7 +62,7 @@
     </div>
 
     <%
-        ArrayList<OtherUserDTO> results = (ArrayList<OtherUserDTO>) request.getAttribute(SecurityUtils.TRIPS_RESULT);
+        ArrayList<OtherUserDTO> results = (ArrayList<OtherUserDTO>) request.getAttribute(SecurityUtils.USER_RESULTS);
 
     %>
 
@@ -67,24 +71,28 @@
         <div class="col-10">
             <div class="sidebar">
                 <div class="widget">
-                    <div class="titlepage ">
-                        <h3>Followers / Following </h3   >
-                    </div>
+
                     <%
-                        for(OtherUserDTO user : results){
+                        if(results != null && results.size() > 0){
+                            for(OtherUserDTO user : results){
                     %>
                     <div class="blog-list-widget">
                         <div class=" row">
                             <div class="col-3"></div>
-                            <a href="single.html" class="list-group-item list-group-item-action flex-column align-items-center col-6">
+                            <a class="list-group-item list-group-item-action flex-column align-items-center col-6" href=<%="user?username="+user.getUsername()%>>
                                 <div class="row justify-content-center">
                                     <i><img src="../WebContent/icon/travel-icon.png" alt="icon" width="40%"/></i>
-                                    <h3 class="mt-3"><%=user.getUsername()%>></h3>
+                                    <h3 class="mt-3"><%=user.getUsername()%></h3>
                                 </div>
                             </a>
                             <div class="col-3"></div>
                         </div>
                     </div><!-- end blog-list -->
+                    <%
+                            }
+                        }else{
+                    %>
+                        No users found!
                     <%
                         }
                     %>
@@ -94,6 +102,6 @@
         <div class="col-1"></div>
     </div>
     </div>
-
+<%@ include file="/WEB-INF/pages/footer.jsp" %>
 </body>
 </html>

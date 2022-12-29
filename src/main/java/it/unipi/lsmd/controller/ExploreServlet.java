@@ -107,7 +107,7 @@ public class ExploreServlet extends HttpServlet {
     }
     private RequestDispatcher searchUser(HttpServletRequest request, String value, int page) {
         List<OtherUserDTO> users = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute(SecurityUtils.TRIPS_RESULT, users);
+        request.setAttribute(SecurityUtils.USER_RESULTS, users);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
         return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");
     }

@@ -60,10 +60,11 @@
 
                     <div class="row text-center m-t-20">
                         <div class="col-4">
-                            <h3 class="m-b-0 font-light white"><%=user.getN_followers()%></h3><small>Followers</small>
+                            <h3 class="m-b-0 font-light white"><%=user.getN_followers()%></h3>
+                            <a href=<%="user?username="+user.getUsername()+"&show=followers"%>><small>Followers</small></a>
                         </div>
                         <div class="col-4">
-                            <h3 class="m-b-0 font-light white"><%=user.getN_following()%></h3><small>Following</small>
+                            <h3 class="m-b-0 font-light white" ><%=user.getN_following()%></h3><small>Following</small>
                         </div>
                         <div class="col-4">
                             <h3 class="m-b-0 font-light white"><%=user.getAvg_rating()%></h3><small>Average Rating</small>
@@ -72,8 +73,8 @@
                 </div>
                 <div class="text-center">
 
-                <h4 class="m-t-10"> Nazionalità </h4>
-                <h4 class="m-t-10"> Lingue Parlate </h4>
+                <h4 class="m-t-10"> Nationality: <%=user.getNationality()%> </h4>
+                <h4 class="m-t-10"> Spoken Languages: <%=user.getSpoken_languages()%> </h4>
                 <h4 class="m-t-10"> Bio</h4>
             </div>
         </div>
@@ -83,19 +84,20 @@
 
 <ul class="nav nav-tabs mb-3 justify-content-center" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" href="l" role="tab" aria-selected="true">Reviews</a>
+        <a class="nav-link active" href=<%="user?username="+user.getUsername()+"&show=reviews"%> role="tab" aria-selected="true">Reviews</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" role="tab"  aria-selected="false">Organized Trips</a>
+        <a class="nav-link" href=<%="user?username="+user.getUsername()+"&show=organizedTrips"%> role="tab"  aria-selected="false">Organized Trips</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" id="pills-contact-tab"  href="#" role="tab"  aria-selected="false">Past Trips</a>
-    </li>
+
     <%
         if(itsMe){
     %>
             <li class="nav-item">
-                <a class="nav-link" href="#" role="tab" aria-selected="false">WishList</a>
+                <a class="nav-link" id="pills-contact-tab"  href="pastTrips" role="tab"  aria-selected="false">Past Trips</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="wishlist" role="tab" aria-selected="false">WishList</a>
             </li>
     <%
         }
@@ -126,7 +128,7 @@
                 <div class="col-md-12">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-end">
-                            <li class="page-item"><a class="page-link" href="#">View More</a></li>
+                            <li class="page-item"><a class="page-link" href=<%="user?username="+user.getUsername()+"&show=reviews"%>>View More</a></li>
                         </ul>
                     </nav>
                 </div><!-- end col -->

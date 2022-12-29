@@ -30,4 +30,6 @@ public interface UserService {
     boolean addUser(AuthenticatedUserDTO u);
 
     boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser);
+
+    List<OtherUserDTO> getFollowers(String username);
 }

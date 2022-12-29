@@ -74,6 +74,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<OtherUserDTO> getFollowers(String username) {
+        List<RegisteredUser> users = registeredUserDAO.getFollower(username);
+        List<OtherUserDTO> followers = new ArrayList<>();
+        for(RegisteredUser r : users){
+            OtherUserDTO otherUserDTO = new OtherUserDTO();
+            otherUserDTO.setUsername(r.getUsername());
+            followers.add(otherUserDTO);
+        }
+        return followers;
+    }
+
+    @Override
     public int getFollowingNumber(String username) {
         return registeredUserDAO.getNumberOfFollowing(username);
     }

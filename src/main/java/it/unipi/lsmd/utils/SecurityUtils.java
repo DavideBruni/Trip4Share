@@ -25,6 +25,7 @@ public class SecurityUtils {
     public static final String PAGE = "page";
     public static final String ORGANIZED_TRIPS = "organized_trips";
     public static final String TRIPS_RESULT = "trips_result";
+    public static final String USER_RESULTS = "user_results";
 
     // ho chiamato quella per i viaggi organizzato ORGANIZED_TRIPS
     // mi deve mandare la pagina corrente e il numero totale
