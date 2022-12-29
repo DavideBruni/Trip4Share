@@ -24,11 +24,13 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         try (Session session = getConnection().session()) {
             tripsList = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (r1:RegisteredUser{username : $username})-[:FOLLOW]->(r2:RegisteredUser) <-" +
-                        "[:ORGANIZED_BY]-(t:Trip) WHERE t.deleted = FALSE RETURN t.destination, t.departureDate," +
-                                "t.returnDate,t.title, t.deleted,t.imgUrl,t._id, r2.username"+
+
+                        "[:ORGANIZED_BY]-(t:Trip) WHERE t.deleted = FALSE " +
+                        " RETURN t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r2.username as organizer" +
                         " ORDER BY t.departureDate SKIP $skip LIMIT $limit",
                         parameters("username", username, "skip", ((page-1)*size),"limit",size));
                 List trips = new ArrayList<>();
+
                 while (result.hasNext()) {
                     Record r = result.next();
                     Trip t = TripUtils.tripFromRecord(r);
@@ -47,9 +49,10 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         List<Trip> tripsList;
         try (Session session = getConnection().session()) {
             tripsList = session.readTransaction(tx -> {
-                Result result = tx.run("MATCH (r1:RegisteredUser{username : $username})-[:FOLLOW]->(r2:RegisteredUser)-" +
-                                "[:JOIN]->(t:Trip) WHERE t.departureDate > date() AND (NOT (r1)-[:JOIN]->(t)) AND (NOT (t)-[:ORGANIZED_BY] -> (r1))"+
-                                " AND t.deleted = FALSE RETURN t._id,t.destination, t.departureDate, t.returnDate,t.title, t.deleted,t.imgUrl, rand() as ord " +
+                Result result = tx.run("MATCH (r1:RegisteredUser{username : $username})-[:FOLLOW]->(r2:RegisteredUser) -[:JOIN]->(t:Trip) " +
+                                "WHERE t.departureDate > date() AND (NOT (r1)-[:JOIN]->(t)) AND (NOT (t)-[:ORGANIZED_BY] -> (r1) AND t.deleted = FALSE " +
+                                "RETURN t.destination, t.departureDate, t.returnDate,t.title, t.deleted, t.imgUrl, r2.username as organizer, rand() as ord " +
+
                                 "ORDER BY ord LIMIT $limit",
                         parameters("username", username, "limit",numTrips));
                 List trips = new ArrayList<>();
@@ -135,4 +138,50 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
     public void updateTrip(Trip newTrip) throws Neo4jException {
 
     }
+
+    @Override
+    public RegisteredUser getOrganizer(Trip trip) throws Neo4jException {
+
+        RegisteredUser user = new RegisteredUser();
+        try (Session session = getConnection().session()) {
+            String username = session.readTransaction(tx -> {
+                Result result = tx.run("MATCH (t:Trip{_id: $id})-[:ORGANIZED_BY]->(r:RegisteredUser) " +
+                                "RETURN r.username as organizer",
+                        parameters("id", trip.getId()));
+                return result.next().get("organizer").asString();
+            });
+            user.setUsername(username);
+        }catch (Exception e){
+            System.out.println(e);
+            throw new Neo4jException();
+        }
+        return user;
+    }
+
+    public List<Trip> getTripOrganizedByUser(RegisteredUser organizer){
+
+        List<Trip> trip_list;
+
+        try (Session session = getConnection().session()) {
+            trip_list = session.readTransaction(tx -> {
+                Result result = tx.run("MATCH (t:Trip)-[:ORGANIZED_BY]->(r:RegisteredUser{username: $username}) " +
+                                "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r.username as organizer",
+                        parameters("username", organizer.getUsername()));
+                List<Trip> trips = new ArrayList<Trip>();
+                while(result.hasNext()){
+                    Record r = result.next();
+                    Trip trip = TripUtils.tripFromRecord(r);
+                    System.out.println(trip);
+                    trips.add(trip);
+                }
+                return trips;
+            });
+        }catch (Exception e){
+            System.out.println(e);
+            return new ArrayList<>();
+
+        }
+        return trip_list;
+    }
+
 }

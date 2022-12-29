@@ -1,5 +1,7 @@
 package it.unipi.lsmd.dto;
 
+import it.unipi.lsmd.model.RegisteredUser;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class TripDetailsDTO {
     private String img;
     private LocalDateTime last_modified;
     private int like_counter;
+    private RegisteredUserDTO organizer;
 
 
     public TripDetailsDTO(){
@@ -139,6 +142,15 @@ public class TripDetailsDTO {
         this.img = img;
     }
 
+
+    public RegisteredUserDTO getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(RegisteredUserDTO organizer) {
+        this.organizer = organizer;
+    }
+
     public int getLike_counter() {
         return like_counter;
     }
@@ -173,6 +185,7 @@ public class TripDetailsDTO {
                 ", img='" + img + '\'' +
                 ", last_modified=" + last_modified +
                 ", like_counter=" + like_counter +
+                "organizer_username='" + organizer.getUsername() + '\'' +
                 '}';
     }
 }

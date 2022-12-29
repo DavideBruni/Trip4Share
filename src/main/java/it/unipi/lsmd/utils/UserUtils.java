@@ -44,7 +44,6 @@ public interface UserUtils {
 
             user = registeredUser;
         }
-        user.setId(result.get("_id").toString());
         user.setName(result.getString("name"));
         user.setSurname(result.getString("surname"));
         user.setEmail(result.getString("email"));
@@ -137,7 +136,6 @@ public interface UserUtils {
     static RegisteredUser registeredUserFromDTO(RegisteredUserDTO userDTO) {
         RegisteredUser r = new RegisteredUser();
         r.setUsername(userDTO.getUsername());
-        r.setId(userDTO.getId());
         r.setPhone(userDTO.getPhone());
         r.setEmail(userDTO.getEmail());
         r.setNationality(userDTO.getNationality());
