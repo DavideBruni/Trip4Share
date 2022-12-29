@@ -44,7 +44,7 @@ public interface TripService {
     List<TripSummaryDTO> getSuggestedTrips(String username, int numTrips);
 
     // change Parameter to DTO
-    boolean addTrip(TripDetailsDTO tripDetailsDTO, OtherUserDTO organizer);
+    boolean addTrip(TripDetailsDTO tripDetailsDTO);
 
     boolean deleteTrip(TripDetailsDTO t);
 

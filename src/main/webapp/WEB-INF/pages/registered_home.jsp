@@ -1,4 +1,3 @@
-<%@ page import="it.unipi.lsmd.dto.AuthenticatedUserDTO" %>
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
 <%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
 <%@ page import="java.util.List" %>
