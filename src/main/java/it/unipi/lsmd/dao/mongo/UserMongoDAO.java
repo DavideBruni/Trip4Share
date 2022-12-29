@@ -60,12 +60,10 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         Bson projection = exclude("email", "password");
 
         Document result = collection.find(query).projection(projection).first();
-        User u = UserUtils.userFromDocument(result);
-        if(u instanceof Admin){
-            return null;
-        }else{
-            return (RegisteredUser) u;
-        }
+        RegisteredUser u = (RegisteredUser) UserUtils.userFromDocument(result);
+
+        return u;
+
     }
 
     public List<RegisteredUser> searchUser(String username, int limit, int page){
@@ -142,6 +140,18 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             return false;
         }
     }
+
+    @Override
+    public boolean updateAdmin(Admin new_user, Admin old_user) {
+        try {
+            Bson q1 = eq("username",new_user.getUsername());
+            Bson q2 = attributeToUpdateAdmin(new_user, old_user);
+            collection.updateOne(q1, q2);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
     private Bson attributeToUpdate(RegisteredUser new_user, RegisteredUser old_user){
         List<Bson> query = new ArrayList<>();
         if(new_user.getBio()!=old_user.getBio()){
@@ -173,5 +183,36 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         }
         query.add(Updates.set("imgUrl",new_user.getProfile_pic()));
         return Updates.combine(query);
+    }
+
+    private Bson attributeToUpdateAdmin(Admin new_user, Admin old_user){
+        List<Bson> query = new ArrayList<>();
+
+        if(new_user.getName()!=old_user.getName()){
+            query.add(Updates.set("name",new_user.getName()));
+        }
+        if(new_user.getSurname()!=old_user.getSurname()){
+            query.add(Updates.set("surname",new_user.getSurname()));
+        }
+
+        if(new_user.getEmail()!=old_user.getEmail()){
+            query.add(Updates.set("email",new_user.getEmail()));
+        }
+
+        if(new_user.getPassword()!=old_user.getPassword()){
+            query.add(Updates.set("password",new_user.getPassword()));
+        }
+        return Updates.combine(query);
+    }
+
+    @Override
+    public User getUserInformation(String username) {
+
+        Bson query = eq("username", username);
+
+        Document result = collection.find(query).first();
+        User u = UserUtils.userFromDocument(result);
+
+        return u;
     }
 }

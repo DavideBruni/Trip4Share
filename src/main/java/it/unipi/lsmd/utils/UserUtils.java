@@ -47,6 +47,7 @@ public interface UserUtils {
         user.setName(result.getString("name"));
         user.setSurname(result.getString("surname"));
         user.setEmail(result.getString("email"));
+        user.setPassword(result.getString("password"));
 
         return user;
     }
@@ -154,9 +155,6 @@ public interface UserUtils {
         a.setName(u.getFirstName());
         a.setSurname(u.getLastName());
         a.setRole("admin");
-        // a.setProfile_pic(u.getProfilePic());
-        // a.setPassword(u.getPassword());
-        a.setEmail(u.getEmail());
         return a;
     }
 }

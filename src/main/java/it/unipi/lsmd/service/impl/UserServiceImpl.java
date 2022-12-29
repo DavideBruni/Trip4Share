@@ -4,10 +4,7 @@ import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
-import it.unipi.lsmd.dto.AdminDTO;
-import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
@@ -43,11 +40,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthenticatedUserDTO getUser(String username){
-        RegisteredUser user = userDAO.getUser(username);
+        RegisteredUser user = (RegisteredUser) userDAO.getUser(username);
         if(user != null)
             user.setAvg_rating(userDAO.avgRating(username));
         return UserUtils.userModelToDTO(user);
     }
+
+
 
     @Override
     public List<OtherUserDTO> getSuggestedUsers(String username, int nUser){
@@ -146,4 +145,27 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public boolean updateAdmin(DetailedUserDTO newUser, DetailedUserDTO oldUser){
+        // fonte: https://www.mongodb.com/community/forums/t/updateone-vs-replaceone-performance/698
+        // better update only few attributes instead of the entire document
+        if(newUser.getUsername()==oldUser.getUsername()){
+            Admin r_new = UserUtils.adminFromDTO(newUser);
+            Admin r_old = UserUtils.adminFromDTO(oldUser);
+            boolean flag = DAOLocator.getUserDAO().updateAdmin(r_new,r_old);
+            if(flag){
+              //  try {
+                    // always update imgs, we don't know if they are equal or not
+                    DAOLocator.getUserDAO().updateAdmin(r_new, r_old);
+                    return true;
+               // } catch (Neo4jException e) {
+                    //logger errore neo4j
+               //     return false;
+               // }
+            }
+            return false;
+        }else
+            return false;
+
+    }
 }

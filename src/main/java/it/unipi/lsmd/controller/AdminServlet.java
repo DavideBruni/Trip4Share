@@ -2,6 +2,9 @@ package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.service.ServiceLocator;
+import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/admin")
@@ -26,7 +30,10 @@ public class AdminServlet  extends HttpServlet {
         }
 
         String targetJSP = "/WEB-INF/pages/admin.jsp";
+
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
+
+
 }

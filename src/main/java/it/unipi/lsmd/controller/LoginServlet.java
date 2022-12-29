@@ -64,10 +64,9 @@ public class LoginServlet extends HttpServlet {
                 if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
                     authenticatedUserDTO = userService.authenticate(username, password);
 
-                    // TODO - controllare anche come ha fatto davide
+
                     if(authenticatedUserDTO == null){
                         httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
-
                     }else{
                         // set user as authenticated
                         HttpSession session = httpServletRequest.getSession(true);
