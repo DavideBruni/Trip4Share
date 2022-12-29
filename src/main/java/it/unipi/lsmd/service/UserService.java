@@ -18,6 +18,10 @@ public interface UserService {
 
     List<OtherUserDTO> getFollowing(String username);
 
+    int getFollowingNumber(String username);
+
+    int getFollowersNumber(String username);
+
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
     double getRating(String username);
 

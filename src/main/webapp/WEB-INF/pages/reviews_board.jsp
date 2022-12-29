@@ -1,6 +1,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="it.unipi.lsmd.dto.ReviewDTO" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="it.unipi.lsmd.utils.PagesUtilis" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 28/12/2022
@@ -67,14 +68,15 @@
                                 <%
                                     List<ReviewDTO> reviews = (List<ReviewDTO>) request.getAttribute(SecurityUtils.REVIEWS_KEY);
                                     if(reviews != null && reviews.size() > 0){
-                                        for(ReviewDTO review : reviews){
+                                        //for(ReviewDTO review : reviews){
+                                        for(int i = 0; i < reviews.size() && i < PagesUtilis.REVIEWS_PER_PAGE; i++){
                                 %>
 
                                 <div class="blog-meta big-meta">
-                                    <h4><%=review.getRating() + "/5\t\t " + review.getTitle()%></h4>
-                                    <p><%=review.getTitle()%></p>
-                                    <small><%=review.getDate()%></small>
-                                    <small><a href=<%="user?username="+review.getAuthor()%>><%=review.getAuthor()%></a></small>
+                                    <h4><%=reviews.get(i).getRating() + "/5\t\t " + reviews.get(i).getTitle()%></h4>
+                                    <p><%=reviews.get(i).getTitle()%></p>
+                                    <small><%=reviews.get(i).getDate()%></small>
+                                    <small><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></small>
                                 </div><!-- end meta -->
                                 <%
                                         }
@@ -96,24 +98,32 @@
 
                 <hr class="invis3">
 
+
+
+
                 <div class="row pull-right">
                     <div class="col-md-12">
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-start">
+                                <li class="page-item"><a class="page-link" href="home">Previous</a></li>
+
                                 <%
                                     String url = request.getQueryString();
-                                    String[] partial_url = url.split("=");
-                                    int page_index = Integer.parseInt(partial_url[partial_url.length - 1]);
-                                    String new_url = "user?";
+                                    String[] partial_url = url.split("&");
+                                    Integer page_index = (Integer) request.getAttribute(SecurityUtils.PAGE);                                    String new_url = "user?";
+                                    int n = (int) Math.ceil((double) reviews.size() / PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+
                                     for(int i = 0; i < partial_url.length - 1; i++)
-                                        new_url = new_url + partial_url[i] + "=";
+                                        new_url = new_url + partial_url[i] + "&";
 
                                     if(page_index != 1){
                                         new_url = new_url + (page_index - 1);
                                 %>
                                         <li class="page-item"><a class="page-link" href=<%=new_url%>>Previous</a></li>
                                 <%
-                                    }else{
+                                    }
+
+                                    if(page_index < n){
                                         new_url = new_url + (page_index + 1);
                                 %>
                                 <li class="page-item"><a class="page-link" href=<%=new_url%>>Next</a></li>
@@ -137,6 +147,9 @@
 
 
 </div><!-- end wrapper -->
+
+<%@ include file="/WEB-INF/pages/footer.jsp" %>
+
 
 <!-- Core JavaScript
 ================================================== -->

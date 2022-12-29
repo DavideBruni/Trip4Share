@@ -20,4 +20,7 @@ public interface TripDAO {
     RegisteredUser getOrganizer(Trip trip) throws Neo4jException;
 
     List<Trip> getTripOrganizedByUser(String organizer);
+
+    List<Trip> getPastTrips(String organizer);
+
 }

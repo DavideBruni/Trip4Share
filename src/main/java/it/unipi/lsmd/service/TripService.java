@@ -51,4 +51,6 @@ public interface TripService {
     boolean updateTrip(TripDetailsDTO newTrip, TripDetailsDTO oldTrip);
 
     List<TripSummaryDTO> mostPopularTrips(int tripNumberIndex);
+
+    List<TripSummaryDTO> getPastTrips(String username);
 }

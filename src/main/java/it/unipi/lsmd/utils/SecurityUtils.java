@@ -10,6 +10,7 @@ import java.util.Enumeration;
 
 public class SecurityUtils {
 
+    public static final String TITLE_PAGE = "title_page";
     public static final String AUTHENTICATED_USER_KEY = "authenticatedUser";
     public static final String WISHLIST_KEY = "wishlist";
     public static final String REVIEWS_KEY = "reviews";
@@ -22,6 +23,8 @@ public class SecurityUtils {
     public static final String SUGGESTED_TRIPS = "suggested_trips";
     public static final String SEARCH_RESULTS = "search_results";
     public static final String PAGE = "page";
+    public static final String ORGANIZED_TRIPS = "organized_trips";
+    public static final String TRIPS_RESULT = "trips_result";
 
     // ho chiamato quella per i viaggi organizzato ORGANIZED_TRIPS
     // mi deve mandare la pagina corrente e il numero totale

@@ -107,8 +107,9 @@ public class ExploreServlet extends HttpServlet {
     }
     private RequestDispatcher searchUser(HttpServletRequest request, String value, int page) {
         List<OtherUserDTO> users = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute(SecurityUtils.SEARCH_RESULTS, users);
-        return request.getRequestDispatcher("/WEB-INF/pages/search_board.jsp");
+        request.setAttribute(SecurityUtils.TRIPS_RESULT, users);
+        request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
+        return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");
     }
 
     private RequestDispatcher searchDestination(HttpServletRequest request, String value, int page) {
@@ -116,16 +117,18 @@ public class ExploreServlet extends HttpServlet {
         String return_date = request.getParameter("return");
         List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         System.out.println(trips);
-        request.setAttribute(SecurityUtils.SEARCH_RESULTS, trips);
-        return request.getRequestDispatcher("/WEB-INF/pages/search_board.jsp");
+        request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
+        request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
+        return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
     }
 
     private RequestDispatcher searchTags(HttpServletRequest request, String value, int page) {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
         List<TripSummaryDTO> trips = tripService.getTripsByTag(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute(SecurityUtils.SEARCH_RESULTS, trips);
-        return request.getRequestDispatcher("/WEB-INF/pages/search_board.jsp");
+        request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
+        request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
+        return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
     }
 
     private RequestDispatcher searchPrice(HttpServletRequest request, String min_price, String max_price, int page) {
@@ -139,8 +142,9 @@ public class ExploreServlet extends HttpServlet {
             max = 0;
         }
         List<TripSummaryDTO> trips = tripService.getTripsByPrice(min, max, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute(SecurityUtils.SEARCH_RESULTS, trips);
-        return request.getRequestDispatcher("/WEB-INF/pages/search_board.jsp");
+        request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
+        request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + min + " - " + max + "€");
+        return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
     }
 
 
@@ -150,7 +154,7 @@ public class ExploreServlet extends HttpServlet {
         //processRequest(httpServletRequest, httpServletResponse);
 
         //TODO spostare sopra
-        String targetJSP = "/WEB-INF/pages/search_board.jsp";
+        String targetJSP = "/WEB-INF/pages/trips_board.jsp";
 
         //serach ---> explore?searchFor=destination&...&page=1
 

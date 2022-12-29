@@ -92,6 +92,16 @@ public class TripServiceImpl implements TripService {
         return trips;
     }
 
+    public List<TripSummaryDTO> getPastTrips(String username){
+        List<Trip> trips_model = tripDAO.getPastTrips(username);
+        List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
+        for(Trip trip : trips_model){
+            TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
+            trips.add(tripSummaryDTO);
+        }
+        return trips;
+    }
+
     @Override
     public void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary){
 
@@ -122,11 +132,6 @@ public class TripServiceImpl implements TripService {
         ArrayList<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
 
         for(Trip trip : wishlistRedisDAO.getUserWishlist(username)){
-            try {
-                trip.setOrganizer(organizerNeoDAO.getOrganizer(trip).getUsername());
-            } catch (Neo4jException e) {
-                trip.setOrganizer(null);
-            }
             trips.add(TripUtils.tripSummaryDTOFromModel(trip));
         }
 

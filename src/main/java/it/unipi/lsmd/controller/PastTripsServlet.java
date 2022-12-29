@@ -13,30 +13,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
-@WebServlet("/wishlist")
-public class WishlistServlet extends HttpServlet {
+@WebServlet("/pastTrips")
+public class PastTripsServlet extends HttpServlet  {
+
+    private TripService tripService = ServiceLocator.getTripService();
+
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
+        // check if user is authenticated
         if(authenticatedUserDTO == null){
             httpServletResponse.sendRedirect("login");
             return;
         }
 
-        TripService tripService = ServiceLocator.getTripService();
-        ArrayList<TripSummaryDTO> wishlist = tripService.getWishlist(authenticatedUserDTO.getUsername());
-
+        List<TripSummaryDTO> trips = tripService.getPastTrips(authenticatedUserDTO.getUsername());
         String targetJSP = "/WEB-INF/pages/trips_board.jsp";
-        httpServletRequest.setAttribute(SecurityUtils.TITLE_PAGE, "Wishlist");
-        httpServletRequest.setAttribute(SecurityUtils.TRIPS_RESULT, wishlist);
+        httpServletRequest.setAttribute(SecurityUtils.TITLE_PAGE, "Past Trips");
+        httpServletRequest.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
 
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
-
-
     }
 }

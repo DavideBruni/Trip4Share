@@ -184,4 +184,29 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         return trip_list;
     }
 
+    public List<Trip> getPastTrips(String username){
+        List<Trip> trip_list;
+
+        try (Session session = getConnection().session()) {
+            trip_list = session.readTransaction(tx -> {
+                Result result = tx.run("MATCH (r:RegisteredUser{username: $username})-[:JOIN]->(t:Trip)-[:ORGANIZED_BY]->(r1:RegisteredUser) " +
+                                "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r1.username as organizer",
+                        parameters("username", username));
+                List<Trip> trips = new ArrayList<Trip>();
+                while(result.hasNext()){
+                    Record r = result.next();
+                    Trip trip = TripUtils.tripFromRecord(r);
+                    System.out.println(trip);
+                    trips.add(trip);
+                }
+                return trips;
+            });
+        }catch (Exception e){
+            System.out.println(e);
+            return new ArrayList<>();
+
+        }
+        return trip_list;
+    }
+
 }

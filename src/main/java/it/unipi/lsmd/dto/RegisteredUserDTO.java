@@ -13,6 +13,8 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private ArrayList<String> spoken_languages;
     private String phone;
     private ArrayList<ReviewDTO> reviews;
+    private int n_followers;
+    private int n_following;
     private List<OtherUserDTO> following;
     private LocalDate birthdate;
     private String bio;
@@ -89,5 +91,21 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     public void setAvg_rating(double avg_rating) {
         this.avg_rating = avg_rating;
+    }
+
+    public int getN_followers() {
+        return n_followers;
+    }
+
+    public void setN_followers(int n_followers) {
+        this.n_followers = n_followers;
+    }
+
+    public int getN_following() {
+        return n_following;
+    }
+
+    public void setN_following(int n_following) {
+        this.n_following = n_following;
     }
 }

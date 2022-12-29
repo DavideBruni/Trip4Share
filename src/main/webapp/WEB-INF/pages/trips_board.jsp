@@ -25,17 +25,20 @@
 <body class="main-layout ">
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 
-    <div class="titlepage">
-        <h2>Results for <%= request.getParameter("value") %> </h2>
-        <h4><%= request.getParameter("departure")%>   <%= request.getParameter("return")%></h4>
-    </div>
+<%
+    String title = (String) request.getAttribute(SecurityUtils.TITLE_PAGE);
+%>
+
+<div class="titlepage">
+    <h2><%=title%></h2>
+</div>
 
 <div class="main-form .form-horizontal" >
 
 
 
     <%
-        ArrayList<Object> results = (ArrayList<Object>) request.getAttribute(SecurityUtils.SEARCH_RESULTS);
+        ArrayList<TripSummaryDTO> results = (ArrayList<TripSummaryDTO>) request.getAttribute(SecurityUtils.TRIPS_RESULT);
         if(results != null && results.size() > 0){
     %>
 
@@ -45,9 +48,7 @@
                 <hr class="invis3">
                 <!-- Single Blog Area  -->
                 <%
-                    if(results.get(0) instanceof TripSummaryDTO){
-                        for(Object result : results){
-                            TripSummaryDTO trip = (TripSummaryDTO) result;
+                    for(TripSummaryDTO trip : results){
                 %>
                 <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
                     <div class="row align-items-center">
@@ -66,24 +67,20 @@
                                 <a class="post-tag"><%=trip.getDestination()%></a>
                                 <h4><a href=<%="trip?id=" + trip.getId()%> class="post-headline"> <%=trip.getTitle()%></a></h4>
                                 <p><%=trip.getDepartureDate()%> <br> <%=trip.getReturnDate()%> </p>
+                                <%
+                                    if(trip.getOrganizer() != null){
+                                %>
                                 <div class="post-meta">
                                     <p>By <a href="#"><%=trip.getOrganizer()%></a></p>
                                 </div>
+                                <%
+                                    }
+                                %>
                             </div>
                         </div>
                     </div>
                 </div>
                 <%
-                    }
-                }else if(results.get(0) instanceof OtherUserDTO){
-                    for(Object result : results){
-                        OtherUserDTO user = (OtherUserDTO) result;
-                %>
-
-                <h4><a href=<%="user?username=" + user.getUsername()%>> <%=user.getUsername()%> </a></h4>
-
-                <%
-                        }
                     }
                 %>
 
@@ -92,9 +89,9 @@
         </div>
     </div>
     <%
-        }else{
+    }else{
     %>
-        No results found!
+    No results found!
     <%
         }
     %>

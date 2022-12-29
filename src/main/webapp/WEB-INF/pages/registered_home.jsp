@@ -146,7 +146,7 @@
                      </ul>
                   </nav>
                </div><!-- end col -->
-         </div><!-- end row -->
+            </div><!-- end row -->
          </div>
       </div>
        <%}%>
@@ -168,7 +168,7 @@
                <% for(OtherUserDTO u : users){ %>
                        <div class="w-100 justify-content-between">
                             <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >
-                           <a href=<%="user?username="+u.getUsername()%> class="list-group-item list-group-item-action flex-column align-items-start">
+                           <a href=<%="user?username="+u.getUsername()%>> class="list-group-item list-group-item-action flex-column align-items-start">
                            <h5 class="mb-1"><%=u.getUsername()%></h5>
                            </a>
                         </div>
