@@ -286,14 +286,14 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public boolean addTrip(TripDetailsDTO tripDetailsDTO, OtherUserDTO organizer){
+    public boolean addTrip(TripDetailsDTO tripDetailsDTO){
         Trip t = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
         String id = tripDetailsDAO.addTrip(t);
         if(id!=null){
             t.setId(id);
             try {
                 RegisteredUser r = new RegisteredUser();
-                r.setUsername(organizer.getUsername());
+                r.setUsername(t.getOrganizer());
                 tripDAO.addTrip(t,r);
                 return true;
             } catch (Neo4jException e) {

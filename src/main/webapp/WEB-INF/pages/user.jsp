@@ -81,27 +81,27 @@
 </div>
 
 
-<ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+<ul class="nav nav-tabs mb-3 justify-content-center" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-a" role="tab" aria-controls="pills-home" aria-selected="true">Reviews</a>
+        <a class="nav-link active" href="l" role="tab" aria-selected="true">Reviews</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#" role="tab" aria-controls="pills-profile" aria-selected="false">Organized Trips</a>
+        <a class="nav-link" href="#" role="tab"  aria-selected="false">Organized Trips</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#" role="tab" aria-controls="pills-contact" aria-selected="false">Past Trips</a>
+        <a class="nav-link" id="pills-contact-tab"  href="#" role="tab"  aria-selected="false">Past Trips</a>
     </li>
     <%
         if(itsMe){
     %>
             <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab1" data-toggle="pill" href="wishlist" role="tab" aria-controls="pills-contact" aria-selected="false">WishList</a>
+                <a class="nav-link" href="#" role="tab" aria-selected="false">WishList</a>
             </li>
     <%
         }
     %>
 </ul>
-    <div class="tab-pane show active" id="pills-a" role="tabpanel" aria-labelledby="pills-home-tab" aria-expanded="true">
+    <div class="tab-pane show active"  role="tabpanel">
         <div class="container" >
             <hr class="invis3">
             <div class = "row justify-content-center ">
@@ -136,6 +136,7 @@
         </div>
 
     </div>
+
 </div>
 
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

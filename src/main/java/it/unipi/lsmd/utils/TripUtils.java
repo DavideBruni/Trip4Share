@@ -300,6 +300,8 @@ public interface TripUtils {
         t.setDepartureDate(tripDetailsDTO.getDepartureDate());
         t.setReturnDate(tripDetailsDTO.getReturnDate());
         t.setImg(tripDetailsDTO.getImg());
+        t.setPrice(tripDetailsDTO.getPrice());
+        t.setOrganizer(tripDetailsDTO.getOrganizer());
         t.setDescription(tripDetailsDTO.getDescription());
         t.setDestination(tripDetailsDTO.getDestination());
         t.setTitle(tripDetailsDTO.getTitle());
@@ -307,6 +309,7 @@ public interface TripUtils {
         t.setItinerary(itineraryDTOtoModel(tripDetailsDTO.getItinerary()));
         t.setWhatsIncluded(tripDetailsDTO.getWhatsIncluded());
         t.setWhatsNotIncluded(tripDetailsDTO.getWhatsNotIncluded());
+        t.setInfo(tripDetailsDTO.getInfo());
         return t;
     }
 
