@@ -152,13 +152,13 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             });
             user.setUsername(username);
         }catch (Exception e){
-            System.out.println(e);
+            //System.out.println(e);
             throw new Neo4jException();
         }
         return user;
     }
 
-    public List<Trip> getTripOrganizedByUser(RegisteredUser organizer){
+    public List<Trip> getTripOrganizedByUser(String organizer){
 
         List<Trip> trip_list;
 
@@ -166,7 +166,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             trip_list = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (t:Trip)-[:ORGANIZED_BY]->(r:RegisteredUser{username: $username}) " +
                                 "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r.username as organizer",
-                        parameters("username", organizer.getUsername()));
+                        parameters("username", organizer));
                 List<Trip> trips = new ArrayList<Trip>();
                 while(result.hasNext()){
                     Record r = result.next();

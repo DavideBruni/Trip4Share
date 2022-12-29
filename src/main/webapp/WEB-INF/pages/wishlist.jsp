@@ -57,7 +57,7 @@
                             <h4><a href=<%="trip?id=" + wishlist.get(i).getId()%> class="post-headline"> <%=wishlist.get(i).getTitle()%></a></h4>
                             <p><%=wishlist.get(i).getDepartureDate()%> <br> <%=wishlist.get(i).getReturnDate()%> </p>
                             <div class="post-meta">
-                                <p>By <a href="#">james smith</a></p>
+                                <p>By <a href="#"><%=wishlist.get(i).getOrganizer()%></a></p>
                             </div>
                         </div>
                     </div>

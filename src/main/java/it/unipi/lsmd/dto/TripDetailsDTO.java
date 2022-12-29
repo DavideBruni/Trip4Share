@@ -24,7 +24,7 @@ public class TripDetailsDTO {
     private String img;
     private LocalDateTime last_modified;
     private int like_counter;
-    private RegisteredUserDTO organizer;
+    private String organizer;
 
 
     public TripDetailsDTO(){
@@ -143,11 +143,11 @@ public class TripDetailsDTO {
     }
 
 
-    public RegisteredUserDTO getOrganizer() {
+    public String getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(RegisteredUserDTO organizer) {
+    public void setOrganizer(String organizer) {
         this.organizer = organizer;
     }
 
@@ -185,7 +185,7 @@ public class TripDetailsDTO {
                 ", img='" + img + '\'' +
                 ", last_modified=" + last_modified +
                 ", like_counter=" + like_counter +
-                "organizer_username='" + organizer.getUsername() + '\'' +
+                "organizer_username='" + organizer + '\'' +
                 '}';
     }
 }

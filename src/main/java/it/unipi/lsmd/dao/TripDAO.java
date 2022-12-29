@@ -19,5 +19,5 @@ public interface TripDAO {
     void updateTrip(Trip newTrip) throws Neo4jException;
     RegisteredUser getOrganizer(Trip trip) throws Neo4jException;
 
-    List<Trip> getTripOrganizedByUser(RegisteredUser organizer);
+    List<Trip> getTripOrganizedByUser(String organizer);
 }

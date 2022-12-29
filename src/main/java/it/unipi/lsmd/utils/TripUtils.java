@@ -110,7 +110,7 @@ public interface TripUtils {
         tripDTO.setWhatsIncluded(trip.getWhatsIncluded());
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
         tripDTO.setLike_counter(trip.getLike_counter());
-        tripDTO.setOrganizer((RegisteredUserDTO) UserUtils.userModelToDTO(trip.getOrganizer()));
+        tripDTO.setOrganizer(trip.getOrganizer());
         tripDTO.setLast_modified(trip.getLast_modified());
 
         try{
@@ -137,7 +137,7 @@ public interface TripUtils {
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setImgUrl(trip.getImg());
-        tripDTO.setOrganizer((RegisteredUserDTO) UserUtils.userModelToDTO(trip.getOrganizer()));    // TODO - add in a trycatch?
+        tripDTO.setOrganizer(trip.getOrganizer());    // TODO - add in a trycatch?
         tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
@@ -169,7 +169,7 @@ public interface TripUtils {
         trip.setDepartureDate(tripSummary.getDepartureDate());
         trip.setReturnDate(tripSummary.getReturnDate());
         trip.setLike_counter(tripSummary.getLike_counter());
-        trip.setOrganizer(UserUtils.registeredUserFromDTO(tripSummary.getOrganizer()));
+        trip.setOrganizer(tripSummary.getOrganizer());
         trip.setLast_modified(tripSummary.getLast_modified());
 
         return trip;
@@ -213,9 +213,7 @@ public interface TripUtils {
         trip.setDestination(r.get("t.destination").asString());
         trip.setTitle(r.get("t.title").asString());
         trip.setImg(r.get("t.imgUrl").asString());
-        RegisteredUser user = new RegisteredUser();
-        user.setUsername(r.get("organizer").asString());
-        trip.setOrganizer(user);
+        trip.setOrganizer(r.get("organizer").asString());
 
 
         try {

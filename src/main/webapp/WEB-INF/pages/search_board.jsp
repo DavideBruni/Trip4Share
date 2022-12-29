@@ -67,7 +67,7 @@
                                 <h4><a href=<%="trip?id=" + trip.getId()%> class="post-headline"> <%=trip.getTitle()%></a></h4>
                                 <p><%=trip.getDepartureDate()%> <br> <%=trip.getReturnDate()%> </p>
                                 <div class="post-meta">
-                                    <p>By <a href="#">james smith</a></p>
+                                    <p>By <a href="#"><%=trip.getOrganizer()%></a></p>
                                 </div>
                             </div>
                         </div>
