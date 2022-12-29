@@ -23,7 +23,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
             suggested = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (u1:RegisteredUser {username:$username})-[:FOLLOW]->(u2:RegisteredUser)," +
                                 "(u2)-[:FOLLOW]->(u3:RegisteredUser) WHERE u1.username <> u3.username AND " +
-                                "(NOT (u1)-[:FOLLOW]->(u3)) RETURN u3.username, rand() as r " +
+                                "(NOT (u1)-[:FOLLOW]->(u3)) RETURN DISTINCT u3.username, rand() as r " +
                                 "ORDER BY r LIMIT $limit",
                         parameters("username", username, "limit",nUser));
                 List<RegisteredUser> users = new ArrayList<>();

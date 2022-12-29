@@ -16,6 +16,7 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.exceptions.value.Uncoercible;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,11 +26,6 @@ import java.util.List;
 
 public interface TripUtils {
 
-    private static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-    }
     static DailySchedule dailyScheduleFromDocument(Document result){
         DailySchedule dailySchedule = new DailySchedule();
         dailySchedule.setTitle(result.getString("title"));
@@ -55,19 +51,26 @@ public interface TripUtils {
         }
         Trip trip = new Trip();
 
-        trip.setId(result.get("_id").toString());
+        trip.setId(result.getObjectId("_id").toHexString());
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
-        trip.setDestination(result.getString("destination"));
-        trip.setLike_counter(result.getInteger("likes"));
+        trip.setDestination(result.getString("destination").toUpperCase());
         trip.setImg(result.getString("imgUrl"));
 
-        if(result.getInteger("price")!=null) {
-            Integer price = result.getInteger("price");
-            trip.setPrice(price);
-        }
-        trip.setDepartureDate(convertToLocalDateViaInstant(result.getDate("departureDate")));
-        trip.setReturnDate(convertToLocalDateViaInstant(result.getDate("returnDate")));
+        try{
+            trip.setLike_counter(result.getInteger("likes"));
+        }catch (NullPointerException e){ }
+
+        try{
+            trip.setPrice(result.getInteger("price"));
+        }catch (NullPointerException e){ }
+
+        trip.setDepartureDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("departureDate")));
+        trip.setReturnDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("returnDate")));
+
+        try{
+            trip.setLast_modified(LocalDateTimeAdapter.convertToLocalDateTimeViaInstant(result.getDate("last_modified")));
+        }catch (NullPointerException e){ }
 
         ArrayList<String> tags = result.get("tags", ArrayList.class);
         trip.setTags(tags);
@@ -95,6 +98,7 @@ public interface TripUtils {
 
         TripDetailsDTO tripDTO = new TripDetailsDTO();
 
+        tripDTO.setId(trip.getId());
         tripDTO.setTitle(trip.getTitle());
         tripDTO.setId(trip.getId());
         tripDTO.setDestination(trip.getDestination());
@@ -107,6 +111,7 @@ public interface TripUtils {
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setOrganizer((RegisteredUserDTO) UserUtils.userModelToDTO(trip.getOrganizer()));
+        tripDTO.setLast_modified(trip.getLast_modified());
 
         try{
             for(DailySchedule dailySchedule : trip.getItinerary()){
@@ -133,6 +138,7 @@ public interface TripUtils {
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setImgUrl(trip.getImg());
         tripDTO.setOrganizer((RegisteredUserDTO) UserUtils.userModelToDTO(trip.getOrganizer()));    // TODO - add in a trycatch?
+        tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
     }
@@ -148,12 +154,15 @@ public interface TripUtils {
         tripDTO.setImgUrl(trip.getImg());
         tripDTO.setLike_counter(tripDTO.getLike_counter());
         tripDTO.setOrganizer(trip.getOrganizer());
+        tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
     }
 
     static Trip tripFromTripSummary(TripSummaryDTO tripSummary){
         Trip trip = new Trip();
+
+        trip.setId(tripSummary.getId());
         trip.setTitle(tripSummary.getTitle());
         trip.setId(tripSummary.getId());
         trip.setDestination(tripSummary.getDestination());
@@ -161,6 +170,7 @@ public interface TripUtils {
         trip.setReturnDate(tripSummary.getReturnDate());
         trip.setLike_counter(tripSummary.getLike_counter());
         trip.setOrganizer(UserUtils.registeredUserFromDTO(tripSummary.getOrganizer()));
+        trip.setLast_modified(tripSummary.getLast_modified());
 
         return trip;
     }
@@ -169,6 +179,7 @@ public interface TripUtils {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
         return gson.toJson(trip);
@@ -177,6 +188,7 @@ public interface TripUtils {
     static Trip tripFromJSONString(String jsonString){
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
         return gson.fromJson(jsonString, Trip.class);
@@ -204,6 +216,7 @@ public interface TripUtils {
         RegisteredUser user = new RegisteredUser();
         user.setUsername(r.get("organizer").asString());
         trip.setOrganizer(user);
+
 
         try {
             trip.setDeleted(r.get("t.deleted").asBoolean());

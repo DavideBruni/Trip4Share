@@ -1,6 +1,9 @@
 package it.unipi.lsmd.model;
 
+import it.unipi.lsmd.dto.OtherUserDTO;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class Trip {
     private String img;
     private Boolean deleted;
     private int like_counter;
+    private LocalDateTime last_modified;
+    private RegisteredUser organizer;
 
     public Trip(){
         tags = new ArrayList<String>();
@@ -158,10 +163,19 @@ public class Trip {
         this.like_counter = like_counter;
     }
 
+    public LocalDateTime getLast_modified() {
+        return last_modified;
+    }
+
+    public void setLast_modified(LocalDateTime last_modified) {
+        this.last_modified = last_modified;
+    }
+
     @Override
     public String toString() {
         return "Trip{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", destination='" + destination + '\'' +
                 ", price=" + price +
@@ -172,8 +186,19 @@ public class Trip {
                 ", whatsIncluded=" + whatsIncluded +
                 ", whatsNotIncluded=" + whatsNotIncluded +
                 ", info='" + info + '\'' +
+                ", img='" + img + '\'' +
+                ", deleted=" + deleted +
+                ", like_counter=" + like_counter +
+                ", last_modified=" + last_modified +
                 '}';
     }
 
 
+    public void setOrganizer(RegisteredUser organizer) {
+        this.organizer = organizer;
+    }
+
+    public RegisteredUser getOrganizer() {
+        return organizer;
+    }
 }

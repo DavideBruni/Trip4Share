@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
 
@@ -23,4 +25,12 @@ public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserial
     public JsonElement serialize(LocalDate localDate, Type type, JsonSerializationContext jsonSerializationContext) {
         return new JsonPrimitive(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
+
+    public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
 }
+

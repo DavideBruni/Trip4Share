@@ -74,7 +74,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         AggregateIterable<Document> res;
         if(page!=1) {
             Bson s1 = skip((page - 1) * limit);
-            res =collection.aggregate(Arrays.asList(m1,l1,s1));
+            res =collection.aggregate(Arrays.asList(m1, s1, l1));
         }else{
             res = collection.aggregate(Arrays.asList(m1,l1));
         }
@@ -129,7 +129,12 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
     public boolean updateRegisteredUser(RegisteredUser new_user, RegisteredUser old_user) {
         try {
-            Document q1 = new Document().append("_id", new ObjectId(new_user.getUsername()));
+
+            // TODO - nel fare la merge ho commentato questa, mi sembra meglio l'altra in quanto il campo _id non ha nulla a che fare con new_user.getUsername()
+            // Document q1 = new Document().append("_id", new ObjectId(new_user.getUsername()));
+
+            Bson q1 = eq("username",new_user.getUsername());
+
             Bson q2 = attributeToUpdate(new_user, old_user);
             collection.updateOne(q1, q2);
             return true;

@@ -44,7 +44,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthenticatedUserDTO getUser(String username){
         RegisteredUser user = userDAO.getUser(username);
-        user.setAvg_rating(userDAO.avgRating(username));
+        if(user != null)
+            user.setAvg_rating(userDAO.avgRating(username));
         return UserUtils.userModelToDTO(user);
     }
 

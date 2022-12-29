@@ -280,7 +280,6 @@ button {
      color: #114c7d;
      font-weight: 400;
      font-size: 28px;
-     background-image: url('../images/fevicon.png');
      background-repeat: no-repeat;
      padding-left: 55px;
      letter-spacing: -0.5px;
@@ -1083,7 +1082,6 @@ ul.top_icon li a {
 }
 
 
-}
 .main-menu ul li:last-child a {
      padding-right: 0;
 }
@@ -1365,19 +1363,19 @@ ul.top_icon li a {
 }
 .heroslider .slider-01 {
      width: 100%;
-     background-image: url(../images/slider-01.jpg);
+     background-image: url(../images/1.jpg);
      background-size: cover;
      background-position: center;
 }
 .heroslider .slider-02 {
      width: 100%;
-     background-image: url(../images/slider-02.jpg);
+     background-image: url(../images/2.jpg);
      background-size: cover;
      background-position: center;
 }
 .heroslider .slider-03 {
      width: 100%;
-     background-image: url(../images/slider-03.jpg);
+     background-image: url(../images/3.jpg);
      background-size: cover;
      background-position: center;
 }
@@ -1714,7 +1712,21 @@ input[type="radio"] .styled:checked+label::after {
      padding: 10px 77px;
      
 }
-.main-form .bottone:hover {
+.main-form button {
+     background: #ee580f;
+     color: #fff;
+
+     font-size: 15px;
+     font-weight: 400;
+     border: solid #ee580f 1px;
+
+
+}
+.main-form bottone:hover {
+     background: #15cfe5;
+     border: solid #15cfe5 1px;
+}
+.main-form button:hover {
      background: #15cfe5;
      border: solid #15cfe5 1px;
 }
@@ -1726,10 +1738,9 @@ input[type="radio"] .styled:checked+label::after {
      text-align: center;
      padding-bottom: 50px;
 }
-.titlepage h2 {
+.titlepage h3 {
      padding: 0px 20px 20px 0px;
      margin-top: 15px;
-     font-size: 50px;
      font-weight: bold;
      color: #050303;
      line-height: 50px;
@@ -1737,16 +1748,16 @@ input[type="radio"] .styled:checked+label::after {
      position: relative;
      display: inline-block;
 }
-.titlepage h2::before {
+.titlepage h3::before {
      right: 100%;
      margin-right: 15px;
 }
-.titlepage h2::after {
+.titlepage h3::after {
      left: 100%;
      margin-left: 15px;
 }
-.titlepage h2::before,
-.titlepage h2::after {
+.titlepage h3::before,
+.titlepage h3::after {
      content: "";
      position: absolute;
      height: 5px;
@@ -1785,7 +1796,7 @@ input[type="radio"] .styled:checked+label::after {
      -moz-background-size: 100% 20px;
      background-size: 100% 20px;
      background-image: -webkit-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -webkit-linear-gradient(left, #077f9b 0%, #0c1e43 100%);
-     background-image: -moz-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -moz-linear-gradient(left, #077f9b 0%, #0c1e434 100%);
+     background-image: -moz-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -moz-linear-gradient(left, #077f9b 0%, #0c1e43 100%);
      background-image: -o-linear-gradient(left, #077f9b 0%, #0c1e43 100%), -o-linear-gradient(left, #077f9b 0%, #0c1e43 100%);
      background-image: linear-gradient(to right, #077f9b 0%, #0c1e43 100%), linear-gradient(to right, #077f9b 0%, #0c1e43 100%);
      max-width: 1004px;

@@ -3,6 +3,7 @@ package it.unipi.lsmd.dto;
 import it.unipi.lsmd.model.RegisteredUser;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class TripDetailsDTO {
     private List<String> whatsNotIncluded;
     private String info;
     private String img;
+    private LocalDateTime last_modified;
     private int like_counter;
     private RegisteredUserDTO organizer;
 
@@ -31,7 +33,6 @@ public class TripDetailsDTO {
         whatsIncluded = new ArrayList<String>();
         whatsNotIncluded = new ArrayList<String>();
     }
-
 
     public String getId() {
         return id;
@@ -141,6 +142,7 @@ public class TripDetailsDTO {
         this.img = img;
     }
 
+
     public RegisteredUserDTO getOrganizer() {
         return organizer;
     }
@@ -157,10 +159,18 @@ public class TripDetailsDTO {
         this.like_counter = like_counter;
     }
 
+    public LocalDateTime getLast_modified() {
+        return last_modified;
+    }
+
+    public void setLast_modified(LocalDateTime last_modified) {
+        this.last_modified = last_modified;
+    }
+
     @Override
     public String toString() {
         return "TripDetailsDTO{" +
-                "organizer_username='" + organizer.getUsername() + '\'' +
+                "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", destination='" + destination + '\'' +
@@ -168,12 +178,14 @@ public class TripDetailsDTO {
                 ", departureDate=" + departureDate +
                 ", returnDate=" + returnDate +
                 ", tags=" + tags +
-                ", itinerary=" + itinerary.toString() +
+                ", itinerary=" + itinerary +
                 ", whatsIncluded=" + whatsIncluded +
                 ", whatsNotIncluded=" + whatsNotIncluded +
                 ", info='" + info + '\'' +
                 ", img='" + img + '\'' +
+                ", last_modified=" + last_modified +
                 ", like_counter=" + like_counter +
+                "organizer_username='" + organizer.getUsername() + '\'' +
                 '}';
     }
 }

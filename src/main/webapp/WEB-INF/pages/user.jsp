@@ -29,54 +29,8 @@
 </head>
 
 <body>
-<!-- header -->
-<header>
-    <!-- header inner -->
-    <div class="header">
-        <div class="header_white_section">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="header_information">
-                            <ul>
-                                <li><img src="images/1.png" alt="#"/> 145.street road new York</li>
-                                <li><img src="images/2.png" alt="#"/> +71  5678954378</li>
-                                <li><img src="images/3.png" alt="#"/> Demo@hmail.com</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
-                    <div class="full">
-                        <div class="center-desk">
-                            <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#" height="auto"></a> </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                    <div class="menu-area">
-                        <div class="limit-box">
-                            <nav class="main-menu">
-                                <ul class="menu-area-main">
-                                    <li class="active"> <a href="registered_home.html">Home</a> </li>
-                                    <li><a href="search.html">Search Trips</a></li>
-                                    <li><a href="search.html">Logout</a></li>
-                                    <li><a href="modify_info.html">Modify Your profile</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end header inner -->
-</header>
-<!-- end header -->
+<%@ include file="/WEB-INF/pages/header.jsp" %>
+
 <div class="padding justify-content-center">
     <div >
         <!-- Column -->
@@ -84,10 +38,10 @@
             <%
                 Boolean itsMe = (Boolean) request.getAttribute("itsMe");
             %>
-            <div class="card-body little-profile text-center">
+            <div class="card-body little-profile justify-content-center">
                 <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></div>
-                <h3 class="m-b-0"><%= user.getUsername() %></h3>
-                <h3 class="m-t-10"><%= user.getFirstName() %> <%= user.getLastName() %></h3>
+                <h3 class="m-b-0 white"><%= user.getUsername() %></h3>
+                <h3 class="m-t-10 white"><%= user.getFirstName() %> <%= user.getLastName() %></h3>
                 <p><%= user.getBirthdate() %></p>
 
                 <%
@@ -95,16 +49,27 @@
                 %>
                 <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Follow</a>
                 <%}else{%>
+                <div class="row">
                 <a href="javascript:void(0)" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Edit Profile</a>
+                <a href="javascript:void(0)" class="m-t-10 ml-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Create new trip</a>
+                </div>
                 <%}%>
                 <div class="row text-center m-t-20">
-                    <div class="col-lg-6 col-md-6 m-t-20">
+                    <div class="col-4">
                         <h3 class="m-b-0 font-light white">434K</h3><small>Followers</small>
                     </div>
-                    <div class="col-lg-6 col-md-6 m-t-20">
+                    <div class="col-4">
                         <h3 class="m-b-0 font-light white">5454</h3><small>Following</small>
                     </div>
+                    <div class="col-4">
+                        <h3 class="m-b-0 font-light white">5454</h3><small>Average Rating</small>
+                    </div>
                 </div>
+            </div>
+            <div class="text-center">
+                <h4 class="m-t-10"> Nazionalità </h4>
+                <h4 class="m-t-10"> Lingue Parlate </h4>
+                <h4 class="m-t-10"> Bio</h4>
             </div>
         </div>
     </div>
@@ -144,7 +109,7 @@
                 <div class="card" style="width: 18rem;">
 
                     <div class="card-body">
-                        <h5 class="card-title"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h5>
+                        <h4 class="card-title white"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h4>
                         <p class="card-text"><%= reviewDTO.getText() %></p>
                         <a href=<%="user?username=" + reviewDTO.getAuthor() %>><%= reviewDTO.getAuthor() %></a>
                     </div>
@@ -454,7 +419,7 @@
                                 <div class="single-blog-content">
                                     <div class="line"></div>
                                     <a href="#" class="post-tag"><%= wishlist.get(i).getDestination() %></a>
-                                    <h4><a href="#" class="post-headline"><%= wishlist.get(i).getTitle() %></a></h4>
+                                    <h4><a href=<%="trip?id="+wishlist.get(i).getId()%> class="post-headline"><%= wishlist.get(i).getTitle() %></a></h4>
                                     <p> Departure Date:<%= wishlist.get(i).getDepartureDate() %>
                                         Return Date: <%= wishlist.get(i).getReturnDate() %>
                                     </p>
@@ -476,7 +441,7 @@
                         <div class="col-md-12">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item"><a class="page-link" href="#">View More</a></li>
+                                    <li class="page-item"><a class="page-link" href="wishlist">View More</a></li>
                                 </ul>
                             </nav>
                         </div><!-- end col -->

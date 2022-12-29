@@ -1,6 +1,7 @@
 package it.unipi.lsmd.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TripSummaryDTO {
 
@@ -13,6 +14,8 @@ public class TripSummaryDTO {
     private String imgUrl;
     private int like_counter;
     private RegisteredUserDTO organizer;
+    private LocalDateTime last_modified;
+
 
     public String getId() {
         return id;
@@ -21,7 +24,6 @@ public class TripSummaryDTO {
     public void setId(String id) {
         this.id = id;
     }
-
 
     public void setDestination(String destination) {
         this.destination = destination;
@@ -71,7 +73,6 @@ public class TripSummaryDTO {
         return Title;
     }
 
-
     public int getLike_counter() {
         return like_counter;
     }
@@ -80,11 +81,35 @@ public class TripSummaryDTO {
         this.like_counter = like_counter;
     }
 
+
     public RegisteredUserDTO getOrganizer() {
         return organizer;
     }
 
     public void setOrganizer(RegisteredUserDTO organizer) {
         this.organizer = organizer;
+    }
+
+    public LocalDateTime getLast_modified() {
+        return last_modified;
+    }
+
+    public void setLast_modified(LocalDateTime last_modified) {
+        this.last_modified = last_modified;
+    }
+
+    @Override
+    public String toString() {
+        return "TripSummaryDTO{" +
+                "id='" + id + '\'' +
+                ", destination='" + destination + '\'' +
+                ", departureDate=" + departureDate +
+                ", returnDate=" + returnDate +
+                ", deleted=" + deleted +
+                ", Title='" + Title + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", like_counter=" + like_counter +
+                ", organizer=" + organizer.getUsername() +
+                '}';
     }
 }
