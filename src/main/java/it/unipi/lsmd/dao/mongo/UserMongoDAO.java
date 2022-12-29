@@ -129,7 +129,12 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
     public boolean updateRegisteredUser(RegisteredUser new_user, RegisteredUser old_user) {
         try {
+
+            // TODO - nel fare la merge ho commentato questa, mi sembra meglio l'altra in quanto il campo _id non ha nulla a che fare con new_user.getUsername()
+            // Document q1 = new Document().append("_id", new ObjectId(new_user.getUsername()));
+
             Bson q1 = eq("username",new_user.getUsername());
+
             Bson q2 = attributeToUpdate(new_user, old_user);
             collection.updateOne(q1, q2);
             return true;

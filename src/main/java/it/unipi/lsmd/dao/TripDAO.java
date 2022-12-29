@@ -17,4 +17,7 @@ public interface TripDAO {
     void setNotDeleted(Trip t) throws Neo4jException;
 
     void updateTrip(Trip newTrip) throws Neo4jException;
+    RegisteredUser getOrganizer(Trip trip) throws Neo4jException;
+
+    List<Trip> getTripOrganizedByUser(String organizer);
 }

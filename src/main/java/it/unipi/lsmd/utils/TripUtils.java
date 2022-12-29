@@ -2,6 +2,7 @@ package it.unipi.lsmd.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
@@ -99,6 +100,7 @@ public interface TripUtils {
 
         tripDTO.setId(trip.getId());
         tripDTO.setTitle(trip.getTitle());
+        tripDTO.setId(trip.getId());
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDescription(trip.getDescription());
         tripDTO.setPrice(trip.getPrice());
@@ -108,6 +110,7 @@ public interface TripUtils {
         tripDTO.setWhatsIncluded(trip.getWhatsIncluded());
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
         tripDTO.setLike_counter(trip.getLike_counter());
+        tripDTO.setOrganizer(trip.getOrganizer());
         tripDTO.setLast_modified(trip.getLast_modified());
 
         try{
@@ -134,6 +137,7 @@ public interface TripUtils {
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setImgUrl(trip.getImg());
+        tripDTO.setOrganizer(trip.getOrganizer());    // TODO - add in a trycatch?
         tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
@@ -149,6 +153,7 @@ public interface TripUtils {
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setImgUrl(trip.getImg());
         tripDTO.setLike_counter(tripDTO.getLike_counter());
+        tripDTO.setOrganizer(trip.getOrganizer());
         tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
@@ -159,10 +164,12 @@ public interface TripUtils {
 
         trip.setId(tripSummary.getId());
         trip.setTitle(tripSummary.getTitle());
+        trip.setId(tripSummary.getId());
         trip.setDestination(tripSummary.getDestination());
         trip.setDepartureDate(tripSummary.getDepartureDate());
         trip.setReturnDate(tripSummary.getReturnDate());
         trip.setLike_counter(tripSummary.getLike_counter());
+        trip.setOrganizer(tripSummary.getOrganizer());
         trip.setLast_modified(tripSummary.getLast_modified());
 
         return trip;
@@ -201,22 +208,24 @@ public interface TripUtils {
     }
 
     static Trip tripFromRecord(Record r){
-        Trip t = new Trip();
-        t.setDestination(r.get("t.destination").asString());
-        t.setTitle(r.get("t.title").asString());
-        t.setImg(r.get("t.imgUrl").asString());
-        t.setId(r.get("t._id").asString());
-        t.setOrganizer(new RegisteredUser(r.get("r2.username").asString()));
+        Trip trip = new Trip();
+        trip.setId(r.get("t._id").asString());
+        trip.setDestination(r.get("t.destination").asString());
+        trip.setTitle(r.get("t.title").asString());
+        trip.setImg(r.get("t.imgUrl").asString());
+        trip.setOrganizer(r.get("organizer").asString());
+
+
         try {
-            t.setDeleted(r.get("t.deleted").asBoolean());
-            t.setDepartureDate(r.get("t.departureDate").asLocalDate());
-            t.setReturnDate(r.get("t.returnDate").asLocalDate());
+            trip.setDeleted(r.get("t.deleted").asBoolean());
+            trip.setDepartureDate(r.get("t.departureDate").asLocalDate());
+            trip.setReturnDate(r.get("t.returnDate").asLocalDate());
         }catch (Uncoercible uncoercible){
-            t.setDeleted(Boolean.FALSE);
-            t.setDepartureDate(null);
-            t.setReturnDate(null);
+            trip.setDeleted(Boolean.FALSE);
+            trip.setDepartureDate(null);
+            trip.setReturnDate(null);
         }finally {
-            return t;
+            return trip;
         }
     }
 
@@ -287,6 +296,7 @@ public interface TripUtils {
 
     static Trip tripModelFromTripDetailsDTO(TripDetailsDTO tripDetailsDTO) {
         Trip t = new Trip();
+        t.setId(tripDetailsDTO.getId());
         t.setDepartureDate(tripDetailsDTO.getDepartureDate());
         t.setReturnDate(tripDetailsDTO.getReturnDate());
         t.setImg(tripDetailsDTO.getImg());

@@ -10,6 +10,7 @@ import java.util.List;
 public class Trip {
 
     private String id;
+    private String organizer;
     private String title;
     private String description;
     private String destination;
@@ -25,7 +26,6 @@ public class Trip {
     private Boolean deleted;
     private int like_counter;
     private LocalDateTime last_modified;
-    private RegisteredUser organizer;
 
     public Trip(){
         tags = new ArrayList<String>();
@@ -36,6 +36,14 @@ public class Trip {
 
     public String getId(){return this.id;}
     public void setId(String id){this.id = id;}
+
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
 
     public String getImg() {
         return img;
@@ -184,12 +192,4 @@ public class Trip {
                 '}';
     }
 
-
-    public void setOrganizer(RegisteredUser organizer) {
-        this.organizer = organizer;
-    }
-
-    public RegisteredUser getOrganizer() {
-        return organizer;
-    }
 }
