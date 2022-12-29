@@ -61,7 +61,7 @@
         %>
         <div class="blog-list-widget">
           <div class="row">
-              <div class="row justify-content-center">
+              <div id=<%="div_"+i%> class="row justify-content-center">
                 <i><img src=<%=j.getValue0().getPic()%> alt="icon" width="40%"/></i>
                 <div id=<%=i+"_username"%> class="col-6 mt-3"><%= j.getValue0().getUsername()%></div>
                 <div id=<%=i+"_status"%> class="col-6 mt-3"><%=j.getValue1()%></div>
@@ -96,9 +96,12 @@
     var username = $("#"+i+"_username").text();
     $.get("joinManager?id="+id+"&username="+username+"&action=accept", function(responseText) {
       if(responseText == "OK"){
-        $("#"+id).text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with
+          $( "#ba_"+i+"_"+id).remove();
+          $( "#br_"+i+"_"+id).remove();
+          $( "#div_"+i).append( "<button id=<\"bd_"+i+"_"+id+"\" class=\"delete\" >Remove </button>" );
+          $("#"+i+"_status").text("accepted");
       }else{
-        $("#"+id).text(responseText);
+        alert("Errore durante l'operazione");
       }
 
     });
@@ -111,19 +114,29 @@
     var i =button_id.substring(3,last_);
     var username = $("#"+i+"_username").text();
     $.get("joinManager?id="+id+"&username="+username+"&action=reject", function(responseText) {
-      $("#somediv").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
-    });
+        if(responseText == "OK"){
+            $( "#ba_"+i+"_"+id).remove();
+            $( "#br_"+i+"_"+id).remove();
+            $("#"+i+"_status").text("rejected");
+        }else{
+            alert("Errore durante l'operazione");
+        }
+        });
   });
 
   $(document).on("click", ".delete", function() {
-    var button_id = event.target.id
-    var last_ = button_id.indexOf("_",3);
-    var id = button_id.substring(last_+1);
-    var i =button_id.substring(3,last_);
-    var username = $("#"+i+"_username").text();
-    $.get("joinManager?id="+id+"&username="+username+"&action=delete", function(responseText) {
-      $("#somediv").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
-    });
+      var button_id = event.target.id
+      var last_ = button_id.indexOf("_", 3);
+      var id = button_id.substring(last_ + 1);
+      var i = button_id.substring(3, last_);
+      var username = $("#" + i + "_username").text();
+      $.get("joinManager?id=" + id + "&username=" + username + "&action=delete", function (responseText) {
+          if (responseText == "OK") {
+              $("#div_" + i).remove();
+          } else {
+              alert("Errore durante l'operazione");
+          }
+      });
   });
 </script>
 
