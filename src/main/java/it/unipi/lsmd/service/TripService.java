@@ -14,7 +14,7 @@ public interface TripService {
 
     void removeFromWishlist(String username, String trip_id);
 
-    ArrayList<TripSummaryDTO> getWishlist(String username);
+    ArrayList<TripSummaryDTO> getWishlist(String username, int size, int page);
 
     LocalDateTime wishlistUpdateTime(String username, String trip_id);
 
@@ -28,7 +28,7 @@ public interface TripService {
 
     TripDetailsDTO getTrip(String id);
 
-    List<TripSummaryDTO> getTripsOrganizedByUser(String username);
+    List<TripSummaryDTO> getTripsOrganizedByUser(String username, int size, int page);
 
     List<String> mostPopularDestinations(int page, int objectPerPageSearch);
 
@@ -52,5 +52,5 @@ public interface TripService {
 
     List<TripSummaryDTO> mostPopularTrips(int tripNumberIndex);
 
-    List<TripSummaryDTO> getPastTrips(String username);
+    List<TripSummaryDTO> getPastTrips(String username, int size, int page);
 }

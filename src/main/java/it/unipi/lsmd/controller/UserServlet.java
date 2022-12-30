@@ -36,9 +36,9 @@ public class UserServlet extends HttpServlet {
     }
 
     private RequestDispatcher getOrganizedTrips(HttpServletRequest request, String username, int page){
-        List<TripSummaryDTO> trips = tripService.getTripsOrganizedByUser(username);
+        List<TripSummaryDTO> trips = tripService.getTripsOrganizedByUser(username, PagesUtilis.TRIPS_PER_PAGE + 1, page);
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
-        request.setAttribute(SecurityUtils.PAGE,page);
+        request.setAttribute(SecurityUtils.PAGE, page);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Trips organized by "+ username);
         return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
     }
@@ -110,7 +110,6 @@ public class UserServlet extends HttpServlet {
             httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
         }
-
 
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }

@@ -1,29 +1,40 @@
+<%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
 <%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmd.dto.OtherUserDTO" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Objects" %><%--
-  Created by IntelliJ IDEA.
-  User: david
-  Date: 17/12/2022
-  Time: 09:57
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="it.unipi.lsmd.utils.PagesUtilis" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title> Results </title>
-
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="WebContent/css/bootstrap.min.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="WebContent/css/style.css">
+    <!-- Responsive-->
+    <link rel="stylesheet" href="WebContent/css/responsive.css">
+    <!-- fevicon -->
+    <link rel="icon" href="WebContent/images/fevicon.png" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="WebContent/css/jquery.mCustomScrollbar.min.css">
+    <!-- Tweaks for older IEs-->
+    <!-- owl stylesheets -->
+    <link rel="stylesheet" href="WebContent/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="WebContent/css/owl.theme.default.min.css">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 
 
-<body class="main-layout ">
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
+
+<body class="main-layout">
 
 <%
     String title = (String) request.getAttribute(SecurityUtils.TITLE_PAGE);
@@ -33,46 +44,50 @@
     <h2><%=title%></h2>
 </div>
 
-<div class="main-form .form-horizontal" >
+<%
+    List<TripSummaryDTO> trips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.TRIPS_RESULT);
+    if(trips!= null && !trips.isEmpty()){
+%>
 
+<div class="row">
+    <div class="container col-9">
 
-
-    <%
-        ArrayList<TripSummaryDTO> results = (ArrayList<TripSummaryDTO>) request.getAttribute(SecurityUtils.TRIPS_RESULT);
-        if(results != null && results.size() > 0){
-    %>
-
-    <div class="container" >
         <div class="row">
             <div class="col-12 ">
+                <%
+                    for(int i = 0; i < trips.size() && i < PagesUtilis.TRIPS_PER_PAGE; i++){
+                %>
                 <hr class="invis3">
                 <!-- Single Blog Area  -->
-                <%
-                    for(TripSummaryDTO trip : results){
-                %>
-                <div class="single-blog-area blog-style-2 mb-50 wow fadeInUp" data-wow-delay="0.2s" data-wow-duration="1000ms">
+                <div>
                     <div class="row align-items-center">
-                        <div class="col-12 col-md-6">
+                        <div class="col-1"></div>
+                        <div class="col-5">
                             <div class="single-blog-thumbnail">
-                                <img src="images/blog-image.jpg" alt="">
-                                <div class="post-date">
-                                    <a>12 <span>march</span></a>
-                                </div>
+                                <!-- <img src="<%= trips.get(i).getImgUrl() %>" alt="Immagine di viaggio"> -->
+                                <img src="WebContent/images/blog-image.jpg">
+
                             </div>
                         </div>
+
                         <div class="col-12 col-md-6">
                             <!-- Blog Content -->
                             <div class="single-blog-content">
                                 <div class="line"></div>
-                                <a class="post-tag"><%=trip.getDestination()%></a>
-                                <h4><a href=<%="trip?id=" + trip.getId()%> class="post-headline"> <%=trip.getTitle()%></a></h4>
-                                <p><%=trip.getDepartureDate()%> <br> <%=trip.getReturnDate()%> </p>
-                                <%
-                                    if(trip.getOrganizer() != null){
-                                %>
-                                <div class="post-meta">
-                                    <p>By <a href="#"><%=trip.getOrganizer()%></a></p>
+                                <h4><a href=<%="trip?id="+trips.get(i).getId()%> class="post-headline">
+                                    <strong> Title:  </strong><%=trips.get(i).getTitle()%></a>
+                                </h4>
+                                <a href=<%="trip?id="+trips.get(i).getId()%> class="post-tag"><strong> Destination: </strong><%=trips.get(i).getDestination()%></a>
+
+                                <div class="post-date">
+                                    <span>From: <%= trips.get(i).getDepartureDate()%></span>
+                                    <br>
+                                    <span>To: <%= trips.get(i).getReturnDate()%></span>
                                 </div>
+                                <%
+                                    if(trips.get(i).getOrganizer() != null){
+                                %>
+                                <p>By <a href=<%="user?username="+trips.get(i).getOrganizer()%>><%=trips.get(i).getOrganizer()%></a></p>
                                 <%
                                     }
                                 %>
@@ -84,22 +99,82 @@
                     }
                 %>
 
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-end">
+                                <%
+                                    int page_index = (int) request.getAttribute(SecurityUtils.PAGE);
+                                    String new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
+                                    String url = request.getQueryString();
+                                    if(url != null)
+                                        new_url = new_url + url;
 
+                                    if(!new_url.endsWith("page="+page_index)){
+                                        if(url != null){
+                                            new_url = new_url + "&page=";
+                                        }else{
+                                            new_url = new_url + "page=";
+                                        }
+                                    }else{
+                                        int index = new_url.indexOf("page=");
+                                        new_url = new_url.substring(0, index) + "page=";
+                                    }
+
+                                    if(page_index != 1){
+                                %>
+                                <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index - 1)%>>Previous</a></li>
+                                <%} if(trips.size() > PagesUtilis.TRIPS_PER_PAGE) {
+                                %>
+                                        <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index + 1)%>>Next</a></li>
+                                <% }%>
+                            </ul>
+                        </nav>
+                    </div><!-- end col -->
+                </div><!-- end row -->
             </div>
         </div>
+        <%}%>
     </div>
-    <%
-    }else{
-    %>
-    No results found!
-    <%
-        }
-    %>
 
 </div>
 
-<%@ include file="/WEB-INF/pages/footer.jsp" %>
+
+<%@ include file="footer.jsp" %>
+
+<!-- Javascript files-->
+<script src="WebContent/js/jquery.min.js"></script>
+<script src="WebContent/js/popper.min.js"></script>
+<script src="WebContent/js/bootstrap.bundle.min.js"></script>
+<script src="WebContent/js/jquery-3.0.0.min.js"></script>
+<script src="WebContent/js/plugin.js"></script>
+<!-- sidebar -->
+<script src="WebContent/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="WebContent/js/custom.js"></script>
+<!-- javascript -->
+<script src="WebContent/js/owl.carousel.js"></script>
+<script>
+    $(document).ready(function() {
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 10,
+            nav: true,
+            loop: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        })
+    })
+</script>
+
 
 </body>
-
 </html>

@@ -52,16 +52,27 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
     }
 
     @Override
-    public ArrayList<Trip> getUserWishlist(String username) {
+    public ArrayList<Trip> getUserWishlist(String username, int size, int page) {
         ArrayList<Trip> trips = new ArrayList<Trip>();
 
         try(Jedis jedis = getConnection()){
             String key = REDIS_APP_NAMESPACE + ":" + username + ":*";
             Set<String> keys = jedis.keys(key);
+            int i = 0;
+            int start_index = (page-1) * (size - 1);
+            int end_index = start_index + size;
             for(String k : keys){
+                if(i < start_index){
+                    i++;
+                    continue;
+                }
+                if(i >= end_index)
+                    break;
 
+                System.out.println(k);
                 String raw_trip = jedis.get(k);
                 trips.add(TripUtils.tripFromJSONString(raw_trip));
+                i++;
             }
         }
         return trips;
