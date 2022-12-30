@@ -1,143 +1,143 @@
+
 <%@ page import="it.unipi.lsmd.dto.InvolvedPeopleDTO" %>
 <%@ page import="it.unipi.lsmd.model.enums.Status" %>
 <%@ page import="org.javatuples.Pair" %>
 <%@ page import="java.util.List" %>
-<%@ page import="it.unipi.lsmd.dto.OtherUserDTO" %><%--
-  Created by IntelliJ IDEA.
-  User: david
-  Date: 28/12/2022
-  Time: 16:20
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Users</title>
-  <head>
-    <!-- basic -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- mobile metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="WebContent/css/bootstrap.min.css">
-    <!-- style css -->
-    <link rel="stylesheet" href="WebContent/css/style.css">
-    <!-- Responsive-->
-    <link rel="stylesheet" href="WebContent/css/responsive.css">
-    <!-- fevicon -->
-    <link rel="icon" href="WebContent/images/fevicon.png" type="image/gif" />
-    <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="WebContent/css/jquery.mCustomScrollbar.min.css">
-    <!-- Tweaks for older IEs-->
-    <!-- owl stylesheets -->
-    <link rel="stylesheet" href="WebContent/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="WebContent/css/owl.theme.default.min.css">
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-  </head>
-</head>
-
+<%@ page import="it.unipi.lsmd.dto.OtherUserDTO" %>
 <%@include file="header.jsp"%>
-
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="WebContent/css/style.css">
+    <link rel="stylesheet" href="WebContent/css/profile.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
 <body class="justify-content-center main-layout">
-<div class="row">
-        <div class="titlepage">
-          <h3>People who joined your trip </h3>
-        </div>
+<div class="titlepage text-center pb-5 col-12">
+    <h2>People who request to join your trip </h2>
 </div>
-  <div class="row">
-        <div class="col-6 text-center"> People </div>
-        <div class="col-6 text-center"> Status </div>
-  </div>
-        <%
-          List<Pair<OtherUserDTO, Status>> joiners = (List<Pair<OtherUserDTO, Status>>) request.getAttribute(SecurityUtils.JOINERS);
-          if(joiners!= null){
+<div class="row mt-5">
+    <div class="col-5 justify-content-center">
+        <div class="sidebar">
+            <div class="widget">
+                <div class="blog-list-widget">
+                    <div class="row">
+                        <div href="single.html" class=" ml-5 list-group-item list-group-item-action flex-column align-items-center">
+                            <div class="row justify-content-center mt-3">
+                                User
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3  list-group-item flex-column align-items-center">Status</div>
+    <div class="col-3  list-group-item flex-column align-items-center">Action</div>
+
+    <%
+        List<Pair<OtherUserDTO, Status>> joiners = (List<Pair<OtherUserDTO, Status>>) request.getAttribute(SecurityUtils.JOINERS);
+        if(joiners!= null){
             int i = 1;
             for(Pair<OtherUserDTO, Status> j : joiners){
-              String id = (String) request.getAttribute("id");
-        %>
-        <div class="blog-list-widget">
-          <div class="row">
-              <div id=<%="div_"+i%> class="row justify-content-center">
-                <i><img src=<%=j.getValue0().getPic()%> alt="icon" width="40%"/></i>
-                <div id=<%=i+"_username"%> class="col-6 mt-3"><%= j.getValue0().getUsername()%></div>
-                <div id=<%=i+"_status"%> class="col-6 mt-3"><%=j.getValue1()%></div>
+                String id = (String) request.getAttribute("id");
+    %>
+    <!-- Utente -->
+    <div class="col-5 justify-content-center">
+        <div class="sidebar">
+            <div class="widget">
+                <div class="blog-list-widget">
+                    <div class="row">
+                        <div href="single.html" class=" ml-5 list-group-item list-group-item-action flex-column align-items-center">
+                            <div class="row justify-content-center mt-3">
+                                <i><img src="WebContent/icon/travel-icon.png" alt="icon" width="40%"/></i>
+                                <div id=<%=i+"_username"%>><%= j.getValue0().getUsername()%></div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end blog-list -->
+            </div><!-- end widget -->
+        </div>
+    </div>
+
+
+
+
+    <div class="col-3  list-group-item flex-column align-items-center">
+        <div>
+            <div >
+                <div class="blog-list-widget justify-content-center pdn-top-30 text-center">
+                    <div id=<%=i+"_status"%>><%=j.getValue1()%></div>
+                </div><!-- end blog-list -->
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-3 list-group-item  flex-column ">
+
+        <div class="row justify-content-center">
             <% if(j.getValue1().equals(Status.pending)){ %>
-                <button id=<%="ba_"+i+"_"+id%> class="accept" >Accept </button>
-                <button id=<%="br_"+i+"_"+id%> class="reject">Reject </button>
+            <button id=<%="ba_"+i+"_"+id%> class="accept btn btn-primary mt-3" >Accept </button>
+            <button id=<%="br_"+i+"_"+id%> class="reject btn btn-primary mt-3 ml-4">Reject </button>
             <%} else if(j.getValue1().equals(Status.accepted)) {%>
-                <button id=<%="bd_"+i+"_"+id%> class="delete" >Remove </button>
+            <button id=<%="bd_"+i+"_"+id%> class="delete btn btn-primary mt-3" >Remove </button>
             <% }
             %>
-              </div>
-          </div>
         </div>
+    </div><!-- end blog-list -->
 
 
-      <%
-            i++;
+
+    <%
+                i++;
             }
-            }%>
+        }%>
+</div>
 
-
-
+</body>
 <%@include file="footer.jsp"%>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
-  $(document).on("click", ".accept", function() {
-    var button_id = event.target.id
-    var last_ = button_id.indexOf("_",3);
-    var id = button_id.substring(last_+1);
-    var i =button_id.substring(3,last_);
-    var username = $("#"+i+"_username").text();
-    $.get("joinManager?id="+id+"&username="+username+"&action=accept", function(responseText) {
-      if(responseText == "OK"){
-          $( "#ba_"+i+"_"+id).remove();
-          $( "#br_"+i+"_"+id).remove();
-          $( "#div_"+i).append( "<button id=<\"bd_"+i+"_"+id+"\" class=\"delete\" >Remove </button>" );
-          $("#"+i+"_status").text("accepted");
-      }else{
-        alert("Errore durante l'operazione");
-      }
+    $(document).on("click", ".accept", function() {
+        var button_id = event.target.id
+        var last_ = button_id.indexOf("_",3);
+        var id = button_id.substring(last_+1);
+        var i =button_id.substring(3,last_);
+        var username = $("#"+i+"_username").text();
+        $.get("joinManager?id="+id+"&username="+username+"&action=accept", function(responseText) {
+            if(responseText == "OK"){
+                $("#"+id).text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with
+            }else{
+                $("#"+id).text(responseText);
+            }
 
-    });
-  });
-
-  $(document).on("click", ".reject", function() {
-    var button_id = event.target.id
-    var last_ = button_id.indexOf("_",3);
-    var id = button_id.substring(last_+1);
-    var i =button_id.substring(3,last_);
-    var username = $("#"+i+"_username").text();
-    $.get("joinManager?id="+id+"&username="+username+"&action=reject", function(responseText) {
-        if(responseText == "OK"){
-            $( "#ba_"+i+"_"+id).remove();
-            $( "#br_"+i+"_"+id).remove();
-            $("#"+i+"_status").text("rejected");
-        }else{
-            alert("Errore durante l'operazione");
-        }
         });
-  });
+    });
 
-  $(document).on("click", ".delete", function() {
-      var button_id = event.target.id
-      var last_ = button_id.indexOf("_", 3);
-      var id = button_id.substring(last_ + 1);
-      var i = button_id.substring(3, last_);
-      var username = $("#" + i + "_username").text();
-      $.get("joinManager?id=" + id + "&username=" + username + "&action=delete", function (responseText) {
-          if (responseText == "OK") {
-              $("#div_" + i).remove();
-          } else {
-              alert("Errore durante l'operazione");
-          }
-      });
-  });
+    $(document).on("click", ".reject", function() {
+        var button_id = event.target.id
+        var last_ = button_id.indexOf("_",3);
+        var id = button_id.substring(last_+1);
+        var i =button_id.substring(3,last_);
+        var username = $("#"+i+"_username").text();
+        $.get("joinManager?id="+id+"&username="+username+"&action=reject", function(responseText) {
+            $("#somediv").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+        });
+    });
+
+    $(document).on("click", ".delete", function() {
+        var button_id = event.target.id
+        var last_ = button_id.indexOf("_",3);
+        var id = button_id.substring(last_+1);
+        var i =button_id.substring(3,last_);
+        var username = $("#"+i+"_username").text();
+        $.get("joinManager?id="+id+"&username="+username+"&action=delete", function(responseText) {
+            $("#somediv").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+        });
+    });
 </script>
 
 <!-- Javascript files-->
@@ -152,25 +152,25 @@
 <!-- javascript -->
 <script src="WebContent/js/owl.carousel.js"></script>
 <script>
-  $(document).ready(function() {
-    var owl = $('.owl-carousel');
-    owl.owlCarousel({
-      margin: 10,
-      nav: true,
-      loop: true,
-      responsive: {
-        0: {
-          items: 1
-        },
-        600: {
-          items: 2
-        },
-        1000: {
-          items: 3
-        }
-      }
+    $(document).ready(function() {
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 10,
+            nav: true,
+            loop: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        })
     })
-  })
 </script>
 </body>
 </html>
