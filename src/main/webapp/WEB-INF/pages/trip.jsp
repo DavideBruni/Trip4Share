@@ -34,10 +34,6 @@
     <!-- Receipe Content Area -->
     <div class="main-form">
 
-        <div class="row">
-            <a class="text-right btn btn-primary bottone" href="edittrip" >Modify your trip</a>
-        </div>
-
         <div class="container justify-content-center text-center my-30 ">
 
             <div class="row justify-content-between">
@@ -153,14 +149,8 @@
         %>
 
         <div class="row">
-          <% AuthenticatedUserDTO user = (AuthenticatedUserDTO) request.getAttribute("username");
-
-            if(user == trip.getOrganizer()){
-          %>
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
-        <%}else{ %>
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Send Join Request</a>
-        <%}%>
         </div>
         <%
             }

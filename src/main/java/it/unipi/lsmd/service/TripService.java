@@ -27,6 +27,8 @@ public interface TripService {
 
     TripDetailsDTO getTrip(String id);
 
+    List<TripSummaryDTO> getTripsOrganizedByUser(String username);
+
     List<String> mostPopularDestinations(int page, int objectPerPageSearch);
 
     List<String> mostPopularDestinationsByTag(String tag, int page, int objectPerPageSearch);
@@ -41,7 +43,7 @@ public interface TripService {
     List<TripSummaryDTO> getSuggestedTrips(String username, int numTrips);
 
     // change Parameter to DTO
-    boolean addTrip(TripDetailsDTO tripDetailsDTO, OtherUserDTO organizer);
+    boolean addTrip(TripDetailsDTO tripDetailsDTO);
 
     boolean deleteTrip(TripDetailsDTO t);
 

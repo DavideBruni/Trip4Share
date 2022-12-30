@@ -29,7 +29,7 @@ import java.util.List;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    protected void redirectUser(HttpServletResponse httpServletResponse, AuthenticatedUserDTO authenticatedUserDTO) throws IOException {
+     static void redirectUser(HttpServletResponse httpServletResponse, AuthenticatedUserDTO authenticatedUserDTO) throws IOException {
         if(authenticatedUserDTO instanceof RegisteredUserDTO){
             httpServletResponse.sendRedirect("user?username="+authenticatedUserDTO.getUsername());
         }else{

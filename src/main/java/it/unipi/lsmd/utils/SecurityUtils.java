@@ -21,6 +21,7 @@ public class SecurityUtils {
     public static final String SEARCH_RESULTS = "search_results";
     public static final String PAGE = "page";
     public static final String JOINERS = "joiners";
+    public static final String SIGNUP_ERROR = "error_message";
 
     // ho chiamato quella per i viaggi organizzato ORGANIZED_TRIPS
     // mi deve mandare la pagina corrente e il numero totale

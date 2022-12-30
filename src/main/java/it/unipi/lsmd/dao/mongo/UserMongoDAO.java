@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao.mongo;
 
+import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
@@ -102,17 +103,18 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     }
 
     @Override
-    public boolean createUser(User u){
+    public String createUser(User u){
         Document doc =UserUtils.documentFromUser(u);
         if(doc!=null){
             try{
-                collection.insertOne(doc);
-                return true;
+                return collection.insertOne(doc).getInsertedId().asObjectId().getValue().toString();
+            }catch(DuplicateKeyException de){
+                return "Duplicate key";
             }catch(MongoException me){
-                return false;
+                return "Something gone wrong";
             }
         }
-        return false;
+        return "Something gone wrong";
     }
 
     @Override
@@ -129,7 +131,12 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
     public boolean updateRegisteredUser(RegisteredUser new_user, RegisteredUser old_user) {
         try {
+
+            // TODO - nel fare la merge ho commentato questa, mi sembra meglio l'altra in quanto il campo _id non ha nulla a che fare con new_user.getUsername()
+            // Document q1 = new Document().append("_id", new ObjectId(new_user.getUsername()));
+
             Bson q1 = eq("username",new_user.getUsername());
+
             Bson q2 = attributeToUpdate(new_user, old_user);
             collection.updateOne(q1, q2);
             return true;

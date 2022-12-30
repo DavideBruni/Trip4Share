@@ -1,9 +1,6 @@
 package it.unipi.lsmd.utils;
 
-import it.unipi.lsmd.dto.AdminDTO;
-import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Review;
@@ -44,7 +41,6 @@ public interface UserUtils {
 
             user = registeredUser;
         }
-        user.setId(result.get("_id").toString());
         user.setName(result.getString("name"));
         user.setSurname(result.getString("surname"));
         user.setEmail(result.getString("email"));
@@ -105,7 +101,6 @@ public interface UserUtils {
         authenticatedUserDTO.setUsername(user_model.getUsername());
         authenticatedUserDTO.setFirstName(user_model.getName());
         authenticatedUserDTO.setLastName(user_model.getSurname());
-        authenticatedUserDTO.setEmail(user_model.getEmail());
 
         return authenticatedUserDTO;
     }
@@ -134,31 +129,30 @@ public interface UserUtils {
         }
     }
 
-    static RegisteredUser registeredUserFromDTO(RegisteredUserDTO userDTO) {
+    static RegisteredUser registeredUserFromDTO(RegisteredUserDetailsDTO user) {
         RegisteredUser r = new RegisteredUser();
-        r.setUsername(userDTO.getUsername());
-        r.setId(userDTO.getId());
-        r.setPhone(userDTO.getPhone());
-        r.setEmail(userDTO.getEmail());
-        r.setNationality(userDTO.getNationality());
-        r.setName(userDTO.getFirstName());
-        r.setSurname(userDTO.getLastName());
-        r.setSpoken_languages(userDTO.getSpoken_languages());
-        r.setBio(userDTO.getBio());
-        r.setBirthdate(userDTO.getBirthdate());
-        r.setAvg_rating(userDTO.getAvg_rating());
+        r.setName(user.getFirstName());
+        r.setSurname(user.getLastName());
+        r.setEmail(user.getEmail());
+        r.setUsername(user.getUsername());
+        r.setPassword(user.getPassword());
+        r.setNationality(user.getNationality());
+        r.setSpoken_languages(user.getSpokenLanguages());
+        try {
+            r.setBirthdate(LocalDate.parse(user.getBirthday()));
+        }catch(NullPointerException ne){
+            r.setBirthdate(null);
+        }
         return r;
     }
 
-    static Admin adminFromDTO(AdminDTO u) {
+    static Admin adminFromDTO(UserDetailsDTO u) {
         Admin a = new Admin();
         a.setUsername(u.getUsername());
         a.setName(u.getFirstName());
         a.setSurname(u.getLastName());
-        a.setRole("admin");
-        // a.setProfile_pic(u.getProfilePic());
-        // a.setPassword(u.getPassword());
         a.setEmail(u.getEmail());
+        a.setPassword(u.getPassword());
         return a;
     }
 }

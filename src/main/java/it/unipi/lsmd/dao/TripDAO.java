@@ -25,4 +25,7 @@ public interface TripDAO {
 
     // TODO: set pending
     void setStatusJoin(Trip t, RegisteredUser r, Status status) throws Neo4jException;
+    RegisteredUser getOrganizer(Trip trip) throws Neo4jException;
+
+    List<Trip> getTripOrganizedByUser(String organizer);
 }
