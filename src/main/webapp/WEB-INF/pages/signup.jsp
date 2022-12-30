@@ -44,6 +44,10 @@
                                 <input type="password" name="psw" id="psw" placeholder="Password" required/>
                             </div>
                             <div class="form-group">
+                                <label for="birthday"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="date" name="birthday" id="birthday" placeholder="Password" required/>
+                            </div>
+                            <div class="form-group">
                                 <label for="nationality"><i class="zmdi zmdi-lock-outline"></i></label>
                                 <input type="text" name="nationality" id="nationality" placeholder="Insert your Nationality"/>
                             </div>

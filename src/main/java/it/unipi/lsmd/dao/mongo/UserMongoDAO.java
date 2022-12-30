@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao.mongo;
 
+import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
@@ -102,17 +103,18 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     }
 
     @Override
-    public boolean createUser(User u){
+    public String createUser(User u){
         Document doc =UserUtils.documentFromUser(u);
         if(doc!=null){
             try{
-                collection.insertOne(doc);
-                return true;
+                return collection.insertOne(doc).getInsertedId().asObjectId().getValue().toString();
+            }catch(DuplicateKeyException de){
+                return "Duplicate key";
             }catch(MongoException me){
-                return false;
+                return "Something gone wrong";
             }
         }
-        return false;
+        return "Something gone wrong";
     }
 
     @Override

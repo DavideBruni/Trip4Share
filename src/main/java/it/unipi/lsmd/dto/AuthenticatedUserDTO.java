@@ -10,7 +10,15 @@ public abstract class AuthenticatedUserDTO {
     private String username;
     private String firstName;
     private String lastName;
-    private String email;
+    private String birthday;
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
     public String getId() {
         return id;
@@ -43,11 +51,4 @@ public abstract class AuthenticatedUserDTO {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
