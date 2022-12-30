@@ -41,13 +41,14 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         }
         Bson l1 = limit(size);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
+        Bson srt = sort(ascending("departureDate"));
 
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
-            res = collection.aggregate(Arrays.asList(m1, s1, l1, p1));
+            res = collection.aggregate(Arrays.asList(m1, srt, s1, l1, p1));
         } else {
-            res = collection.aggregate(Arrays.asList(m1, l1, p1));
+            res = collection.aggregate(Arrays.asList(m1, srt, l1, p1));
         }
         List<Trip> trips = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
@@ -70,13 +71,14 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         }
         Bson l1 = limit(size);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
+        Bson srt = sort(ascending("departureDate"));
 
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
-            res = collection.aggregate(Arrays.asList(m1, s1, l1,  p1));
+            res = collection.aggregate(Arrays.asList(m1, srt, s1, l1,  p1));
         } else {
-            res = collection.aggregate(Arrays.asList(m1, l1, p1));
+            res = collection.aggregate(Arrays.asList(m1, srt, l1, p1));
         }
         List<Trip> trips = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
@@ -108,13 +110,15 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         }
         Bson l1 = limit(size);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
-        
+        Bson srt = sort(ascending("price"));
+
+
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson s1 = skip((page - 1) * size);
-            res = collection.aggregate(Arrays.asList(m1, s1, l1,  p1));
+            res = collection.aggregate(Arrays.asList(m1, srt, s1, l1,  p1));
         } else {
-            res = collection.aggregate(Arrays.asList(m1, l1, p1));
+            res = collection.aggregate(Arrays.asList(m1, srt, l1, p1));
         }
         List<Trip> trips = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();

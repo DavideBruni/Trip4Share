@@ -30,7 +30,7 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
-    <title>Title</title>
+    <title>Results</title>
 
 </head>
 
@@ -124,7 +124,6 @@
                                         int index = new_url.indexOf("page=");
                                         new_url = new_url.substring(0, index) + "page=";
                                     }
-
                                     if(page_index != 1){
                                 %>
                                 <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index - 1)%>>Previous</a></li>

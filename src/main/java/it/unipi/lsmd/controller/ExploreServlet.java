@@ -159,7 +159,14 @@ public class ExploreServlet extends HttpServlet {
         //serach ---> explore?searchFor=destination&...&page=1
 
         String value = httpServletRequest.getParameter("value");
-        int page = Integer.parseInt(httpServletRequest.getParameter("page"));
+        int page;
+        try{
+            page = Integer.parseInt(httpServletRequest.getParameter("page"));
+        }catch (Exception e){
+            page = 1;
+        }
+        httpServletRequest.setAttribute(SecurityUtils.PAGE, page);
+
         String searchFor = httpServletRequest.getParameter("searchFor");
         RequestDispatcher requestDispatcher = null;
         if(searchFor != null && searchFor.equals("destination")){
