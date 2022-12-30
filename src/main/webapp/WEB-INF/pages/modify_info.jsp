@@ -65,7 +65,7 @@
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLocation">Password</label>
-                                <input   class="form-control" id="inputLocation" type="password" name="Password" value=<%=user.getPassword()%>>
+                                <input   class="form-control" id="inputLocation" type="password" name="password" value=<%=user.getPassword()%>>
                             </div>
                         </div>
                         <!-- Form Group (email address)-->
