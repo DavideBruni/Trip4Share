@@ -191,9 +191,8 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         try (Session session = getConnection().session()) {
             session.writeTransaction(tx -> {
                 Result x = tx.run("MATCH (r:RegisteredUser {username: $username})" +
-                                "SET r.profile_pic = $pic return r",
-                        parameters("username",registeredUser.getUsername(),
-                                "pic", registeredUser.getProfile_pic()));
+                                " return r",
+                        parameters("username",registeredUser.getUsername()));
                 return x;
             });
         }catch (Exception e){

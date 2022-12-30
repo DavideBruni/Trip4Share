@@ -170,10 +170,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         if(!new_user.getSpoken_languages().equals(old_user.getSpoken_languages())){
             query.add(Updates.set("spoken_languages",new_user.getSpoken_languages()));
         }
-        if(new_user.getPassword()!=old_user.getPassword()){
-            query.add(Updates.set("password",new_user.getPassword()));
-        }
-        query.add(Updates.set("imgUrl",new_user.getProfile_pic()));
+        query.add(Updates.set("password",new_user.getPassword()));
         return Updates.combine(query);
     }
 }

@@ -145,7 +145,6 @@ public class UserServiceImpl implements UserService {
             boolean flag = DAOLocator.getUserDAO().updateRegisteredUser(r_new,r_old);
             if(flag){
                 try {
-                    // always update imgs, we don't know if they are equal or not
                     DAOLocator.getRegisteredUserDAO().updateRegisteredUser(r_new);
                     return true;
                 } catch (Neo4jException e) {

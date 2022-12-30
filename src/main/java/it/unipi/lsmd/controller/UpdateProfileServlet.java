@@ -1,6 +1,7 @@
 package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
+import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -21,6 +22,8 @@ public class UpdateProfileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/pages/modify_info.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     @Override
@@ -40,6 +43,23 @@ public class UpdateProfileServlet extends HttpServlet {
             spokenLanguages= Arrays.asList(req.getParameter("languages").split(","));
         }catch(NullPointerException ne){
             spokenLanguages=null;
+        }
+        RegisteredUserDTO newInfo = new RegisteredUserDTO();
+        newInfo.setUsername(username);
+        newInfo.setFirstName(firstName);
+        newInfo.setLastName(lastName);
+        newInfo.setPassword(password);
+        newInfo.setEmail(email);
+        newInfo.setNationality(nationality);
+        newInfo.setBirthday(birthDate);
+        newInfo.setSpokenLanguages(spokenLanguages);
+        if(userService.updateUser(newInfo,(RegisteredUserDTO) req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))){
+            req.getSession().setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY,newInfo);
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("user?username="+newInfo.getUsername());
+            requestDispatcher.forward(req, resp);
+        }else{
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("user?username=\"+newInfo.getUsername()");
+            requestDispatcher.forward(req, resp);
         }
     }
 
