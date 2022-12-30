@@ -60,11 +60,14 @@
 
                     <div class="row text-center m-t-20">
                         <div class="col-4">
-                            <h3 class="m-b-0 font-light white"><%=user.getN_followers()%></h3>
-                            <a href=<%="user?username="+user.getUsername()+"&show=followers"%>><small>Followers</small></a>
+                            <a href=<%="user?username="+user.getUsername()+"&show=followers"%>>
+                                <h3 class="m-b-0 font-light white"><%=user.getN_followers()%></h3><small>Followers</small>
+                            </a>
                         </div>
                         <div class="col-4">
-                            <h3 class="m-b-0 font-light white" ><%=user.getN_following()%></h3><small>Following</small>
+                            <a href=<%="user?username="+user.getUsername()+"&show=following"%>>
+                                <h3 class="m-b-0 font-light white" ><%=user.getN_following()%></h3><small>Following</small>
+                            </a>
                         </div>
                         <div class="col-4">
                             <h3 class="m-b-0 font-light white"><%=user.getAvg_rating()%></h3><small>Average Rating</small>
@@ -74,7 +77,7 @@
                 <div class="text-center">
 
                 <h4 class="m-t-10"> Nationality: <%=user.getNationality()%> </h4>
-                <h4 class="m-t-10"> Spoken Languages: <%=user.getSpoken_languages()%> </h4>
+                <h4 class="m-t-10"> Spoken Languages: <%=user.getSpokenLanguages()%> </h4>
                 <h4 class="m-t-10"> Bio</h4>
             </div>
         </div>

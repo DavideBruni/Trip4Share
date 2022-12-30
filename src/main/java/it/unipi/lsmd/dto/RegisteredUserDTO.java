@@ -16,7 +16,6 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private ArrayList<ReviewDTO> reviews;
     private int n_followers;
     private int n_following;
-    private List<OtherUserDTO> following;
     private LocalDate birthdate;
     private String bio;
     private double avg_rating;
@@ -76,14 +75,6 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     public ArrayList<ReviewDTO> getReviews(){
         return this.reviews;
-    }
-
-    public List<OtherUserDTO> getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(List<OtherUserDTO> following) {
-        this.following = following;
     }
 
     public LocalDate getBirthdate() {
