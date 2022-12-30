@@ -15,6 +15,11 @@ public interface RegisteredUserDAO {
 
     int getNumberOfFollowing(String username);
 
+    void follow(String user_1, String user_2) throws Neo4jException;
+
+    void unfollow(String user_1, String user_2) throws Neo4jException;
+
+    boolean isFriend(String user_1, String user_2) throws Neo4jException;
 
     void createRegistereduser(RegisteredUser user) throws Neo4jException;
 
