@@ -29,6 +29,9 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <title>Title</title>
+
 </head>
 
 
@@ -104,6 +107,7 @@
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-end">
                                 <%
+                                    // http://localhost:8080/Trip4Share_war_exploded/explore?searchFor=destination&value=islanda&return=&departure=&page=1
                                     int page_index = (int) request.getAttribute(SecurityUtils.PAGE);
                                     String new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
                                     String url = request.getQueryString();
@@ -134,7 +138,11 @@
                 </div><!-- end row -->
             </div>
         </div>
-        <%}%>
+        <%}else{%>
+            No Trips found!
+        <%
+            }
+        %>
     </div>
 
 </div>

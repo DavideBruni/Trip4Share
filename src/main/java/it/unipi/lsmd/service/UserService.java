@@ -14,7 +14,8 @@ public interface UserService {
 
     List<OtherUserDTO> getSuggestedUsers(String username, int nUsers);
 
-    List<OtherUserDTO> getFollowing(String username);
+    List<OtherUserDTO> getFollowers(String username, int size, int page);
+    List<OtherUserDTO> getFollowing(String username, int size, int page);
 
     int getFollowingNumber(String username);
 
@@ -23,13 +24,7 @@ public interface UserService {
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
     double getRating(String username);
 
-
-    // change Parameter to DTO
-    boolean addUser(AuthenticatedUserDTO u);
-
     boolean updateUser(RegisteredUserDetailsDTO newUser, RegisteredUserDetailsDTO oldUser);
-
-    List<OtherUserDTO> getFollowers(String username);
 
     String signup(UserDetailsDTO user);
 }

@@ -42,13 +42,15 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public List<RegisteredUser> getFollowing(String username){
+    public List<RegisteredUser> getFollowing(String username, int size, int page){
         List<RegisteredUser> followers;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (u1:RegisteredUser {username:$username})-[:FOLLOW]->(u2:RegisteredUser)"+
-                                "RETURN u2.username",
-                        parameters("username", username));
+                                "RETURN u2.username " +
+                                "SKIP $skip " +
+                                "LIMIT $limit",
+                        parameters("username", username, "skip", ((page-1)*(size-1)), "limit", size));
                 List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();
@@ -65,13 +67,15 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public List<RegisteredUser> getFollower(String username){
+    public List<RegisteredUser> getFollower(String username, int size, int page){
         List<RegisteredUser> followers;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (u1:RegisteredUser {username:$username})<-[:FOLLOW]-(u2:RegisteredUser)"+
-                                "RETURN u2.username",
-                        parameters("username", username));
+                                "RETURN u2.username " +
+                                "SKIP $skip " +
+                                "LIMIT $limit",
+                        parameters("username", username, "skip", ((page-1)*(size-1)), "limit", size));
                 List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();

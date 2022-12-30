@@ -1,6 +1,7 @@
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
 <%@ page import="it.unipi.lsmd.dto.OtherUserDTO" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="it.unipi.lsmd.utils.PagesUtilis" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 29/12/2022
@@ -62,8 +63,8 @@
     </div>
 
     <%
-        ArrayList<OtherUserDTO> results = (ArrayList<OtherUserDTO>) request.getAttribute(SecurityUtils.USER_RESULTS);
-
+        ArrayList<OtherUserDTO> users = (ArrayList<OtherUserDTO>) request.getAttribute(SecurityUtils.USER_RESULTS);
+        if(users != null && users.size() > 0){
     %>
 
     <div class="row">
@@ -73,16 +74,15 @@
                 <div class="widget">
 
                     <%
-                        if(results != null && results.size() > 0){
-                            for(OtherUserDTO user : results){
+                        for(int i = 0; i < users.size() && i < PagesUtilis.USERS_PER_PAGE; i++){
                     %>
                     <div class="blog-list-widget">
                         <div class=" row">
                             <div class="col-3"></div>
-                            <a class="list-group-item list-group-item-action flex-column align-items-center col-6" href=<%="user?username="+user.getUsername()%>>
+                            <a class="list-group-item list-group-item-action flex-column align-items-center col-6" href=<%="user?username="+users.get(i).getUsername()%>>
                                 <div class="row justify-content-center">
                                     <i><img src="../WebContent/icon/travel-icon.png" alt="icon" width="40%"/></i>
-                                    <h3 class="mt-3"><%=user.getUsername()%></h3>
+                                    <h3 class="mt-3"><%=users.get(i).getUsername()%></h3>
                                 </div>
                             </a>
                             <div class="col-3"></div>
@@ -90,7 +90,46 @@
                     </div><!-- end blog-list -->
                     <%
                             }
-                        }else{
+                        %>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end">
+                                    <%
+                                        int page_index = (int) request.getAttribute(SecurityUtils.PAGE);
+                                        String new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
+                                        String url = request.getQueryString();
+                                        if(url != null)
+                                            new_url = new_url + url;
+
+                                        if(!new_url.endsWith("page="+page_index)){
+                                            if(url != null){
+                                                new_url = new_url + "&page=";
+                                            }else{
+                                                new_url = new_url + "page=";
+                                            }
+                                        }else{
+                                            int index = new_url.indexOf("page=");
+                                            new_url = new_url.substring(0, index) + "page=";
+                                        }
+
+                                        if(page_index != 1){
+                                    %>
+                                    <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index - 1)%>>Previous</a></li>
+                                    <%} if(users.size() > PagesUtilis.USERS_PER_PAGE) {
+                                    %>
+                                    <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index + 1)%>>Next</a></li>
+                                    <% }%>
+                                </ul>
+                            </nav>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+
+
+
+
+                    <%    }else{
                     %>
                         No users found!
                     <%
