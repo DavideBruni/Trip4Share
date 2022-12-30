@@ -81,8 +81,18 @@ public class TripServiceImpl implements TripService {
     }
 
 
-    public List<TripSummaryDTO> getTripsOrganizedByUser(String username){
-        List<Trip> trips_model = tripDAO.getTripOrganizedByUser(username);
+    public List<TripSummaryDTO> getTripsOrganizedByUser(String username, int size, int page){
+        List<Trip> trips_model = tripDAO.getTripOrganizedByUser(username, size, page);
+        List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
+        for(Trip trip : trips_model){
+            TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
+            trips.add(tripSummaryDTO);
+        }
+        return trips;
+    }
+
+    public List<TripSummaryDTO> getPastTrips(String username, int size, int page){
+        List<Trip> trips_model = tripDAO.getPastTrips(username, size, page);
         List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
         for(Trip trip : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
@@ -116,12 +126,12 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public ArrayList<TripSummaryDTO> getWishlist(String username) {
+    public ArrayList<TripSummaryDTO> getWishlist(String username, int size, int page) {
 
         ArrayList<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
 
-        for(Trip t : wishlistRedisDAO.getUserWishlist(username)){
-            trips.add(TripUtils.tripSummaryDTOFromModel(t));
+        for(Trip trip : wishlistRedisDAO.getUserWishlist(username, size, page)){
+            trips.add(TripUtils.tripSummaryDTOFromModel(trip));
         }
 
         return trips;

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface RegisteredUserDAO {
     List<RegisteredUser> getSuggestedUser(String username, int nUser);
-    List<RegisteredUser> getFollowing(String username);
+    List<RegisteredUser> getFollowing(String username, int size, int page);
 
-    List<RegisteredUser> getFollower(String username);
+    List<RegisteredUser> getFollower(String username, int size, int page);
 
     int getNumberOfFollower(String username);
 

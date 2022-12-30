@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<OtherUserDTO> getFollowing(String username) {
-        List<RegisteredUser> users = registeredUserDAO.getFollowing(username);
+    public List<OtherUserDTO> getFollowing(String username, int size, int page) {
+        List<RegisteredUser> users = registeredUserDAO.getFollowing(username, size, page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -68,6 +68,29 @@ public class UserServiceImpl implements UserService {
             followers.add(otherUserDTO);
         }
         return followers;
+    }
+
+
+    @Override
+    public List<OtherUserDTO> getFollowers(String username, int size, int page) {
+        List<RegisteredUser> users = registeredUserDAO.getFollower(username, size, page);
+        List<OtherUserDTO> followers = new ArrayList<>();
+        for(RegisteredUser r : users){
+            OtherUserDTO otherUserDTO = new OtherUserDTO();
+            otherUserDTO.setUsername(r.getUsername());
+            followers.add(otherUserDTO);
+        }
+        return followers;
+    }
+
+    @Override
+    public int getFollowingNumber(String username) {
+        return registeredUserDAO.getNumberOfFollowing(username);
+    }
+
+    @Override
+    public int getFollowersNumber(String username) {
+        return registeredUserDAO.getNumberOfFollower(username);
     }
 
     @Override
@@ -109,6 +132,8 @@ public class UserServiceImpl implements UserService {
         Admin a = UserUtils.adminFromDTO(u);
         return userDAO.createUser(a);
     }
+
+
 
     @Override
     public boolean updateUser(RegisteredUserDetailsDTO newUser, RegisteredUserDetailsDTO oldUser){

@@ -59,30 +59,6 @@ public class SearchServlet extends HttpServlet {
      */
 
 
-    private RequestDispatcher searchUser(HttpServletRequest request, String value, int page) {
-        List<OtherUserDTO> users = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute(SecurityUtils.SEARCH_RESULTS, users);
-        return request.getRequestDispatcher("/WEB-INF/pages/search_board.jsp");
-    }
-
-    private RequestDispatcher searchDest(HttpServletRequest request, String value, int page) {
-        String departure_date = request.getParameter("departure_date");
-        String return_date = request.getParameter("return_date");
-        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        System.out.println(trips);
-        request.setAttribute(SecurityUtils.SEARCH_RESULTS, trips);
-        return request.getRequestDispatcher("/WEB-INF/pages/search_board.jsp");
-    }
-
-    private RequestDispatcher searchTags(HttpServletRequest request, String value, int page) {
-        String depDate = request.getParameter("depDate");
-        String retDate = request.getParameter("retDate");
-        List<TripSummaryDTO> trips = tripService.getTripsByTag(value, depDate, retDate, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        request.setAttribute(SecurityUtils.SEARCH_RESULTS, trips);
-        return request.getRequestDispatcher("/WEB-INF/pages/search_board.jsp");
-    }
-
-
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         //processRequest(httpServletRequest, httpServletResponse);

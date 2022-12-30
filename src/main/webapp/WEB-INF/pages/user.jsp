@@ -60,20 +60,21 @@
 
                     <div class="row text-center m-t-20">
                         <div class="col-4">
-                            <h3 class="m-b-0 font-light white">434K</h3><small>Followers</small>
+                            <h3 class="m-b-0 font-light white"><%=user.getN_followers()%></h3>
+                            <a href=<%="user?username="+user.getUsername()+"&show=followers"%>><small>Followers</small></a>
                         </div>
                         <div class="col-4">
-                            <h3 class="m-b-0 font-light white">5454</h3><small>Following</small>
+                            <h3 class="m-b-0 font-light white" ><%=user.getN_following()%></h3><small>Following</small>
                         </div>
                         <div class="col-4">
-                            <h3 class="m-b-0 font-light white">5454</h3><small>Average Rating</small>
+                            <h3 class="m-b-0 font-light white"><%=user.getAvg_rating()%></h3><small>Average Rating</small>
                         </div>
                     </div>
                 </div>
                 <div class="text-center">
 
-                <h4 class="m-t-10"> Nazionalità </h4>
-                <h4 class="m-t-10"> Lingue Parlate </h4>
+                <h4 class="m-t-10"> Nationality: <%=user.getNationality()%> </h4>
+                <h4 class="m-t-10"> Spoken Languages: <%=user.getSpoken_languages()%> </h4>
                 <h4 class="m-t-10"> Bio</h4>
             </div>
         </div>
@@ -83,19 +84,20 @@
 
 <ul class="nav nav-tabs mb-3 justify-content-center" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" href="l" role="tab" aria-selected="true">Reviews</a>
+        <a class="nav-link active" href=<%="user?username="+user.getUsername()+"&show=reviews"%> role="tab" aria-selected="true">Reviews</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" role="tab"  aria-selected="false">Organized Trips</a>
+        <a class="nav-link" href=<%="user?username="+user.getUsername()+"&show=organizedTrips"%> role="tab"  aria-selected="false">Organized Trips</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" id="pills-contact-tab"  href="#" role="tab"  aria-selected="false">Past Trips</a>
-    </li>
+
     <%
         if(itsMe){
     %>
             <li class="nav-item">
-                <a class="nav-link" href="#" role="tab" aria-selected="false">WishList</a>
+                <a class="nav-link" id="pills-contact-tab"  href="pastTrips" role="tab"  aria-selected="false">Past Trips</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="wishlist" role="tab" aria-selected="false">WishList</a>
             </li>
     <%
         }
@@ -126,7 +128,7 @@
                 <div class="col-md-12">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-end">
-                            <li class="page-item"><a class="page-link" href="#">View More</a></li>
+                            <li class="page-item"><a class="page-link" href=<%="user?username="+user.getUsername()+"&show=reviews"%>>View More</a></li>
                         </ul>
                     </nav>
                 </div><!-- end col -->
@@ -139,65 +141,6 @@
 
 </div>
 
-<!-- footer -->
-<footer>
-    <div id="contact" class="footer">
-        <div class="container">
-            <div class="row pdn-top-30">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <ul class="location_icon">
-                        <li> <a href="#"><img src="icon/facebook.png"></a></li>
-                        <li> <a href="#"><img src="icon/Twitter.png"></a></li>
-                        <li> <a href="#"><img src="icon/linkedin.png"></a></li>
-                        <li> <a href="#"><img src="icon/instagram.png"></a></li>
-                    </ul>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                    <div class="Follow">
-                        <h3>CONTACT US</h3>
-                        <span>123 Second Street Fifth <br>Avenue,<br>
-                       Manhattan, New York<br>
-                       +987 654 3210</span>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                    <div class="Follow">
-                        <h3>ADDITIONAL LINKS</h3>
-                        <ul class="link">
-                            <li> <a href="#">About us</a></li>
-                            <li> <a href="#">Terms and conditions</a></li>
-                            <li> <a href="#"> Privacy policy</a></li>
-                            <li> <a href="#">News</a></li>
-                            <li> <a href="#"> Contact us</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="Follow">
-                        <h3> Contact</h3>
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <input class="Newsletter" placeholder="Name" type="text">
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <input class="Newsletter" placeholder="Email" type="text">
-                            </div>
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                <textarea class="textarea" placeholder="comment" type="text">Comment</textarea>
-                            </div>
-                        </div>
-                        <button class="Subscribe">Submit</button>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <div class="container">
-                    <p>Copyright 2019 All Right Reserved By <a href="https://html.design/">Free html Templates</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- end footer -->
+<%@ include file="/WEB-INF/pages/footer.jsp" %>
 
 </body>

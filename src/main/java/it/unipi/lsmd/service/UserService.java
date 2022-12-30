@@ -14,14 +14,17 @@ public interface UserService {
 
     List<OtherUserDTO> getSuggestedUsers(String username, int nUsers);
 
-    List<OtherUserDTO> getFollowing(String username);
+    List<OtherUserDTO> getFollowers(String username, int size, int page);
+    List<OtherUserDTO> getFollowing(String username, int size, int page);
+
+    int getFollowingNumber(String username);
+
+    int getFollowersNumber(String username);
 
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
     double getRating(String username);
 
-
     boolean updateUser(RegisteredUserDetailsDTO newUser, RegisteredUserDetailsDTO oldUser);
-
 
     String signup(UserDetailsDTO user);
 }
