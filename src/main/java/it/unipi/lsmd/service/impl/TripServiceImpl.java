@@ -68,7 +68,7 @@ public class TripServiceImpl implements TripService {
         Trip trip = tripDetailsDAO.getTrip(id);
 
         try {
-            trip.setOrganizer(organizerNeoDAO.getOrganizer(trip).getUsername());
+            trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
         } catch (Neo4jException e) {
             System.out.println(e);
             trip.setOrganizer(null);
@@ -276,7 +276,7 @@ public class TripServiceImpl implements TripService {
             t.setId(id);
             try {
                 RegisteredUser r = new RegisteredUser();
-                r.setUsername(t.getOrganizer());
+                r.setUsername(t.getOrganizer().getUsername());
                 tripDAO.addTrip(t,r);
                 return true;
             } catch (Neo4jException e) {
