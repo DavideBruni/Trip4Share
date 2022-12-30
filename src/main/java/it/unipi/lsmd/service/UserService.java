@@ -1,8 +1,6 @@
 package it.unipi.lsmd.service;
 
-import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
 
@@ -29,7 +27,9 @@ public interface UserService {
     // change Parameter to DTO
     boolean addUser(AuthenticatedUserDTO u);
 
-    boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser);
+    boolean updateUser(RegisteredUserDetailsDTO newUser, RegisteredUserDetailsDTO oldUser);
 
     List<OtherUserDTO> getFollowers(String username);
+
+    String signup(UserDetailsDTO user);
 }

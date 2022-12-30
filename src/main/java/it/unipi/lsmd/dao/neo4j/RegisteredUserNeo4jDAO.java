@@ -128,15 +128,16 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     @Override
     public void createRegistereduser(RegisteredUser user) throws Neo4jException {
         try (Session session = getConnection().session()) {
-            Result res = session.readTransaction(tx->{
-                return tx.run("RETURN EXISTS((:RegisteredUser {username: $username})) as ex",
+             Boolean exists = session.readTransaction(tx->{
+                 Result res = tx.run("MATCH (r:RegisteredUser {username: $username}) RETURN r",
                         parameters("username",user.getUsername()));
-            });
-            if(!res.next().get("ex").asBoolean()){  //username is new
+                 return res.hasNext();
+
+             });
+            if(!exists){  //username is new
                 session.writeTransaction(tx -> {
-                    tx.run("CREATE (x:RegisteredUser { username: $username, profile_pic: $pic})",
-                            parameters("username",user.getUsername(),
-                                    "pic",user.getProfile_pic())).consume();
+                    tx.run("CREATE (x:RegisteredUser { username: $username})",
+                            parameters("username",user.getUsername())).consume();
                         return null;
                 });
             }else{

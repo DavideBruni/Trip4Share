@@ -23,6 +23,8 @@ public class SecurityUtils {
     public static final String SUGGESTED_TRIPS = "suggested_trips";
     public static final String SEARCH_RESULTS = "search_results";
     public static final String PAGE = "page";
+    public static final String JOINERS = "joiners";
+    public static final String SIGNUP_ERROR = "error_message";
     public static final String ORGANIZED_TRIPS = "organized_trips";
     public static final String TRIPS_RESULT = "trips_result";
     public static final String USER_RESULTS = "user_results";
