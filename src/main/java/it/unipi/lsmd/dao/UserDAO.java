@@ -18,7 +18,7 @@ public interface UserDAO {
 
     double avgRating(String username);
 
-    boolean createUser(User u);
+    String createUser(User u);
 
     boolean deleteUser(User u);
 

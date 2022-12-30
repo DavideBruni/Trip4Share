@@ -10,7 +10,7 @@ import java.util.List;
 public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     private String nationality;
-    private ArrayList<String> spoken_languages;
+    private List<String> spoken_languages;
     private String phone;
     private ArrayList<ReviewDTO> reviews;
     private List<OtherUserDTO> following;
@@ -39,11 +39,11 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
         this.nationality = nationality;
     }
 
-    public ArrayList<String> getSpoken_languages() {
+    public List<String> getSpoken_languages() {
         return spoken_languages;
     }
 
-    public void setSpoken_languages(ArrayList<String> spoken_languages) {
+    public void setSpoken_languages(List<String> spoken_languages) {
         this.spoken_languages = spoken_languages;
     }
 

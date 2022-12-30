@@ -4,10 +4,7 @@ import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
-import it.unipi.lsmd.dto.AdminDTO;
-import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
@@ -92,38 +89,29 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // change Parameter to DTO
-    @Override
-    public boolean addUser(AuthenticatedUserDTO u) {
-        if(u instanceof AdminDTO)
-            return addAdmin((AdminDTO)u );
-        else
-            return addRegisteredUser((RegisteredUserDTO) u);
-    }
-
-    private boolean addRegisteredUser(RegisteredUserDTO u) {
+    private String addRegisteredUser(RegisteredUserDetailsDTO u) {
         RegisteredUser r = UserUtils.registeredUserFromDTO(u);
-        boolean flag = userDAO.createUser(r);
-        if(flag) {
+        String flag = userDAO.createUser(r);
+        if(!flag.equals("Something gone worng") && !flag.equals("Duplicate key")) {
             try {
                 registeredUserDAO.createRegistereduser(r);
-                return true;
+                return flag;
             } catch (Neo4jException e) {
                 if(!userDAO.deleteUser(r))
                     System.err.println("Mongo Error");
-                return false;
+                return "Something gone wrong";
             }
         }
-        return false;
+        return flag;
     }
 
-    private boolean addAdmin(AdminDTO u) {
+    private String addAdmin(UserDetailsDTO u) {
         Admin a = UserUtils.adminFromDTO(u);
         return userDAO.createUser(a);
     }
 
     @Override
-    public boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser){
+    public boolean updateUser(RegisteredUserDetailsDTO newUser, RegisteredUserDetailsDTO oldUser){
         // fonte: https://www.mongodb.com/community/forums/t/updateone-vs-replaceone-performance/698
         // better update only few attributes instead of the entire document
         if(newUser.getUsername()==oldUser.getUsername()){
@@ -144,6 +132,15 @@ public class UserServiceImpl implements UserService {
         }else
             return false;
 
+    }
+
+    @Override
+    public String signup(UserDetailsDTO user){
+        if(user instanceof RegisteredUserDetailsDTO){
+            return addRegisteredUser((RegisteredUserDetailsDTO) user);
+        }else{
+            return addAdmin(user);
+        }
     }
 
 }
