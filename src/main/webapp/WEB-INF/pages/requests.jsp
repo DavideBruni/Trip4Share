@@ -110,9 +110,12 @@
         var username = $("#"+i+"_username").text();
         $.get("joinManager?id="+id+"&username="+username+"&action=accept", function(responseText) {
             if(responseText == "OK"){
-                $("#"+id).text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with
+                $( "#ba_"+i+"_"+id).remove();
+                $( "#br_"+i+"_"+id).remove();
+                $( "#div_"+i).append( "<button id=<\"bd_"+i+"_"+id+"\" class=\"delete\" >Remove </button>" );
+                $("#"+i+"_status").text("accepted");
             }else{
-                $("#"+id).text(responseText);
+                alert("Errore durante l'operazione");
             }
 
         });
@@ -125,7 +128,13 @@
         var i =button_id.substring(3,last_);
         var username = $("#"+i+"_username").text();
         $.get("joinManager?id="+id+"&username="+username+"&action=reject", function(responseText) {
-            $("#somediv").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+            if(responseText == "OK"){
+                $( "#ba_"+i+"_"+id).remove();
+                $( "#br_"+i+"_"+id).remove();
+                $("#"+i+"_status").text("rejected");
+            }else{
+                alert("Errore durante l'operazione");
+            }
         });
     });
 
@@ -136,7 +145,11 @@
         var i =button_id.substring(3,last_);
         var username = $("#"+i+"_username").text();
         $.get("joinManager?id="+id+"&username="+username+"&action=delete", function(responseText) {
-            $("#somediv").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+            if (responseText == "OK") {
+                $("#div_" + i).remove();
+            } else {
+                alert("Errore durante l'operazione");
+            }
         });
     });
 </script>

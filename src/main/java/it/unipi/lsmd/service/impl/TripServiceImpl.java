@@ -14,7 +14,7 @@ import it.unipi.lsmd.model.enums.Status;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
 import org.javatuples.Pair;
-import it.unipi.lsmd.utils.UserUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -394,5 +394,33 @@ public class TripServiceImpl implements TripService {
                 return false;
             }
             return true;
+    }
+
+    @Override
+    public String setJoin(String username, String trip_id){
+        return manageJoin(username, trip_id, "set");
+    }
+    @Override
+    public String cancelJoin(String username, String trip_id){
+        return manageJoin(username, trip_id, "cancel");
+    }
+
+    private String manageJoin(String username, String trip_id, String action){
+        if(trip_id!=null && username!= null) {
+            Trip t = new Trip();
+            t.setId(trip_id);
+            RegisteredUser r = new RegisteredUser(username);
+            try{
+                if(action.equals("set"))
+                    tripDAO.createJoin(t,r);
+                else
+                    tripDAO.cancelJoin(t,r);
+                return "OK";
+            }catch(Neo4jException ne){
+                return "Error";
+            }
+        }else{
+            return "Error";
+        }
     }
 }

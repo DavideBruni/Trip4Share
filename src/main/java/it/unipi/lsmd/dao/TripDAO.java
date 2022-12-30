@@ -31,4 +31,7 @@ public interface TripDAO {
 
     List<Trip> getPastTrips(String organizer, int size, int page);
 
+    void createJoin(Trip t, RegisteredUser r) throws Neo4jException;
+
+    void cancelJoin(Trip t, RegisteredUser r) throws Neo4jException;
 }

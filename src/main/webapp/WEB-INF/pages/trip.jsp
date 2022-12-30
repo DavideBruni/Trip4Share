@@ -150,9 +150,17 @@
 
         <div class="row">
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
+            <!--Only if organizer is the same of the authenticated user-->
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Send Join Request</a>
         </div>
+        <div class="row" id="join_div">
+            <button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>
+        </div>
+        <div class="row" id="join_div">
+            <button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel requst</button>
+        </div>
         <%
+                //request to do based on current status
             }
         %>
         <p class="grey pull-right ">Last Modified</p>
@@ -163,76 +171,50 @@
 </div>
 
 
-<footer>
-    <div id="contact" class="footer">
-        <div class="container">
-            <div class="row pdn-top-30">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <ul class="location_icon">
-                        <li> <a href="#"><img src="icon/facebook.png"></a></li>
-                        <li> <a href="#"><img src="icon/Twitter.png"></a></li>
-                        <li> <a href="#"><img src="icon/linkedin.png"></a></li>
-                        <li> <a href="#"><img src="icon/instagram.png"></a></li>
-                    </ul>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                    <div class="Follow">
-                        <h3>CONTACT US</h3>
-                        <span>123 Second Street Fifth <br>Avenue,<br>
-                       Manhattan, New York<br>
-                       +987 654 3210</span>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                    <div class="Follow">
-                        <h3>ADDITIONAL LINKS</h3>
-                        <ul class="link">
-                            <li> <a href="#">About us</a></li>
-                            <li> <a href="#">Terms and conditions</a></li>
-                            <li> <a href="#"> Privacy policy</a></li>
-                            <li> <a href="#">News</a></li>
-                            <li> <a href="#"> Contact us</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                    <div class="Follow">
-                        <h3> Contact</h3>
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <input class="Newsletter" placeholder="Name" type="text">
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                <input class="Newsletter" placeholder="Email" type="text">
-                            </div>
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                <textarea class="textarea" placeholder="comment" type="text">Comment</textarea>
-                            </div>
-                        </div>
-                        <button class="Subscribe">Submit</button>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <div class="container">
-                    <p>Copyright 2019 All Right Reserved By <a href="https://html.design/">Free html Templates</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+<%@include file="footer.jsp"%>
 </body>
 
+<% if (session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)!=null){ %>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    $(document).on("click", ".send-button", function() {
+        var button_id = event.target.id
+        var username = "<%= ((AuthenticatedUserDTO)(session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))).getUsername() %>";
+        var id ="<%= request.getParameter("id") %>";
+        var url=""
+        if(button_id=="join_button"){
+            url = "join?id="+id+"&username="+username+"&action=join";
+        }else{
+            url = "join?id="+id+"&username="+username+"&action=cancel";
+        }
+        $.get(url, function(responseText) {
+            if (responseText == "OK") {
+                if(button_id=="join_button"){
+                    $("#join_button").remove();
+                    $("#join_div").append('<button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>');
+                }else{
+                    $("#cancel_button").remove();
+                    $("#join_div").append('<button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>');
+                }
+            } else {
+                alert("Errore durante l'operazione");
+            }
+
+        });
+    });
+
+</script>
+<% } %>
 <!-- ##### All Javascript Files ##### -->
 <!-- jQuery-2.2.4 js -->
-<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<script src="WebContent/js/jquery/jquery-2.2.4.min.js"></script>
 <!-- Popper js -->
-<script src="js/bootstrap/popper.min.js"></script>
+<script src="WebContent/js/bootstrap/popper.min.js"></script>
 <!-- Bootstrap js -->
-<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="WebContent/js/bootstrap/bootstrap.min.js"></script>
 <!-- All Plugins js -->
-<script src="js/plugins/plugins.js"></script>
+<script src="WebContent/js/plugins/plugins.js"></script>
 <!-- Active js -->
-<script src="js/active.js"></script>
+<script src="WebContent/js/active.js"></script>
 
 </html>

@@ -193,18 +193,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
     @Override
     public void setStatusJoin(Trip t, RegisteredUser r, Status status) throws Neo4jException {
         try (Session session = getConnection().session()) {
-            if(status.equals(Status.pending)){
-                session.writeTransaction(tx -> {
-                            tx.run("MATCH (t:Trip), (r:RegisteredUser) " +
-                                    "WHERE t._id = $id AND r.username = $username " +
-                                    "CREATE (t)-[o:ORGANIZED_BY {status:$status}]->(r) " +
-                                    "RETURN type(o)", parameters("id", t.getId(), "username", r.getUsername(),
-                                    "status",Status.pending.name())).consume();
-                            return null;
-                        }
-                );
-            }else {
-                session.writeTransaction(tx -> {
+            session.writeTransaction(tx -> {
                             tx.run("MATCH (t:Trip)<-[j:JOIN]-(r:RegisteredUser) " +
                                     "WHERE t._id = $id AND r.username = $username " +
                                     "SET j.status = $status ", parameters("id", t.getId(), "username", r.getUsername(),
@@ -212,7 +201,6 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
                             return null;
                         }
                 );
-            }
         }catch (Exception e){
             throw new Neo4jException(e.getMessage());
         }
@@ -290,6 +278,40 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
 
         }
         return trip_list;
+    }
+
+    @Override
+    public void createJoin(Trip t, RegisteredUser r) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+            Boolean b = session.readTransaction(tx->{
+                Result res = tx.run("MATCH (t:Trip{_id:$id})<-[j:JOIN]-(r:RegisteredUser{username:$username}) " +
+                        "RETURN j", parameters("id", t.getId(), "username", r.getUsername()));
+                return res.hasNext();
+            });
+            if(!b) {    //if b --> relation already exist, we don't want duplicate join
+                session.writeTransaction(tx -> {
+                    tx.run("MATCH (t:Trip{_id:$id})<-[:JOIN]-(r:RegisteredUser{username:$username}) " +
+                            "CREATE (t)<-[j:JOIN {status:\"pending\"}]-(r) " +
+                            "RETURN j", parameters("id", t.getId(), "username", r.getUsername())).consume();
+                    return null;
+                });
+            }
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void cancelJoin(Trip t, RegisteredUser r) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+            session.writeTransaction(tx -> {
+                tx.run("MATCH (t:Trip{_id:$id})<-[j:JOIN]-(r:RegisteredUser{username:$username}) " +
+                        "DELETE j", parameters("id", t.getId(), "username", r.getUsername())).consume();
+                return null;
+            });
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
     }
 
 }

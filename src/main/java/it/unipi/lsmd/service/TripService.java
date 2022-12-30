@@ -56,4 +56,8 @@ public interface TripService {
     boolean manageTripRequest(String id, String username, String action);
 
     List<TripSummaryDTO> getPastTrips(String username, int size, int page);
+
+    String setJoin(String username, String trip_id);
+
+    String cancelJoin(String username, String trip_id);
 }
