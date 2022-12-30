@@ -110,7 +110,11 @@ public interface TripUtils {
         tripDTO.setWhatsIncluded(trip.getWhatsIncluded());
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
         tripDTO.setLike_counter(trip.getLike_counter());
-        tripDTO.setOrganizer(trip.getOrganizer());
+        try {
+            tripDTO.setOrganizer(trip.getOrganizer().getUsername());
+        }catch(NullPointerException ex){
+            tripDTO.setOrganizer(null);
+        }
         tripDTO.setLast_modified(trip.getLast_modified());
 
         try{
@@ -137,7 +141,11 @@ public interface TripUtils {
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setImgUrl(trip.getImg());
-        tripDTO.setOrganizer(trip.getOrganizer());    // TODO - add in a trycatch?
+        try {
+            tripDTO.setOrganizer(trip.getOrganizer().getUsername());
+        }catch(NullPointerException ex){
+            tripDTO.setOrganizer(null);
+        }
         tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
@@ -152,7 +160,7 @@ public interface TripUtils {
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setImgUrl(trip.getImg());
-        tripDTO.setLike_counter(tripDTO.getLike_counter());
+        tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setOrganizer(trip.getOrganizer());
         tripDTO.setLast_modified(trip.getLast_modified());
 
@@ -169,7 +177,7 @@ public interface TripUtils {
         trip.setDepartureDate(tripSummary.getDepartureDate());
         trip.setReturnDate(tripSummary.getReturnDate());
         trip.setLike_counter(tripSummary.getLike_counter());
-        trip.setOrganizer(tripSummary.getOrganizer());
+        trip.setOrganizer(new RegisteredUser(tripSummary.getOrganizer()));
         trip.setLast_modified(tripSummary.getLast_modified());
 
         return trip;
@@ -213,7 +221,7 @@ public interface TripUtils {
         trip.setDestination(r.get("t.destination").asString());
         trip.setTitle(r.get("t.title").asString());
         trip.setImg(r.get("t.imgUrl").asString());
-        trip.setOrganizer(r.get("organizer").asString());
+        trip.setOrganizer(new RegisteredUser(r.get("organizer").asString()));
 
 
         try {
@@ -301,7 +309,7 @@ public interface TripUtils {
         t.setReturnDate(tripDetailsDTO.getReturnDate());
         t.setImg(tripDetailsDTO.getImg());
         t.setPrice(tripDetailsDTO.getPrice());
-        t.setOrganizer(tripDetailsDTO.getOrganizer());
+        t.setOrganizer(new RegisteredUser(tripDetailsDTO.getOrganizer()));
         t.setDescription(tripDetailsDTO.getDescription());
         t.setDestination(tripDetailsDTO.getDestination());
         t.setTitle(tripDetailsDTO.getTitle());

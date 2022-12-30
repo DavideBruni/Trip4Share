@@ -12,6 +12,12 @@ public abstract class User {
 
     private String profile_pic;
 
+    public User(){}
+    public User(String username, String profile_pic){
+        this.username=username;
+        this.profile_pic=profile_pic;
+    }
+
     public void setRole(String role) {
         this.role = role;
     }

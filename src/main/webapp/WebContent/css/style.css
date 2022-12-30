@@ -1724,10 +1724,9 @@ input[type="radio"] .styled:checked+label::after {
      text-align: center;
      padding-bottom: 50px;
 }
-.titlepage h2 {
+.titlepage h3 {
      padding: 0px 20px 20px 0px;
      margin-top: 15px;
-     font-size: 50px;
      font-weight: bold;
      color: #050303;
      line-height: 50px;
@@ -1735,16 +1734,16 @@ input[type="radio"] .styled:checked+label::after {
      position: relative;
      display: inline-block;
 }
-.titlepage h2::before {
+.titlepage h3::before {
      right: 100%;
      margin-right: 15px;
 }
-.titlepage h2::after {
+.titlepage h3::after {
      left: 100%;
      margin-left: 15px;
 }
-.titlepage h2::before,
-.titlepage h2::after {
+.titlepage h3::before,
+.titlepage h3::after {
      content: "";
      position: absolute;
      height: 5px;

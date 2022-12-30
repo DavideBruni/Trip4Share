@@ -10,15 +10,15 @@ import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
+import it.unipi.lsmd.model.enums.Status;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
+import org.javatuples.Pair;
 import it.unipi.lsmd.utils.UserUtils;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,9 +56,8 @@ public class TripServiceImpl implements TripService {
             tripSummaryDTO.setReturnDate(t.getReturnDate());
             tripSummaryDTO.setTitle(t.getTitle());
             tripSummaryDTO.setImgUrl(t.getImg());
-            tripSummaryDTO.setOrganizer(t.getOrganizer());
             tripSummaryDTO.setId(t.getId());
-
+            tripSummaryDTO.setOrganizer(t.getOrganizer().getUsername());
             tripsDTO.add(tripSummaryDTO);
         }
         return tripsDTO;
@@ -67,9 +66,9 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
-        
+
         try {
-            trip.setOrganizer(organizerNeoDAO.getOrganizer(trip).getUsername());
+            trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
         } catch (Neo4jException e) {
             System.out.println(e);
             trip.setOrganizer(null);
@@ -121,13 +120,8 @@ public class TripServiceImpl implements TripService {
 
         ArrayList<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
 
-        for(Trip trip : wishlistRedisDAO.getUserWishlist(username)){
-            try {
-                trip.setOrganizer(organizerNeoDAO.getOrganizer(trip).getUsername());
-            } catch (Neo4jException e) {
-                trip.setOrganizer(null);
-            }
-            trips.add(TripUtils.tripSummaryDTOFromModel(trip));
+        for(Trip t : wishlistRedisDAO.getUserWishlist(username)){
+            trips.add(TripUtils.tripSummaryDTOFromModel(t));
         }
 
         return trips;
@@ -145,15 +139,9 @@ public class TripServiceImpl implements TripService {
             depDate = LocalDate.now();
         }
 
-
         List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination, depDate, retDate, size, page);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
-            try{
-                t.setOrganizer(organizerNeoDAO.getOrganizer(t).getUsername());
-            }catch (Neo4jException e){
-                t.setOrganizer(null);
-            }
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
             tripsDTO.add(tDTO);
         }
@@ -288,7 +276,7 @@ public class TripServiceImpl implements TripService {
             t.setId(id);
             try {
                 RegisteredUser r = new RegisteredUser();
-                r.setUsername(t.getOrganizer());
+                r.setUsername(t.getOrganizer().getUsername());
                 tripDAO.addTrip(t,r);
                 return true;
             } catch (Neo4jException e) {
@@ -351,5 +339,50 @@ public class TripServiceImpl implements TripService {
             ret.add(TripUtils.tripSummaryDTOFromModel(t));
         }
         return ret;
+    }
+
+    @Override
+    public InvolvedPeopleDTO getOrganizerAndJoiners(String id){
+        if(id!=null) {
+            Trip t = new Trip();
+            t.setId(id);
+            t = tripDAO.getJoinersAndOrganizer(t);
+            if(t != null) {
+                InvolvedPeopleDTO inv = new InvolvedPeopleDTO();
+                inv.setOrganizer(t.getOrganizer().getUsername());
+                List<Pair<RegisteredUser, Status>> joiners = t.getJoiners();
+                for (Pair<RegisteredUser, Status> x : joiners) {
+                    OtherUserDTO o = new OtherUserDTO();
+                    o.setUsername(x.getValue0().getUsername());
+                    o.setPic(x.getValue0().getProfile_pic());
+                    Pair<OtherUserDTO, Status> j = new Pair<>(o, x.getValue1());
+                    inv.addJoiners(j);
+                }
+                return inv;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean manageTripRequest(String id, String username, String action) {
+            try{
+                Trip t = new Trip();
+                t.setId(id);
+                RegisteredUser r = new RegisteredUser(username);
+                if(action.equals("delete")) {
+                    tripDAO.removeJoin(t,r);
+                }else{
+                    if(action.equals("accept"))
+                        tripDAO.setStatusJoin(t,r,Status.accepted);
+                    else if(action.equals("reject"))
+                        tripDAO.setStatusJoin(t,r,Status.rejected);
+                    else
+                        return false;
+                }
+            }catch (Neo4jException exc){
+                return false;
+            }
+            return true;
     }
 }
