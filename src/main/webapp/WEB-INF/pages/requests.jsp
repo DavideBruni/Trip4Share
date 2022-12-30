@@ -18,23 +18,24 @@
     <h2>People who request to join your trip </h2>
 </div>
 <div class="row mt-5">
-    <div class="col-5 justify-content-center">
-        <div class="sidebar">
-            <div class="widget">
-                <div class="blog-list-widget">
-                    <div class="row">
-                        <div href="single.html" class=" ml-5 list-group-item list-group-item-action flex-column align-items-center">
-                            <div class="row justify-content-center mt-3">
-                                User
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="row justify-content-center">
+        <div class="col-5 list-group-item flex-column text-center">
+            <div class="titlepage">
+                <h2>User</h2>
+            </div>
+
+        </div>
+        <div class="col-3  list-group-item flex-column text-center">
+            <div class="titlepage">
+                <h2>Status</h2>
+            </div>
+        </div>
+        <div class="col-3  list-group-item flex-column text-center">
+            <div class="titlepage">
+                <h2>Action</h2>
             </div>
         </div>
     </div>
-    <div class="col-3  list-group-item flex-column align-items-center">Status</div>
-    <div class="col-3  list-group-item flex-column align-items-center">Action</div>
 
     <%
         List<Pair<OtherUserDTO, Status>> joiners = (List<Pair<OtherUserDTO, Status>>) request.getAttribute(SecurityUtils.JOINERS);
