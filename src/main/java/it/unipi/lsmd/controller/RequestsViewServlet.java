@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/requests")
-public class RequestsServlet extends HttpServlet {
+public class RequestsViewServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
 

@@ -1,12 +1,9 @@
 package it.unipi.lsmd.controller;
 
-import it.unipi.lsmd.dto.AuthenticatedUserDTO;
-import it.unipi.lsmd.dto.InvolvedPeopleDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.SecurityUtils;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/joinManager")
-public class JoinServlet extends HttpServlet {
+public class JoinManagerServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

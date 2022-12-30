@@ -2,7 +2,6 @@ package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
-import it.unipi.lsmd.dto.RegisteredUserDetailsDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -40,7 +39,7 @@ public class SignupServlet extends HttpServlet {
         String email = httpServletRequest.getParameter("email");
         String password = httpServletRequest.getParameter("psw");
         if(complete(name,surname,username,email,password)) {
-            RegisteredUserDetailsDTO user = new RegisteredUserDetailsDTO();
+            RegisteredUserDTO user = new RegisteredUserDTO();
             user.setFirstName(name);
             user.setLastName(surname);
             user.setUsername(username);
@@ -75,13 +74,13 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    private RegisteredUserDTO DTOwithoutDetails(RegisteredUserDetailsDTO user) {
+    private RegisteredUserDTO DTOwithoutDetails(RegisteredUserDTO user) {
         RegisteredUserDTO r = new RegisteredUserDTO();
         r.setFirstName(user.getFirstName());
         r.setLastName(user.getLastName());
         r.setUsername(user.getUsername());
         r.setNationality(user.getNationality());
-        r.setSpoken_languages(user.getSpokenLanguages());
+        r.setSpokenLanguages(user.getSpokenLanguages());
         try {
             r.setBirthdate(LocalDate.parse(user.getBirthday()));
         }catch(Exception e){

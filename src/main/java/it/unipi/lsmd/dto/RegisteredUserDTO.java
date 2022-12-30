@@ -10,7 +10,8 @@ import java.util.List;
 public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     private String nationality;
-    private List<String> spoken_languages;
+    private String birthday;
+    private List<String> spokenLanguages;
     private String phone;
     private ArrayList<ReviewDTO> reviews;
     private int n_followers;
@@ -21,8 +22,16 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private double avg_rating;
 
     public RegisteredUserDTO(){
-        spoken_languages = new ArrayList<String>();
+        spokenLanguages = new ArrayList<String>();
         reviews = new ArrayList<ReviewDTO>();
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public String getBio() {
@@ -41,12 +50,12 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
         this.nationality = nationality;
     }
 
-    public List<String> getSpoken_languages() {
-        return spoken_languages;
+    public List<String> getSpokenLanguages() {
+        return spokenLanguages;
     }
 
-    public void setSpoken_languages(List<String> spoken_languages) {
-        this.spoken_languages = spoken_languages;
+    public void setSpokenLanguages(List<String> spoken_languages) {
+        this.spokenLanguages = spoken_languages;
     }
 
     public String getPhone() {

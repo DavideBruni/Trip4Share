@@ -62,7 +62,7 @@ public interface UserUtils {
             RegisteredUser registeredUser = (RegisteredUser) user_model;
 
             registeredUserDTO.setNationality(registeredUser.getNationality());
-            registeredUserDTO.setSpoken_languages(registeredUser.getSpoken_languages());
+            registeredUserDTO.setSpokenLanguages(registeredUser.getSpoken_languages());
             registeredUserDTO.setPhone(registeredUser.getPhone());
             registeredUserDTO.setBirthdate(registeredUser.getBirthdate());
             registeredUserDTO.setAvg_rating(registeredUser.getAvg_rating());
@@ -129,7 +129,7 @@ public interface UserUtils {
         }
     }
 
-    static RegisteredUser registeredUserFromDTO(RegisteredUserDetailsDTO user) {
+    static RegisteredUser registeredUserFromDTO(RegisteredUserDTO user) {
         RegisteredUser r = new RegisteredUser();
         r.setName(user.getFirstName());
         r.setSurname(user.getLastName());
@@ -146,7 +146,7 @@ public interface UserUtils {
         return r;
     }
 
-    static Admin adminFromDTO(UserDetailsDTO u) {
+    static Admin adminFromDTO(AdminDTO u) {
         Admin a = new Admin();
         a.setUsername(u.getUsername());
         a.setName(u.getFirstName());

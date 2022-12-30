@@ -24,7 +24,7 @@ public interface UserService {
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
     double getRating(String username);
 
-    boolean updateUser(RegisteredUserDetailsDTO newUser, RegisteredUserDetailsDTO oldUser);
+    boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser);
 
-    String signup(UserDetailsDTO user);
+    String signup(AuthenticatedUserDTO user);
 }

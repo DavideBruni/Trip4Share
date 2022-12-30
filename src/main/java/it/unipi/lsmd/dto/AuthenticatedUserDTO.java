@@ -5,19 +5,28 @@ import java.util.Date;
 
 public abstract class AuthenticatedUserDTO {
 
-    private String id;  // TODO - is useless if save the session using ID and not AuthenticatedUserDTO instance
-
+    private String id;
     private String username;
     private String firstName;
     private String lastName;
-    private String birthday;
+    private String email;
+    private String password;
 
-    public String getBirthday() {
-        return birthday;
+    public String getEmail() {
+        return email;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getId() {

@@ -95,11 +95,12 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
     @Override
     public void deleteTrip(Trip t) throws Neo4jException {
         try (Session session = getConnection().session()) {
-            Result res = session.readTransaction(tx->{
-                return tx.run("RETURN EXISTS( (:Trip {_id: $id})<-[:JOIN]-(:RegisteredUser)) as ex",
+            Boolean exists = session.readTransaction(tx->{
+                Result res = tx.run("MATCH (t:Trip {_id: $id})<-[:JOIN]-(:RegisteredUser) RETURN t",
                         parameters("id",t.getId()));
+                return res.hasNext();
             });
-            if(!res.next().get("ex").asBoolean()){
+            if(!exists){
                 //nessun utente ha fatto join, posso cancellarlo anche da Neo4j
                 session.writeTransaction(tx -> {
                     tx.run("MATCH (t:Trip) " +

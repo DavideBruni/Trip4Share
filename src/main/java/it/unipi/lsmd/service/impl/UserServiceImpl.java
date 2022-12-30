@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private String addRegisteredUser(RegisteredUserDetailsDTO u) {
+    private String addRegisteredUser(RegisteredUserDTO u) {
         RegisteredUser r = UserUtils.registeredUserFromDTO(u);
         String flag = userDAO.createUser(r);
         if(!flag.equals("Something gone worng") && !flag.equals("Duplicate key")) {
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         return flag;
     }
 
-    private String addAdmin(UserDetailsDTO u) {
+    private String addAdmin(AdminDTO u) {
         Admin a = UserUtils.adminFromDTO(u);
         return userDAO.createUser(a);
     }
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean updateUser(RegisteredUserDetailsDTO newUser, RegisteredUserDetailsDTO oldUser){
+    public boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser){
         // fonte: https://www.mongodb.com/community/forums/t/updateone-vs-replaceone-performance/698
         // better update only few attributes instead of the entire document
         if(newUser.getUsername()==oldUser.getUsername()){
@@ -160,11 +160,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String signup(UserDetailsDTO user){
-        if(user instanceof RegisteredUserDetailsDTO){
-            return addRegisteredUser((RegisteredUserDetailsDTO) user);
+    public String signup(AuthenticatedUserDTO user){
+        if(user instanceof RegisteredUserDTO){
+            return addRegisteredUser((RegisteredUserDTO) user);
         }else{
-            return addAdmin(user);
+            return addAdmin((AdminDTO) user);
         }
     }
 
