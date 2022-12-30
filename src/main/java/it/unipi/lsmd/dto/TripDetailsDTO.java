@@ -26,6 +26,8 @@ public class TripDetailsDTO {
     private int like_counter;
     private String organizer;
 
+    private boolean inWishlist;
+
 
     public TripDetailsDTO(){
         tags = new ArrayList<String>();
@@ -165,6 +167,14 @@ public class TripDetailsDTO {
 
     public void setLast_modified(LocalDateTime last_modified) {
         this.last_modified = last_modified;
+    }
+
+    public boolean isInWishlist() {
+        return inWishlist;
+    }
+
+    public void setInWishlist(boolean inWishlist) {
+        this.inWishlist = inWishlist;
     }
 
     @Override

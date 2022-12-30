@@ -27,14 +27,6 @@ public class TripServlet extends HttpServlet {
 
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
 
-        // check if user is authenticated
-        /*
-        if(authenticatedUserDTO == null){
-            httpServletResponse.sendRedirect("login");
-            return;
-        }
-         */
-
         TripService tripService = ServiceLocator.getTripService();
 
         String targetJSP = "/WEB-INF/pages/trip.jsp";
@@ -43,30 +35,26 @@ public class TripServlet extends HttpServlet {
         TripDetailsDTO trip = tripService.getTrip(trip_id);
         if(authenticatedUserDTO != null) {
 
-            String action = httpServletRequest.getParameter("action");
-            // TODO - ogni volta che apro una pagina trip va fatto il confronto? Oppure si puo' limitare in qualche modo?
             LocalDateTime last_update = tripService.wishlistUpdateTime(authenticatedUserDTO.getUsername(), trip.getId());
+            if(last_update == null)
+                trip.setInWishlist(false);
             try {
 
-                if (action.equals("add") || trip.getLast_modified().isAfter(last_update)) {
-                    System.out.println("add to wishlist");
+                String action = httpServletRequest.getParameter("action");
 
+                if((action.equals("add") && last_update == null) || (last_update != null && trip.getLast_modified().isAfter(last_update))){
                     TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
                     tripService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
-
-                } else if (action.equals("remove")) {
-                    System.out.println("remove from wishlist");
+                    trip.setInWishlist(true);
+                }else if(action.equals("remove") && last_update != null){
                     tripService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
+                    trip.setInWishlist(false);
                 }
-
 
             } catch (NullPointerException e) {
             }
         }
         httpServletRequest.setAttribute("trip", trip);
-
-
-
 
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
