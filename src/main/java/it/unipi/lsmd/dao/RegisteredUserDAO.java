@@ -22,5 +22,4 @@ public interface RegisteredUserDAO {
 
     void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException;
 
-    void updateRegisteredUser(RegisteredUser r) throws Neo4jException;
 }

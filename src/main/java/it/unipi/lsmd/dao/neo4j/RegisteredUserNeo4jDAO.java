@@ -186,17 +186,4 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         }
     }
 
-    @Override
-    public void updateRegisteredUser(RegisteredUser registeredUser) throws Neo4jException{
-        try (Session session = getConnection().session()) {
-            session.writeTransaction(tx -> {
-                Result x = tx.run("MATCH (r:RegisteredUser {username: $username})" +
-                                " return r",
-                        parameters("username",registeredUser.getUsername()));
-                return x;
-            });
-        }catch (Exception e){
-            throw new Neo4jException(e.getMessage());
-        }
-    }
 }

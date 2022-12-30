@@ -142,17 +142,8 @@ public class UserServiceImpl implements UserService {
         if(newUser.getUsername()==oldUser.getUsername()){
             RegisteredUser r_new = UserUtils.registeredUserFromDTO(newUser);
             RegisteredUser r_old = UserUtils.registeredUserFromDTO(oldUser);
-            boolean flag = DAOLocator.getUserDAO().updateRegisteredUser(r_new,r_old);
-            if(flag){
-                try {
-                    DAOLocator.getRegisteredUserDAO().updateRegisteredUser(r_new);
-                    return true;
-                } catch (Neo4jException e) {
-                    //logger errore neo4j
-                    return false;
-                }
-            }
-            return false;
+            return DAOLocator.getUserDAO().updateRegisteredUser(r_new,r_old);
+
         }else
             return false;
 
