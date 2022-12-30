@@ -58,7 +58,7 @@ public class UpdateProfileServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("user?username="+newInfo.getUsername());
             requestDispatcher.forward(req, resp);
         }else{
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("user?username=\"+newInfo.getUsername()");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("user?username="+newInfo.getUsername());
             requestDispatcher.forward(req, resp);
         }
     }

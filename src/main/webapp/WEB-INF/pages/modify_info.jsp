@@ -89,7 +89,7 @@
                             <!-- Form Group (birthday)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputBirthday">Birthdate</label>
-                                <input   class="form-control" id="inputBirthday" type="date" name="birthday" value=<%=user.getBirthday()%>>
+                                <input   class="form-control" id="inputBirthday" type="date" name="birthDate" value=<%=user.getBirthday()%>>
                             </div>
                         </div>
                         <!-- Save changes button-->
