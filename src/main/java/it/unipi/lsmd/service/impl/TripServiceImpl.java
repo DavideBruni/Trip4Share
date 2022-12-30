@@ -281,6 +281,9 @@ public class TripServiceImpl implements TripService {
     @Override
     public boolean addTrip(TripDetailsDTO tripDetailsDTO){
         Trip t = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
+        if(t.getDepartureDate().isAfter(LocalDate.now()) || t.getDepartureDate().isAfter(t.getReturnDate())){
+            return false;
+        }
         String id = tripDetailsDAO.addTrip(t);
         if(id!=null){
             t.setId(id);
@@ -422,5 +425,24 @@ public class TripServiceImpl implements TripService {
         }else{
             return "Error";
         }
+    }
+
+    @Override
+    public String getJoinStatus(String trip_id, String username) {
+        if(trip_id!=null && username!=null) {
+            Trip t = new Trip();
+            t.setId(trip_id);
+            try {
+                Status status = tripDAO.getJoinStatus(t, new RegisteredUser(username));
+                try {
+                    return status.name();
+                } catch (NullPointerException ne) {
+                    return null;
+                }
+            }catch (Neo4jException neo4jException){
+                return null;
+            }
+        }
+        return null;
     }
 }

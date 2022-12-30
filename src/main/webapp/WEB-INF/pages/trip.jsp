@@ -164,16 +164,26 @@
         %>
 
         <div class="row">
+            <% String username = ((AuthenticatedUserDTO)session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername();
+                if(username.equals(trip.getOrganizer())){
+            %>
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
-            <!--Only if organizer is the same of the authenticated user-->
-            <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Send Join Request</a>
+            <% }%>
         </div>
         <div class="row" id="join_div">
+            <% String status = (String) request.getAttribute(SecurityUtils.STATUS);
+            if(status==null){ %>
             <button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>
+            <% }else{
+                %>
+            <span id="status_span"><%="Join request status: "+status+" "%></span><br>
+            <%
+            if(status!="rejected"){ %>
+            <button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>
+            <% }
+            } %>
         </div>
-        <div class="row" id="join_div">
-            <button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel requst</button>
-        </div>
+
         <%
                 //request to do based on current status
             }
@@ -209,6 +219,7 @@
                     $("#join_div").append('<button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>');
                 }else{
                     $("#cancel_button").remove();
+                    $("#status_span").remove();
                     $("#join_div").append('<button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>');
                 }
             } else {

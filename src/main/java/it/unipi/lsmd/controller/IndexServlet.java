@@ -12,7 +12,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("")
+@WebServlet(name="IndexServlet", urlPatterns={"", "/index"})
 public class IndexServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();

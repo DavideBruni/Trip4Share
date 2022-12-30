@@ -60,4 +60,6 @@ public interface TripService {
     String setJoin(String username, String trip_id);
 
     String cancelJoin(String username, String trip_id);
+
+    String getJoinStatus(String trip_id, String username);
 }

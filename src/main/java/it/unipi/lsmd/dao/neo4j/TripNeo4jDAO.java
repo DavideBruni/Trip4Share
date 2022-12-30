@@ -290,7 +290,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             });
             if(!b) {    //if b --> relation already exist, we don't want duplicate join
                 session.writeTransaction(tx -> {
-                    tx.run("MATCH (t:Trip{_id:$id})<-[:JOIN]-(r:RegisteredUser{username:$username}) " +
+                    tx.run("MATCH (t:Trip{_id:$id}),(r:RegisteredUser{username:$username}) " +
                             "CREATE (t)<-[j:JOIN {status:\"pending\"}]-(r) " +
                             "RETURN j", parameters("id", t.getId(), "username", r.getUsername())).consume();
                     return null;
@@ -314,4 +314,25 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         }
     }
 
+    @Override
+    public Status getJoinStatus(Trip t, RegisteredUser r) throws Neo4jException {
+        String status;
+        try (Session session = getConnection().session()) {
+             status = session.readTransaction(tx -> {
+                Result res = tx.run("MATCH (t:Trip{_id:$id})<-[j:JOIN]-(r:RegisteredUser{username:$username}) " +
+                        "RETURN j.status", parameters("id", t.getId(), "username", r.getUsername()));
+                if(res.hasNext()){
+                    return res.next().get("j.status").asString();
+                }
+                return null;
+            });
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+        if(status!=null){
+            return Status.valueOf(status);
+        }else{
+            return null;
+        }
+    }
 }

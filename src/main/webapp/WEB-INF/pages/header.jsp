@@ -40,7 +40,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
                     <div class="full">
                         <div class="center-desk">
-                            <div class="logo"> <a href=" "><img src="WebContent/images/logo.png" alt="Logo"></a> </div>
+                            <div class="logo"> <a href="index"><img src="WebContent/images/logo.png" alt="Logo"></a> </div>
                         </div>
                     </div>
                 </div>

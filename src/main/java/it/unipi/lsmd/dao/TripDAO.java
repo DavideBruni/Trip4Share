@@ -34,4 +34,6 @@ public interface TripDAO {
     void createJoin(Trip t, RegisteredUser r) throws Neo4jException;
 
     void cancelJoin(Trip t, RegisteredUser r) throws Neo4jException;
+
+    Status getJoinStatus(Trip t, RegisteredUser registeredUser) throws Neo4jException;
 }
