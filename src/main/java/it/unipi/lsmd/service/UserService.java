@@ -29,6 +29,8 @@ public interface UserService {
     boolean isFriend(String user_1, String user_2);
 
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
+
+    List<ReviewDTO> getReviews(String username, int limit, int page);
     double getRating(String username);
 
     boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser);

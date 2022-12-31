@@ -10,13 +10,17 @@ import it.unipi.lsmd.dao.UserDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.utils.PagesUtilis;
+import it.unipi.lsmd.utils.ReviewUtils;
 import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
+import javax.swing.event.DocumentEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +48,6 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         Bson query = and(eq("username", username), eq("password", password));
         Bson projection = fields(exclude("email", "password"), slice("reviews", 0, PagesUtilis.REVIEWS_IN_USER_PROFILE));
         Document result = collection.find(query).projection(projection).first();
-
         try{
             user = UserUtils.userFromDocument(result);
         }catch (NullPointerException e){
@@ -86,6 +89,22 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             searchRes.add(u);
         }
         return searchRes;
+    }
+
+    @Override
+    public List<Review> getReviews(String username, int limit, int page) {
+        Bson query = and(eq("username", username));
+        Bson projection = fields(include("reviews"), excludeId(), slice("reviews", (page - 1)*(limit - 1), limit)); // TODO - non funziona
+
+        List<Review> reviews = new ArrayList<Review>();
+        Document document = collection.find(query).projection(projection).first();
+
+        for(Object review : document.get("reviews", ArrayList.class)){
+            Document d = (Document) review;
+            reviews.add(ReviewUtils.reviewFromDocument(d));
+        }
+
+        return reviews;
     }
 
     @Override

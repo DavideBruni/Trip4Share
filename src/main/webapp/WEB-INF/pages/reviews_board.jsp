@@ -74,22 +74,15 @@
 
                                 <div class="blog-meta big-meta">
                                     <h4><%=reviews.get(i).getRating() + "/5\t\t " + reviews.get(i).getTitle()%></h4>
-                                    <p><%=reviews.get(i).getTitle()%></p>
+                                    <p><%=reviews.get(i).getText()%></p>
                                     <small><%=reviews.get(i).getDate()%></small>
                                     <small><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></small>
                                 </div><!-- end meta -->
                                 <%
                                         }
-                                    }else{
-                                %>
-                                        No reviews for this user
-                                <%
-                                    }
                                 %>
                             </div><!-- end blog-box -->
                         </div><!-- end col -->
-
-
 
 
 
@@ -105,36 +98,55 @@
                     <div class="col-md-12">
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-start">
-                                <li class="page-item"><a class="page-link" href="home">Previous</a></li>
 
                                 <%
+                                    int page_index = (int) request.getAttribute(SecurityUtils.PAGE);
+                                    String new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
                                     String url = request.getQueryString();
-                                    String[] partial_url = url.split("&");
-                                    Integer page_index = (Integer) request.getAttribute(SecurityUtils.PAGE);                                    String new_url = "user?";
-                                    int n = (int) Math.ceil((double) reviews.size() / PagesUtilis.OBJECT_PER_PAGE_SEARCH);
 
-                                    for(int i = 0; i < partial_url.length - 1; i++)
-                                        new_url = new_url + partial_url[i] + "&";
+                                    if(url != null)
+                                        new_url = new_url + url;
 
+                                    if(!new_url.endsWith("page="+page_index)){
+                                        if(url != null){
+                                            new_url = new_url + "&page=";
+                                        }else{
+                                            new_url = new_url + "page=";
+                                        }
+                                    }else{
+                                        int index = new_url.indexOf("page=");
+                                        new_url = new_url.substring(0, index) + "page=";
+                                    }
+
+                                %>
+
+                                <%
                                     if(page_index != 1){
-                                        new_url = new_url + (page_index - 1);
                                 %>
-                                        <li class="page-item"><a class="page-link" href=<%=new_url%>>Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index - 1)%>>Previous</a></li>
                                 <%
                                     }
 
-                                    if(page_index < n){
-                                        new_url = new_url + (page_index + 1);
+                                    if(reviews.size() > PagesUtilis.TRIPS_PER_PAGE){
                                 %>
-                                <li class="page-item"><a class="page-link" href=<%=new_url%>>Next</a></li>
+                                <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index + 1)%>>Next</a></li>
                                 <%
                                     }
                                 %>
+
                             </ul>
                         </nav>
                     </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end col -->
+            <%
+                }else{
+            %>
+                No Reviews Found!
+            <%
+                }
+            %>
+
 
 
 

@@ -7,8 +7,10 @@ import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.service.UserService;
+import it.unipi.lsmd.utils.ReviewUtils;
 import it.unipi.lsmd.utils.UserUtils;
 
 import java.util.ArrayList;
@@ -138,6 +140,15 @@ public class UserServiceImpl implements UserService {
         return userDAO.avgRating(username);
     }
 
+    @Override
+    public List<ReviewDTO> getReviews(String username, int limit, int page) {
+        List<Review> reviews_model = userDAO.getReviews(username, limit, page);
+        List<ReviewDTO> reviews = new ArrayList<ReviewDTO>();
+        for(Review review : reviews_model){
+            reviews.add(ReviewUtils.reviewModelToDTO(review));
+        }
+        return reviews;
+    }
 
     private String addRegisteredUser(RegisteredUserDTO u) {
         RegisteredUser r = UserUtils.registeredUserFromDTO(u);
