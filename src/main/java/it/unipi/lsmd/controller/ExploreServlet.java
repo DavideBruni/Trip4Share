@@ -116,7 +116,6 @@ public class ExploreServlet extends HttpServlet {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
         List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        System.out.println(trips);
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
         return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");

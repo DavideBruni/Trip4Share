@@ -140,7 +140,6 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                 return res.hasNext();
 
             });
-            System.out.println(exists);
             if(!exists){
                 session.writeTransaction(tx -> {
                     tx.run("MATCH (u1:RegisteredUser{username: $u1}), (u2:RegisteredUser{username: $u2}) " +
@@ -149,7 +148,6 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                     return null;
                 });
             }else{
-                System.out.println("Else");
                 throw new Exception();
             }
         }catch (Exception e){
