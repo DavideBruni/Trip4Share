@@ -94,6 +94,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void follow(String user_1, String user_2) {
+        try{
+            registeredUserDAO.follow(user_1, user_2);
+        }catch (Exception e){
+            System.out.println("Error during follow");
+        }
+    }
+
+    @Override
+    public void unfollow(String user_1, String user_2) {
+        try{
+            registeredUserDAO.unfollow(user_1, user_2);
+        }catch (Exception e){
+            System.out.println("Error during unfollow");
+        }
+    }
+
+    @Override
+    public boolean isFriend(String user_1, String user_2) {
+        try{
+            return registeredUserDAO.isFriend(user_1, user_2);
+        }catch (Neo4jException e){
+            return false;
+        }
+    }
+
+    @Override
     public List<OtherUserDTO> searchUsers(String username, int limit, int page) {
         // TO-DO
         List<RegisteredUser> users = userDAO.searchUser(username,limit,page);

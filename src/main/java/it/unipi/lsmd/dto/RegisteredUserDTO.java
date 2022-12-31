@@ -20,6 +20,8 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private String bio;
     private double avg_rating;
 
+    private boolean isFriend;
+
     public RegisteredUserDTO(){
         spokenLanguages = new ArrayList<String>();
         reviews = new ArrayList<ReviewDTO>();
@@ -107,5 +109,13 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     public void setN_following(int n_following) {
         this.n_following = n_following;
+    }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(boolean friend) {
+        isFriend = friend;
     }
 }

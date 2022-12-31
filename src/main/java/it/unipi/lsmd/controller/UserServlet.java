@@ -58,6 +58,16 @@ public class UserServlet extends HttpServlet {
         return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");
     }
 
+    private void followUser(String me, String friend){
+        userService.follow(me, friend);
+    }
+
+    private void unfollowUser(String me, String friend){
+        userService.unfollow(me, friend);
+    }
+
+
+
     @Override
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
@@ -72,6 +82,7 @@ public class UserServlet extends HttpServlet {
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
 
+
         // check if user is authenticated
         if (authenticatedUserDTO == null) {
             httpServletResponse.sendRedirect("login");
@@ -80,6 +91,7 @@ public class UserServlet extends HttpServlet {
 
         RequestDispatcher requestDispatcher = null;
 
+        String me = authenticatedUserDTO.getUsername();
         String username = httpServletRequest.getParameter("username");
         httpServletRequest.setAttribute("itsMe", true);
 
@@ -89,6 +101,7 @@ public class UserServlet extends HttpServlet {
         // if it's not user's own profile
         if (!itsMe) {
             authenticatedUserDTO = userService.getUser(username);
+            ((RegisteredUserDTO)authenticatedUserDTO).setFriend(userService.isFriend(me, username));
             httpServletRequest.setAttribute("itsMe", false);
         }
 
@@ -99,6 +112,7 @@ public class UserServlet extends HttpServlet {
         ((RegisteredUserDTO) authenticatedUserDTO).setAvg_rating(userService.getRating(authenticatedUserDTO.getUsername()));
 
         String show = httpServletRequest.getParameter("show");
+        String action = httpServletRequest.getParameter("action");
         int page;
         try {
             page = Integer.parseInt(httpServletRequest.getParameter("page"));
@@ -116,6 +130,13 @@ public class UserServlet extends HttpServlet {
         } else if (show != null && show.equals("following")) {
             requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
         } else {
+
+            if(!itsMe && action != null && action.equals("follow")){
+                followUser(me, username);
+            }else if(!itsMe && action != null && action.equals("unfollow")){
+                unfollowUser(me, username);
+            }
+
             httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
         }

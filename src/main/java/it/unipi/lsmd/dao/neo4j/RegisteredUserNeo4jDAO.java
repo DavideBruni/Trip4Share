@@ -130,6 +130,78 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
+    public void follow(String user_1, String user_2) throws Neo4jException {
+
+        try (Session session = getConnection().session()) {
+            Boolean exists = session.readTransaction(tx->{
+                Result res = tx.run("MATCH (u1:RegisteredUser {username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
+                                    "RETURN f",
+                        parameters("u1", user_1, "u2", user_2));
+                return res.hasNext();
+
+            });
+            System.out.println(exists);
+            if(!exists){
+                session.writeTransaction(tx -> {
+                    tx.run("MATCH (u1:RegisteredUser{username: $u1}), (u2:RegisteredUser{username: $u2}) " +
+                                    "CREATE (u1)-[:FOLLOW]->(u2)",
+                            parameters("u1", user_1, "u2", user_2));
+                    return null;
+                });
+            }else{
+                System.out.println("Else");
+                throw new Exception();
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            throw new Neo4jException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void unfollow(String user_1, String user_2) throws Neo4jException {
+
+        try (Session session = getConnection().session()) {
+            Boolean exists = session.readTransaction(tx->{
+                Result res = tx.run("MATCH (u1:RegisteredUser {username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
+                                "RETURN f",
+                        parameters("u1", user_1, "u2", user_2));
+                return res.hasNext();
+
+            });
+            if(exists){  //username is new
+                session.writeTransaction(tx -> {
+                    tx.run("MATCH (u1:RegisteredUser{username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
+                                    "DELETE f",
+                            parameters("u1", user_1, "u2", user_2));
+                    return null;
+                });
+            }else{
+                throw new Exception();
+            }
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public boolean isFriend(String user_1, String user_2) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+            Boolean exists = session.readTransaction(tx->{
+                Result res = tx.run("MATCH (u1:RegisteredUser {username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
+                                "RETURN f",
+                        parameters("u1", user_1, "u2", user_2));
+                return res.hasNext();
+
+            });
+            return exists;
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+    }
+
+    @Override
     public void createRegistereduser(RegisteredUser user) throws Neo4jException {
         try (Session session = getConnection().session()) {
              Boolean exists = session.readTransaction(tx->{
