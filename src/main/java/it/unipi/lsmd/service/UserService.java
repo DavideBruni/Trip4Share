@@ -22,6 +22,8 @@ public interface UserService {
     int getFollowersNumber(String username);
 
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
+
+    List<ReviewDTO> getReviews(String username, int limit, int page);
     double getRating(String username);
 
     boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser);

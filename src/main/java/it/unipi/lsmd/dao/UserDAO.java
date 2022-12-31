@@ -1,6 +1,7 @@
 package it.unipi.lsmd.dao;
 
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface UserDAO {
     RegisteredUser getUser(String username);
 
     List<RegisteredUser> searchUser(String username, int limit, int page);
+
+    List<Review> getReviews(String username, int limit, int page);
 
     double avgRating(String username);
 

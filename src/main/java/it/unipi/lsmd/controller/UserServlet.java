@@ -25,11 +25,10 @@ public class UserServlet extends HttpServlet {
     private UserService userService = ServiceLocator.getUserService();
 
 
-    private RequestDispatcher getUserReviews(HttpServletRequest request, List<ReviewDTO> reviews, int page) {
+    private RequestDispatcher getUserReviews(HttpServletRequest request, String username, int page) {
 
-        int start_index = (page - 1) * PagesUtilis.REVIEWS_PER_PAGE;
-        int end_index = start_index + PagesUtilis.REVIEWS_PER_PAGE;
-        request.setAttribute(SecurityUtils.REVIEWS_KEY, reviews.subList(start_index, Math.min(end_index, reviews.size())));
+        List<ReviewDTO> reviews = userService.getReviews(username, PagesUtilis.REVIEWS_PER_PAGE + 1, page);
+        request.setAttribute(SecurityUtils.REVIEWS_KEY, reviews);
         request.setAttribute(SecurityUtils.PAGE, page);
         return request.getRequestDispatcher("/WEB-INF/pages/reviews_board.jsp");
     }
@@ -108,7 +107,7 @@ public class UserServlet extends HttpServlet {
 
         if (show != null && show.equals("reviews")) {
             // TODO - controllare se va bene
-            requestDispatcher = getUserReviews(httpServletRequest, ((RegisteredUserDTO) authenticatedUserDTO).getReviews(), page);
+            requestDispatcher = getUserReviews(httpServletRequest, username, page);
         } else if (show != null && show.equals("organizedTrips")) {
             requestDispatcher = getOrganizedTrips(httpServletRequest, username, page);
         } else if (show != null && show.equals("followers")) {

@@ -17,7 +17,6 @@ public class ReviewUtils {
     public static Review reviewFromDocument(Document result){
 
         Review review = new Review();
-
         review.setAuthor(result.getString("author"));
         review.setTitle(result.getString("title"));
         review.setText(result.getString("text"));
