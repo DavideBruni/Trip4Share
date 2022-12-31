@@ -3,7 +3,8 @@
 <%@ page import="it.unipi.lsmd.dto.ReviewDTO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
-<%@ page import="java.util.Arrays" %><%--
+<%@ page import="java.util.Arrays" %>
+<%@ page import="it.unipi.lsmd.utils.PagesUtilis" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 14/12/2022
@@ -112,8 +113,9 @@
             <div class = "row justify-content-center ">
 
                 <%
-                    for(int i = 0; i < 3 && i < user.getReviews().size(); i++){
-                        ReviewDTO reviewDTO = user.getReviews().get(i);
+                    if(user.getReviews().size() > 0){
+                        for(int i = 0; i < PagesUtilis.REVIEWS_IN_USER_PROFILE && i < user.getReviews().size(); i++){
+                            ReviewDTO reviewDTO = user.getReviews().get(i);
                 %>
                 <div class="card" style="width: 18rem;">
 
@@ -123,7 +125,12 @@
                         <a href=<%="user?username=" + reviewDTO.getAuthor() %>><%= reviewDTO.getAuthor() %></a>
                     </div>
                 </div>
-                <%  }
+                <%      }
+                    }else{
+                %>
+                    No Reviews found!
+                <%
+                    }
                 %>
             </div>
             <hr class="invis3">

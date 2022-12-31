@@ -9,5 +9,6 @@ public interface PagesUtilis {
     int TRIPS_PER_PAGE = 5;
     int USERS_PER_PAGE = 10;
 
+    int REVIEWS_IN_USER_PROFILE = 3;
     enum SEARCH_TYPE{USER, TAGS, PRICE, PERIOD, CHEAP_DEST, DESTINATION}
 }

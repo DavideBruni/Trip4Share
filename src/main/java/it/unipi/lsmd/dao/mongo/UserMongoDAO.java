@@ -11,6 +11,7 @@ import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.User;
+import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -23,8 +24,7 @@ import java.util.List;
 import static com.mongodb.client.model.Accumulators.avg;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Projections.exclude;
-import static com.mongodb.client.model.Projections.include;
+import static com.mongodb.client.model.Projections.*;
 
 public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
@@ -42,7 +42,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
         User user;
         Bson query = and(eq("username", username), eq("password", password));
-        Bson projection = exclude("email", "password");
+        Bson projection = fields(exclude("email", "password"), slice("reviews", 0, PagesUtilis.REVIEWS_IN_USER_PROFILE));
         Document result = collection.find(query).projection(projection).first();
 
         try{
@@ -58,8 +58,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     public RegisteredUser getUser(String username) {
 
         Bson query = eq("username", username);
-        Bson projection = exclude("email", "password");
-
+        Bson projection = fields(exclude("email", "password"), slice("reviews", 0, PagesUtilis.REVIEWS_IN_USER_PROFILE));
         Document result = collection.find(query).projection(projection).first();
         User u = UserUtils.userFromDocument(result);
         if(u instanceof Admin){
