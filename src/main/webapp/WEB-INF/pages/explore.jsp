@@ -42,8 +42,13 @@
 <div class="row">
     <div class="col-3"></div>
     <div class="col-6 text-center">
+
+        <%
+            String aggregation_title = (String) request.getAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE);
+        %>
+
         <div class="titlepage">
-            <h2>AGGREGATION ASSOCIATA</h2>
+            <h2><%=aggregation_title%></h2>
         </div>
 
         <%
@@ -58,6 +63,8 @@
         <div>
             <%
                 String current_value = request.getParameter("value");
+                String search_for = request.getParameter("searchFor");
+                new_url = new_url.replace(search_for, "destination");
                 for(int i = 0; i < suggestions.size() && i < 5; i++ ){
             %>
             <a href=<%=new_url.replace(current_value.replace(" ", "%20"), suggestions.get(i).replace(" ", "%20"))%>>
