@@ -29,13 +29,13 @@ public interface TripService {
 
     List<TripSummaryDTO> getTripsOrganizedByUser(String username, int size, int page);
 
-    List<String> mostPopularDestinations(int page, int objectPerPageSearch);
+    List<String> mostPopularDestinations(int limit);
 
-    List<String> mostPopularDestinationsByTag(String tag, int page, int objectPerPageSearch);
+    List<String> mostPopularDestinationsByTag(String tag, int limit);
 
-    List<String> mostPopularDestinationsByPrice(double start, double end, int page, int objectPerPageSearch);
+    List<String> mostPopularDestinationsByPrice(double start, double end, int limit);
 
-    List<String> mostPopularDestinationsByPeriod(String start, String end, int page, int objectPerPageSearch);
+    List<String> mostPopularDestinationsByPeriod(String start, String end, int limit);
 
     List<PriceDestinationDTO> cheapestDestinationsByAvg(int page, int objectPerPageSearch);
 

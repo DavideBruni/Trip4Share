@@ -202,23 +202,23 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<String> mostPopularDestinations(int page, int objectPerPageSearch) {
-        return tripDetailsDAO.mostPopularDestinations(page, objectPerPageSearch);
+    public List<String> mostPopularDestinations(int limit) {
+        return tripDetailsDAO.mostPopularDestinations(limit);
     }
 
     @Override
-    public List<String> mostPopularDestinationsByTag(String tag, int page, int objectPerPageSearch) {
-        List<String> trips= tripDetailsDAO.mostPopularDestinationsByTag(tag,page,objectPerPageSearch );
+    public List<String> mostPopularDestinationsByTag(String tag, int limit) {
+        List<String> trips= tripDetailsDAO.mostPopularDestinationsByTag(tag, limit);
         return trips;
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPrice(double start, double end, int page, int objectPerPageSearch) {
-        return tripDetailsDAO.mostPopularDestinationsByPrice(start, end,page,objectPerPageSearch);
+    public List<String> mostPopularDestinationsByPrice(double start, double end, int limit) {
+        return tripDetailsDAO.mostPopularDestinationsByPrice(start, end, limit);
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPeriod(String start, String end, int page, int objectPerPageSearch) {
+    public List<String> mostPopularDestinationsByPeriod(String start, String end, int limit) {
         Date depDate = null;
         Date retDate = null;
         try {
@@ -229,7 +229,7 @@ public class TripServiceImpl implements TripService {
         } catch (ParseException e) {
             depDate = new Date();
         }
-        return tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate,page,objectPerPageSearch);
+        return tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate, limit);
     }
 
     @Override

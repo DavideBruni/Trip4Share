@@ -27,6 +27,7 @@ public class ExploreServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        /*
         // TODO - handle nullPointerException when do getParameter and other possible exceptions
         if(!SessionUtils.userIsLogged(request)){
             response.sendRedirect("/WEB-INF/pages/home.jsp");
@@ -67,44 +68,25 @@ public class ExploreServlet extends HttpServlet {
             }// no parameters, show  trip sort by likes
             requestDispatcher.forward(request, response);
         }
+         */
 
     }
 
+    // TODO - che farne?
     private RequestDispatcher cheapestDestinations(HttpServletRequest request, String start, String end, int page) {
         List<TripSummaryDTO> trips = tripService.cheapestTripForDestinationInPeriod(start,end,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
         request.setAttribute("trips", trips);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
+    // TODO - che farne?
     private RequestDispatcher cheapestDestinationsByAvg(HttpServletRequest request, int page) {
         List<PriceDestinationDTO> destinations = tripService.cheapestDestinationsByAvg(page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
         request.setAttribute("dest&price", destinations);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
-    private RequestDispatcher mostPopularByPeriod(HttpServletRequest request, String start, String end, int page) {
-        List<String> destinations = tripService.mostPopularDestinationsByPeriod(start, end ,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", destinations);
-        return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
-    }
 
-    private RequestDispatcher mostPopularByPrice(HttpServletRequest request, double start, double end, int page) {
-        List<String> destinations = tripService.mostPopularDestinationsByPrice(start, end ,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", destinations);
-        return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
-    }
-
-    private RequestDispatcher mostPopularByTag(HttpServletRequest request, String tag, int page) {
-        List<String> destinations = tripService.mostPopularDestinationsByTag(tag,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", destinations);
-        return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
-    }
-
-    private RequestDispatcher mostPopularDestinations(HttpServletRequest request, int page) {
-        List<String> destinations = tripService.mostPopularDestinations(page,PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("destinations", destinations);
-        return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
-    }
 
     private RequestDispatcher searchUser(HttpServletRequest request, String value, int page) {
         List<OtherUserDTO> users = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
@@ -116,12 +98,21 @@ public class ExploreServlet extends HttpServlet {
     private RequestDispatcher searchDestination(HttpServletRequest request, String value, int page) {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
+        List<String> destinations;
+        String title;
 
         List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        List<String> destinations = tripService.mostPopularDestinations(page,PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        System.out.println("qui " + departure_date);
+        if(departure_date != null && return_date != null && !departure_date.equals("") && !return_date.equals("")){
+            destinations = tripService.mostPopularDestinationsByPeriod(departure_date, return_date, PagesUtilis.SUGGESTIONS_EXPLORE);
+            title = "TOP " + PagesUtilis.SUGGESTIONS_EXPLORE + " Destinations (on that period)";
+        }else{
+            destinations = tripService.mostPopularDestinations(PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+            title = "TOP " + PagesUtilis.SUGGESTIONS_EXPLORE + " Destinations";
+        }
 
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
-        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, title);
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
         return request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
@@ -131,7 +122,7 @@ public class ExploreServlet extends HttpServlet {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
         List<TripSummaryDTO> trips = tripService.getTripsByTag(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        List<String> destinations = tripService.mostPopularDestinationsByTag(value, page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        List<String> destinations = tripService.mostPopularDestinationsByTag(value, PagesUtilis.SUGGESTIONS_EXPLORE);
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
@@ -150,8 +141,7 @@ public class ExploreServlet extends HttpServlet {
             max = 0;
         }
         List<TripSummaryDTO> trips = tripService.getTripsByPrice(min, max, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        // TODO - la query non funziona
-        List<String> destinations = tripService.mostPopularDestinationsByPrice(min, max, page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        List<String> destinations = tripService.mostPopularDestinationsByPrice(min, max, PagesUtilis.SUGGESTIONS_EXPLORE);
         System.out.println(destinations);
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");

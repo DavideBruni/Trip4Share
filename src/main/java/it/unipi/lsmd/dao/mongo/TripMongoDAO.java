@@ -149,23 +149,19 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<String> mostPopularDestinations(int page, int objectPerPageSearch) {
+    public List<String> mostPopularDestinations(int limit) {
 
         // aggregate([{$group : {"_id":"$destination" total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
-        Bson g1 = group("$destination",sum("total_like","$like"));
+        Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(objectPerPageSearch);
-        AggregateIterable<Document> res;
-        if (page != 1) {
-            Bson sk1 = skip((page - 1) * objectPerPageSearch);
-            res = collection.aggregate(Arrays.asList(g1, s1, sk1, l1));
-        } else {
-            res = collection.aggregate(Arrays.asList(g1, s1, l1));
-        }
+        Bson l1 = limit(limit);
+        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
+
         List<String> dest = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
         while (it.hasNext()) {
             Document doc = it.next();
+            System.out.println(doc);
             String d = doc.getString("_id");
             dest.add(d);
         }
@@ -173,22 +169,16 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<String> mostPopularDestinationsByTag(String tag, int page, int objectPerPageSearch) {
+    public List<String> mostPopularDestinationsByTag(String tag, int limit) {
 
 
         // aggregate([{$match : { tags : {$eq : ... }}}, {$group : {"_id":"$destination",
         // total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson m1 = match(eq("tags",tag));
-        Bson g1 = group("$destination",sum("total_like","$like"));
+        Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(objectPerPageSearch);
-        AggregateIterable<Document> res;
-        if (page != 1) {
-            Bson sk1 = skip((page - 1) * objectPerPageSearch);
-            res = collection.aggregate(Arrays.asList(m1, g1, s1, sk1, l1));
-        } else {
-            res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
-        }
+        Bson l1 = limit(limit);
+        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<String> dest = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
@@ -201,7 +191,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPrice(double start, double end, int page, int objectPerPageSearch) {
+    public List<String> mostPopularDestinationsByPrice(double start, double end, int limit) {
 
         Bson m1;
         if(end > 0){
@@ -210,16 +200,10 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             m1 =  match(gte("price",start));
         }
 
-        Bson g1 = group("$destination",sum("total_like","$like"));
+        Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(objectPerPageSearch);
-        AggregateIterable<Document> res;
-        if (page != 1) {
-            Bson sk1 = skip((page - 1) * objectPerPageSearch);
-            res = collection.aggregate(Arrays.asList(m1, g1, s1, sk1, l1));
-        } else {
-            res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
-        }
+        Bson l1 = limit(limit);
+        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<String> destinations = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
@@ -232,19 +216,14 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPeriod(Date depDate, Date retDate, int page, int objectPerPageSearch) {
+    public List<String> mostPopularDestinationsByPeriod(Date depDate, Date retDate, int limit) {
 
         Bson m1 = match(and(gte("departureDate",depDate),lte("returnDate",retDate)));
-        Bson g1 = group("$destination",sum("total_like","$like"));
+        Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(objectPerPageSearch);
+        Bson l1 = limit(limit);
         AggregateIterable<Document> res;
-        if (page != 1) {
-            Bson sk1 = skip((page - 1) * objectPerPageSearch);
-            res = collection.aggregate(Arrays.asList(m1, g1, s1, sk1, l1));
-        } else {
-            res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
-        }
+        res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<String> destinations = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
