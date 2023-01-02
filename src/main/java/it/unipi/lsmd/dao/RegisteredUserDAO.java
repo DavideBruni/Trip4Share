@@ -23,8 +23,5 @@ public interface RegisteredUserDAO {
 
     void createRegistereduser(RegisteredUser user) throws Neo4jException;
 
-    void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException;
-
-    void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException;
-
+    void deleteUser(RegisteredUser u) throws Neo4jException;
 }

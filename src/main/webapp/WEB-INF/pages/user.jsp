@@ -58,7 +58,7 @@
                         <div class="row justify-content-center">
                             <a href="updateProfile" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Edit Profile</a>
                             <a href="javascript:void(0)" class="m-t-10 ml-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Create new trip</a>
-                            <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Delete your trip</a>
+                            <a class="text-right btn btn-primary bottone" href="deleteProfile" >Delete your profile</a>
                         </div>
                         <%}%>
 

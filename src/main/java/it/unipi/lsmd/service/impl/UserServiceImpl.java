@@ -198,4 +198,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean deleteUser(String username) {
+        RegisteredUser user = new RegisteredUser(username);
+        if(userDAO.deleteUser(user)){
+            try{
+                registeredUserDAO.deleteUser(user);
+                return true;
+            }catch (Neo4jException ne){
+                return false;
+            }
+        }
+        return false;
+
+
+    }
 }

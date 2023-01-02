@@ -168,8 +168,8 @@
                 if(username.equals(trip.getOrganizer())){
             %>
             <div class="row">
-            <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
-            <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Delete your trip</a>
+            <a class="text-right btn btn-primary bottone" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
+            <a class="text-right btn btn-primary bottone" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
             </div>
             <% }%>
         </div>

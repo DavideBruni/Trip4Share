@@ -56,7 +56,6 @@
                      <% for(TripSummaryDTO t : suggestedTrips){ %>
                      <div class="col-2">
                         <div class="traveling-box">
-                           <!--<i><img src="<%=t.getImgUrl()%>" alt="icon"/></i>-->
                             <i><img src="WebContent/icon/travel-icon.png" alt="icon" width="40%"/></i>
                             <h5>
                                 <strong>
@@ -167,7 +166,7 @@
                <% for(OtherUserDTO u : users){ %>
                        <div class="w-100 justify-content-between">
                             <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >
-                           <a href=<%="user?username="+u.getUsername()%>> class="list-group-item list-group-item-action flex-column align-items-start">
+                           <a href=<%="user?username="+u.getUsername()%> class="list-group-item list-group-item-action flex-column align-items-start">
                            <h5 class="mb-1"><%=u.getUsername()%></h5>
                            </a>
                         </div>

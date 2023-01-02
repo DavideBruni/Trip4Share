@@ -302,12 +302,11 @@ public class TripServiceImpl implements TripService {
         return false;
     }
 
-    // change Parameter to DTO
     @Override
-    public boolean deleteTrip(TripDetailsDTO t) {
-        if (LocalDate.now().isBefore(t.getDepartureDate())) {
+    public boolean deleteTrip(String id) {
+        Trip trip = tripDetailsDAO.getTrip(id);
+        if(trip!= null && LocalDate.now().isBefore(trip.getDepartureDate())){
             try {
-                Trip trip = TripUtils.tripModelFromTripDetailsDTO(t);
                 tripDAO.deleteTrip(trip);
                 if (tripDetailsDAO.deleteTrip(trip)) {
                     return true;

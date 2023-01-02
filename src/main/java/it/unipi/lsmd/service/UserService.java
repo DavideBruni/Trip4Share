@@ -33,4 +33,6 @@ public interface UserService {
     boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser);
 
     String signup(AuthenticatedUserDTO user);
+
+    boolean deleteUser(String username);
 }

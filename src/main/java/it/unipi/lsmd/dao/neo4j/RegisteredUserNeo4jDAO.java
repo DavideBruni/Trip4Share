@@ -222,11 +222,11 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         }
     }
 
-    @Override
-    public void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException {
+
+    private void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException {
         try (Session session = getConnection().session()) {
             session.writeTransaction(tx -> {
-                    tx.run("MATCH (x:RegisteredUser {username: $username}) -[f1:FOLLOW]->(), (x)<-[f2:FOLLOW]-()" +
+                    tx.run("MATCH (x:RegisteredUser {username: $username}) -[f1:FOLLOW]->(), (x)<-[f2:FOLLOW]-() " +
                                     "DELETE f1,f2",
                             parameters("username", user.getUsername())).consume();
                     return null;
@@ -237,18 +237,22 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         }
     }
 
-    @Override
-    public void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException {
+
+    private void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException {
         try (Session session = getConnection().session()) {
-            Result r =session.readTransaction(tx -> {
-                Result x = tx.run("MATCH (x:RegisteredUser {username: $username})<-[:ORGANIZED_BY]-(t:Trip)" +
-                                "WHERE t.departureDate > date() return t.id",
+            List<String> ids =session.readTransaction(tx -> {
+                Result r = tx.run("MATCH (x:RegisteredUser {username: $username})<-[:ORGANIZED_BY]-(t:Trip) " +
+                                "WHERE t.departureDate > date() return t._id",
                         parameters("username",user.getUsername()));
-                return x;
+                List<String> results = new ArrayList<>();
+                while(r.hasNext()){
+                    results.add(String.valueOf(r.next().get("t._id")));
+                }
+                return results;
             });
-            while(r.hasNext()){
+            for(String id : ids){
                 Trip t= new Trip();
-                t.setId(String.valueOf(r.next().get("t.id")));
+                t.setId(id);
                 DAOLocator.getTripDAO().deleteTrip(t);
             }
         }catch (Exception e){
@@ -256,4 +260,9 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         }
     }
 
+    @Override
+    public void deleteUser(RegisteredUser u) throws Neo4jException {
+        deleteAllFollowingRelationshipRegisteredUser(u);
+        deleteAllFutureOrganizedTrip(u);
+    }
 }

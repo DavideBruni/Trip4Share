@@ -45,7 +45,7 @@ public interface TripService {
     // change Parameter to DTO
     boolean addTrip(TripDetailsDTO tripDetailsDTO);
 
-    boolean deleteTrip(TripDetailsDTO t);
+    boolean deleteTrip(String id);
 
     boolean updateTrip(TripDetailsDTO newTrip, TripDetailsDTO oldTrip);
 
