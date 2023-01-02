@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao;
 
+import it.unipi.lsmd.dto.ReviewDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
@@ -28,4 +29,6 @@ public interface UserDAO {
     boolean updateRegisteredUser(RegisteredUser new_user, RegisteredUser old_user);
 
     boolean putReview(Review review, RegisteredUser to);
+
+    boolean deleteReview(Review review, RegisteredUser r);
 }

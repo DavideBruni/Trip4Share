@@ -219,4 +219,16 @@ public class UserServiceImpl implements UserService {
         RegisteredUser r = new RegisteredUser(to.getUsername());
         return userDAO.putReview(review,r);
     }
+
+    @Override
+    public boolean updateReview(ReviewDTO review, OtherUserDTO toDTO) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteReview(ReviewDTO review, OtherUserDTO to) {
+        Review r = UserUtils.reviewFromDTO(review);
+        RegisteredUser registeredUser = new RegisteredUser(to.getUsername());
+        return userDAO.deleteReview(r,registeredUser);
+    }
 }
