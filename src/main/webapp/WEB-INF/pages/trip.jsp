@@ -167,7 +167,10 @@
             <% String username = ((AuthenticatedUserDTO)session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername();
                 if(username.equals(trip.getOrganizer())){
             %>
+            <div class="row">
             <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Modify your trip</a>
+            <a class="text-right btn btn-primary bottone" href="modify_trip.html" >Delete your trip</a>
+            </div>
             <% }%>
         </div>
         <div class="row" id="join_div">

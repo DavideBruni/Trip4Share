@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao.mongo;
 
+import com.google.gson.Gson;
 import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
@@ -9,6 +10,7 @@ import com.mongodb.client.model.Updates;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.dto.TripDetailsDTO;
+import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.utils.TripUtils;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
@@ -319,6 +321,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         try{
             Document q1 = new Document().append("_id", new ObjectId(newTrip.getId()));
             Bson q2 = attributeToUpdate(newTrip, oldTrip);
+            //problema: DailySchedule
             collection.updateOne(q1, q2);
             return true;
         }catch(Exception e){
@@ -326,10 +329,11 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         }
     }
 
-    private Bson attributeToUpdate(Trip newTrip, Trip oldTrip) {
+    private Bson attributeToUpdate(Trip newTrip, Trip oldTrip) throws IncompleteTripException {
         List<Bson> query = new ArrayList<>();
-        if(!newTrip.getItinerary().equals(oldTrip.getItinerary()))
-           query.add(Updates.set("itinerary",newTrip.getItinerary()));
+        if(!newTrip.getItinerary().equals(oldTrip.getItinerary())) {
+            query.add(Updates.set("itinerary",TripUtils.documentsFromItinerary(newTrip.getItinerary())));
+        }
         if(!newTrip.getTags().equals(oldTrip.getTags()))
             query.add(Updates.set("tags",newTrip.getTags()));
         if(!newTrip.getWhatsNotIncluded().equals(oldTrip.getWhatsNotIncluded()))
@@ -350,7 +354,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             query.add(Updates.set("departureDate",newTrip.getDepartureDate()));
         if(newTrip.getReturnDate()!= oldTrip.getReturnDate())
             query.add(Updates.set("returnDate",newTrip.getReturnDate()));
-        query.add(Updates.set("imgUrl",newTrip.getImg()));
         return Updates.combine(query);
     }
 
