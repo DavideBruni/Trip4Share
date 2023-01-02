@@ -218,16 +218,15 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPeriod(String start, String end, int limit) {
-        Date depDate = null;
-        Date retDate = null;
-        try {
-            depDate =new SimpleDateFormat("dd-MM-yyyy").parse(start);
-            try{
-                retDate = new SimpleDateFormat("dd-MM-yyyy").parse(end);
-            }catch (ParseException ex){ }
-        } catch (ParseException e) {
-            depDate = new Date();
+    public List<String> mostPopularDestinationsByPeriod(String departureDate, String returnDate, int limit) {
+        LocalDate depDate;
+        LocalDate retDate = null;
+        try{
+            depDate = LocalDate.parse(departureDate);
+            retDate = LocalDate.parse(returnDate);
+        }catch (DateTimeParseException e){
+            System.out.println("No date available");
+            return tripDetailsDAO.mostPopularDestinations(limit);
         }
         return tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate, limit);
     }
@@ -248,17 +247,19 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public  List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch) {
-        Date depDate = null;
-        Date retDate = null;
-        try {
-            depDate =new SimpleDateFormat("dd-MM-yyyy").parse(start);
-            try{
-                retDate = new SimpleDateFormat("dd-MM-yyyy").parse(end);
-            }catch (ParseException ex){ }
-        } catch (Exception e) {
-            depDate = new Date();
+        LocalDate depDate;
+        LocalDate retDate = null;
+
+        try{
+            depDate = LocalDate.parse(start);
+            retDate = LocalDate.parse(end);
+        }catch (DateTimeParseException e){
+            System.out.println("No date available");
+            // TODO - gestirla in qualche modo?
+            return null;
         }
-        List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,page, objectPerPageSearch);
+
+        List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate, retDate, page, objectPerPageSearch);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);

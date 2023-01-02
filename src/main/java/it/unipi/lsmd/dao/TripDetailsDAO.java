@@ -24,11 +24,11 @@ public interface TripDetailsDAO {
 
     List<String> mostPopularDestinationsByPrice(double start, double end, int limit);
 
-    List<String> mostPopularDestinationsByPeriod(Date depDate, Date retDate, int limit);
+    List<String> mostPopularDestinationsByPeriod(LocalDate depDate, LocalDate retDate, int limit);
 
     List<Trip> cheapestDestinationsByAvg(int page, int objectPerPageSearch);
 
-    List<Trip> cheapestTripForDestinationInPeriod(Date start, Date end, int page, int objectPerPageSearch);
+    List<Trip> cheapestTripForDestinationInPeriod(LocalDate start, LocalDate end, int page, int objectPerPageSearch);
 
     String addTrip(Trip t);
 

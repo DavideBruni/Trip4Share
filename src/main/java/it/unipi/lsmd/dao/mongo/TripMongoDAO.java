@@ -216,7 +216,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPeriod(Date depDate, Date retDate, int limit) {
+    public List<String> mostPopularDestinationsByPeriod(LocalDate depDate, LocalDate retDate, int limit) {
 
         Bson m1 = match(and(gte("departureDate",depDate),lte("returnDate",retDate)));
         Bson g1 = group("$destination",sum("total_like","$likes"));
@@ -226,11 +226,13 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<String> destinations = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            String s = doc.getString("_id");
-            destinations.add(s);
+        try(MongoCursor<Document> it = res.iterator()){
+            while (it.hasNext()) {
+                Document doc = it.next();
+                System.out.println(doc);
+                String s = doc.getString("_id");
+                destinations.add(s);
+            }
         }
         return destinations;
     }
@@ -259,9 +261,9 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<Trip> cheapestTripForDestinationInPeriod(Date start, Date end,int page, int objectPerPageSearch) {
+    public List<Trip> cheapestTripForDestinationInPeriod(LocalDate start, LocalDate end,int page, int objectPerPageSearch) {
 
-// db.trips.aggregate([{$match : {$and : {"departureDate" : {$gte : new Date()}},{"returnDate" : {$lte : new Date('2024-12-12')}}} }},{ $sort: { price : 1 } }, { $group: { _id: "$destination", doc_with_max_ver: { $first: "$$ROOT" } } },{ $replaceWith: "$doc_with_max_ver" }
+        // db.trips.aggregate([{$match : {$and : {"departureDate" : {$gte : new Date()}},{"returnDate" : {$lte : new Date('2024-12-12')}}} }},{ $sort: { price : 1 } }, { $group: { _id: "$destination", doc_with_max_ver: { $first: "$$ROOT" } } },{ $replaceWith: "$doc_with_max_ver" }
         Bson m1;
         if(end != null)
             m1  = match(and(gte("departureDate",start),lte("returnDate",end)));
