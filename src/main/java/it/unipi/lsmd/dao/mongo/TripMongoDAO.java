@@ -62,6 +62,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     public List<Trip> getTripsByTag(String tag, LocalDate departureDate, LocalDate returnDate, int size, int page) {
 
+        System.out.println(tag);
         Bson m1;
         if (returnDate == null) {
             m1 = match(and(in("tags", tag), gte("departureDate", departureDate)));
@@ -202,9 +203,13 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     @Override
     public List<String> mostPopularDestinationsByPrice(double start, double end, int page, int objectPerPageSearch) {
 
+        Bson m1;
+        if(end > 0){
+            m1 =  match(and(gte("price",start),lte("price",end)));
+        }else{
+            m1 =  match(gte("price",start));
+        }
 
-
-        Bson m1 = match(and(gte("price",start),lte("price",end)));
         Bson g1 = group("$destination",sum("total_like","$like"));
         Bson s1 = sort(descending("total_like"));
         Bson l1 = limit(objectPerPageSearch);

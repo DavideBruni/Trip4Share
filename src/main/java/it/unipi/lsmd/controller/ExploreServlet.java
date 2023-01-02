@@ -105,6 +105,7 @@ public class ExploreServlet extends HttpServlet {
         request.setAttribute("destinations", destinations);
         return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
+
     private RequestDispatcher searchUser(HttpServletRequest request, String value, int page) {
         List<OtherUserDTO> users = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute(SecurityUtils.USER_RESULTS, users);
@@ -115,22 +116,30 @@ public class ExploreServlet extends HttpServlet {
     private RequestDispatcher searchDestination(HttpServletRequest request, String value, int page) {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
+
         List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
+        List<String> destinations = tripService.mostPopularDestinations(page,PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
-        return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
+        return request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
     private RequestDispatcher searchTags(HttpServletRequest request, String value, int page) {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
         List<TripSummaryDTO> trips = tripService.getTripsByTag(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
+        List<String> destinations = tripService.mostPopularDestinationsByTag(value, page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
-        return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
+        return request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
-    private RequestDispatcher searchPrice(HttpServletRequest request, String min_price, String max_price, int page) {
+    private RequestDispatcher searchTripsByPrice(HttpServletRequest request, String min_price, String max_price, int page) {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
         int min = Integer.parseInt(min_price);
@@ -141,9 +150,14 @@ public class ExploreServlet extends HttpServlet {
             max = 0;
         }
         List<TripSummaryDTO> trips = tripService.getTripsByPrice(min, max, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
+        // TODO - la query non funziona
+        List<String> destinations = tripService.mostPopularDestinationsByPrice(min, max, page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+        System.out.println(destinations);
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + min + " - " + max + "€");
-        return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
+        return request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
 
 
@@ -174,7 +188,7 @@ public class ExploreServlet extends HttpServlet {
             requestDispatcher = searchUser(httpServletRequest, value, page);
         }else if(searchFor != null && searchFor.equals("price")){
             String max_value = httpServletRequest.getParameter("max_value");
-            requestDispatcher = searchPrice(httpServletRequest, value, max_value, page);
+            requestDispatcher = searchTripsByPrice(httpServletRequest, value, max_value, page);
         }else if(searchFor != null && searchFor.equals("tags")){
             requestDispatcher = searchTags(httpServletRequest, value, page);
         }else{
@@ -185,6 +199,7 @@ public class ExploreServlet extends HttpServlet {
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 
+    // TODO - eliminarlo
     @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         System.out.println("qui");

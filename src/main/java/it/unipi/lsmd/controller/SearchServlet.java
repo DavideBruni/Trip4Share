@@ -75,6 +75,7 @@ public class SearchServlet extends HttpServlet {
         String destination = httpServletRequest.getParameter("destination");
         String username = httpServletRequest.getParameter("username");
         String min_price = httpServletRequest.getParameter("min_price");
+        String tag = httpServletRequest.getParameter("tag");
         if(username != null){
             url = url + "searchFor=user&value=" + username;
         }else if(destination != null){
@@ -82,6 +83,8 @@ public class SearchServlet extends HttpServlet {
         }else if(min_price != null){
             url = url + "searchFor=price&value=" + min_price;
             url = url + "&max_value=" + httpServletRequest.getParameter("max_price");
+        }else if(tag != null){
+            url = url + "searchFor=tags&value=" + tag;
         }
 
         if(username == null){
