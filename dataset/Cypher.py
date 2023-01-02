@@ -122,14 +122,18 @@ if __name__ == "__main__":
     #ORGANIZER, A SORT OF INFLUENCER
     organizer = users[1:228]
     start = 0
-    end = 6
+    end = 8
     try:
         for user in organizer:
             for i in range(start,end):
                 connection.create_ORGANIZED_BY(data[i]['_id']['$oid'],user['username'])
                 print(user['username']," - ORGANIZES ->",data[i]['_id']['$oid'])
-            start = end + 1
-            end = end + 6
+            start = end
+            end = end + 8
+        while(i<1874):
+            connection.create_ORGANIZED_BY(data[i]['_id']['$oid'], users[i%1135]['username'])
+            print(user['username'], " - ORGANIZES ->", data[i]['_id']['$oid'])
+            i=i+1
     except:
         print(end)
 
