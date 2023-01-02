@@ -18,13 +18,13 @@ public interface TripDetailsDAO {
 
     List<Trip> getTripsByPrice(int min_price, int max_price, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
-    List<String> mostPopularDestinations(int page, int objectPerPageSearch);
+    List<String> mostPopularDestinations(int limit);
 
-    List<String> mostPopularDestinationsByTag(String tag, int page, int objectPerPageSearch);
+    List<String> mostPopularDestinationsByTag(String tag, int limit);
 
-    List<String> mostPopularDestinationsByPrice(double start, double end, int page, int objectPerPageSearch);
+    List<String> mostPopularDestinationsByPrice(double start, double end, int limit);
 
-    List<String> mostPopularDestinationsByPeriod(Date depDate, Date retDate, int page, int objectPerPageSearch);
+    List<String> mostPopularDestinationsByPeriod(Date depDate, Date retDate, int limit);
 
     List<Trip> cheapestDestinationsByAvg(int page, int objectPerPageSearch);
 

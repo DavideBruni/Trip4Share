@@ -30,7 +30,7 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
-    <title>Title</title>
+    <title>Results</title>
 
 </head>
 
@@ -45,9 +45,28 @@
         <div class="titlepage">
             <h2>AGGREGATION ASSOCIATA</h2>
         </div>
+
+        <%
+            List<String> suggestions = (List<String>) request.getAttribute(SecurityUtils.SUGGESTIONS_EXPLORE);
+            String new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
+            String url = request.getQueryString();
+            if(url != null)
+                new_url = new_url + url;
+
+        %>
+
         <div>
-            <p>Destinazione 1</p>
-            <p>Destinazione 2</p>
+            <%
+                String current_value = request.getParameter("value");
+                for(int i = 0; i < suggestions.size() && i < 5; i++ ){
+            %>
+            <a href=<%=new_url.replace(current_value.replace(" ", "%20"), suggestions.get(i).replace(" ", "%20"))%>>
+                <p><%=suggestions.get(i).toUpperCase()%></p>
+            </a>
+            <%
+                }
+            %>
+
         </div>
     </div>
     <div class="col-3"></div>
@@ -126,8 +145,6 @@
                                 <%
                                     // http://localhost:8080/Trip4Share_war_exploded/explore?searchFor=destination&value=islanda&return=&departure=&page=1
                                     int page_index = (int) request.getAttribute(SecurityUtils.PAGE);
-                                    String new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
-                                    String url = request.getQueryString();
                                     if(url != null)
                                         new_url = new_url + url;
 

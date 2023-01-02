@@ -79,14 +79,8 @@
                     <div class="col-4">
 
                         <form action="search" method="POST">
-
-                            <label>Category</label>
-                            <select class="form-control" name="tags">
-                                <option>Any</option>
-                                <option>Option 1</option>
-                                <option>Option 2</option>
-                                <option>Option 3</option>
-                            </select>
+                            <label >Insert destination</label>
+                            <input class="form-control" placeholder="" type="text" name="tag" size="50">
 
                             <label >Departure Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="departure_date">
@@ -96,7 +90,6 @@
 
                             <button class="btn btn-primary pull-right mr-5" type="submit" value="submit">Search</button>
                         </form>
-
 
                     </div>
                 </div>
