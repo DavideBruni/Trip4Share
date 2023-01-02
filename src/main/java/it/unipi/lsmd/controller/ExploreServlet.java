@@ -101,13 +101,13 @@ public class ExploreServlet extends HttpServlet {
         List<String> destinations;
         String title;
 
-        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        System.out.println("qui " + departure_date);
+        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
+
         if(departure_date != null && return_date != null && !departure_date.equals("") && !return_date.equals("")){
             destinations = tripService.mostPopularDestinationsByPeriod(departure_date, return_date, PagesUtilis.SUGGESTIONS_EXPLORE);
             title = "TOP " + PagesUtilis.SUGGESTIONS_EXPLORE + " Destinations (on that period)";
         }else{
-            destinations = tripService.mostPopularDestinations(PagesUtilis.OBJECT_PER_PAGE_SEARCH);
+            destinations = tripService.mostPopularDestinations(PagesUtilis.SUGGESTIONS_EXPLORE);
             title = "TOP " + PagesUtilis.SUGGESTIONS_EXPLORE + " Destinations";
         }
 
