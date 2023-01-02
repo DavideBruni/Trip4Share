@@ -126,9 +126,8 @@ if __name__ == "__main__":
     try:
         for user in organizer:
             for i in range(start,end):
-                print(data[i]['_id']['$oid'])
-                print(user['username'])
                 connection.create_ORGANIZED_BY(data[i]['_id']['$oid'],user['username'])
+                print(user['username']," - ORGANIZES ->",data[i]['_id']['$oid'])
             start = end + 1
             end = end + 6
     except:

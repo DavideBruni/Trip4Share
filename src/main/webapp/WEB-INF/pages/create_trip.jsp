@@ -1,3 +1,4 @@
+<%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html lang="en">
@@ -16,7 +17,12 @@
 
 
 <body class="tripbgd main-form">
-<form method="post" action="addTrip">
+<% Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
+if(flag!=null){%>
+<form method="post" action="updateTrip">
+          <%}else{ %>
+            <form method="post" action="addTrip">
+  <% } %>
 <div class="col-sm-9 mx-auto border border-4 mt-4 tripbgd2 ">
 
 
@@ -29,7 +35,12 @@
 
 
     <div class="row titlepage justify-content-center" >
-      <h3>Create Your Trip </h3>
+      <%
+        if(flag!=null){ %>
+        <h3>Modify Your Trip </h3>
+      <% }else{%>
+        <h3>Create Your Trip </h3>
+      <%}%>
     </div>
 <div class="row justify-content-center">
     <div class="col-4"></div>

@@ -15,13 +15,11 @@ import org.json.JSONObject;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.exceptions.value.Uncoercible;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 
 public interface TripUtils {
@@ -62,7 +60,7 @@ public interface TripUtils {
         }catch (NullPointerException e){ }
 
         try{
-            trip.setPrice(result.getInteger("price"));
+            trip.setPrice(result.getDouble( "price"));
         }catch (NullPointerException e){ }
 
         trip.setDepartureDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("departureDate")));
@@ -334,5 +332,55 @@ public interface TripUtils {
             }
         }
         return i;
+    }
+
+    static TripDetailsDTO tripDetailsDTOfromRequest(HttpServletRequest request){
+        TripDetailsDTO trip = new TripDetailsDTO();
+        trip.setDestination(request.getParameter("destination"));
+        trip.setTitle(request.getParameter("title"));
+        trip.setPrice(Double.parseDouble(request.getParameter("price")));
+        trip.setDepartureDate(LocalDate.parse(request.getParameter("departureDate")));
+        trip.setReturnDate(LocalDate.parse(request.getParameter("returnDate")));
+        List<String> tags = Arrays.asList(request.getParameter("tags").split(","));
+        trip.setTags(tags);
+        trip.setDescription(request.getParameter("description"));
+        List<DailyScheduleDTO> itinerary = new ArrayList<>();
+        for (int i = 1; ; i++) {
+            String title = request.getParameter("title" + i);
+            if (title == null)
+                break;
+            DailyScheduleDTO d = new DailyScheduleDTO();
+            d.setDay(i);
+            d.setTitle(title);
+            String subtitle = request.getParameter("subtitle" + i);
+            d.setSubtitle(subtitle);
+            String description = request.getParameter("description" + i);
+            d.setDescription(description);
+            itinerary.add(d);
+        }
+        trip.setItinerary(itinerary);
+        List<String> included = new ArrayList<>();
+        List<String> notIncluded = new ArrayList<>();
+        for (int i = 0; ; i++) {
+            String str = request.getParameter("included" + i);
+            if (str != null)
+                included.add(str);
+            else
+                break;
+        }
+        trip.setWhatsIncluded(included);
+        for (int i = 0; ; i++) {
+            String str = request.getParameter("notIncluded" + i);
+            if (str != null)
+                notIncluded.add(str);
+            else
+                break;
+        }
+        trip.setWhatsNotIncluded(notIncluded);
+        String username = ((RegisteredUserDTO) request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername();
+        trip.setOrganizer(username);
+        trip.setLast_modified(LocalDateTime.now());
+        trip.setInfo(request.getParameter("info"));
+        return trip;
     }
 }

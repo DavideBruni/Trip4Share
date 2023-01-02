@@ -29,6 +29,8 @@ public class SecurityUtils {
     public static final String TRIPS_RESULT = "trips_result";
     public static final String USER_RESULTS = "user_results";
     public static final String STATUS = "status";
+    public static final String TRIP = "trip";
+    public static final String MODIFY_FLAG = "modify_trip";
 
     // ho chiamato quella per i viaggi organizzato ORGANIZED_TRIPS
     // mi deve mandare la pagina corrente e il numero totale

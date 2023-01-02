@@ -138,8 +138,48 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
     }
 
     @Override
-    public void updateTrip(Trip newTrip) throws Neo4jException {
+    public void updateTrip(Trip newTrip, Trip oldTrip) throws Neo4jException {
+        String query = createQuery(newTrip,oldTrip);
+        if(query==null)
+            return;
+        try (Session session = getConnection().session()) {
+            session.writeTransaction(tx -> {
+                tx.run(query).consume();
+                return null;
+            });
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+    }
 
+    private String createQuery(Trip newTrip, Trip oldTrip) {
+        List<String> sets = new ArrayList<>();
+        if(!newTrip.getTitle().equals(oldTrip.getTitle())){
+            String s = "t.title = \""+newTrip.getTitle()+"\"";
+            sets.add(s);
+        }
+        if(!newTrip.getDestination().equals(oldTrip.getDestination())){
+            String s = "t.destination = \""+newTrip.getDestination()+"\"";
+            sets.add(s);
+        }
+        if(!newTrip.getDepartureDate().equals(oldTrip.getDepartureDate())){
+            String s = "t.departureDate = \""+newTrip.getDepartureDate()+"\"";
+            sets.add(s);
+        }
+        if(!newTrip.getTitle().equals(oldTrip.getTitle())){
+            String s = "t.returnDate = \""+newTrip.getReturnDate()+"\"";
+            sets.add(s);
+        }
+        if(sets==null  || sets.isEmpty())
+            return null;
+        StringBuilder query = new StringBuilder("MATCH (t:Trip {_id:\""+oldTrip.getId()+"\"}) SET ");
+        query.append(sets.get(0));
+        sets.remove(0);
+        for(String x : sets){
+            query.append(", "+x);
+        }
+        query.append(" RETURN t");
+        return String.valueOf(query);
     }
 
     @Override
