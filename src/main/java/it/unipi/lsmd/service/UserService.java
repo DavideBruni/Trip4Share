@@ -35,4 +35,6 @@ public interface UserService {
     String signup(AuthenticatedUserDTO user);
 
     boolean deleteUser(String username);
+
+    boolean setReview(ReviewDTO reviewDTO,OtherUserDTO to);
 }

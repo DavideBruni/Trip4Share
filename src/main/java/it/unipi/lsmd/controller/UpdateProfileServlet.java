@@ -2,6 +2,7 @@ package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
+import it.unipi.lsmd.dto.ReviewDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -38,6 +39,7 @@ public class UpdateProfileServlet extends HttpServlet {
         String email = req.getParameter("email");
         String nationality = req.getParameter("nationality");
         String birthDate = req.getParameter("birthDate");
+        List<ReviewDTO> reviews = ((RegisteredUserDTO)(req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))).getReviews();
         List<String> spokenLanguages;
         try{
             spokenLanguages= Arrays.asList(req.getParameter("languages").split(","));
@@ -53,6 +55,7 @@ public class UpdateProfileServlet extends HttpServlet {
         newInfo.setNationality(nationality);
         newInfo.setBirthday(birthDate);
         newInfo.setSpokenLanguages(spokenLanguages);
+        newInfo.setReviews(reviews);
         if(userService.updateUser(newInfo,(RegisteredUserDTO) req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))){
             req.getSession().setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY,newInfo);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("user?username="+newInfo.getUsername());

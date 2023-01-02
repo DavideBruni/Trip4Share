@@ -26,9 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.mongodb.client.model.Accumulators.avg;
+import static com.mongodb.client.model.Accumulators.push;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Updates.pushEach;
 
 public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
@@ -190,5 +192,23 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         }
         query.add(Updates.set("password",new_user.getPassword()));
         return Updates.combine(query);
+    }
+
+    @Override
+    public boolean putReview(Review review, RegisteredUser to) {
+        Document doc = new Document();
+        doc.append("title",review.getTitle());
+        doc.append("text",review.getText());
+        doc.append("value",review.getRating());
+        doc.append("author",review.getAuthor());
+        doc.append("date",review.getDate());
+        List<Document> rev = new ArrayList<>();
+        rev.add(doc);
+        try {
+            collection.findOneAndUpdate(eq("username", to.getUsername()), pushEach("reviews", rev));
+        }catch (MongoException me){
+            return false;
+        }
+        return true;
     }
 }

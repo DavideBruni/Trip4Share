@@ -155,4 +155,14 @@ public interface UserUtils {
         a.setPassword(u.getPassword());
         return a;
     }
+
+    static Review reviewFromDTO(ReviewDTO reviewDTO) {
+        Review r = new Review();
+        r.setAuthor(reviewDTO.getAuthor());
+        r.setText(reviewDTO.getText());
+        r.setTitle(reviewDTO.getTitle());
+        r.setDate(LocalDate.parse(reviewDTO.getDate()));
+        r.setRating(reviewDTO.getRating());
+        return r;
+    }
 }

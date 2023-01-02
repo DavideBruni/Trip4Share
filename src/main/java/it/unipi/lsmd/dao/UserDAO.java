@@ -26,4 +26,6 @@ public interface UserDAO {
     boolean deleteUser(User u);
 
     boolean updateRegisteredUser(RegisteredUser new_user, RegisteredUser old_user);
+
+    boolean putReview(Review review, RegisteredUser to);
 }

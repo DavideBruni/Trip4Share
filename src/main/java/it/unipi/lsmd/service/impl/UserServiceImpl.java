@@ -211,6 +211,12 @@ public class UserServiceImpl implements UserService {
         }
         return false;
 
+    }
 
+    @Override
+    public boolean setReview(ReviewDTO reviewDTO, OtherUserDTO to) {
+        Review review = UserUtils.reviewFromDTO(reviewDTO);
+        RegisteredUser r = new RegisteredUser(to.getUsername());
+        return userDAO.putReview(review,r);
     }
 }

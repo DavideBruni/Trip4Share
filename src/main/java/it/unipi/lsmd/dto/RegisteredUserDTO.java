@@ -13,7 +13,7 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private String birthday;
     private List<String> spokenLanguages;
     private String phone;
-    private ArrayList<ReviewDTO> reviews;
+    private List<ReviewDTO> reviews;
     private int n_followers;
     private int n_following;
     private LocalDate birthdate;
@@ -71,11 +71,11 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
         this.reviews.add(review);
     }
 
-    public void setReviews(ArrayList<ReviewDTO> reviews){
+    public void setReviews(List<ReviewDTO> reviews){
         this.reviews = reviews;
     }
 
-    public ArrayList<ReviewDTO> getReviews(){
+    public List<ReviewDTO> getReviews(){
         return this.reviews;
     }
 
