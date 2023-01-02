@@ -64,7 +64,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     public List<Trip> getTripsByTag(String tag, LocalDate departureDate, LocalDate returnDate, int size, int page) {
 
-        System.out.println(tag);
         Bson m1;
         if (returnDate == null) {
             m1 = match(and(in("tags", tag), gte("departureDate", departureDate)));
@@ -163,7 +162,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         MongoCursor<Document> it = res.iterator();
         while (it.hasNext()) {
             Document doc = it.next();
-            System.out.println(doc);
             String d = doc.getString("_id");
             dest.add(d);
         }
