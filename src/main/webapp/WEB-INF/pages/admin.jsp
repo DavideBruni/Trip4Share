@@ -1,4 +1,5 @@
-<%--
+<%@ page import="it.unipi.lsmd.dto.AdminDTO" %>
+<%@ page import="it.unipi.lsmd.utils.SecurityUtils" %><%--
   Created by IntelliJ IDEA.
   User: grill
   Date: 15/12/2022
@@ -8,9 +9,261 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Admin</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <title>
+        Management Page
+    </title>
 </head>
-<body>
-    Management page
+
+<body class="main-layout">
+
+<header>
+    <!-- header inner -->
+    <div class="header">
+        <div class="header_white_section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="header_information">
+                            <ul>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                    <div class="full">
+                        <div class="center-desk">
+                            <div class="logo"> <a href="index.html"><img src="images/logo.png" alt="#"></a> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                    <div class="menu-area">
+                        <div class="limit-box">
+                            <nav class="main-menu">
+                                <ul class="menu-area-main">
+                                    <li><a href="#contact">Search Users</a></li>
+                                    <li><a href="#contact">Add a new Admin</a></li>
+                                    <li><a href="#contact">Logout</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header inner -->
+</header>
+
+
+
+<!-- Visualizzazione info profilo e modifica -->
+<div class="titlepage">
+    <h3 >Your Information</h3>
+</div>
+
+<%
+    AdminDTO admin = (AdminDTO) request.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
+%>
+
+<div class="container-xl px-4 mt-4 col-12 justify-content-center">
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-4 justify-content-center">
+            <!-- Profile picture card-->
+            <div class="card mb-4 mb-xl-0">
+
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                    <input disabled class="form-control" id="imgUrl" type="text" name="birthday"  placeholder="06/10/1988">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center pdn-top-30">
+        <div class="col-xl-8 justify-content-center">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Account Details</div>
+                <div class="card-body">
+                    <form>
+                        <!-- Form Group (username)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
+                            <input disabled class="form-control" id="inputUsername" type="text" placeholder=<%=admin.getUsername()%>>
+                        </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">First name</label>
+                                <input disabled class="form-control" id="inputFirstName" type="text" placeholder=<%=admin.getFirstName()%>>
+                            </div>
+                            <!-- Form Group (last name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLastName">Last name</label>
+                                <input disabled class="form-control" id="inputLastName" type="text" placeholder=<%=admin.getLastName()%>>
+                            </div>
+                        </div>
+                        <!-- Form Row        -->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputOrgName">Password</label>
+                                <input disabled class="form-control" id="inputOrgName" type="password" placeholdere="Start Bootstrap">
+                            </div>
+                            <!-- Form Group (location)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLocation">Nationality</label>
+                                <input disabled class="form-control" id="inputLocation" type="text" placeholder="San Francisco, CA">
+                            </div>
+                        </div>
+                        <!-- Form Group (email address)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                            <input disabled class="form-control" id="inputEmailAddress" type="email" placeholder=<%=admin.getEmail()%>>
+                        </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (phone number)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPhone">Phone number</label>
+                                <input disabled class="form-control" id="inputPhone" type="tel" placeholdere="555-123-4567">
+                            </div>
+                            <!-- Form Group (birthday)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputBirthday">role</label>
+                                <input disabled class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="06/10/1988">
+                            </div>
+                        </div>
+                        <!-- Save changes button-->
+                        <a class="btn btn-primary" type="button" href="modify_admin_info.html">Modify Information</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="titlepage">
+    <h3 > Create a new Admin </h3>
+</div>
+
+<!-- Creazione Nuovo Admin -->
+<div class="container-xl px-4 mt-4 col-12 justify-content-center">
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-4 justify-content-center">
+            <!-- Profile picture card-->
+            <div class="card mb-4 mb-xl-0">
+
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <input disabled class="form-control" id="newAdminUrl" type="text" name="birthday"  placeholder="photoUrl">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center pdn-top-30">
+        <div class="col-xl-8 justify-content-center">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Account Details</div>
+                <div class="card-body">
+                    <form>
+                        <!-- Form Group (username)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputUsername">Username</label>
+                            <input disabled class="form-control" id="inputUsername" type="text" placeholder="Enter your username">
+                        </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">First name</label>
+                                <input disabled class="form-control" id="inputFirstName" type="text" placeholder="Valerie">
+                            </div>
+                            <!-- Form Group (last name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLastName">Last name</label>
+                                <input disabled class="form-control" id="inputLastName" type="text" placeholder="Luna">
+                            </div>
+                        </div>
+                        <!-- Form Row        -->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputOrgName">Password</label>
+                                <input disabled class="form-control" id="inputOrgName" type="password" placeholdere="Start Bootstrap">
+                            </div>
+                            <!-- Form Group (location)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputLocation">Nationality</label>
+                                <input disabled class="form-control" id="inputLocation" type="text" placeholder="San Francisco, CA">
+                            </div>
+                        </div>
+                        <!-- Form Group (email address)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                            <input disabled class="form-control" id="inputEmailAddress" type="email" placeholder="name@example.com">
+                        </div>
+                        <!-- Form Row-->
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (phone number)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputPhone">Phone number</label>
+                                <input disabled class="form-control" id="inputPhone" type="tel" placeholdere="555-123-4567">
+                            </div>
+                            <!-- Form Group (birthday)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputBirthday">role</label>
+                                <input disabled class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="06/10/1988">
+                            </div>
+                        </div>
+                        <!-- Save changes button-->
+                        <a class="btn btn-primary" type="button" href="modify_admin_info.html">Create</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ricerca Utenti -->
+
+<div class="titlepage">
+    <h3 > Ricerca utenti </h3>
+</div>
+
+<div class=" pdn-top-30 row">
+    <div class=" col-4"></div>
+    <div class="col-4 justify-content-center">
+
+        <label >Insert username</label>
+        <input  class="form-control" placeholder="" type="text" name="" size="50">
+        <button class="btn btn-primary pull-right mr-5" type="button">Cerca</button>
+    </div>
+
+</div>
+
 </body>
 </html>
