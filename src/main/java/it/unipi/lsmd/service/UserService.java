@@ -1,9 +1,6 @@
 package it.unipi.lsmd.service;
 
-import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dto.*;
-import it.unipi.lsmd.model.RegisteredUser;
-import it.unipi.lsmd.model.User;
 
 import java.util.List;
 
@@ -22,9 +19,9 @@ public interface UserService {
 
     int getFollowersNumber(String username);
 
-    void follow(String user_1, String user_2);
+    String follow(String user_1, String user_2);
 
-    void unfollow(String user_1, String user_2);
+    String unfollow(String user_1, String user_2);
 
     boolean isFriend(String user_1, String user_2);
 

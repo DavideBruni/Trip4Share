@@ -57,12 +57,12 @@ public class UserServlet extends HttpServlet {
         return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");
     }
 
-    private void followUser(String me, String friend){
-        userService.follow(me, friend);
+    private String followUser(String me, String friend){
+        return userService.follow(me, friend);
     }
 
-    private void unfollowUser(String me, String friend){
-        userService.unfollow(me, friend);
+    private String unfollowUser(String me, String friend){
+        return userService.unfollow(me, friend);
     }
 
 
@@ -80,22 +80,16 @@ public class UserServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
-
-
-        // check if user is authenticated
         if (authenticatedUserDTO == null) {
             httpServletResponse.sendRedirect("login");
             return;
         }
-
         RequestDispatcher requestDispatcher = null;
-
         String me = authenticatedUserDTO.getUsername();
         String username = httpServletRequest.getParameter("username");
         httpServletRequest.setAttribute("itsMe", true);
 
         boolean itsMe = username != null && username.equals(authenticatedUserDTO.getUsername());
-
 
         // if it's not user's own profile
         if (!itsMe) {
@@ -104,8 +98,6 @@ public class UserServlet extends HttpServlet {
             httpServletRequest.setAttribute("itsMe", false);
         }
 
-
-        // set n_followers and n_following
         ((RegisteredUserDTO) authenticatedUserDTO).setN_followers(userService.getFollowersNumber(authenticatedUserDTO.getUsername()));
         ((RegisteredUserDTO) authenticatedUserDTO).setN_following(userService.getFollowingNumber(authenticatedUserDTO.getUsername()));
         ((RegisteredUserDTO) authenticatedUserDTO).setAvg_rating(userService.getRating(authenticatedUserDTO.getUsername()));
@@ -119,23 +111,31 @@ public class UserServlet extends HttpServlet {
             page = 1;
         }
 
-        if (show != null && show.equals("reviews")) {
-            // TODO - controllare se va bene
-            requestDispatcher = getUserReviews(httpServletRequest, username, page);
-        } else if (show != null && show.equals("organizedTrips")) {
-            requestDispatcher = getOrganizedTrips(httpServletRequest, username, page);
-        } else if (show != null && show.equals("followers")) {
-            requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
-        } else if (show != null && show.equals("following")) {
-            requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
-        } else {
-
-            if(!itsMe && action != null && action.equals("follow")){
-                followUser(me, username);
-            }else if(!itsMe && action != null && action.equals("unfollow")){
-                unfollowUser(me, username);
+        if(show!=null) {
+            if (show.equals("reviews")) {
+                requestDispatcher = getUserReviews(httpServletRequest, username, page);
+            } else if (show.equals("organizedTrips")) {
+                requestDispatcher = getOrganizedTrips(httpServletRequest, username, page);
+            } else if (show.equals("followers")) {
+                requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
+            } else if (show.equals("following")) {
+                requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
             }
-
+        }else if(!itsMe && action!=null){
+            if (action.equals("follow")) {
+                httpServletResponse.setContentType("text/plain");
+                httpServletResponse.setCharacterEncoding("UTF-8");
+                httpServletResponse.getWriter().write(followUser(me,username));
+                return;
+            }else if (action.equals("unfollow")) {
+                httpServletResponse.setContentType("text/plain");
+                httpServletResponse.setCharacterEncoding("UTF-8");
+                httpServletResponse.getWriter().write(unfollowUser(me,username));
+                return;
+            }
+            httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
+            requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
+        }else{
             httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
         }

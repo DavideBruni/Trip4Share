@@ -1,5 +1,7 @@
 <html lang="en">
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
+<%@ page import="it.unipi.lsmd.dto.TripDetailsDTO" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -17,12 +19,15 @@
 
 <body class="tripbgd main-form">
 <% Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
-  if(flag!=null){%>
-  <form method="post" action="updateTrip">
-    <%}else{ %>
-  <form method="post" action="addTrip">
-      <% } %>
-  <div class="col-sm-9 mx-auto border border-4 mt-4 tripbgd2 ">
+  TripDetailsDTO t = null;
+if(flag!=null){
+t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
+%>
+<form method="post" action="updateTrip">
+          <%}else{ %>
+            <form method="post" action="addTrip">
+  <% } %>
+<div class="col-sm-9 mx-auto border border-4 mt-4 tripbgd2 ">
 
 
 
@@ -40,75 +45,98 @@
         <h3>Modify Your Trip </h3>
         <% }else{%>
         <h3>Create Your Trip </h3>
-        <%}%>
-
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-4"></div>
-        <div class="receipe-duration col-4">
-          <div class="row">
-            <label class="small mb-1" >Destination</label>
-            <input  class="form-control text-center" name="destination" type="text" placeholder="Insert a Destination" required>
-          </div>
-          <div class="row">
-            <label class="small mb-1" >Title</label>
-            <input  class="form-control text-center" name="title" type="text" placeholder="Insert a Title" required>
-          </div>
-          <div class="row">
-            <label class="small mb-1" >price</label>
-            <input  class="form-control text-center" name="price" type="number" step="0.01" placeholder="Insert the price" required>
-          </div>
-
-          <div class="row">
-            <label class="small mb-1" >Departure Date</label>
-            <input  class="form-control text-center"  name="departureDate" type="text" placeholder="dd/mm/yyyy" onclick="(this.type='date')" required>
-          </div>
-
-          <div class="row">
-            <label class="small mb-1" >Return date</label>
-            <input  class="form-control text-center" name="returnDate" type="text" placeholder="dd/mm/yyyy" onclick="(this.type='date')" required>
-          </div>
-
-          <div class="row">
-            <label class="small mb-1" >Tags</label>
-            <input  class="form-control text-center" name="tags" type="text" placeholder="Insert tags separated by comma">
-          </div>
-
-
-
-          <div class="row">
-            <label class="small mb-1" >Insert a photo Url</label>
-            <input class="form-control text-center" type="file" id="img" name="pic" accept="image/*">
-          </div>
-
-        </div>
-        <div class="col-4"></div>
-      </div>
+      <%}%>
     </div>
+<div class="row justify-content-center">
+    <div class="col-4"></div>
+    <div class="receipe-duration col-4">
+      <div class="row">
+        <label class="small mb-1" >Destination</label>
+        <% if (t!=null && t.getDestination()!=null){%>
+        <input  class="form-control text-center" name="destination" type="text" placeholder="Insert a Destination"  value="<%=t.getDestination()%>" required>
+        <%}else{%>
+          <input  class="form-control text-center" name="destination" type="text" placeholder="Insert a Destination"  required>
+       <% } %>
+      </div>
+      <div class="row">
+        <label class="small mb-1" >Title</label>
+        <% if (t!=null && t.getTitle()!=null){%>
+        <input  class="form-control text-center" name="destination" type="text" placeholder="Insert a Title"  value="<%=t.getTitle()%>" required>
+        <%}else{%>
+        <input  class="form-control text-center" name="destination" type="text" placeholder="Insert a Title"  required>
+        <% } %>
+      </div>
+      <div class="row">
+        <label class="small mb-1" >price</label>
+        <% if (t!=null && t.getPrice()!=0){%>
+        <input  class="form-control text-center" name="destination" type="number" step=0.01 placeholder="Insert the price"  value="<%=t.getPrice()%>" required>
+        <%}else{%>
+        <input  class="form-control text-center" name="destination" type="number" step=0.01 placeholder="Insert the price"  required>
+        <% } %>
+         </div>
 
+      <div class="row">
+        <label class="small mb-1" >Departure Date</label>
+        <% if (t!=null && t.getDepartureDate()!=null){%>
+        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getDepartureDate()%>" required>
+        <%}else{%>this.type='date')"
+        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
+        <% } %>
+      </div>
+
+      <div class="row">
+        <label class="small mb-1" >Return date</label>
+        <% if (t!=null && t.getReturnDate()!=null){%>
+        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
+        <%}else{%>this.type='date')"
+        <input  class="form-control text-center" name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
+        <% } %>
+
+      </div>
+
+      <div class="row">
+        <label class="small mb-1" >Tags</label>
+        <% if (t!=null && t.getTags()!=null){
+          List<String> listTags = t.getTags();
+          String tags = listTags.get(0);
+          listTags.remove(0);
+          for(String x : t.getTags()){
+            tags=","+x;
+          }
+        %>
+        <input  class="form-control text-center" name="tags" type="text" placeholder="Insert tags separated by comma" value="<%=tags%>">
+        <%}else{%>this.type='date')"
+        <input  class="form-control text-center" name="tags" type="text" placeholder="Insert tags separated by comma">
+        <% } %>
+      </div>
+
+    </div>
+    <div class="col-4"></div>
+</div>
+
+  </div>
+
+  <div class="receipe-ratings my-5 col-12 ">
     <div class="row">
-      <div class="col-1"></div>
-      <div class="receipe-ratings my-5 col-10 ">
-        <div class="row">
-          <label class="small mb-1" >Modify the description</label>
-          <textarea  class="form-control" id="description" name="description" > Description
-          </textarea>
-        </div>
-      </div>
-      <div class="col-1"></div>
+      <label class="small mb-1" >Modify the description</label>
+      <% if (t!=null && t.getDescription()!=null){%>
+      <textarea  class="form-control" id="description" name="description" value="<%=t.getDescription()%>"> Description </textarea>
+      <%}else{%>
+      <textarea  class="form-control" id="description" name="description" > Description </textarea>
+       <% } %>
     </div>
-    <div class="row">
-      <div class="col-1"></div>
-      <div class="receipe-ratings my-5 col-10 ">
-        <div class="row">
-          <label class="small mb-1" >Info about the trip</label>
-          <textarea  class="form-control" id="info" name="description" > Informations
-          </textarea>
-        </div>
-      </div>
-      <div class="col-1"></div>
-    </div>
+  </div>
 
+  <div class="receipe-ratings my-5 col-12 ">
+    <div class="row">
+      <label class="small mb-1" >Info about the trip</label>
+      <% if (t!=null && t.getInfo()!=null){%>
+      <textarea  class="form-control" id="description" name="description" value="<%=t.getInfo()%>"> Description </textarea>
+      <%}else{%>
+      <textarea  class="form-control" id="description" name="description" > Description </textarea>
+      <% } %>
+    </div>
+  </div>
 
     <div class="mb-4">
       <div class="row">

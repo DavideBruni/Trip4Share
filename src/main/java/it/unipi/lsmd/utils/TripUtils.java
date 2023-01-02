@@ -98,9 +98,9 @@ public interface TripUtils {
 
         tripDTO.setId(trip.getId());
         tripDTO.setTitle(trip.getTitle());
-        tripDTO.setId(trip.getId());
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDescription(trip.getDescription());
+        tripDTO.setInfo(trip.getInfo());
         tripDTO.setPrice(trip.getPrice());
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());

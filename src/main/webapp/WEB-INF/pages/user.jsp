@@ -49,16 +49,12 @@
 
                         <%
                             if(!itsMe){
-                                if(!user.isFriend()){
                         %>
-                                <a  class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href=<%="user?username="+user.getUsername()+"&action=follow"%> data-abc="true">Follow</a>
-                                 <a  class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href="#">Leave a review</a>
-
-                    <%}else{%>
-                                <a  class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href=<%="user?username="+user.getUsername()+"&action=unfollow"%> data-abc="true">Unfollow</a>
-                        <a  class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href="#">Leave a review</a>
-
-                    <%}}else{%>
+                                <button  id="follow_button" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href=<%="user?username="+user.getUsername()+"&action=follow"%> data-abc="true"><%
+                                        if(!user.isFriend()){
+                                %>Follow<% }else{%>Unfollow<%}%></button>
+                    <a  class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href="#">Leave a review</a>
+                            <%}else{%>
                         <div class="row justify-content-center">
                         <a href="updateProfile" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Edit Profile</a>
                         <a href="javascript:void(0)" class="m-t-10 ml-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Create new trip</a>
@@ -159,5 +155,27 @@
 </div>
 
 <%@ include file="/WEB-INF/pages/footer.jsp" %>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    $(document).on("click", "#follow_button", function() {
+        var text = $("#follow_button").text();
+        var url="";
+        if(text=="Follow") {
+            url = "<%="user?username="+user.getUsername()+"&action=follow"%>";
+        }else{
+            url = "<%="user?username="+user.getUsername()+"&action=unfollow"%>";
+        }
+        $.get(url, function(responseText) {
+            if(responseText == "OK" && text=="Follow"){
+                $("#follow_button").text("Unfollow");
+            }else if(responseText == "OK" && text=="Unfollow"){
+                $("#follow_button").text("Follow");
+            }else{
+                alert("Errore durante l'operazione");
+            }
+
+        });
+    });
+</script>
 
 </body>

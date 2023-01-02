@@ -96,20 +96,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void follow(String user_1, String user_2) {
+    public String follow(String user_1, String user_2) {
         try{
             registeredUserDAO.follow(user_1, user_2);
+            return "OK";
         }catch (Exception e){
-            System.out.println("Error during follow");
+            return "Error during follow";
         }
     }
 
     @Override
-    public void unfollow(String user_1, String user_2) {
+    public String unfollow(String user_1, String user_2) {
         try{
             registeredUserDAO.unfollow(user_1, user_2);
+            return "OK";
         }catch (Exception e){
-            System.out.println("Error during unfollow");
+            return "Error during unfollow";
         }
     }
 
