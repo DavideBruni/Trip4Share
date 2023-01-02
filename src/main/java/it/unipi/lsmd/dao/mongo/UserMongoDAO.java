@@ -6,6 +6,7 @@ import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import it.unipi.lsmd.dao.UserDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.model.Admin;
@@ -17,10 +18,7 @@ import it.unipi.lsmd.utils.ReviewUtils;
 import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
-import javax.print.Doc;
-import javax.swing.event.DocumentEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +27,8 @@ import static com.mongodb.client.model.Accumulators.avg;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Updates.pull;
+import static com.mongodb.client.model.Updates.pushEach;
 
 public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
@@ -190,5 +190,40 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         }
         query.add(Updates.set("password",new_user.getPassword()));
         return Updates.combine(query);
+    }
+
+    @Override
+    public boolean putReview(Review review, RegisteredUser to) {
+        Document doc = docFromReview(review);
+        List<Document> rev = new ArrayList<>();
+        rev.add(doc);
+        try {
+            collection.findOneAndUpdate(eq("username", to.getUsername()), pushEach("reviews", rev));
+        }catch (MongoException me){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteReview(Review review, RegisteredUser r) {
+        Document doc = docFromReview(review);
+        Bson bson = eq("reviews",doc);
+        try{
+            collection.updateOne(bson,Updates.pull("reviews",doc));
+            return true;
+        }catch (MongoException me){
+            return false;
+        }
+    }
+
+    private Document docFromReview(Review review){
+        Document doc = new Document();
+        doc.append("title",review.getTitle());
+        doc.append("text",review.getText());
+        doc.append("value",review.getRating());
+        doc.append("author",review.getAuthor());
+        doc.append("date",review.getDate());
+        return doc;
     }
 }

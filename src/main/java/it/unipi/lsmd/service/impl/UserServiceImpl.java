@@ -198,4 +198,37 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean deleteUser(String username) {
+        RegisteredUser user = new RegisteredUser(username);
+        if(userDAO.deleteUser(user)){
+            try{
+                registeredUserDAO.deleteUser(user);
+                return true;
+            }catch (Neo4jException ne){
+                return false;
+            }
+        }
+        return false;
+
+    }
+
+    @Override
+    public boolean setReview(ReviewDTO reviewDTO, OtherUserDTO to) {
+        Review review = UserUtils.reviewFromDTO(reviewDTO);
+        RegisteredUser r = new RegisteredUser(to.getUsername());
+        return userDAO.putReview(review,r);
+    }
+
+    @Override
+    public boolean updateReview(ReviewDTO review, OtherUserDTO toDTO) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteReview(ReviewDTO review, OtherUserDTO to) {
+        Review r = UserUtils.reviewFromDTO(review);
+        RegisteredUser registeredUser = new RegisteredUser(to.getUsername());
+        return userDAO.deleteReview(r,registeredUser);
+    }
 }

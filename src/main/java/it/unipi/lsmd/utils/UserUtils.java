@@ -9,6 +9,7 @@ import org.bson.Document;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -136,5 +137,15 @@ public interface UserUtils {
         a.setEmail(u.getEmail());
         a.setPassword(u.getPassword());
         return a;
+    }
+
+    static Review reviewFromDTO(ReviewDTO reviewDTO) {
+        Review r = new Review();
+        r.setAuthor(reviewDTO.getAuthor());
+        r.setText(reviewDTO.getText());
+        r.setTitle(reviewDTO.getTitle());
+        r.setDate(LocalDate.parse(reviewDTO.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        r.setRating(reviewDTO.getRating());
+        return r;
     }
 }

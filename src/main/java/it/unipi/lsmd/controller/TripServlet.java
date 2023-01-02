@@ -54,7 +54,7 @@ public class TripServlet extends HttpServlet {
             }
             httpServletRequest.setAttribute(SecurityUtils.STATUS,tripService.getJoinStatus(trip_id,authenticatedUserDTO.getUsername()));
         }
-        httpServletRequest.setAttribute("trip", trip);
+        httpServletRequest.setAttribute(SecurityUtils.TRIP, trip);
 
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);

@@ -62,12 +62,13 @@
 
         <div>
             <%
-                String current_value = request.getParameter("value");
+                String current_value = request.getParameter("value").replace(" ", "%20");
                 String search_for = request.getParameter("searchFor");
-                new_url = new_url.replace(search_for, "destination");
-                for(int i = 0; i < suggestions.size() && i < 5; i++ ){
+                String suggestion_url = new_url.replace(search_for, "destination");
+
+                for(int i = 0; i < suggestions.size() && i < PagesUtilis.SUGGESTIONS_EXPLORE; i++ ){
             %>
-            <a href=<%=new_url.replace(current_value.replace(" ", "%20"), suggestions.get(i).replace(" ", "%20"))%>>
+            <a href=<%=suggestion_url.replace(current_value, suggestions.get(i).replace(" ", "%20"))%>>
                 <p><%=suggestions.get(i).toUpperCase()%></p>
             </a>
             <%
