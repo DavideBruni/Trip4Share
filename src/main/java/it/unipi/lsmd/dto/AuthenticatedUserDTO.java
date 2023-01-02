@@ -20,7 +20,6 @@ public abstract class AuthenticatedUserDTO {
         this.email = email;
     }
 
-
     public String getPassword() {
         return password;
     }

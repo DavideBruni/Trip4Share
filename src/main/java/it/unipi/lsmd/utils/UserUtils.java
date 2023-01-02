@@ -72,25 +72,6 @@ public interface UserUtils {
                     registeredUserDTO.addReview(ReviewUtils.reviewModelToDTO(review));
                 }
             }catch (NullPointerException e){}
-            /*
-            List<OtherUserDTO> follows = new ArrayList<>();
-            List<RegisteredUser> followsModel = ((RegisteredUser) user_model).getFollowing();
-            for(RegisteredUser r : followsModel){
-                OtherUserDTO o = new OtherUserDTO();
-                o.setUsername(r.getUsername());
-                follows.add(o);
-            }
-            registeredUserDTO.setFollowing(follows);
-            follows.clear();
-
-            followsModel = ((RegisteredUser) user_model).getFollower();
-            for(RegisteredUser r : followsModel){
-                OtherUserDTO o = new OtherUserDTO();
-                o.setUsername(r.getUsername());
-                follows.add(o);
-            }
-            registeredUserDTO.setFollowers(follows);
-            */
 
             authenticatedUserDTO = registeredUserDTO;
         }else{
@@ -101,6 +82,7 @@ public interface UserUtils {
         authenticatedUserDTO.setUsername(user_model.getUsername());
         authenticatedUserDTO.setFirstName(user_model.getName());
         authenticatedUserDTO.setLastName(user_model.getSurname());
+        authenticatedUserDTO.setEmail(user_model.getEmail());
 
         return authenticatedUserDTO;
     }

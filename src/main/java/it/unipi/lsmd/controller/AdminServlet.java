@@ -15,6 +15,22 @@ import java.io.IOException;
 @WebServlet("/admin")
 public class AdminServlet  extends HttpServlet {
 
+    RequestDispatcher addAdmin(){
+        return null;
+    }
+
+    RequestDispatcher removeAdmin(){
+        return null;
+    }
+
+    RequestDispatcher banUser(){
+        return null;
+    }
+
+    RequestDispatcher searchUser(HttpServletRequest httpServletRequest){
+        return httpServletRequest.getRequestDispatcher("/WEB-INF/pages/admin_search.jsp");
+    }
+
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
@@ -25,8 +41,17 @@ public class AdminServlet  extends HttpServlet {
             return;
         }
 
+        RequestDispatcher requestDispatcher = null;
         String targetJSP = "/WEB-INF/pages/admin.jsp";
-        RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
+
+        String action = httpServletRequest.getParameter("action");
+        if(action != null & action.equals("search")){
+            //requestDispatcher = searchUser();
+        }
+
+
+
+        requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 }
