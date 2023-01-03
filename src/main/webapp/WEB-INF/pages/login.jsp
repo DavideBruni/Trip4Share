@@ -17,6 +17,7 @@
 <body>
 
 <div class="main-layout">
+    <%@ include file="header.jsp" %>
 
     <!-- Sign up form -->
     <section class="signup">
@@ -60,7 +61,7 @@
     </section>
 
 </div>
-
+<%@ include file="footer.jsp" %>
 <!-- JS -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="js/main.js"></script>

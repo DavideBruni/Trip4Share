@@ -30,6 +30,7 @@
 
 </head>
 <body class="main-layout bg-danger text-white">
+<%@ include file="header.jsp" %>
 <div class="site-header" id="header">
     <h1 class="site-header__title" data-lead-id="site-header-title">OOOPS!</h1>
     <h3><%=SecurityUtils.SIGNUP_ERROR%></h3>
@@ -42,6 +43,6 @@
     <p class="main-content__body" data-lead-id="main-content-body">Something went wrong we are sorry! <br>Please try again </p>
 </div>
 
-
+<%@ include file="ooter.jsp" %>
 </body>
 </html>

@@ -13,6 +13,7 @@
     </head>
 
 <body class="main-layout col-12">
+<%@ include file="header.jsp" %>
 <div class="container-xl px-4 mt-4 col-12 justify-content-center">
 
 
@@ -101,6 +102,6 @@
     </div>
 </div>
 </div>
-
+<%@ include file="footer.jsp" %>
 </body>
 </html>

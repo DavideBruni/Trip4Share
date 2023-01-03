@@ -264,5 +264,33 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     public void deleteUser(RegisteredUser u) throws Neo4jException {
         deleteAllFollowingRelationshipRegisteredUser(u);
         deleteAllFutureOrganizedTrip(u);
+        if(!incidentEdges(u)){
+            try (Session session = getConnection().session()) {
+                session.writeTransaction(tx -> {
+                    tx.run("MATCH (x:RegisteredUser {username: $username}) " +
+                                    "DELETE x",
+                            parameters("username", u.getUsername())).consume();
+                    return null;
+                });
+
+            }catch (Exception e){
+                throw new Neo4jException(e.getMessage());
+            }
+        }
+    }
+
+    private boolean incidentEdges(RegisteredUser u) throws Neo4jException {
+        try (Session session = getConnection().session()) {
+                Boolean flag = session.readTransaction(tx -> {
+                    Result r = tx.run("MATCH (r:RegisteredUser {username: $username})-[]->(), (r)<-[]-() " +
+                                    "RETURN r LIMIT 1",
+                            parameters("username", u.getUsername()));
+                    return r.hasNext();
+                });
+                return flag;
+        }catch (Exception e){
+            throw new Neo4jException(e.getMessage());
+        }
+
     }
 }

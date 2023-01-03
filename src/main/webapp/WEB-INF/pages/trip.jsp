@@ -22,7 +22,7 @@
     <title><%= trip.getTitle() %></title>
 </head>
 
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
 
 
 <body class="tripbgd">
@@ -168,8 +168,9 @@
                 if(username.equals(trip.getOrganizer())){
             %>
             <div class="row">
-            <a class="text-right btn btn-primary bottone" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
-            <a class="text-right btn btn-primary bottone" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
+            <a class="text-right btn btn-primary bottone ml-3" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
+            <a class="text-right btn btn-primary bottone ml-3" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
+            <a class="text-right btn btn-primary bottone ml-3" href="#" >View Pending Requests</a>
             </div>
             <% }%>
         </div>

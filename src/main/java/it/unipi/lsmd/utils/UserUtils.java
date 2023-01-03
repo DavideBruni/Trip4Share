@@ -45,6 +45,7 @@ public interface UserUtils {
         user.setName(result.getString("name"));
         user.setSurname(result.getString("surname"));
         user.setEmail(result.getString("email"));
+        user.setPassword(result.getString("password"));
 
         return user;
     }
@@ -84,6 +85,7 @@ public interface UserUtils {
         authenticatedUserDTO.setFirstName(user_model.getName());
         authenticatedUserDTO.setLastName(user_model.getSurname());
         authenticatedUserDTO.setEmail(user_model.getEmail());
+        authenticatedUserDTO.setPassword(user_model.getPassword());
 
         return authenticatedUserDTO;
     }

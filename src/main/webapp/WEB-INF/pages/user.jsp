@@ -57,7 +57,7 @@
                             <%}else{%>
                         <div class="row justify-content-center">
                             <a href="updateProfile" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Edit Profile</a>
-                            <a href="javascript:void(0)" class="m-t-10 ml-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Create new trip</a>
+                            <a href="addTrip" class="m-t-10 ml-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded" data-abc="true">Create new trip</a>
                             <a class="text-right btn btn-primary bottone" href="deleteProfile" >Delete your profile</a>
                         </div>
                         <%}%>
@@ -83,7 +83,7 @@
 
                 <h4 class="m-t-10"> Nationality: <%=user.getNationality()%> </h4>
                 <h4 class="m-t-10"> Spoken Languages: <%=user.getSpokenLanguages()%> </h4>
-                <h4 class="m-t-10"> Bio</h4>
+
             </div>
         </div>
     </div>

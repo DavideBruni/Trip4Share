@@ -13,6 +13,7 @@
     <title>Home</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
 <%
     List<TripSummaryDTO> trips = (List<TripSummaryDTO>) request.getAttribute("trips");
     List<OtherUserDTO> suggested = (List<OtherUserDTO>) request.getAttribute("suggested");
@@ -39,6 +40,6 @@ Username:
     }
 %>
 
-
+<%@ include file="footer.jsp" %>
 </body>
 </html>

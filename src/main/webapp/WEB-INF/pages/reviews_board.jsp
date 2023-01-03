@@ -16,18 +16,18 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="css/style.css">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <!-- style css -->
-    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="WebContent/css/profile.css">
+    <link rel="stylesheet" href="WebContent/css/style.css">
 
     <title>Reviews</title>
 </head>
 <body>
 
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
 
 <div id="wrapper">
 
@@ -78,6 +78,17 @@
                                     <small><%=reviews.get(i).getDate()%></small>
                                     <small><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></small>
                                 </div><!-- end meta -->
+
+                                <% if(reviews.get(i).getAuthor() == authenticatedUserDTO.getUsername()){ %>
+
+                                <div class="row">
+                                    <a class="text-right btn btn-primary bottone" href="#" >Delete review</a>
+                                    <a class="text-right btn btn-primary bottone" href="#" >Edit review</a>
+                                </div>
+
+                                <%}%>
+
+
                                 <%
                                         }
                                 %>
@@ -160,7 +171,7 @@
 
 </div><!-- end wrapper -->
 
-<%@ include file="/WEB-INF/pages/footer.jsp" %>
+<%@ include file="footer.jsp" %>
 
 
 <!-- Core JavaScript

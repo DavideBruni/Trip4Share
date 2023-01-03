@@ -17,13 +17,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title> Search </title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="WebContent/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 
 
 <body class="main-layout ">
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
 
 <div class="main-form .form-horizontal" >
     <div class="titlepage">
@@ -145,7 +145,7 @@
 
 </div>
 
-<%@ include file="/WEB-INF/pages/footer.jsp" %>
+<%@ include file="footer.jsp" %>
 
 </body>
 
