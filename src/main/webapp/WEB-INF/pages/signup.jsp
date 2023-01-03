@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="css/signup.css">
+    <link rel="stylesheet" href="WebContent/css/signup.css">
 </head>
 <body>
 
