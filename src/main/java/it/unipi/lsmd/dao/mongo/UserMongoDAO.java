@@ -61,7 +61,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     public RegisteredUser getUser(String username) {
 
         Bson query = eq("username", username);
-        Bson projection = fields(exclude("email", "password"), slice("reviews", 0, PagesUtilis.REVIEWS_IN_USER_PROFILE));
+        Bson projection = fields(exclude("password"), slice("reviews", 0, PagesUtilis.REVIEWS_IN_USER_PROFILE));
         Document result = collection.find(query).projection(projection).first();
         User u = UserUtils.userFromDocument(result);
         if(u instanceof Admin){
@@ -122,8 +122,8 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
     @Override
     public String createUser(User u){
-        Document doc =UserUtils.documentFromUser(u);
-        if(doc!=null){
+        Document doc = UserUtils.documentFromUser(u);
+        if(doc != null){
             try{
                 return collection.insertOne(doc).getInsertedId().asObjectId().getValue().toString();
             }catch(DuplicateKeyException de){
@@ -138,7 +138,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
     @Override
     public boolean deleteUser(User u){
         try {
-            Bson q1 = eq("username",u.getUsername());
+            Bson q1 = eq("username", u.getUsername());
             collection.deleteOne(q1);
         }catch(MongoException me){
             return false;
@@ -154,7 +154,6 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             // Document q1 = new Document().append("_id", new ObjectId(new_user.getUsername()));
 
             Bson q1 = eq("username",new_user.getUsername());
-
             Bson q2 = attributeToUpdate(new_user, old_user);
             collection.updateOne(q1, q2);
             return true;
@@ -162,6 +161,50 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             return false;
         }
     }
+
+    @Override
+    public boolean updateAdmin(Admin new_user, Admin old_user) {
+        try {
+
+            Bson q1 = eq("username",new_user.getUsername());
+            Bson q2 = attributeToUpdate(new_user, old_user);
+            collection.updateOne(q1, q2);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+    private Bson attributeToUpdate(User new_user, User old_user){
+
+        List<Bson> query = new ArrayList<>();
+        if(!new_user.getName().equals("") && !new_user.getName().equals(old_user.getName()))
+            query.add(Updates.set("name", new_user.getName()));
+        if(!new_user.getSurname().equals("") && !new_user.getSurname().equals(old_user.getSurname()))
+            query.add(Updates.set("surname", new_user.getSurname()));
+        if(!new_user.getEmail().equals("") && !new_user.getEmail().equals(old_user.getEmail()))
+            query.add(Updates.set("email", new_user.getEmail()));
+        if(new_user.getPassword() != null && !new_user.getPassword().equals(old_user.getPassword()))
+            query.add(Updates.set("password", new_user.getPassword()));
+        //if(! new_user.getProfile_pic().equals(old_user.getProfile_pic()))
+            //query.add(Updates.set("img_url", new_user.getProfile_pic()));
+
+        if(new_user instanceof RegisteredUser && old_user instanceof RegisteredUser){
+            //if(((RegisteredUser) new_user).getBio().equals(((RegisteredUser) old_user).getBio()))
+                //query.add(Updates.set("bio", ((RegisteredUser) new_user).getBio()));
+
+            if(((RegisteredUser) new_user).getBirthdate() != null && ((RegisteredUser) new_user).getBirthdate() != ((RegisteredUser) old_user).getBirthdate())
+                query.add(Updates.set("birthdate", ((RegisteredUser) new_user).getBirthdate()));
+            if(!((RegisteredUser) new_user).getNationality().equals(((RegisteredUser) old_user).getNationality()))
+                query.add(Updates.set("nationality", ((RegisteredUser) new_user).getNationality()));
+            if(! ((RegisteredUser) new_user).getSpoken_languages().equals(((RegisteredUser) old_user).getSpoken_languages()))
+                query.add(Updates.set("spoken_languages", ((RegisteredUser) new_user).getSpoken_languages()));
+        }
+
+        return Updates.combine(query);
+    }
+
+    /*
     private Bson attributeToUpdate(RegisteredUser new_user, RegisteredUser old_user){
         List<Bson> query = new ArrayList<>();
         if(new_user.getBio()!=old_user.getBio()){
@@ -191,6 +234,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         query.add(Updates.set("password",new_user.getPassword()));
         return Updates.combine(query);
     }
+    */
 
     @Override
     public boolean putReview(Review review, RegisteredUser to) {

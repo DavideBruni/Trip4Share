@@ -173,17 +173,27 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser){
+    public boolean updateUser(AuthenticatedUserDTO newUser, AuthenticatedUserDTO oldUser){
         // fonte: https://www.mongodb.com/community/forums/t/updateone-vs-replaceone-performance/698
         // better update only few attributes instead of the entire document
-        if(newUser.getUsername()==oldUser.getUsername()){
-            RegisteredUser r_new = UserUtils.registeredUserFromDTO(newUser);
-            RegisteredUser r_old = UserUtils.registeredUserFromDTO(oldUser);
-            return DAOLocator.getUserDAO().updateRegisteredUser(r_new,r_old);
 
-        }else
+        if(newUser instanceof RegisteredUserDTO && oldUser instanceof RegisteredUserDTO){
+            if(newUser.getUsername().equals(oldUser.getUsername())){
+                RegisteredUser r_new = UserUtils.registeredUserFromDTO((RegisteredUserDTO) newUser);
+                RegisteredUser r_old = UserUtils.registeredUserFromDTO((RegisteredUserDTO) oldUser);
+                return userDAO.updateRegisteredUser(r_new,r_old);
+            }else{
+                return false;
+            }
+        }else if(newUser instanceof AdminDTO && oldUser instanceof AdminDTO){
+            if(newUser.getUsername().equals(oldUser.getUsername())){
+                return userDAO.updateAdmin(UserUtils.adminFromDTO((AdminDTO) newUser), UserUtils.adminFromDTO((AdminDTO) oldUser));
+            }else{
+                return false;
+            }
+        }else{
             return false;
-
+        }
     }
 
     @Override
@@ -198,6 +208,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(String username) {
         RegisteredUser user = new RegisteredUser(username);
+        // TODO - remove from redis
+
         if(userDAO.deleteUser(user)){
             try{
                 registeredUserDAO.deleteUser(user);

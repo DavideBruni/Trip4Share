@@ -66,7 +66,7 @@
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLocation">Password</label>
-                                <input   class="form-control" id="inputLocation" type="password" name="password" value=<%=user.getPassword()%>>
+                                <input   class="form-control" id="inputLocation" type="password" name="password" value="password">
                             </div>
                         </div>
                         <!-- Form Group (email address)-->
@@ -90,7 +90,7 @@
                             <!-- Form Group (birthday)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputBirthday">Birthdate</label>
-                                <input   class="form-control" id="inputBirthday" type="date" name="birthDate" value=<%=user.getBirthday()%>>
+                                <input   class="form-control" id="inputBirthday" type="date" name="birthDate" value=<%=user.getBirthdate()%>>
                             </div>
                         </div>
                         <!-- Save changes button-->

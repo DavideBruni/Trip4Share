@@ -30,7 +30,7 @@ public interface UserService {
     List<ReviewDTO> getReviews(String username, int limit, int page);
     double getRating(String username);
 
-    boolean updateUser(RegisteredUserDTO newUser, RegisteredUserDTO oldUser);
+    boolean updateUser(AuthenticatedUserDTO newUser, AuthenticatedUserDTO oldUser);
 
     String signup(AuthenticatedUserDTO user);
 

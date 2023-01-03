@@ -45,7 +45,7 @@ public class SignupServlet extends HttpServlet {
             user.setUsername(username);
             user.setEmail(email);
             user.setPassword(password);
-            user.setBirthday(httpServletRequest.getParameter("birthday"));
+            user.setBirthdate(LocalDate.parse(httpServletRequest.getParameter("birthday")));
             String nationality = httpServletRequest.getParameter("nationality");
             user.setNationality(nationality);
             String listOfSpokenLanguages = httpServletRequest.getParameter("languages");
@@ -82,9 +82,9 @@ public class SignupServlet extends HttpServlet {
         r.setNationality(user.getNationality());
         r.setSpokenLanguages(user.getSpokenLanguages());
         try {
-            r.setBirthdate(LocalDate.parse(user.getBirthday()));
+            r.setBirthdate(user.getBirthdate());
         }catch(Exception e){
-            r.setBirthday(null);
+            r.setBirthdate(null);
         }
         r.setId(user.getId());
         return r;
