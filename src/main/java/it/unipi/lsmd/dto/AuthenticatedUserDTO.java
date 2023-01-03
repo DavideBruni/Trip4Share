@@ -5,7 +5,7 @@ import java.util.Date;
 
 public abstract class AuthenticatedUserDTO {
 
-    private String id;
+    private String id;  // TODO - togliere
     private String username;
     private String firstName;
     private String lastName;
@@ -59,4 +59,15 @@ public abstract class AuthenticatedUserDTO {
         this.lastName = lastName;
     }
 
+    @Override
+    public String toString() {
+        return "AuthenticatedUserDTO{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

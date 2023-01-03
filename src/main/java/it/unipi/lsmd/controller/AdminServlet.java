@@ -15,10 +15,6 @@ import java.io.IOException;
 @WebServlet("/admin")
 public class AdminServlet  extends HttpServlet {
 
-    RequestDispatcher addAdmin(){
-        return null;
-    }
-
     RequestDispatcher removeAdmin(){
         return null;
     }
@@ -43,13 +39,6 @@ public class AdminServlet  extends HttpServlet {
 
         RequestDispatcher requestDispatcher = null;
         String targetJSP = "/WEB-INF/pages/admin.jsp";
-
-        String action = httpServletRequest.getParameter("action");
-        if(action != null & action.equals("search")){
-            //requestDispatcher = searchUser();
-        }
-
-
 
         requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);

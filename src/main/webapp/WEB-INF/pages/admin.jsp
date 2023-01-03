@@ -59,8 +59,8 @@
                         <div class="limit-box">
                             <nav class="main-menu">
                                 <ul class="menu-area-main">
-                                    <li><a href="#contact">Search Users</a></li>
-                                    <li><a href="#contact">Add a new Admin</a></li>
+                                    <li><a href="management/banUser">Ban Users</a></li>
+                                    <li><a href="management/addAdmin">Add a new Admin</a></li>
                                     <li><a href="logout">Logout</a></li>
                                 </ul>
                             </nav>
@@ -112,7 +112,7 @@
                             <!-- Form Group (organization name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" >Password</label>
-                                <input disabled class="form-control" type="password" value="<%=admin.getPassword()%>">
+                                <input disabled class="form-control" type="password" value="password">
                             </div>
                             <!-- Form Group (location)-->
                             <div class="mb-3">
@@ -121,85 +121,11 @@
                             </div>
                         </div>
                         <!-- Save changes button-->
-                        <a class="btn btn-primary" type="button" href="modify_admin">Modify Information</a>
+                        <a class="btn btn-primary" type="button" href="updateProfile">Modify Information</a>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="titlepage">
-    <h3 > Create a new Admin </h3>
-</div>
-
-<!-- Creazione Nuovo Admin -->
-<div class="container-xl px-4 mt-4 col-12 justify-content-center">
-
-
-
-
-    <div class="row justify-content-center pdn-top-30">
-        <div class="col-xl-8 justify-content-center">
-            <!-- Account details card-->
-            <div class="card mb-4">
-                <div class="card-header">Account Details</div>
-                <div class="card-body">
-                    <form action="createadmin">
-                        <!-- Form Group (username)-->
-                        <div class="mb-3">
-                            <label class="small mb-1">Username (how your name will appear to other users on the site)</label>
-                            <input disabled class="form-control"  type="text" placeholder="Enter your username">
-                        </div>
-                        <!-- Form Row-->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (first name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1">First name</label>
-                                <input disabled class="form-control" id="newAdminFirstName" type="text" placeholder="Valerie">
-                            </div>
-                            <!-- Form Group (last name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" >Last name</label>
-                                <input disabled class="form-control" id="newAdminLastName" type="text" placeholder="Luna">
-                            </div>
-                        </div>
-                        <!-- Form Row        -->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (organization name)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1">Password</label>
-                                <input disabled class="form-control" id="newAdminPassword" type="password" placeholdere="Start Bootstrap">
-                            </div>
-                            <!-- Form Group (location)-->
-                            <div class="mb-3">
-                                <label class="small mb-1">Email address</label>
-                                <input disabled class="form-control" id="NewAdminEmailAddress" type="email" placeholder="name@example.com">
-                            </div>
-                        </div>
-                        <!-- Save changes button-->
-                        <button class="btn btn-primary" type="submit" >Modify Information</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Ricerca Utenti -->
-
-<div class="titlepage">
-    <h3 > Ricerca utenti </h3>
-</div>
-
-<div class=" pdn-top-30 row">
-    <div class=" col-4"></div>
-    <div class="col-4 justify-content-center">
-        <form action="search">
-            <label >Insert username</label>
-            <input  class="form-control" placeholder="" type="text" name="" size="50">
-            <button class="btn btn-primary pull-right mr-5" type="button">Cerca</button>
-    </form>
     </div>
 </div>
 

@@ -10,7 +10,6 @@ import java.util.List;
 public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     private String nationality;
-    private String birthday;
     private List<String> spokenLanguages;
     private String phone;
     private List<ReviewDTO> reviews;
@@ -19,20 +18,11 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
     private LocalDate birthdate;
     private String bio;
     private double avg_rating;
-
     private boolean isFriend;
 
     public RegisteredUserDTO(){
         spokenLanguages = new ArrayList<String>();
         reviews = new ArrayList<ReviewDTO>();
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
     }
 
     public String getBio() {
@@ -117,5 +107,27 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     public void setFriend(boolean friend) {
         isFriend = friend;
+    }
+
+    @Override
+    public String toString() {
+        return "RegisteredUserDTO{" +
+                "id='" + getId() + '\'' +
+                ", username='" + getUsername() + '\'' +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", password='" + getPassword() + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", spokenLanguages=" + spokenLanguages +
+                ", phone='" + phone + '\'' +
+                ", reviews=" + reviews +
+                ", n_followers=" + n_followers +
+                ", n_following=" + n_following +
+                ", birthdate=" + birthdate +
+                ", bio='" + bio + '\'' +
+                ", avg_rating=" + avg_rating +
+                ", isFriend=" + isFriend +
+                '}';
     }
 }

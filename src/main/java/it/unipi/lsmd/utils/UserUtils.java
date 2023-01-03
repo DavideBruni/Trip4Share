@@ -95,18 +95,18 @@ public interface UserUtils {
         try{
             Document doc = new Document();
             doc.append("username",u.getUsername());
-            doc.append("append",u.getName());
+            doc.append("name",u.getName());
             doc.append("surname",u.getSurname());
             doc.append("email",u.getEmail());
             doc.append("password",u.getPassword());
             doc.append("type",u.getRole());
 
             if(u instanceof RegisteredUser){
-                ((RegisteredUser) u).getNationality();
-                ((RegisteredUser) u).getSpoken_languages();
-                ((RegisteredUser) u).getBirthdate();
-                ((RegisteredUser) u).getPhone();
-                ((RegisteredUser) u).getBio();
+                doc.append("nationality", ((RegisteredUser) u).getNationality());
+                doc.append("spoken_languages", ((RegisteredUser) u).getSpoken_languages());
+                doc.append("birthdate", ((RegisteredUser) u).getBirthdate());
+                // doc.append("phone", ((RegisteredUser) u).getPhone());
+                //doc.append("bio", ((RegisteredUser) u).getBio());   // TODO - se serve lo mettiamo
             }
             return doc;
         }catch(NullPointerException ne){
@@ -124,8 +124,9 @@ public interface UserUtils {
         r.setNationality(user.getNationality());
         r.setSpoken_languages(user.getSpokenLanguages());
         try {
-            r.setBirthdate(LocalDate.parse(user.getBirthday()));
-        }catch(NullPointerException ne){
+            r.setBirthdate(user.getBirthdate());
+        }catch(Exception e){
+            System.out.println(e);
             r.setBirthdate(null);
         }
         return r;
@@ -138,6 +139,7 @@ public interface UserUtils {
         a.setSurname(u.getLastName());
         a.setEmail(u.getEmail());
         a.setPassword(u.getPassword());
+        a.setRole("admin");
         return a;
     }
 

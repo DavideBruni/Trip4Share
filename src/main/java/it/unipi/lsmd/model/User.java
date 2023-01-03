@@ -9,7 +9,6 @@ public abstract class User {
     private String email;
     private String password;    // TODO - useless?
     private String role;        // TODO - useless?
-
     private String profile_pic;
 
     public User(){}
@@ -72,5 +71,18 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", profile_pic='" + profile_pic + '\'' +
+                '}';
     }
 }
