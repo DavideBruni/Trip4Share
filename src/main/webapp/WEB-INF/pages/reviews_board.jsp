@@ -78,6 +78,17 @@
                                     <small><%=reviews.get(i).getDate()%></small>
                                     <small><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></small>
                                 </div><!-- end meta -->
+
+                                <% if(reviews.get(i).getAuthor() == authenticatedUserDTO.getUsername()){ %>
+
+                                <div class="row">
+                                    <a class="text-right btn btn-primary bottone" href="#" >Delete review</a>
+                                    <a class="text-right btn btn-primary bottone" href="#" >Edit review</a>
+                                </div>
+
+                                <%}%>
+
+
                                 <%
                                         }
                                 %>
