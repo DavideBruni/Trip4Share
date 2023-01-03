@@ -11,4 +11,5 @@ public interface WishlistDAO {
     Boolean removeFromWishlist(String username, String trip_id);
     ArrayList<Trip> getUserWishlist(String username, int size, int page);
     LocalDateTime getUpdateTime(String username, String trip_id);
+    void flushWishlist(String username);
 }

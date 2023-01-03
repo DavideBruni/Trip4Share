@@ -78,7 +78,6 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
         return trips;
     }
 
-
     @Override
     public LocalDateTime getUpdateTime(String username, String trip_id) {
         try(Jedis jedis = getConnection()){
@@ -90,5 +89,18 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
         }catch (Exception e){
             return null;
         }
+    }
+
+    @Override
+    public void flushWishlist(String username) {
+        // TODO - non testata
+        String key = REDIS_APP_NAMESPACE + ":" + username + ":*";
+        try(Jedis jedis = getConnection()){
+            Set<String> keys = jedis.keys(key);
+            for(String k : keys){
+                jedis.del(k);
+            }
+        }
+
     }
 }
