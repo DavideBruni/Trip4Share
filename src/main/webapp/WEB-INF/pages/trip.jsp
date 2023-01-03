@@ -17,19 +17,29 @@
 
     <%
         TripDetailsDTO trip = (TripDetailsDTO) request.getAttribute("trip");
+        if(trip != null){
     %>
-
-    <title><%= trip.getTitle() %></title>
+        <title><%= trip.getTitle() %></title>
+    <%
+        }else{
+    %>
+        <title>Trip Not Found</title>
+    <%
+        }
+    %>
 </head>
 
-<%@ include file="header.jsp" %>
 
 
 <body class="tripbgd">
 
+<%@ include file="header.jsp" %>
+
+
+<%
+    if(trip != null){
+%>
 <div class="col-sm-9 mx-auto border border-4 mt-4 tripbgd2 ">
-
-
 
     <!-- Receipe Content Area -->
     <div class="main-form">
@@ -197,9 +207,19 @@
 
     </div>
 
+
+</div>
+<%
+}else{
+%>
+
+<div class="titlepage">
+    <h2>Trip not found!</h2>
 </div>
 
-
+<%
+    }
+%>
 <%@include file="footer.jsp"%>
 </body>
 

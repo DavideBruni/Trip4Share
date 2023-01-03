@@ -64,6 +64,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         Bson projection = fields(exclude("password"), slice("reviews", 0, PagesUtilis.REVIEWS_IN_USER_PROFILE));
         Document result = collection.find(query).projection(projection).first();
         User u = UserUtils.userFromDocument(result);
+        // TODO what if username is not found?
         if(u instanceof Admin){
             return null;
         }else{

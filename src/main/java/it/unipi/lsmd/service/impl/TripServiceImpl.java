@@ -67,6 +67,9 @@ public class TripServiceImpl implements TripService {
     public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
 
+        if(trip == null)
+            return null;
+
         try {
             trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
         } catch (Neo4jException e) {
@@ -308,6 +311,7 @@ public class TripServiceImpl implements TripService {
     public boolean deleteTrip(String id) {
         Trip trip = tripDetailsDAO.getTrip(id);
         if(trip!= null && LocalDate.now().isBefore(trip.getDepartureDate())){
+
             try {
                 tripDAO.deleteTrip(trip);
                 if (tripDetailsDAO.deleteTrip(trip)) {

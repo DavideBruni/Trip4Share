@@ -33,6 +33,7 @@ public class TripServlet extends HttpServlet {
         String trip_id = httpServletRequest.getParameter("id");
 
         TripDetailsDTO trip = tripService.getTrip(trip_id);
+
         if(authenticatedUserDTO != null) {
             LocalDateTime last_update = tripService.wishlistUpdateTime(authenticatedUserDTO.getUsername(), trip.getId());
             if(last_update == null)
@@ -52,7 +53,7 @@ public class TripServlet extends HttpServlet {
 
             } catch (NullPointerException e) {
             }
-            httpServletRequest.setAttribute(SecurityUtils.STATUS,tripService.getJoinStatus(trip_id,authenticatedUserDTO.getUsername()));
+            httpServletRequest.setAttribute(SecurityUtils.STATUS, tripService.getJoinStatus(trip_id,authenticatedUserDTO.getUsername()));
         }
         httpServletRequest.setAttribute(SecurityUtils.TRIP, trip);
 

@@ -32,6 +32,7 @@ public class SecurityUtils {
     public static final String SUGGESTIONS_EXPLORE = "aggregation_explore";
     public static final String SUGGESTIONS_EXPLORE_TITLE = "suggestions_explore_title";
     public static final String TRIP = "trip";
+    public static final String USER = "user";
     public static final String MODIFY_FLAG = "modify_trip";
     public static final String ERROR_MESSAGE = "error_message";
 

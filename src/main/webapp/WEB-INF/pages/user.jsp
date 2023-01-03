@@ -23,14 +23,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <%
-        RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
+        RegisteredUserDTO user = (RegisteredUserDTO) request.getAttribute(SecurityUtils.USER);
+        if(user != null){
     %>
-    <title><%= user.getUsername() %>'s Profile</title>
+        <title><%= user.getUsername() %>'s Profile</title>
+    <%
+        }else{
+    %>
+        <title>User Not Found</title>
+    <%
+        }
+    %>
+
 
 </head>
 
 <body>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+
+<%
+    if(user != null){
+%>
 
 <div class="padding justify-content-center">
     <div >
@@ -111,51 +124,50 @@
         }
     %>
 </ul>
-    <div class="tab-pane show active"  role="tabpanel">
-        <div class="container" >
-            <hr class="invis3">
-            <div class = "row justify-content-center ">
 
-                <%
-                    if(user.getReviews().size() > 0){
-                        for(int i = 0; i < PagesUtilis.REVIEWS_IN_USER_PROFILE && i < user.getReviews().size(); i++){
-                            ReviewDTO reviewDTO = user.getReviews().get(i);
-                %>
-                <div class="card" style="width: 18rem;">
+<div class="tab-pane show active"  role="tabpanel">
+    <div class="container" >
+        <hr class="invis3">
+        <div class = "row justify-content-center ">
 
-                    <div class="card-body">
-                        <h4 class="card-title white"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h4>
-                        <p class="card-text"><%= reviewDTO.getText() %></p>
-                        <a href=<%="user?username=" + reviewDTO.getAuthor() %>><%= reviewDTO.getAuthor() %></a>
-                    </div>
+            <%
+                if(user.getReviews().size() > 0){
+                    for(int i = 0; i < PagesUtilis.REVIEWS_IN_USER_PROFILE && i < user.getReviews().size(); i++){
+                        ReviewDTO reviewDTO = user.getReviews().get(i);
+            %>
+            <div class="card" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h4 class="card-title white"><%= reviewDTO.getRating() %> - <%= reviewDTO.getTitle() %></h4>
+                    <p class="card-text"><%= reviewDTO.getText() %></p>
+                    <a href=<%="user?username=" + reviewDTO.getAuthor() %>><%= reviewDTO.getAuthor() %></a>
                 </div>
-                <%      }
-                    }else{
-                %>
-                    No Reviews found!
-                <%
-                    }
-                %>
             </div>
-            <hr class="invis3">
-            <div class="row">
-                <div class="col-md-12">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item"><a class="page-link" href=<%="user?username="+user.getUsername()+"&show=reviews"%>>View More</a></li>
-                        </ul>
-                    </nav>
-                </div><!-- end col -->
-            </div><!-- end row -->
-
-
+            <%      }
+                }else{
+            %>
+                No Reviews found!
+            <%
+                }
+            %>
         </div>
+        <hr class="invis3">
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item"><a class="page-link" href=<%="user?username="+user.getUsername()+"&show=reviews"%>>View More</a></li>
+                    </ul>
+                </nav>
+            </div><!-- end col -->
+        </div><!-- end row -->
+
 
     </div>
 
 </div>
 
-<%@ include file="/WEB-INF/pages/footer.jsp" %>
+
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
     $(document).on("click", "#follow_button", function() {
@@ -178,5 +190,19 @@
         });
     });
 </script>
+
+<%
+    }else{
+%>
+
+<div class="titlepage">
+    <h2>User not found!</h2>
+</div>
+
+<%
+    }
+%>
+
+<%@ include file="/WEB-INF/pages/footer.jsp" %>
 
 </body>

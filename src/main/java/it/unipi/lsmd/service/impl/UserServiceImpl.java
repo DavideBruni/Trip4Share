@@ -30,19 +30,36 @@ public class UserServiceImpl implements UserService {
     public AuthenticatedUserDTO authenticate(String username, String password){
 
         User user = userDAO.authenticate(username, password);
+        AuthenticatedUserDTO authenticatedUserDTO = null;
+
         if(user instanceof RegisteredUser){
-            ((RegisteredUser) user).setAvg_rating(userDAO.avgRating(username));
+            RegisteredUserDTO registeredUserDTO = (RegisteredUserDTO) UserUtils.userModelToDTO(user);
+            registeredUserDTO.setAvg_rating(userDAO.avgRating(username));
+            registeredUserDTO.setN_following(registeredUserDAO.getNumberOfFollowing(username));
+            registeredUserDTO.setN_followers(registeredUserDAO.getNumberOfFollower(username));
+            authenticatedUserDTO = registeredUserDTO;
+        }else{
+            AdminDTO adminDTO = (AdminDTO) UserUtils.userModelToDTO(user);
+            authenticatedUserDTO = adminDTO;
         }
-        return UserUtils.userModelToDTO(user);
+
+        return authenticatedUserDTO;
     }
 
 
     @Override
-    public AuthenticatedUserDTO getUser(String username){
+    public RegisteredUserDTO getUser(String username, String me){
         RegisteredUser user = userDAO.getUser(username);
-        if(user != null)
-            user.setAvg_rating(userDAO.avgRating(username));
-        return UserUtils.userModelToDTO(user);
+        if(user == null)
+            return null;
+
+        user.setAvg_rating(userDAO.avgRating(username));
+        RegisteredUserDTO registeredUser = (RegisteredUserDTO) UserUtils.userModelToDTO(user);
+        registeredUser.setN_following(registeredUserDAO.getNumberOfFollowing(username));
+        registeredUser.setN_followers(registeredUserDAO.getNumberOfFollower(username));
+        registeredUser.setFriend(isFriend(me, username));
+
+        return registeredUser;
     }
 
     @Override

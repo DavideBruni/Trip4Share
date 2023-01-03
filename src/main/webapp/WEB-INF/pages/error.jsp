@@ -43,6 +43,6 @@
     <p class="main-content__body" data-lead-id="main-content-body">Something went wrong we are sorry! <br>Please try again </p>
 </div>
 
-<%@ include file="ooter.jsp" %>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

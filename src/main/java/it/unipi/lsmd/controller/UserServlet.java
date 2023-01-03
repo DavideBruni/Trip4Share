@@ -84,6 +84,12 @@ public class UserServlet extends HttpServlet {
             httpServletResponse.sendRedirect("login");
             return;
         }
+
+        if(authenticatedUserDTO instanceof AdminDTO){
+            httpServletResponse.sendRedirect("admin");
+            return;
+        }
+
         RequestDispatcher requestDispatcher = null;
         String me = authenticatedUserDTO.getUsername();
         String username = httpServletRequest.getParameter("username");
@@ -93,14 +99,9 @@ public class UserServlet extends HttpServlet {
 
         // if it's not user's own profile
         if (!itsMe) {
-            authenticatedUserDTO = userService.getUser(username);
-            ((RegisteredUserDTO)authenticatedUserDTO).setFriend(userService.isFriend(me, username));
+            authenticatedUserDTO = userService.getUser(username, me);
             httpServletRequest.setAttribute("itsMe", false);
         }
-
-        ((RegisteredUserDTO) authenticatedUserDTO).setN_followers(userService.getFollowersNumber(authenticatedUserDTO.getUsername()));
-        ((RegisteredUserDTO) authenticatedUserDTO).setN_following(userService.getFollowingNumber(authenticatedUserDTO.getUsername()));
-        ((RegisteredUserDTO) authenticatedUserDTO).setAvg_rating(userService.getRating(authenticatedUserDTO.getUsername()));
 
         String show = httpServletRequest.getParameter("show");
         String action = httpServletRequest.getParameter("action");
@@ -120,6 +121,8 @@ public class UserServlet extends HttpServlet {
                 requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
             } else if (show.equals("following")) {
                 requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
+            }else{
+                requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
             }
         }else if(!itsMe && action!=null){
             if (action.equals("follow")) {
@@ -133,10 +136,10 @@ public class UserServlet extends HttpServlet {
                 httpServletResponse.getWriter().write(unfollowUser(me,username));
                 return;
             }
-            httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
+            httpServletRequest.setAttribute(SecurityUtils.USER, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
         }else{
-            httpServletRequest.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
+            httpServletRequest.setAttribute(SecurityUtils.USER, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
         }
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
