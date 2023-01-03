@@ -23,7 +23,7 @@
 
 
 <body class="main-layout ">
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
 
 <div class="main-form .form-horizontal" >
     <div class="titlepage">
@@ -145,7 +145,7 @@
 
 </div>
 
-<%@ include file="/WEB-INF/pages/footer.jsp" %>
+<%@ include file="footer.jsp" %>
 
 </body>
 

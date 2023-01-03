@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="WebContent/css/signup.css">
 </head>
 <body>
-
+<%@ include file="header.jsp" %>
     <div class="main-layout">
 
         <!-- Sign up form -->
@@ -74,5 +74,6 @@
     <!-- JS -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="js/main.js"></script>
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+<%@ include file="footer.jsp" %>
+</body>
 </html>

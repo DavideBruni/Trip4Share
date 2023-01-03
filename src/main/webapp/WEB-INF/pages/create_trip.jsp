@@ -18,6 +18,7 @@
 
 
 <body class="tripbgd main-form">
+<%@ include file="header.jsp" %>
 <% Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
   TripDetailsDTO t = null;
 if(flag!=null){
@@ -220,7 +221,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
   </div>
 </form>
 
-
+            <%@ include file="footer.jsp" %>
 
 </body>
 

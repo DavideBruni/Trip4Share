@@ -27,7 +27,7 @@
     <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/html5shiv.js"></script>
 
 </head>
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
 <body class="bg-success text-white">
 <div class="col-12 ">
     <div class="site-header" id="header">
@@ -42,6 +42,6 @@
     </div>
 
 </div>
-<%@ include file="/WEB-INF/pages/footer.jsp" %>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

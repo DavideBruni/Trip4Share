@@ -83,7 +83,7 @@
 
                 <h4 class="m-t-10"> Nationality: <%=user.getNationality()%> </h4>
                 <h4 class="m-t-10"> Spoken Languages: <%=user.getSpokenLanguages()%> </h4>
-                <h4 class="m-t-10"> Bio</h4>
+
             </div>
         </div>
     </div>

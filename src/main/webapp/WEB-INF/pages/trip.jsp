@@ -22,7 +22,7 @@
     <title><%= trip.getTitle() %></title>
 </head>
 
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
 
 
 <body class="tripbgd">

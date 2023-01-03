@@ -28,7 +28,7 @@
     <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/html5shiv.js"></script>
 
 </head>
-<%@ include file="/WEB-INF/pages/header.jsp" %>
+<%@ include file="header.jsp" %>
 <body class="main-layout bg-danger text-white">
 <div class="site-header" id="header">
     <h1 class="site-header__title" data-lead-id="site-header-title">OOOPS!</h1>
@@ -41,6 +41,6 @@
     <p class="main-content__body" data-lead-id="main-content-body">Something went wrong we are sorry! <br>Please try again </p>
 </div>
 
-<%@ include file="/WEB-INF/pages/footer.jsp" %>
+<%@ include file="footer.jsp" %>
 </body>
 </html>
