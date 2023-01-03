@@ -117,7 +117,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         AggregateIterable<Document> res;
         if (page != 1) {
-            Bson s1 = skip((page - 1) * size);  // TODO - mi sa che e' (page-1)*(size-1)
+            Bson s1 = skip((page - 1) * size);
             res = collection.aggregate(Arrays.asList(m1, srt, s1, l1,  p1));
         } else {
             res = collection.aggregate(Arrays.asList(m1, srt, l1, p1));
