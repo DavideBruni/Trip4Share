@@ -248,18 +248,19 @@ public class TripServiceImpl implements TripService {
     @Override
     public  List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch) {
         LocalDate depDate;
-        LocalDate retDate = null;
-
-        try{
-            depDate = LocalDate.parse(start);
-            retDate = LocalDate.parse(end);
-        }catch (DateTimeParseException e){
-            System.out.println("No date available");
-            // TODO - gestirla in qualche modo?
-            return null;
+        LocalDate retDate;
+        try {
+            depDate =LocalDate.parse(start);
+            try{
+                retDate = LocalDate.parse(end);
+            }catch (Exception ex){
+                retDate=null;
+            }
+        } catch (Exception e) {
+            depDate = LocalDate.now();
+            retDate=null;
         }
-
-        List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate, retDate, page, objectPerPageSearch);
+        List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,page, objectPerPageSearch);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);

@@ -79,7 +79,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
         <label class="small mb-1" >Departure Date</label>
         <% if (t!=null && t.getDepartureDate()!=null){%>
         <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getDepartureDate()%>" required>
-        <%}else{%>this.type='date')"
+        <%}else{%>
         <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
         <% } %>
       </div>
@@ -88,7 +88,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
         <label class="small mb-1" >Return date</label>
         <% if (t!=null && t.getReturnDate()!=null){%>
         <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
-        <%}else{%>this.type='date')"
+        <%}else{%>
         <input  class="form-control text-center" name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
         <% } %>
 
