@@ -66,10 +66,8 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
-
         if(trip == null)
             return null;
-
         try {
             trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
         } catch (Neo4jException e) {

@@ -41,7 +41,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             m1 = match(and(eq("destination", destination), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
-        Bson l1 = limit(size);
+        Bson l1 = limit(size+1);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
         Bson srt = sort(ascending("departureDate"));
 

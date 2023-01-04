@@ -22,6 +22,7 @@ import java.util.HashMap;
 @WebServlet("/trip")
 public class TripServlet extends HttpServlet {
 
+    private final TripService tripService = ServiceLocator.getTripService();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req,resp);
@@ -34,8 +35,6 @@ public class TripServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
-
-        TripService tripService = ServiceLocator.getTripService();
 
         String targetJSP = "/WEB-INF/pages/trip.jsp";
         String trip_id = httpServletRequest.getParameter("id");
