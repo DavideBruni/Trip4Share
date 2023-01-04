@@ -15,6 +15,7 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
 import org.javatuples.Pair;
 import redis.clients.jedis.exceptions.JedisConnectionException;
+import org.javatuples.Triplet;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -160,38 +161,62 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<String> mostPopularDestinations(int limit) {
-        return tripDetailsDAO.mostPopularDestinations(limit);
+    public List<DestinationsDTO> mostPopularDestinations(int limit) {
+        List<Pair<String, Integer>> trips= tripDetailsDAO.mostPopularDestinations(limit);
+        List<DestinationsDTO> res = new ArrayList<>();
+        for(Pair<String, Integer> x : trips){
+            res.add(new DestinationsDTO(x.getValue0(),x.getValue1()));
+        }
+        return res;
     }
 
     @Override
-    public List<String> mostPopularDestinationsByTag(String tag, int limit) {
-        List<String> trips= tripDetailsDAO.mostPopularDestinationsByTag(tag, limit);
-        return trips;
+    public List<DestinationsDTO> mostPopularDestinationsByTag(String tag, int limit) {
+        List<Pair<String, Integer>> trips= tripDetailsDAO.mostPopularDestinationsByTag(tag, limit);
+        List<DestinationsDTO> res = new ArrayList<>();
+        for(Pair<String, Integer> x : trips){
+            res.add(new DestinationsDTO(x.getValue0(),x.getValue1()));
+        }
+        return res;
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPrice(double start, double end, int limit) {
-        return tripDetailsDAO.mostPopularDestinationsByPrice(start, end, limit);
+    public List<DestinationsDTO> mostPopularDestinationsByPrice(double start, double end, int limit) {
+        List<Pair<String, Integer>> trips= tripDetailsDAO.mostPopularDestinationsByPrice(start, end, limit);
+        List<DestinationsDTO> res = new ArrayList<>();
+        for(Pair<String, Integer> x : trips){
+            res.add(new DestinationsDTO(x.getValue0(),x.getValue1()));
+        }
+        return res;
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPeriod(String departureDate, String returnDate, int limit) {
+    public List<DestinationsDTO> mostPopularDestinationsByPeriod(String departureDate, String returnDate, int limit) {
         LocalDate depDate;
-        LocalDate retDate = null;
+        LocalDate retDate;
+        List<Pair<String, Integer>> mostPop = new ArrayList<>();
+        List<DestinationsDTO> result = new ArrayList<>();
         try{
             depDate = LocalDate.parse(departureDate);
             retDate = LocalDate.parse(returnDate);
+            mostPop = tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate, limit);
         }catch (DateTimeParseException e){
             System.out.println("No date available");
-            return tripDetailsDAO.mostPopularDestinations(limit);
+            mostPop = tripDetailsDAO.mostPopularDestinations(limit);
+        }catch (Exception e){
+            return null;
+        }finally {
+            for(Pair<String, Integer> x : mostPop){
+                result.add(new DestinationsDTO(x.getValue0(),x.getValue1()));
+            }
         }
-        return tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate, limit);
+        return result;
+
     }
 
     @Override
-    public List<PriceDestinationDTO> cheapestDestinationsByAvg(int page, int objectPerPageSearch) {
-        List<Trip> trips = tripDetailsDAO.cheapestDestinationsByAvg(page, objectPerPageSearch);
+    public List<PriceDestinationDTO> cheapestDestinationsByAvg(int objectPerPageSearch) {
+        List<Trip> trips = tripDetailsDAO.cheapestDestinationsByAvg(objectPerPageSearch);
         List<PriceDestinationDTO> dest = new ArrayList<>();
         for(Trip trip : trips) {
             PriceDestinationDTO d = new PriceDestinationDTO();
@@ -403,5 +428,25 @@ public class TripServiceImpl implements TripService {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<DestinationsDTO> mostPopularTripsOverall(int suggestionsExplore) {
+        List<Triplet<String, Integer, Integer>> dests = tripDetailsDAO.mostPopularDestinationsOverall(suggestionsExplore);
+        List<DestinationsDTO> destinationsDTOS = new ArrayList<>();
+        for(Triplet<String, Integer, Integer> t : dests){
+            destinationsDTOS.add(new DestinationsDTO(t.getValue0(),t.getValue1(),t.getValue2()));
+        }
+        return destinationsDTOS;
+    }
+
+    @Override
+    public List<DestinationsDTO> mostExclusive(int suggestionsExplore) {
+        List<Triplet<String, Integer, Integer>> dests = tripDetailsDAO.mostExclusive(suggestionsExplore);
+        List<DestinationsDTO> destinationsDTOS = new ArrayList<>();
+        for(Triplet<String, Integer, Integer> t : dests){
+            destinationsDTOS.add(new DestinationsDTO(t.getValue0(),t.getValue1(),t.getValue2()));
+        }
+        return destinationsDTOS;
     }
 }

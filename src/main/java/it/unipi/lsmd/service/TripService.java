@@ -2,7 +2,6 @@ package it.unipi.lsmd.service;
 
 import it.unipi.lsmd.dto.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +20,15 @@ public interface TripService {
 
     List<TripSummaryDTO> getTripsOrganizedByUser(String username, int size, int page);
 
-    List<String> mostPopularDestinations(int limit);
+    List<DestinationsDTO> mostPopularDestinations(int limit);
 
-    List<String> mostPopularDestinationsByTag(String tag, int limit);
+    List<DestinationsDTO> mostPopularDestinationsByTag(String tag, int limit);
 
-    List<String> mostPopularDestinationsByPrice(double start, double end, int limit);
+    List<DestinationsDTO> mostPopularDestinationsByPrice(double start, double end, int limit);
 
-    List<String> mostPopularDestinationsByPeriod(String start, String end, int limit);
+    List<DestinationsDTO> mostPopularDestinationsByPeriod(String start, String end, int limit);
 
-    List<PriceDestinationDTO> cheapestDestinationsByAvg(int page, int objectPerPageSearch);
+    List<PriceDestinationDTO> cheapestDestinationsByAvg(int objectPerPageSearch);
 
     List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch);
     List<TripSummaryDTO> getSuggestedTrips(String username, int numTrips);
@@ -54,4 +53,8 @@ public interface TripService {
     String cancelJoin(String username, String trip_id);
 
     String getJoinStatus(String trip_id, String username);
+
+    List<DestinationsDTO> mostPopularTripsOverall(int suggestionsExplore);
+
+    List<DestinationsDTO> mostExclusive(int suggestionsExplore);
 }

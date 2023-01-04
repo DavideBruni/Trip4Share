@@ -16,7 +16,9 @@
 <%@ include file="header.jsp" %>
 <div class="container-xl px-4 mt-4 col-12 justify-content-center">
 
-
+    <div class="row justify-content-end mr-5">
+        <a class="m-t-10 ml-3 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href="deleteProfile" >Delete your profile</a>
+    </div>
     <div class="row justify-content-center">
 
         <div class="col-xl-4 justify-content-center">
@@ -35,6 +37,7 @@
     %>
     <div class="row justify-content-center pdn-top-30">
         <div class="col-xl-8 justify-content-center">
+
             <!-- Account details card-->
             <div class="card mb-4">
                 <div class="card-header">Account Details</div>

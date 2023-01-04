@@ -250,7 +250,10 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     -ms-transform: translate(-50%, -50%); }
   
   .signup {
-    margin-bottom: 150px; }
+    margin-bottom: 150px;
+    margin-top: 150px;
+    padding-top: 150px;
+  }
   
   .signup-content {
     padding: 75px 0; }

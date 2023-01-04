@@ -50,7 +50,8 @@
                             <nav class="main-menu">
                                 <ul class="menu-area-main">
                                     <li class="active"> <a href="home">Home</a> </li>
-                                    <li> <a href="search">Search</a> </li>
+                                    <li> <a href="search">Search Trips</a> </li>
+                                    <li> <a href="exploreDestinations">Explore Destinations</a> </li>
                                     <%
                                         if(authenticatedUserDTO != null){
                                     %>
@@ -59,7 +60,7 @@
                                     <%
                                         }else{
                                     %>
-                                    <li><a href="#">SignUp</a></li>
+                                    <li><a href="signup">SignUp</a></li>
                                     <li><a href="login">SignIn</a></li>
                                     <%
                                         }

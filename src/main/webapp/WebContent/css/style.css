@@ -2325,6 +2325,35 @@ ul.location_icon span {
      background-color: white
 }
 
+.site-header__title {
+     margin: 0;
+     font-family: Montserrat, sans-serif;
+     font-size: 300px;
+     font-weight: 700;
+     line-height: 1.1;
+     text-transform: uppercase;
+}
+
+.site-header {
+     margin: 0 auto;
+     padding: 80px 0 0;
+     max-width: 820px;
+}
+
+.main-content {
+     margin: 0 auto;
+     max-width: 820px;
+}
+.main-content__checkmark {
+     font-size: 4.0625rem;
+     line-height: 1;
+     color: #24b663;
+}
+.main-content__body {
+     margin: 20px 0 0;
+     font-size: 1rem;
+     line-height: 1.4;
+}
 
 
 

@@ -1,14 +1,15 @@
 package it.unipi.lsmd.controller;
 
+import it.unipi.lsmd.dto.DestinationsDTO;
 import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.PriceDestinationDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
-import it.unipi.lsmd.utils.SessionUtils;
+import org.javatuples.Pair;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/explore")
@@ -73,15 +74,6 @@ public class ExploreServlet extends HttpServlet {
     }
 
 
-    // TODO - che farne?
-    private RequestDispatcher cheapestDestinationsByAvg(HttpServletRequest request, int page) {
-        List<PriceDestinationDTO> destinations = tripService.cheapestDestinationsByAvg(page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("dest&price", destinations);
-        return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
-    }
-
-
-
     private RequestDispatcher searchUser(HttpServletRequest request, String value, int page) {
         List<OtherUserDTO> users = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute(SecurityUtils.USER_RESULTS, users);
@@ -92,7 +84,7 @@ public class ExploreServlet extends HttpServlet {
     private RequestDispatcher searchDestination(HttpServletRequest request, String value, int page) {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
-        List<String> destinations;
+        List<DestinationsDTO> destinations;
         String title;
 
         List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
@@ -107,16 +99,17 @@ public class ExploreServlet extends HttpServlet {
 
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, title);
-        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, onlyDestinations(destinations));
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + value);
         return request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
     }
+
 
     private RequestDispatcher searchTags(HttpServletRequest request, String value, int page) {
         String departure_date = request.getParameter("departure");
         String return_date = request.getParameter("return");
         List<TripSummaryDTO> trips = tripService.getTripsByTag(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        List<String> destinations = tripService.mostPopularDestinationsByTag(value, PagesUtilis.SUGGESTIONS_EXPLORE);
+        List<DestinationsDTO> destinations = tripService.mostPopularDestinationsByTag(value, PagesUtilis.SUGGESTIONS_EXPLORE);
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
@@ -135,9 +128,9 @@ public class ExploreServlet extends HttpServlet {
             max = 0;
         }
         List<TripSummaryDTO> trips = tripService.getTripsByPrice(min, max, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
-        List<String> destinations = tripService.mostPopularDestinationsByPrice(min, max, PagesUtilis.SUGGESTIONS_EXPLORE);
+        List<DestinationsDTO> destinations = tripService.mostPopularDestinationsByPrice(min, max, PagesUtilis.SUGGESTIONS_EXPLORE);
         System.out.println(destinations);
-        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, destinations);
+        request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE, onlyDestinations(destinations));
         request.setAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE, "TOP 5 Destinations");
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Results for " + min + " - " + max + "€");
@@ -187,5 +180,13 @@ public class ExploreServlet extends HttpServlet {
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         System.out.println("qui");
         processRequest(httpServletRequest, httpServletResponse);
+    }
+
+    private List<String> onlyDestinations(List<DestinationsDTO> destinations) {
+        List<String> dests = new ArrayList<>();
+        for(DestinationsDTO x: destinations){
+            dests.add(x.getDestination());
+        }
+        return dests;
     }
 }
