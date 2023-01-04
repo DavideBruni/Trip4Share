@@ -26,18 +26,19 @@
         <div class="col-xl-8 justify-content-center">
             <!-- Account details card-->
             <div class="card mb-4 ">
+                <h2> Leave a review to <%=session.getAttribute(SecurityUtils.REVIEW_TO)%></h2>
                 <div class="card-header text-center">Create Edit your review</div>
                 <div class="card-body">
-                    <form action="leaveReview">
+                    <form action="leaveReview" method="post">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1">Title</label>
-                            <input class="form-control" type="text" placeholder="Give your review a title">
+                            <input class="form-control" type="text"  name="title" placeholder="Give your review a title">
                         </div>
 
                         <!-- Form Group (organization name)-->
 
-                        <textarea class="col-12 mt-4 mb-4">Insert a comment for your review!</textarea>
+                        <textarea class="col-12 mt-4 mb-4" name="text">Insert a comment for your review!</textarea>
 
 
                         <!-- Form Row        -->
@@ -45,7 +46,7 @@
                             <!-- Form Group (organization name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputOrgName">Rating</label>
-                                <input   class="form-control" id="inputOrgName" type="number" placeholdere="Rate your experience!" min="0" max="5">
+                                <input class="form-control" id="inputOrgName" type="number" placeholder="Rate your experience!" name="value" min="0" max="5">
                             </div>
 
                         </div>

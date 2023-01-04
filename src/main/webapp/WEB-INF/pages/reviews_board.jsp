@@ -72,23 +72,21 @@
                                         for(int i = 0; i < reviews.size() && i < PagesUtilis.REVIEWS_PER_PAGE; i++){
                                 %>
 
-                                <div class="blog-meta big-meta mt-4">
+                                <div class="blog-meta big-meta mt-4" id="<%="review"+i%>">
                                     <h4><%=reviews.get(i).getTitle()%></h4>
                                     <h4 class="text-right"><%=reviews.get(i).getRating() + "/5 "%></h4>
                                     <p><%=reviews.get(i).getText()%></p>
                                     <small style="color:black;"><%=reviews.get(i).getDate()%></small>
                                     <p class="grey text-right mr-5"><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></p>
+                                    <% if(reviews.get(i).getAuthor().equals(authenticatedUserDTO.getUsername())){ %>
+
+                                    <div class="row pull-right justify-content-end">
+                                        <button class="text-right btn btn-primary bottone mr-5 mt-5 delButton" id="<%=i%>" value="<%="deleteReview?to="+request.getParameter("username")+"&date="+reviews.get(i).getDate()%>" >Delete review</button>
+                                    </div>
+
+                                    <%}%>
                                     <hr class="invis3">
                                 </div><!-- end meta -->
-
-                                <% if(reviews.get(i).getAuthor().equals(authenticatedUserDTO.getUsername())){ %>
-
-                                <div class="row pull-right justify-content-end">
-                                    <a class="text-right btn btn-primary bottone mr-5 mt-5" href="" >Delete review</a>
-                                    <a class="text-right btn btn-primary bottone mr-5 mt-5" href="#" >Edit review</a>
-                                </div>
-
-                                <%}%>
 
 
                                 <%
@@ -182,6 +180,20 @@
 <script src="js/tether.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/custom.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    $(document).on("click", ".delButton", function() {
+        var url = event.target.getAttribute("value");
+        var id = event.target.id;
+        $.get(url, function(responseText) {
+            if(responseText == "OK"){
+                $("#review"+id).remove();
+            }else{
+                alert("Errore durante l'operazione");
+            }
 
+        });
+    });
+</script>
 </body>
 </html>

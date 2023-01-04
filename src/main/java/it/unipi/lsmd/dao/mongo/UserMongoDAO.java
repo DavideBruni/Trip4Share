@@ -261,7 +261,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
     @Override
     public boolean putReview(Review review, RegisteredUser to) {
-        Document doc = docFromReview(review);
+        Document doc = docFromReview(review,true);
         List<Document> rev = new ArrayList<>();
         rev.add(doc);
         try {
@@ -274,8 +274,8 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
     @Override
     public boolean deleteReview(Review review, RegisteredUser r) {
-        Document doc = docFromReview(review);
-        Bson bson = eq("reviews",doc);
+        Document doc = docFromReview(review,false);
+        Bson bson = eq("username",r.getUsername());
         try{
             collection.updateOne(bson,Updates.pull("reviews",doc));
             return true;
@@ -284,12 +284,15 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         }
     }
 
-    private Document docFromReview(Review review){
+    private Document docFromReview(Review review, boolean extended){
         Document doc = new Document();
-        doc.append("title",review.getTitle());
-        doc.append("text",review.getText());
-        doc.append("value",review.getRating());
-        doc.append("author",review.getAuthor());
+
+        doc.append("author", review.getAuthor());
+        if(extended) {
+            doc.append("title",review.getTitle());
+            doc.append("text", review.getText());
+            doc.append("value", review.getRating());
+        }
         doc.append("date",review.getDate());
         return doc;
     }

@@ -32,6 +32,7 @@ public class SecurityUtils {
     public static final String USER = "user";
     public static final String MODIFY_FLAG = "modify_trip";
     public static final String ERROR_MESSAGE = "error_message";
+    public static final String REVIEW_TO = "username";
 
     // ho chiamato quella per i viaggi organizzato ORGANIZED_TRIPS
     // mi deve mandare la pagina corrente e il numero totale

@@ -20,17 +20,19 @@ import java.time.LocalDate;
 public class LeaveReviewServlet extends HttpServlet {
     private final UserService userService = ServiceLocator.getUserService();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        procesRequest(req,resp);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        if (username==null || request.getSession() == null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+            response.sendRedirect(request.getContextPath());
+            return;
+        }
+        request.getSession().setAttribute(SecurityUtils.REVIEW_TO,username);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/pages/create_review.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        procesRequest(req,resp);
-    }
-
-    private void procesRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String username = request.getParameter("username");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String text = request.getParameter("text");
         int rank = 0;
@@ -41,10 +43,12 @@ public class LeaveReviewServlet extends HttpServlet {
             return;
         }
 
-        if (username == null || title==null || text ==null ||request.getSession() == null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+        if (title==null || text ==null ||request.getSession() == null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
             response.sendRedirect(request.getContextPath());
             return;
         }
+        String username = (String) request.getSession().getAttribute(SecurityUtils.REVIEW_TO);
+        request.getSession().removeAttribute(SecurityUtils.REVIEW_TO);
 
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setAuthor(((AuthenticatedUserDTO)(request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))).getUsername());

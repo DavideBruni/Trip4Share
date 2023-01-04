@@ -31,29 +31,17 @@ public class DeleteReviewServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String to = request.getParameter("to");
-        String title = request.getParameter("title");
-        String text = request.getParameter("text");
         String date = request.getParameter("date");
-        int rank = 0;
-        try{
-            rank= Integer.parseInt(request.getParameter("value"));
-        }catch (Exception ne){
-            response.getWriter().write("Error");
-            return;
-        }
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         // only authenticated users can view it and only if parameters aren't null
-        if(to==null || title==null || text == null || date==null || request.getSession()==null ||
+        if(to==null || date==null || request.getSession()==null ||
                 request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
             response.getWriter().write("Error");
             return;
         }
         ReviewDTO review = new ReviewDTO();
-        review.setTitle(title);
-        review.setText(text);
         review.setAuthor(((AuthenticatedUserDTO)request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername());
-        review.setRating(rank);
         review.setDate(LocalDate.parse(date));
         OtherUserDTO toDTO = new OtherUserDTO();
         toDTO.setUsername(to);

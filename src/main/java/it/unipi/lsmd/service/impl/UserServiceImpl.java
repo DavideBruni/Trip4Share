@@ -252,6 +252,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean setReview(ReviewDTO reviewDTO, OtherUserDTO to) {
+        if(reviewDTO.getTitle()==null || reviewDTO.getRating()<0 || reviewDTO.getRating()>5)
+            return false;
         Review review = UserUtils.reviewFromDTO(reviewDTO);
         RegisteredUser r = new RegisteredUser(to.getUsername());
         return userDAO.putReview(review,r);
