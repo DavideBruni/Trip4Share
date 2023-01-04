@@ -1,6 +1,5 @@
 package it.unipi.lsmd.dao.mongo;
 
-import com.google.gson.Gson;
 import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
@@ -9,14 +8,14 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
-import it.unipi.lsmd.dto.TripDetailsDTO;
-import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.utils.TripUtils;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -150,7 +149,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<String> mostPopularDestinations(int limit) {
+    public List<Pair<String, Integer>> mostPopularDestinations(int limit) {
 
         // aggregate([{$group : {"_id":"$destination" total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson g1 = group("$destination",sum("total_like","$likes"));
@@ -158,20 +157,20 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
 
-        List<String> dest = new ArrayList<>();
+        List<Pair<String, Integer>> dest = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
         while (it.hasNext()) {
             Document doc = it.next();
             String d = doc.getString("_id");
-            dest.add(d);
+            Integer like = doc.getInteger("total_like");
+            Pair<String,Integer> p = new Pair<>(d,like);
+            dest.add(p);
         }
         return dest;
     }
 
     @Override
-    public List<String> mostPopularDestinationsByTag(String tag, int limit) {
-
-
+    public List<Pair<String, Integer>> mostPopularDestinationsByTag(String tag, int limit) {
         // aggregate([{$match : { tags : {$eq : ... }}}, {$group : {"_id":"$destination",
         // total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson m1 = match(eq("tags",tag));
@@ -180,18 +179,20 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
-        List<String> dest = new ArrayList<>();
+        List<Pair<String, Integer>> dest = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
         while (it.hasNext()) {
             Document doc = it.next();
             String d = doc.getString("_id");
-            dest.add(d);
+            Integer like = doc.getInteger("total_like");
+            Pair<String,Integer> p = new Pair<>(d,like);
+            dest.add(p);
         }
         return dest;
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPrice(double start, double end, int limit) {
+    public List<Pair<String, Integer>> mostPopularDestinationsByPrice(double start, double end, int limit) {
 
         Bson m1;
         if(end > 0){
@@ -205,18 +206,20 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
-        List<String> destinations = new ArrayList<>();
+        List<Pair<String, Integer>> dest = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
         while (it.hasNext()) {
             Document doc = it.next();
-            String s = doc.getString("_id");
-            destinations.add(s);
+            String d = doc.getString("_id");
+            Integer like = doc.getInteger("total_like");
+            Pair<String,Integer> p = new Pair<>(d,like);
+            dest.add(p);
         }
-        return destinations;
+        return dest;
     }
 
     @Override
-    public List<String> mostPopularDestinationsByPeriod(LocalDate depDate, LocalDate retDate, int limit) {
+    public List<Pair<String, Integer>> mostPopularDestinationsByPeriod(LocalDate depDate, LocalDate retDate, int limit) {
 
         Bson m1 = match(and(gte("departureDate",depDate),lte("returnDate",retDate)));
         Bson g1 = group("$destination",sum("total_like","$likes"));
@@ -225,31 +228,26 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         AggregateIterable<Document> res;
         res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
-        List<String> destinations = new ArrayList<>();
+        List<Pair<String, Integer>> dest = new ArrayList<>();
         try(MongoCursor<Document> it = res.iterator()){
             while (it.hasNext()) {
                 Document doc = it.next();
-                System.out.println(doc);
-                String s = doc.getString("_id");
-                destinations.add(s);
+                String d = doc.getString("_id");
+                Integer like = doc.getInteger("total_like");
+                Pair<String,Integer> p = new Pair<>(d,like);
+                dest.add(p);
             }
         }
-        return destinations;
+        return dest;
     }
 
     @Override
-    public List<Trip> cheapestDestinationsByAvg(int page, int objectPerPageSearch) {
+    public List<Trip> cheapestDestinationsByAvg(int objectPerPageSearch) {
 
         Bson s1 = sort(ascending("price"));
         Bson g1 = group("$destination",avg("agg","$price"));
-        Bson l1 = limit(objectPerPageSearch + 1);
-        AggregateIterable<Document> res;
-        if (page != 1) {
-            Bson sk1 = skip((page - 1) * objectPerPageSearch);
-            res = collection.aggregate(Arrays.asList(s1, g1, sk1, l1));
-        } else {
-            res = collection.aggregate(Arrays.asList(s1, g1, l1));
-        }
+        Bson l1 = limit(objectPerPageSearch);
+        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(s1, g1, l1));
         List<Trip> trips = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
         while (it.hasNext()) {
@@ -372,5 +370,61 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             trips.add(t);
         }
         return trips;
+    }
+
+    @Override
+    public List<Triplet<String, Integer, Integer>> mostPopularDestinationsOverall(int limit){
+        //db.trips.aggregate([{$match : {departureDate : {$gte : new Date(Date.now() - 24*60*60*1000*365)}}},
+        // {$group : {"_id":"$destination", "tot_trips": {$sum : 1},"total_like":{$sum : "$likes"}}},
+        // {$match : { $and : [{tot_trips : {$gte : 25}},{tot_likes : {$gte : 5000}}]}}, {$sort : {tot_likes : -1}},
+        // {$limit : 5}])
+        Bson m1 = match(gte("departureDate",LocalDate.now().minusYears(1)));
+        Bson g1 = group("$destination",sum("total_like","$likes"),sum("total_trips",1));
+        Bson m2 = match((and(gte("total_trips",25),gte("total_like",5000))));
+        Bson s1 = sort(descending("total_like"));
+        Bson l1 = limit(limit);
+        AggregateIterable<Document> res;
+        res = collection.aggregate(Arrays.asList(m1, g1, m2, s1, l1));
+
+        List<Triplet<String, Integer, Integer>> dest = new ArrayList<>();
+        try(MongoCursor<Document> it = res.iterator()){
+            while (it.hasNext()) {
+                Document doc = it.next();
+                String d = doc.getString("_id");
+                Integer like = doc.getInteger("total_like");
+                Integer trips = doc.getInteger("total_trips");
+                Triplet<String,Integer,Integer> t = new Triplet<>(d,like,trips);
+                dest.add(t);
+            }
+        }
+        return dest;
+    }
+
+    @Override
+    public List<Triplet<String, Integer, Integer>> mostExclusive(int limit){
+        // db.trips.aggregate([{$match : {departureDate : {$gte : new Date(Date.now() - 24*60*60*1000*365)}}},
+        // {$group : {"_id":"$destination", "tot_trips": {$sum : 1},"tot_likes":{$sum : "$likes"}}},
+        // {$match : { $and : [{tot_trips : {$lte : 5}},{tot_likes : {$gte : 1000}}]}},
+        // {$sort : {tot_likes : -1}}, {$limit : 5}])
+        Bson m1 = match(gte("departureDate",LocalDate.now().minusYears(1)));
+        Bson g1 = group("$destination",sum("total_like","$likes"),sum("total_trips",1));
+        Bson m2 = match((and(lte("total_trips",5),gte("total_like",1000))));
+        Bson s1 = sort(descending("total_like"));
+        Bson l1 = limit(limit);
+        AggregateIterable<Document> res;
+        res = collection.aggregate(Arrays.asList(m1, g1, m2, s1, l1));
+
+        List<Triplet<String, Integer, Integer>> dest = new ArrayList<>();
+        try(MongoCursor<Document> it = res.iterator()){
+            while (it.hasNext()) {
+                Document doc = it.next();
+                String d = doc.getString("_id");
+                Integer like = doc.getInteger("total_like");
+                Integer trips = doc.getInteger("total_trips");
+                Triplet<String,Integer,Integer> t = new Triplet<>(d,like,trips);
+                dest.add(t);
+            }
+        }
+        return dest;
     }
 }

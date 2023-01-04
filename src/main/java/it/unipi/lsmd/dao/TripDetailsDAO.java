@@ -1,10 +1,10 @@
 package it.unipi.lsmd.dao;
 
-import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.model.Trip;
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public interface TripDetailsDAO {
@@ -18,15 +18,15 @@ public interface TripDetailsDAO {
 
     List<Trip> getTripsByPrice(int min_price, int max_price, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
-    List<String> mostPopularDestinations(int limit);
+    List<Pair<String, Integer>> mostPopularDestinations(int limit);
 
-    List<String> mostPopularDestinationsByTag(String tag, int limit);
+    List<Pair<String, Integer>> mostPopularDestinationsByTag(String tag, int limit);
 
-    List<String> mostPopularDestinationsByPrice(double start, double end, int limit);
+    List<Pair<String, Integer>> mostPopularDestinationsByPrice(double start, double end, int limit);
 
-    List<String> mostPopularDestinationsByPeriod(LocalDate depDate, LocalDate retDate, int limit);
+    List<Pair<String, Integer>> mostPopularDestinationsByPeriod(LocalDate depDate, LocalDate retDate, int limit);
 
-    List<Trip> cheapestDestinationsByAvg(int page, int objectPerPageSearch);
+    List<Trip> cheapestDestinationsByAvg(int objectPerPageSearch);
 
     List<Trip> cheapestTripForDestinationInPeriod(LocalDate start, LocalDate end, int page, int objectPerPageSearch);
 
@@ -37,4 +37,8 @@ public interface TripDetailsDAO {
     boolean updateTrip(Trip newTrip, Trip oldTrip);
 
     List<Trip> mostPopularTrips(int tripNumberIndex);
+
+    List<Triplet<String, Integer, Integer>> mostPopularDestinationsOverall(int limit);
+
+    List<Triplet<String, Integer, Integer>> mostExclusive(int limit);
 }
