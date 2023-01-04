@@ -16,7 +16,7 @@ public interface TripDetailsDAO {
 
     List<Trip> getTripsByDestination(String destination, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
-    List<Trip> getTripsByPrice(int min_price, int max_price, LocalDate departureDate, LocalDate returnDate, int size, int page);
+    List<Trip> getTripsByPrice(double min_price, double max_price, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
     List<Pair<String, Integer>> mostPopularDestinations(int limit);
 

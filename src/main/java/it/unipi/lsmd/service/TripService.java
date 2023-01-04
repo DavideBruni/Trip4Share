@@ -14,7 +14,7 @@ public interface TripService {
 
     List<TripSummaryDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page);
 
-    List<TripSummaryDTO> getTripsByPrice(int min_price, int max_price, String departureDate, String returnDate, int size, int page);
+    List<TripSummaryDTO> getTripsByPrice(double min_price, double max_price, String departureDate, String returnDate, int size, int page);
 
     TripDetailsDTO getTrip(String id);
 

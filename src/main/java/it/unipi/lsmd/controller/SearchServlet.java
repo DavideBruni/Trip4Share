@@ -61,29 +61,26 @@ public class SearchServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        //processRequest(httpServletRequest, httpServletResponse);
-        RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search.jsp");
+       RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search.jsp");
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 
     @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        //RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search.jsp");
-        //requestDispatcher.forward(httpServletRequest, httpServletResponse);
-        String url = "explore?";
+       String url = "explore?";
 
         String destination = httpServletRequest.getParameter("destination");
         String username = httpServletRequest.getParameter("username");
         String min_price = httpServletRequest.getParameter("min_price");
         String tag = httpServletRequest.getParameter("tag");
-        if(username != null){
+        if(username != null && !username.equals("")){
             url = url + "searchFor=user&value=" + username;
-        }else if(destination != null){
+        }else if(destination != null && !destination.equals("")){
             url = url + "searchFor=destination&value=" + destination;
-        }else if(min_price != null){
+        }else if(min_price != null && !min_price.equals("")){
             url = url + "searchFor=price&value=" + min_price;
             url = url + "&max_value=" + httpServletRequest.getParameter("max_price");
-        }else if(tag != null){
+        }else if(tag != null && !tag.equals("")){
             url = url + "searchFor=tags&value=" + tag;
         }
 

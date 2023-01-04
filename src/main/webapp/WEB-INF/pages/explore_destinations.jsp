@@ -92,10 +92,10 @@
 
                         <form class="form">
                             <label >Min Price</label>
-                            <input class="form-control" placeholder="00.0" type="text" name="min_price" id="price_from">
+                            <input class="form-control" placeholder="00.0" type="number" step="0.01" name="min_price" id="price_from">
 
                             <label >Max Price</label>
-                            <input class="form-control" placeholder="00.0" type="text" name="max_price" id="price_to">
+                            <input class="form-control" placeholder="00.0" type="number" step="0.01" name="max_price" id="price_to">
                             <button class="btn btn-primary pull-right mr-5" type="submit" id="price">Search</button>
                         </form>
                     </div>

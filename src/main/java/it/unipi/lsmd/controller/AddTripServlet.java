@@ -1,7 +1,5 @@
 package it.unipi.lsmd.controller;
 
-import it.unipi.lsmd.dto.DailyScheduleDTO;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
@@ -15,11 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @WebServlet("/addTrip")
 public class AddTripServlet extends HttpServlet{

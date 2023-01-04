@@ -140,7 +140,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripSummaryDTO> getTripsByPrice(int min_price, int max_price, String departureDate, String returnDate, int size, int page) {
+    public List<TripSummaryDTO> getTripsByPrice(double min_price, double max_price, String departureDate, String returnDate, int size, int page) {
 
         LocalDate depDate;
         LocalDate retDate = null;

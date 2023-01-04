@@ -91,7 +91,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         return trips;
     }
 
-    public List<Trip> getTripsByPrice(int min_price, int max_price, LocalDate departureDate, LocalDate returnDate, int size, int page) {
+    public List<Trip> getTripsByPrice(double min_price, double max_price, LocalDate departureDate, LocalDate returnDate, int size, int page) {
 
         Bson m1;
         if (returnDate == null) {

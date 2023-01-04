@@ -1,7 +1,11 @@
 package it.unipi.lsmd.dao.base;
 
+import it.unipi.lsmd.dao.exceptions.ConnectionToDatabaseException;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.exceptions.JedisConnectionException;
+
+import java.net.ConnectException;
 
 public abstract class BaseDAORedis {
 
@@ -13,10 +17,14 @@ public abstract class BaseDAORedis {
         pool = new JedisPool(REDIS_HOST, REDIS_PORT);
     }
 
-    public Jedis getConnection(){
-        Jedis connection = pool.getResource();
-        //connection.auth("the password goes here");
-        return connection;
+    public Jedis getConnection() throws ConnectionToDatabaseException {
+        try {
+            Jedis connection = pool.getResource();
+            //connection.auth("the password goes here");
+            return connection;
+        }catch(JedisConnectionException je){
+            throw new ConnectionToDatabaseException();
+        }
     }
 
     public static void closePool(){
