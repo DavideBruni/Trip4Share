@@ -1631,7 +1631,7 @@ input[type="radio"] .styled:checked+label::after {
      text-transform: uppercase;
      color: #0adef8;
      font-weight: bold;
-     padding-bottom:20px;
+     padding-bottom:40px;
      padding-top: 10px;
      
 }

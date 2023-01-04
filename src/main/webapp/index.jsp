@@ -23,7 +23,6 @@
          <div class="container">
             <div class="text-bg">
                <h1>Welcome to<br><strong class="white">trip4share</strong></h1>
-     
             </div>
          </div>
       </div>

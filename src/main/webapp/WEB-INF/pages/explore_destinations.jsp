@@ -30,12 +30,11 @@
     <div class="banner-main">
         <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
         <div class="container">
-                <div class="titlepage mt-5">
-                    <h2>Find out the most popular destinations</h2>
-                </div>
+            <div class="text-bg">
+                <h1><small>Find out the </small><br><strong class="white">most popular destinations</strong></h1>
+            </div>
         </div>
     </div>
-
     <div class="center log-bkg">
         <ul class="nav justify-content-center nav-pills" id="pills-tab" role="tablist">
             <li class="nav-item">
