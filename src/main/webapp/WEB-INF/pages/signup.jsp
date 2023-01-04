@@ -19,7 +19,7 @@
     <!-- Main css -->
     <link rel="stylesheet" href="WebContent/css/signup.css">
 </head>
-<body class="signup">
+<body class="signup log-bkg col-12">
 
             <div class="container">
                 <div class="row justify-content-end text-right pr-5 pt-2">

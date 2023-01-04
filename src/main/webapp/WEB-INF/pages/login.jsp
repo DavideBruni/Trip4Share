@@ -20,8 +20,8 @@
 
 </head>
 
-<body class="">
-<div class="signup log-bkg">
+<body class="log-bkg col-12">
+<div class="signup ">
         <div class="container" >
             <div class="row justify-content-end text-right pr-5">
                 <h2 class="signup-image-link mt-4 mr-3"> Go back to homepage!</h2>
