@@ -30,14 +30,14 @@
     <div class="banner-main">
         <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
         <div class="container">
-            <div class="titlepage mt-5">
-                <h2>What are you looking for?</h2>
+            <div class="text-bg">
+                <h1><small>What are you</small><br><strong class="white">looking for?</strong></h1>
             </div>
         </div>
     </div>
 
 
-    <div class="center ">
+    <div class="center pdn-top-30">
         <ul class="nav justify-content-center nav-pills" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-1" role="tab" aria-controls="pills-home" aria-selected="true">Trips by Destination</a>

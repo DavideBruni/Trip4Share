@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="center log-bkg">
+    <div class="center pdn-top-30">
         <ul class="nav justify-content-center nav-pills" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-1" role="tab" aria-controls="pills-home" aria-selected="true">Overall</a>
