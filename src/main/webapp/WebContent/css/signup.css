@@ -586,4 +586,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
       margin-bottom: 10px; } }
   
   /*# sourceMappingURL=style.css.map */
-  
+
+.log-bkg{
+  background-image: url("../images/night-skyline-wallpaper-25.jpg");
+}

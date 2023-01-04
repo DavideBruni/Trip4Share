@@ -25,12 +25,18 @@
 <body class="main-layout ">
 <%@ include file="header.jsp" %>
 
-<div class="main-form .form-horizontal" >
-    <div class="titlepage">
-        <h2>Find out the most popular destinations</h2>
+<div class="main-layout .form-horizontal" >
+
+    <div class="banner-main">
+        <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
+        <div class="container">
+                <div class="titlepage mt-5">
+                    <h2>Find out the most popular destinations</h2>
+                </div>
+        </div>
     </div>
 
-    <div class="center ">
+    <div class="center log-bkg">
         <ul class="nav justify-content-center nav-pills" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-1" role="tab" aria-controls="pills-home" aria-selected="true">Overall</a>
@@ -59,8 +65,8 @@
             <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div class=" pdn-top-30 row">
                     <div class=" col-4"></div>
-                    <div class="col-4">
-                            <button id="overall" class="btn btn-primary pull-right mr-5 buttonSearch">Find out!</button>
+                    <div class="col-4 justify-content-center">
+                            <button id="overall" class="btn btn-primary mr-5 buttonSearch">Find out!</button>
                     </div>
                 </div>
             </div>

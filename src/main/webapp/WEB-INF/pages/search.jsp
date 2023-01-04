@@ -26,9 +26,16 @@
 <%@ include file="header.jsp" %>
 
 <div class="main-form .form-horizontal" >
-    <div class="titlepage">
-        <h2>What are you looking for?</h2>
+
+    <div class="banner-main">
+        <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
+        <div class="container">
+            <div class="titlepage">
+                <h2>What are you looking for?</h2>
+            </div>
+        </div>
     </div>
+
 
     <div class="center ">
         <ul class="nav justify-content-center nav-pills" id="pills-tab" role="tablist">
