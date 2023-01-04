@@ -75,7 +75,6 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
                 if(i >= end_index)
                     break;
 
-                System.out.println(k);
                 String raw_trip = jedis.get(k);
                 wishlist.addToWishlist(TripUtils.tripFromJSONString(raw_trip));
                 i++;
