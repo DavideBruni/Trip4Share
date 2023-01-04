@@ -28,7 +28,7 @@
             <div class="card mb-4 ">
                 <div class="card-header text-center">Create Edit your review</div>
                 <div class="card-body">
-                    <form>
+                    <form action="leaveReview">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1">Title</label>
