@@ -32,7 +32,7 @@
 <div id="wrapper">
 
     <section class="section wb main-layout">
-        <div class="row titlepage justify-content-center" >
+        <div class="row titlepage justify-content-center pdn-top-30" >
             <h3>Reviews</h3>
         </div>
 
@@ -50,7 +50,7 @@
                     </div><!-- end col -->
 
 
-                    <hr class="invis">
+                    <hr class="invis3">
 
                     <div class="blog-grid-system">
 
@@ -72,11 +72,13 @@
                                         for(int i = 0; i < reviews.size() && i < PagesUtilis.REVIEWS_PER_PAGE; i++){
                                 %>
 
-                                <div class="blog-meta big-meta">
-                                    <h4><%=reviews.get(i).getRating() + "/5\t\t " + reviews.get(i).getTitle()%></h4>
+                                <div class="blog-meta big-meta mt-4">
+                                    <h4><%=reviews.get(i).getTitle()%></h4>
+                                    <h4 class="text-right"><%=reviews.get(i).getRating() + "/5 "%></h4>
                                     <p><%=reviews.get(i).getText()%></p>
                                     <small><%=reviews.get(i).getDate()%></small>
-                                    <small><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></small>
+                                    <p class="grey text-right mr-5"><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></p>
+                                    <hr class="invis3">
                                 </div><!-- end meta -->
 
                                 <% if(reviews.get(i).getAuthor() == authenticatedUserDTO.getUsername()){ %>
