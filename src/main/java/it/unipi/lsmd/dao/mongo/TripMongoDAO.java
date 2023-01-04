@@ -36,9 +36,9 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         Bson m1;
         if (returnDate == null) {
-            m1 = match(and(eq("destination", destination), gte("departureDate", departureDate)));
+            m1 = match(and(eq("destination", destination.toLowerCase()), gte("departureDate", departureDate)));
         } else {
-            m1 = match(and(eq("destination", destination), gte("departureDate", departureDate),
+            m1 = match(and(eq("destination", destination.toLowerCase()), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
         Bson l1 = limit(size + 1);
@@ -245,10 +245,10 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     @Override
     public List<Trip> cheapestDestinationsByAvg(int objectPerPageSearch) {
 
-        Bson s1 = sort(ascending("price"));
         Bson g1 = group("$destination",avg("agg","$price"));
+        Bson s1 = sort(descending("agg"));
         Bson l1 = limit(objectPerPageSearch);
-        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(s1, g1, l1));
+        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
         List<Trip> trips = new ArrayList<>();
         MongoCursor<Document> it = res.iterator();
         while (it.hasNext()) {

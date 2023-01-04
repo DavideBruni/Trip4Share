@@ -3,6 +3,7 @@ package it.unipi.lsmd.service.impl;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
+import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.Admin;
@@ -21,10 +22,12 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private RegisteredUserDAO registeredUserDAO;
+    private WishlistDAO wishlistDAO;
 
     public UserServiceImpl(){
         userDAO = DAOLocator.getUserDAO();
         registeredUserDAO = DAOLocator.getRegisteredUserDAO();
+        wishlistDAO = DAOLocator.getWishlistDAO();
     }
 
     @Override
@@ -236,11 +239,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(String username) {
         RegisteredUser user = new RegisteredUser(username);
-        // TODO - remove from redis
 
         if(userDAO.deleteUser(user)){
             try{
                 registeredUserDAO.deleteUser(user);
+                wishlistDAO.flushWishlist(username);
                 return true;
             }catch (Neo4jException ne){
                 return false;

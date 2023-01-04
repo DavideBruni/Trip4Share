@@ -206,9 +206,9 @@ public interface TripUtils {
         Trip t = new Trip();
         t.setDestination(doc.getString("_id"));
         try {
-            double agg = doc.getDouble("agg");
-            t.setPrice(agg);
-        }catch (Exception exc){
+            double price = Math.round(doc.getDouble("agg") * 100) / 100.0;
+            t.setPrice(price);
+        }catch (Exception e){
             t.setPrice(0.00);
         }
         return t;
@@ -253,7 +253,7 @@ public interface TripUtils {
         }catch (NullPointerException ne){
             throw iex;
         }
-        doc.append("destination",t.getDestination());
+        doc.append("destination",t.getDestination().toLowerCase());
         doc.append("title",t.getTitle());
         doc.append("departureDate",t.getDepartureDate());
         doc.append("returnDate",t.getReturnDate());
