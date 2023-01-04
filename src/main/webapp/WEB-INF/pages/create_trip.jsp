@@ -2,6 +2,7 @@
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
 <%@ page import="it.unipi.lsmd.dto.TripDetailsDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="it.unipi.lsmd.dto.DailyScheduleDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -102,7 +103,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
           String tags = listTags.get(0);
           listTags.remove(0);
           for(String x : t.getTags()){
-            tags=","+x;
+            tags+=","+x;
           }
         %>
         <input  class="form-control text-center" name="tags" type="text" placeholder="Insert tags separated by comma" value="<%=tags%>">
@@ -120,8 +121,8 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
   <div class="receipe-ratings my-5 col-12 ">
     <div class="row">
       <label class="small mb-1" >Modify the description</label>
-      <% if (t!=null && t.getDescription()!=null){%>
-      <textarea  class="form-control" id="description" name="description" value="<%=t.getDescription()%>"> Description </textarea>
+      <% if(t!=null && t.getDescription()!=null){%>
+      <textarea  class="form-control" id="description" name="description"> <%=t.getDescription()%> </textarea>
       <%}else{%>
       <textarea  class="form-control" id="description" name="description" > Description </textarea>
        <% } %>
@@ -132,9 +133,9 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
     <div class="row">
       <label class="small mb-1" >Info about the trip</label>
       <% if (t!=null && t.getInfo()!=null){%>
-      <textarea  class="form-control" id="info" name="info" value="<%=t.getInfo()%>"> Description </textarea>
+      <textarea  class="form-control" id="info" name="info" > <%=t.getInfo()%>   </textarea>
       <%}else{%>
-      <textarea  class="form-control" id="info" name="info" > Description </textarea>
+      <textarea  class="form-control" id="info" name="info" > Trip general information </textarea>
       <% } %>
     </div>
   </div>
@@ -146,16 +147,36 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
         <div class="col-8" >
           <h2>ITINERARIO</h2>
           <div id="wrapper">
+            <% if(t!=null || t.getItinerary()!=null || !t.getItinerary().isEmpty()){
+            List<DailyScheduleDTO> it = t.getItinerary();
+            for(DailyScheduleDTO d : it){
+              int day = d.getDay();
+            %>
+              <div class="single-preparation-step d-flex" >
+                <div class="col">
+                  <h4 class="pdn-top-30 mb-2">Day <%=day%></h4>
+                  <label class="small mb-1" >Title</label>
+                  <input type="text" name="<%="title"+day%>" required value="<%=d.getTitle()%>">
+                  <label class="small mb-1 ml-4" >Subtitle</label>
+                  <input type="text" name="<%="subtitle"+day%>" value="<%=d.getSubtitle()%>">
+                  <textarea  class="form-control mt-4" name="<%="day"+day%>"><% if(d.getDescription()==null){ %>Add description of the day<%}else{%><%=d.getDescription()%><%}%>
+                  </textarea>
+                </div>
+              </div>
+            <% }
+            }else{%>
             <div class="single-preparation-step d-flex" >
               <div class="col">
                 <h4 class="pdn-top-30 mb-2">Day 1</h4>
                 <label class="small mb-1" >Title</label>
-                <input type="text" name="title1" required>
+                <input type="text" name="title1>" required>
                 <label class="small mb-1 ml-4" >Subtitle</label>
-                <input type="text" name="subtitle1">
-                <textarea  class="form-control mt-4" name="day1"> Add description of the day </textarea>
+                <input type="text" name="subtitle1" >
+                <textarea  class="form-control mt-4" name="day1">Add description of the day
+                  </textarea>
               </div>
             </div>
+            <% } %>
           </div>
         </div>
         <!-- Itinierary Day END -->
@@ -168,13 +189,20 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
             <h2 class="text-center pdn-top-30">INCLUDED</h2>
 
             <div class="custom-control" id="included">
-              <input  class="form-control text-center"  name="included0" type="text" placeholder="Insert an option">
-
-
-              <div class="row justify-content-end mr-4">
-                <button class="btn btn-primary mt-3" type="button" onclick="add_included();">Add Field</button>
-                <button class="btn btn-primary ml-4 mt-3" type="button" onclick="remove_included();">Remove Field</button>
-              </div>
+              <% if(t!=null || t.getWhatsIncluded()!=null || !t.getWhatsIncluded().isEmpty()){
+                List<String> it = t.getWhatsIncluded();
+                int i=0;
+                for(String d : it){
+              %>
+              <input  class="form-control text-center" name="<%="notIncluded"+i%>" type="text" value="<%=d%>">
+              <%
+                  i++;}}else{%>
+              <input  class="form-control text-center" name="notIncluded0" type="text" placeholder="Insert an option">
+              <%}%>
+            </div>
+            <div class="row justify-content-end mr-4">
+              <button class="btn btn-primary mt-3" type="button" onclick="add_included();">Add Field</button>
+              <button class="btn btn-primary ml-4 mt-3" type="button" onclick="remove_included();">Remove Field</button>
             </div>
           </div>
           <!-- Included END -->
@@ -183,7 +211,16 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
           <div class="justify-content-center mt-6 pdn-top-30">
             <h2 class="text-center mt-6">NOT INCLUDED</h2>
             <div class="custom-control" id="notincluded">
+              <% if(t!=null || t.getWhatsNotIncluded()!=null || !t.getWhatsNotIncluded().isEmpty()){
+              List<String> it = t.getWhatsNotIncluded();
+              int i=0;
+              for(String d : it){
+            %>
+              <input  class="form-control text-center" name="<%="notIncluded"+i%>" type="text" value="<%=d%>">
+              <%
+                i++;}}else{%>
               <input  class="form-control text-center" name="notIncluded0" type="text" placeholder="Insert an option">
+              <%}%>
             </div>
             <div class="row justify-content-end mr-4">
               <button class="btn btn-primary mt-3" type="button" onclick="add_notincluded();">Add Field</button>
@@ -224,7 +261,63 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
             <%@ include file="footer.jsp" %>
 
 </body>
+<script>
+  var included;
+  var not_included;
+  var day;
+  <% if(t!=null && t.getItinerary()!=null && !t.getItinerary().isEmpty()){%>
+  day = <%=t.getItinerary().size()+1%>;
+  <%}else{%>
+  day=2;
+  <%}%>
+  <% if(t!=null && t.getWhatsIncluded()!=null && !t.getWhatsIncluded().isEmpty()){%>
+  included = <%=t.getWhatsIncluded().size()+1%>;
+  <%}else{%>
+  included=2;
+  <%}%>
+  <% if(t!=null && t.getWhatsNotIncluded()!=null && !t.getWhatsNotIncluded().isEmpty()){%>
+  not_included = <%=t.getWhatsNotIncluded().size()+1%>;
+  <%}else{%>
+  not_included=2;
+  <%}%>
 
+  function add_day() {
+    document.getElementById('wrapper').innerHTML += '<div class="single-preparation-step d-flex" > <div class="col"> <h4 class="pdn-top-30">Day '+day+' </h4><label class="small mb-1" >Title</label>' +
+            '              <input type="text" name="title'+day+'" required>' +
+            '              <label class="small mb-1" >Subtitle</label>' +
+            '              <input type="text" name="subtitle'+day+'">  <textarea  class="form-control" name="day'+day+'"> Add description of the day </textarea> </div> </div>';
+    day++;
+  }
+
+  function remove_day() {
+    var select = document.getElementById('wrapper');
+    select.removeChild(select.lastChild);
+    day--;
+  }
+
+  function add_included() {
+    document.getElementById('included').innerHTML += '<input  class="form-control text-center" name="included'+included+'" type="text" placeholder="Insert an option">';
+    included++;
+  }
+
+  function remove_included() {
+    var select = document.getElementById('included');
+    select.removeChild(select.lastChild);
+    select.removeChild(select.lastChild);
+    included--;
+  }
+
+  function add_notincluded() {
+    document.getElementById('notincluded').innerHTML += '<input  class="form-control text-center"  name="notIncluded'+not_included+'" type="text" placeholder="Insert an option">';
+    not_included++;
+  }
+
+  function remove_notincluded() {
+    var select = document.getElementById('notincluded');
+    select.removeChild(select.lastChild);
+    select.removeChild(select.lastChild);
+  }
+</script>
 <!-- ##### All Javascript Files ##### -->
 <!-- jQuery-2.2.4 js -->
 <script src="WebContent/js/jquery/jquery-2.2.4.min.js"></script>
@@ -236,5 +329,4 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
 <script src="WebContent/js/plugins/plugins.js"></script>
 <!-- Active js -->
 <script src="WebContent/js/active.js"></script>
-<script  src="WebContent/js/modify_trip.js">  </script>
 </html>
