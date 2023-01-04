@@ -196,7 +196,7 @@
         </div>
         <div class="row" id="join_div">
             <% String status = (String) request.getAttribute(SecurityUtils.STATUS);
-            if((status == null) && (!username.equals(trip.getOrganizer()))){ %>
+            if(status==null){ %>
             <button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>
             <% }else{
                 %>
