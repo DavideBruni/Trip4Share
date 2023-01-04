@@ -25,12 +25,12 @@
 <body class="main-layout ">
 <%@ include file="header.jsp" %>
 
-<div class="main-form .form-horizontal" >
+<div class="main-form .form-horizontal main-layout" >
 
     <div class="banner-main">
         <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
         <div class="container">
-            <div class="titlepage">
+            <div class="titlepage mt-5">
                 <h2>What are you looking for?</h2>
             </div>
         </div>
