@@ -113,8 +113,8 @@
                             <div class="single-blog-thumbnail">
                                 <!-- <img src="<%= trips.get(i).getImgUrl() %>" alt="Immagine di viaggio"> -->
                                 <img src="WebContent/images/blog-image.jpg">
-
                             </div>
+                            <p class="pull-left text-left ml-5 mt-5"><%=trips.get(i).getLike_counter()%> Likes</p>
                         </div>
 
                         <div class="col-12 col-md-6">

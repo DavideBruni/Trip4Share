@@ -69,8 +69,8 @@
                             <div class="single-blog-thumbnail">
                                 <!-- <img src="<%= trips.get(i).getImgUrl() %>" alt="Immagine di viaggio"> -->
                                 <img src="WebContent/images/blog-image.jpg">
-
                             </div>
+                            <p class="pull-left text-left ml-5 mt-5"><%=trips.get(i).getLike_counter()%> Likes</p>
                         </div>
 
                         <div class="col-12 col-md-6">
@@ -91,10 +91,10 @@
                                     if(trips.get(i).getOrganizer() != null){
                                 %>
                                 <p>By <a href=<%="user?username="+trips.get(i).getOrganizer()%>><%=trips.get(i).getOrganizer()%></a></p>
-                                <p class="pull-right text-right ml-5 mb-5"><%=trips.get(i).getLike_counter()%> Likes</p>
                                 <%
                                     }
                                 %>
+                                <p class="pull-right text-right ml-5 mb-5"><%=trips.get(i).getLike_counter()%> Likes</p>
                             </div>
                         </div>
                     </div>
