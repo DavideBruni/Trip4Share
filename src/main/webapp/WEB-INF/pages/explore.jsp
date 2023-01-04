@@ -70,7 +70,7 @@
             %>
 
             <a href=<%=suggestion_url.replace(current_value, suggestions.get(i).replace(" ", "%20"))%>>
-                <h2><%=suggestions.get(i).toUpperCase()%></h2>
+                <h2 class="blue"><%=suggestions.get(i).toUpperCase()%></h2>
             </a>
             <%
                 }
@@ -113,7 +113,7 @@
                         <div class="col-5">
                             <div class="single-blog-thumbnail">
                                 <!-- <img src="<%= trips.get(i).getImgUrl() %>" alt="Immagine di viaggio"> -->
-                                <img src="WebContent/images/blog-image.jpg">
+                                <img src="WebContent/images/trip_pic2.jpeg">
                             </div>
                             <p class="pull-left text-left ml-5 mt-5"><%=trips.get(i).getLike_counter()%> Likes</p>
                         </div>

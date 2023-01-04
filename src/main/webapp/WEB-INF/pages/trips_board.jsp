@@ -43,7 +43,7 @@
     String title = (String) request.getAttribute(SecurityUtils.TITLE_PAGE);
 %>
 
-<div class="titlepage">
+<div class="titlepage mt-5">
     <h2><%=title%></h2>
 </div>
 
@@ -68,7 +68,7 @@
                         <div class="col-5">
                             <div class="single-blog-thumbnail">
                                 <!-- <img src="<%= trips.get(i).getImgUrl() %>" alt="Immagine di viaggio"> -->
-                                <img src="WebContent/images/blog-image.jpg">
+                                <img src="WebContent/images/trip_pic1.jpg">
                             </div>
                             <!--- <p class="pull-left text-left ml-5 mt-5"><%=trips.get(i).getLike_counter()%> Likes</p> -->
                         </div>
