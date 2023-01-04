@@ -11,7 +11,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title>Fail!</title>
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700' rel='stylesheet' type='text/css'>
 
 
@@ -23,22 +23,28 @@
     <link rel="stylesheet" href="WebContent/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/default_thank_you.css">
+
     <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/jquery-1.9.1.min.js"></script>
     <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/html5shiv.js"></script>
 
 </head>
+<body class=" bg-danger " >
 <%@ include file="header.jsp" %>
-<body class="main-layout bg-danger text-white">
-<div class="site-header" id="header">
-    <h1 class="site-header__title" data-lead-id="site-header-title">OOOPS!</h1>
-</div>
 
-<div class="main-content">
-    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" fill="darkred" class="bi bi-x" viewBox="0 0 16 16">
-        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-    </svg>
-    <p class="main-content__body" data-lead-id="main-content-body">Something went wrong we are sorry! <br>Please try again </p>
+<div class="row justify-content-center text-center mt-5">
+    <div class="col-3"></div>
+    <div class="col-6 text-white">
+        <p class="site-header__title h1 white text-center" >OOOPS!</p>
+
+
+    <div class="main-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" fill="darkred" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+        <p class="main-content__body">Something went wrong we are sorry! <br>Please try again </p>
+    </div>
+    </div>
+    <div class="col-3"></div>
 </div>
 
 <%@ include file="footer.jsp" %>

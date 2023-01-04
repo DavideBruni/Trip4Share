@@ -83,9 +83,9 @@
 
                                 <% if(reviews.get(i).getAuthor() == authenticatedUserDTO.getUsername()){ %>
 
-                                <div class="row">
-                                    <a class="text-right btn btn-primary bottone" href="#" >Delete review</a>
-                                    <a class="text-right btn btn-primary bottone" href="#" >Edit review</a>
+                                <div class="row pull-right justify-content-end">
+                                    <a class="text-right btn btn-primary bottone mr-5 mt-5" href="#" >Delete review</a>
+                                    <a class="text-right btn btn-primary bottone mr-5 mt-5" href="#" >Edit review</a>
                                 </div>
 
                                 <%}%>
