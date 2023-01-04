@@ -1,5 +1,6 @@
 package it.unipi.lsmd.dao;
 
+import it.unipi.lsmd.model.Tag;
 import it.unipi.lsmd.model.Trip;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -10,9 +11,8 @@ import java.util.List;
 public interface TripDetailsDAO {
 
     Trip getTrip(String id);
-    List<Trip> getTripsByTag(String tag, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
-    //List<Trip> getTripsByDestination(String destination, int size, int page);
+    List<Trip> getTripsByTag(Tag tag, LocalDate departureDate, LocalDate returnDate, int size, int page);
 
     List<Trip> getTripsByDestination(String destination, LocalDate departureDate, LocalDate returnDate, int size, int page);
 

@@ -17,7 +17,7 @@ public class Trip {
     private double price;
     private LocalDate departureDate;
     private LocalDate returnDate;
-    private List<String> tags;
+    private List<Tag> tags;
     private List<DailySchedule> itinerary;
     private List<String> whatsIncluded;
     private List<String> whatsNotIncluded;
@@ -111,11 +111,11 @@ public class Trip {
         this.returnDate = returnDate;
     }
 
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 

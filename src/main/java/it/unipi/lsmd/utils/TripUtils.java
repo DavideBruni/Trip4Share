@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Tag;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
 import it.unipi.lsmd.dto.DailyScheduleDTO;
@@ -69,8 +70,8 @@ public interface TripUtils {
             trip.setLast_modified(LocalDateTimeAdapter.convertToLocalDateTimeViaInstant(result.getDate("last_modified")));
         }catch (NullPointerException e){ }
 
-        ArrayList<String> tags = result.get("tags", ArrayList.class);
-        trip.setTags(tags);
+        //ArrayList<String> tags_strings = result.get("tags", ArrayList.class);
+        trip.setTags(stringToTag(result.get("tags", ArrayList.class)));
 
         ArrayList<Document> itinerary = result.get("itinerary", ArrayList.class);
 
@@ -103,7 +104,7 @@ public interface TripUtils {
         tripDTO.setPrice(trip.getPrice());
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
-        tripDTO.setTags(trip.getTags());
+        tripDTO.setTags(tagsToString(trip.getTags()));
         tripDTO.setLast_modified(trip.getLast_modified());
         tripDTO.setWhatsIncluded(trip.getWhatsIncluded());
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
@@ -311,7 +312,7 @@ public interface TripUtils {
         t.setDescription(tripDetailsDTO.getDescription());
         t.setDestination(tripDetailsDTO.getDestination());
         t.setTitle(tripDetailsDTO.getTitle());
-        t.setTags(tripDetailsDTO.getTags());
+        t.setTags(stringToTag(tripDetailsDTO.getTags()));
         t.setItinerary(itineraryDTOtoModel(tripDetailsDTO.getItinerary()));
         t.setWhatsIncluded(tripDetailsDTO.getWhatsIncluded());
         t.setWhatsNotIncluded(tripDetailsDTO.getWhatsNotIncluded());
@@ -388,5 +389,29 @@ public interface TripUtils {
         trip.setLast_modified(LocalDateTime.now());
         trip.setInfo(request.getParameter("info"));
         return trip;
+    }
+
+    static List<String> tagsToString(List<Tag> tags){
+
+        if(tags == null)
+            return null;
+
+        List<String> list = new ArrayList<String>();
+        for(Tag tag : tags){
+            list.add(tag.getTag());
+        }
+        return list;
+    }
+
+    static List<Tag> stringToTag(List<String> tags){
+
+        if(tags == null)
+            return null;
+
+        List<Tag> list = new ArrayList<Tag>();
+        for(String tag : tags){
+            list.add(new Tag(tag));
+        }
+        return list;
     }
 }

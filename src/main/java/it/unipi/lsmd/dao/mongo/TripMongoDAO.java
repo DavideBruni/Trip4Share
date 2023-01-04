@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
+import it.unipi.lsmd.model.Tag;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.utils.TripUtils;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
@@ -41,7 +42,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
                     lte("returnDate", returnDate)));
         }
         Bson l1 = limit(size + 1);
-        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
         Bson srt = sort(ascending("departureDate"));
 
         AggregateIterable<Document> res;
@@ -61,17 +62,17 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         return trips;
     }
 
-    public List<Trip> getTripsByTag(String tag, LocalDate departureDate, LocalDate returnDate, int size, int page) {
+    public List<Trip> getTripsByTag(Tag tag, LocalDate departureDate, LocalDate returnDate, int size, int page) {
 
         Bson m1;
         if (returnDate == null) {
-            m1 = match(and(eq("tags", tag), gte("departureDate", departureDate)));
+            m1 = match(and(eq("tags", tag.getTag()), gte("departureDate", departureDate)));
         } else {
-            m1 = match(and(eq("tags", tag), gte("departureDate", departureDate),
+            m1 = match(and(eq("tags", tag.getTag()), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
         Bson l1 = limit(size + 1);
-        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
         Bson srt = sort(ascending("departureDate"));
 
         AggregateIterable<Document> res;
@@ -110,7 +111,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         }
         Bson l1 = limit(size + 1);
-        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
         Bson srt = sort(ascending("price"));
 
 

@@ -9,6 +9,7 @@ import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
 import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
+import it.unipi.lsmd.model.Tag;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.enums.Status;
 import it.unipi.lsmd.service.TripService;
@@ -119,7 +120,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripSummaryDTO> getTripsByTag(String tag, String departureDate, String returnDate, int size, int page) {
+    public List<TripSummaryDTO> getTripsByTag(String value, String departureDate, String returnDate, int size, int page) {
 
         LocalDate depDate;
         LocalDate retDate = null;
@@ -129,7 +130,7 @@ public class TripServiceImpl implements TripService {
         }catch (DateTimeParseException e){
             depDate = LocalDate.now();
         }
-
+        Tag tag = new Tag(value);
         List<Trip> trips= tripDetailsDAO.getTripsByTag(tag, depDate, retDate, size, page);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){

@@ -25,6 +25,38 @@ public class ExploreServlet extends HttpServlet {
     private TripService tripService = ServiceLocator.getTripService();
     private UserService userService = ServiceLocator.getUserService();
 
+    private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+
+        String targetJSP = "/WEB-INF/pages/trips_board.jsp";
+
+        String value = httpServletRequest.getParameter("value");
+        int page;
+        try{
+            page = Integer.parseInt(httpServletRequest.getParameter("page"));
+        }catch (Exception e){
+            page = 1;
+        }
+        httpServletRequest.setAttribute(SecurityUtils.PAGE, page);
+
+        String searchFor = httpServletRequest.getParameter("searchFor");
+        RequestDispatcher requestDispatcher = null;
+        if(searchFor != null && searchFor.equals("destination")){
+            requestDispatcher = searchDestination(httpServletRequest, value, page);
+        }else if(searchFor != null && searchFor.equals("user")){
+            requestDispatcher = searchUser(httpServletRequest, value, page);
+        }else if(searchFor != null && searchFor.equals("price")){
+            String max_value = httpServletRequest.getParameter("max_value");
+            requestDispatcher = searchTripsByPrice(httpServletRequest, value, max_value, page);
+        }else if(searchFor != null && searchFor.equals("tags")){
+            requestDispatcher = searchTags(httpServletRequest, value, page);
+        }else{
+            //TODO
+            requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/error404.jsp");
+        }
+        requestDispatcher.forward(httpServletRequest, httpServletResponse);
+    }
+
+
     private RequestDispatcher searchUser(HttpServletRequest request, String value, int page) {
         List<OtherUserDTO> users = userService.searchUsers(value, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
         request.setAttribute(SecurityUtils.USER_RESULTS, users);
@@ -107,33 +139,6 @@ public class ExploreServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         processRequest(httpServletRequest, httpServletResponse);
-    }
-
-    private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        String value = httpServletRequest.getParameter("value");
-        int page;
-        try{
-            page = Integer.parseInt(httpServletRequest.getParameter("page"));
-        }catch (Exception e){
-            page = 1;
-        }
-        httpServletRequest.setAttribute(SecurityUtils.PAGE, page);
-
-        String searchFor = httpServletRequest.getParameter("searchFor");
-        RequestDispatcher requestDispatcher = null;
-        if(searchFor != null && searchFor.equals("destination")){
-            requestDispatcher = searchDestination(httpServletRequest, value, page);
-        }else if(searchFor != null && searchFor.equals("user")){
-            requestDispatcher = searchUser(httpServletRequest, value, page);
-        }else if(searchFor != null && searchFor.equals("price")){
-            String max_value = httpServletRequest.getParameter("max_value");
-            requestDispatcher = searchTripsByPrice(httpServletRequest, value, max_value, page);
-        }else if(searchFor != null && searchFor.equals("tags")){
-            requestDispatcher = searchTags(httpServletRequest, value, page);
-        }else{
-            requestDispatcher = httpServletRequest.getRequestDispatcher("search");
-        }
-        requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 
     private List<String> onlyDestinations(List<DestinationsDTO> destinations) {
