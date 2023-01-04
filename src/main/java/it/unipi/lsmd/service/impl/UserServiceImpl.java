@@ -55,11 +55,11 @@ public class UserServiceImpl implements UserService {
         if(user == null)
             return null;
 
-        user.setAvg_rating(userDAO.avgRating(username));
         RegisteredUserDTO registeredUser = (RegisteredUserDTO) UserUtils.userModelToDTO(user);
         registeredUser.setN_following(registeredUserDAO.getNumberOfFollowing(username));
         registeredUser.setN_followers(registeredUserDAO.getNumberOfFollower(username));
         registeredUser.setFriend(isFriend(me, username));
+        registeredUser.setAvg_rating(userDAO.avgRating(username));
 
         return registeredUser;
     }

@@ -102,7 +102,7 @@
         <div class="row">
             <div class="col-12 ">
                 <%
-                    for(int i = 0; i < trips.size() && i < PagesUtilis.TRIPS_PER_PAGE; i++){
+                    for(int i = 0; i < trips.size() && i < PagesUtilis.OBJECT_PER_PAGE_SEARCH; i++){
                 %>
                 <hr class="invis3">
                 <!-- Single Blog Area  -->

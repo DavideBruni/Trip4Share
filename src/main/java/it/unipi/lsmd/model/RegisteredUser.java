@@ -13,9 +13,8 @@ public class RegisteredUser extends User{
     private List<String> spoken_languages;
     private String nationality;
     private String phone;
-    private List<RegisteredUser> following;
+    private List<RegisteredUser> following; // TODO - da togliere
     private String bio;
-    private double avg_rating;
 
 
     public List<RegisteredUser> getFollowing() {
@@ -96,11 +95,4 @@ public class RegisteredUser extends User{
         this.bio = bio;
     }
 
-    public double getAvg_rating() {
-        return avg_rating;
-    }
-
-    public void setAvg_rating(double avg_rating) {
-        this.avg_rating = avg_rating;
-    }
 }

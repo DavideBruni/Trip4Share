@@ -95,7 +95,7 @@ public class ExploreServlet extends HttpServlet {
         List<String> destinations;
         String title;
 
-        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
+        List<TripSummaryDTO> trips = tripService.getTripsByDestination(value, departure_date, return_date, PagesUtilis.OBJECT_PER_PAGE_SEARCH, page);
 
         if(departure_date != null && return_date != null && !departure_date.equals("") && !return_date.equals("")){
             destinations = tripService.mostPopularDestinationsByPeriod(departure_date, return_date, PagesUtilis.SUGGESTIONS_EXPLORE);
@@ -183,7 +183,6 @@ public class ExploreServlet extends HttpServlet {
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 
-    // TODO - eliminarlo
     @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         System.out.println("qui");

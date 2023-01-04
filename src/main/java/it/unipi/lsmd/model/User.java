@@ -7,8 +7,8 @@ public abstract class User {
     private String surname;
     private String username;
     private String email;
-    private String password;    // TODO - useless?
-    private String role;        // TODO - useless?
+    private String password;
+    private String role;
     private String profile_pic;
 
     public User(){}

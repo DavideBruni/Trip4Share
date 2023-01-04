@@ -41,7 +41,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             m1 = match(and(eq("destination", destination), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
-        Bson l1 = limit(size+1);
+        Bson l1 = limit(size + 1);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
         Bson srt = sort(ascending("departureDate"));
 
@@ -71,7 +71,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             m1 = match(and(eq("tags", tag), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
-        Bson l1 = limit(size);
+        Bson l1 = limit(size + 1);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
         Bson srt = sort(ascending("departureDate"));
 
@@ -110,7 +110,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             }
 
         }
-        Bson l1 = limit(size);
+        Bson l1 = limit(size + 1);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate")));
         Bson srt = sort(ascending("price"));
 
@@ -155,7 +155,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         // aggregate([{$group : {"_id":"$destination" total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit);
+        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
 
         List<String> dest = new ArrayList<>();
@@ -177,7 +177,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson m1 = match(eq("tags",tag));
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit);
+        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<String> dest = new ArrayList<>();
@@ -202,7 +202,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit);
+        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<String> destinations = new ArrayList<>();
@@ -221,7 +221,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson m1 = match(and(gte("departureDate",depDate),lte("returnDate",retDate)));
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit);
+        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
         AggregateIterable<Document> res;
         res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
@@ -242,7 +242,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         Bson s1 = sort(ascending("price"));
         Bson g1 = group("$destination",avg("agg","$price"));
-        Bson l1 = limit(objectPerPageSearch);
+        Bson l1 = limit(objectPerPageSearch + 1);
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson sk1 = skip((page - 1) * objectPerPageSearch);
@@ -272,7 +272,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson s1 = sort(ascending("price"));
         Bson g1 = group("$destination",first("doc_with_max_ver","$$ROOT"));
         Bson r1 = replaceWith("$doc_with_max_ver");
-        Bson l1 = limit(objectPerPageSearch);
+        Bson l1 = limit(objectPerPageSearch + 1);
         AggregateIterable<Document> res;
         if (page != 1) {
             Bson sk1 = skip((page - 1) * objectPerPageSearch);
