@@ -13,6 +13,7 @@ import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.ReviewUtils;
 import it.unipi.lsmd.utils.UserUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +29,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthenticatedUserDTO authenticate(String username, String password){
-
+        if(username==null || password==null)
+            return null;
         User user = userDAO.authenticate(username, password);
-        AuthenticatedUserDTO authenticatedUserDTO = null;
+        AuthenticatedUserDTO authenticatedUserDTO;
 
         if(user instanceof RegisteredUser){
             RegisteredUserDTO registeredUserDTO = (RegisteredUserDTO) UserUtils.userModelToDTO(user);
@@ -167,6 +169,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private String addRegisteredUser(RegisteredUserDTO u) {
+        if(u.getBirthdate()==null || u.getBirthdate().isAfter(LocalDate.now())){
+            return "Your birthdate is probably wrong";
+        }
         RegisteredUser r = UserUtils.registeredUserFromDTO(u);
         String flag = userDAO.createUser(r);
         if(!flag.equals("Something gone worng") && !flag.equals("Duplicate key")) {
@@ -193,22 +198,28 @@ public class UserServiceImpl implements UserService {
     public boolean updateUser(AuthenticatedUserDTO newUser, AuthenticatedUserDTO oldUser){
         // fonte: https://www.mongodb.com/community/forums/t/updateone-vs-replaceone-performance/698
         // better update only few attributes instead of the entire document
-
-        if(newUser instanceof RegisteredUserDTO && oldUser instanceof RegisteredUserDTO){
-            if(newUser.getUsername().equals(oldUser.getUsername())){
-                RegisteredUser r_new = UserUtils.registeredUserFromDTO((RegisteredUserDTO) newUser);
-                RegisteredUser r_old = UserUtils.registeredUserFromDTO((RegisteredUserDTO) oldUser);
-                return userDAO.updateRegisteredUser(r_new,r_old);
-            }else{
+        try {
+            if (newUser instanceof RegisteredUserDTO && oldUser instanceof RegisteredUserDTO) {
+                if (newUser.getUsername().equals(oldUser.getUsername())) {
+                    if(((RegisteredUserDTO) newUser).getBirthdate()!=null && ((RegisteredUserDTO) newUser).getBirthdate().isBefore(LocalDate.now())) {
+                        RegisteredUser r_new = UserUtils.registeredUserFromDTO((RegisteredUserDTO) newUser);
+                        RegisteredUser r_old = UserUtils.registeredUserFromDTO((RegisteredUserDTO) oldUser);
+                        return userDAO.updateRegisteredUser(r_new, r_old);
+                    }
+                    return false;
+                } else {
+                    return false;
+                }
+            } else if (newUser instanceof AdminDTO && oldUser instanceof AdminDTO) {
+                if (newUser.getUsername().equals(oldUser.getUsername())) {
+                    return userDAO.updateAdmin(UserUtils.adminFromDTO((AdminDTO) newUser), UserUtils.adminFromDTO((AdminDTO) oldUser));
+                } else {
+                    return false;
+                }
+            } else {
                 return false;
             }
-        }else if(newUser instanceof AdminDTO && oldUser instanceof AdminDTO){
-            if(newUser.getUsername().equals(oldUser.getUsername())){
-                return userDAO.updateAdmin(UserUtils.adminFromDTO((AdminDTO) newUser), UserUtils.adminFromDTO((AdminDTO) oldUser));
-            }else{
-                return false;
-            }
-        }else{
+        }catch(Exception e){
             return false;
         }
     }
@@ -244,11 +255,6 @@ public class UserServiceImpl implements UserService {
         Review review = UserUtils.reviewFromDTO(reviewDTO);
         RegisteredUser r = new RegisteredUser(to.getUsername());
         return userDAO.putReview(review,r);
-    }
-
-    @Override
-    public boolean updateReview(ReviewDTO review, OtherUserDTO toDTO) {
-        return false;
     }
 
     @Override

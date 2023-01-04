@@ -21,10 +21,17 @@ public class PastTripsServlet extends HttpServlet  {
 
     private TripService tripService = ServiceLocator.getTripService();
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req,resp);
+    }
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        processRequest(httpServletRequest,httpServletResponse);
+    }
 
+    private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
         // check if user is authenticated
         if(authenticatedUserDTO == null){
@@ -38,7 +45,6 @@ public class PastTripsServlet extends HttpServlet  {
         }catch (Exception e){
             page = 1;
         }
-
 
         List<TripSummaryDTO> trips = tripService.getPastTrips(authenticatedUserDTO.getUsername(), PagesUtilis.TRIPS_PER_PAGE + 1, page);
         String targetJSP = "/WEB-INF/pages/trips_board.jsp";

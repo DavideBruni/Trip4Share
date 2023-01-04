@@ -5,6 +5,7 @@ import it.unipi.lsmd.dto.RegisteredUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import it.unipi.lsmd.utils.UserUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,25 +39,14 @@ public class SignupServlet extends HttpServlet {
         String username = httpServletRequest.getParameter("username");
         String email = httpServletRequest.getParameter("email");
         String password = httpServletRequest.getParameter("psw");
-        if(complete(name,surname,username,email,password)) {
-            RegisteredUserDTO user = new RegisteredUserDTO();
-            user.setFirstName(name);
-            user.setLastName(surname);
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setBirthdate(LocalDate.parse(httpServletRequest.getParameter("birthday")));
-            String nationality = httpServletRequest.getParameter("nationality");
-            user.setNationality(nationality);
-            String listOfSpokenLanguages = httpServletRequest.getParameter("languages");
-            List<String> spokenLanguages = Arrays.asList(listOfSpokenLanguages.split(","));
-            user.setSpokenLanguages(spokenLanguages);
+        if(UserUtils.complete(name,surname,username,email,password)) {
+            RegisteredUserDTO user = UserUtils.registeredUserDTOFromRequest(httpServletRequest);
             String result = userService.signup(user);
             if(!result.equals("Something gone wrong") && !result.equals("Duplicate key")){
                 //okay, login
                 user.setId(result);
-                AuthenticatedUserDTO authenticatedUserDTO = DTOwithoutDetails(user);
-                HttpSession session = httpServletRequest.getSession(true);
+                AuthenticatedUserDTO authenticatedUserDTO = UserUtils.DTOwithoutDetails(user);
+                HttpSession session = httpServletRequest.getSession();
                 session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
                 session.setAttribute("itsMe", true);
                 LoginServlet.redirectUser(httpServletResponse, authenticatedUserDTO);
@@ -74,23 +64,4 @@ public class SignupServlet extends HttpServlet {
         }
     }
 
-    private RegisteredUserDTO DTOwithoutDetails(RegisteredUserDTO user) {
-        RegisteredUserDTO r = new RegisteredUserDTO();
-        r.setFirstName(user.getFirstName());
-        r.setLastName(user.getLastName());
-        r.setUsername(user.getUsername());
-        r.setNationality(user.getNationality());
-        r.setSpokenLanguages(user.getSpokenLanguages());
-        try {
-            r.setBirthdate(user.getBirthdate());
-        }catch(Exception e){
-            r.setBirthdate(null);
-        }
-        r.setId(user.getId());
-        return r;
-    }
-
-    private boolean complete(String name, String surname, String username, String email, String password) {
-        return name != null && surname != null && username != null && email != null && password != null;
-    }
 }

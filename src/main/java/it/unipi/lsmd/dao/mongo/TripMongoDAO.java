@@ -66,9 +66,9 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         Bson m1;
         if (returnDate == null) {
-            m1 = match(and(in("tags", tag), gte("departureDate", departureDate)));
+            m1 = match(and(eq("tags", tag), gte("departureDate", departureDate)));
         } else {
-            m1 = match(and(in("tags", tag), gte("departureDate", departureDate),
+            m1 = match(and(eq("tags", tag), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
         Bson l1 = limit(size);

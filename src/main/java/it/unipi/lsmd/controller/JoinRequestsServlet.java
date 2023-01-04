@@ -32,7 +32,13 @@ public class JoinRequestsServlet extends HttpServlet {
         }
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        String username = ((AuthenticatedUserDTO)(request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))).getUsername();
+        String username;
+        try {
+            username = ((AuthenticatedUserDTO) (request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))).getUsername();
+        }catch(Exception e){
+            response.sendRedirect(request.getContextPath());
+            return;
+        }
         String trip_id = request.getParameter("id");
         if(username!=null && trip_id!=null) {
             String action = request.getParameter("action");

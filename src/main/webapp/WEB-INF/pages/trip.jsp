@@ -81,10 +81,12 @@
                     </div>
                     <div class="col-3 pull-right">
                         <div class="receipe-duration margin_top_50 pdn-top-30 ">
-                            <h6><%= trip.getPrice() %></h6>
-                            <h6><%= trip.getDepartureDate() %></h6>
-                            <h6><%= trip.getReturnDate() %></h6>
+                            <h6>Price: <%= trip.getPrice() %>€</h6>
+                            <h6>Departure date:<br><%= trip.getDepartureDate() %></h6>
+                            <h6>Return date:<br> <%= trip.getReturnDate() %></h6>
+                            <% if(trip.getTags()!=null || !trip.getTags().isEmpty()){ %>
                             <h6><%= trip.getTags() %></h6>
+                            <% } %>
                             <h6>Organized By <%= trip.getOrganizer() %></h6>
 
                         </div>
@@ -97,7 +99,7 @@
 
         <div class="col-1"></div>
         <div class="receipe-ratings my-5 col-12">
-            <h6>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam cursus magna purus, nec pharetra risus sagittis placerat. Integer aliquam quis nunc et laoreet. In hac habitasse platea dictumst. Praesent congue est eget magna euismod varius id egestas nulla. Suspendisse sollicitudin ligula purus, a auctor tortor pretium ut. Praesent ac dui diam. Nam malesuada turpis dolor, vel pulvinar nisl tincidunt at. Etiam vehicula dui arcu, vitae dapibus eros tincidunt ac. Suspendisse elementum sapien id tempus fringilla. Nam neque erat, interdum at tincidunt vitae, facilisis sit amet lorem. Duis mattis tincidunt felis, non feugiat arcu ornare a. In pharetra arcu nec massa consequat dapibus.</h6>
+            <h6> <%=trip.getDescription()%></h6>
         </div>
 
 
@@ -113,8 +115,12 @@
                         <div class="single-preparation-step d-flex">
                             <div class="col">
                                 <h4 class="pdn-top-30"><%="Day " + dailyScheduleDTO.getDay() + " - " + dailyScheduleDTO.getTitle()%></h4><br>
-                                <!-- TODO - add subtitle -->
-                                <p><%=dailyScheduleDTO.getDescription()%></p>
+                                <% if(dailyScheduleDTO.getSubtitle()!=null){ %>
+                                <h5><%= dailyScheduleDTO.getSubtitle() %></h5>
+                                <% } %>
+                                <% if(dailyScheduleDTO.getDescription()!=null){ %>
+                                <p><%= dailyScheduleDTO.getDescription() %></p>
+                                <% } %>
                             </div>
 
                         </div>
@@ -202,7 +208,7 @@
                 //request to do based on current status
             }
         %>
-        <p class="grey pull-right ">Last Modified</p>
+        <p class="grey pull-right ">Last Modified:  <%= trip.getLast_modified()%></p>
         </div>
 
     </div>

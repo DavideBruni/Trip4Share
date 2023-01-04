@@ -7,6 +7,7 @@ import it.unipi.lsmd.dto.ReviewDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import it.unipi.lsmd.utils.UserUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,9 +26,12 @@ public class UpdateProfileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getSession()==null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+            response.sendRedirect(request.getContextPath());
+            return;
+        }
 
         RequestDispatcher requestDispatcher;
-
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(request);
 
         if(authenticatedUserDTO instanceof AdminDTO){
@@ -41,68 +45,39 @@ public class UpdateProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        if(req.getSession()==null){
+            resp.sendRedirect(req.getContextPath());
+            return;
+        }
+
         AuthenticatedUserDTO user = ((AuthenticatedUserDTO)(req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)));
 
-        if(req.getSession()==null || user == null) {
+        if(user == null) {
             resp.sendRedirect(req.getContextPath());
             return;
         }
 
         String targetURL;
         String username = user.getUsername();
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String password = req.getParameter("password");
-        if(password.equals("password"))
-            password = null;
-        String email = req.getParameter("email");
-
         AuthenticatedUserDTO new_authenticated_user;
 
         if(user instanceof RegisteredUserDTO){
-
-            String nationality = req.getParameter("nationality");
-            LocalDate birthDate = LocalDate.parse(req.getParameter("birthDate"));
-            List<ReviewDTO> reviews = ((RegisteredUserDTO)(req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))).getReviews();
-            List<String> spokenLanguages;
-            try{
-                spokenLanguages = Arrays.asList(req.getParameter("languages").split(","));
-            }catch(NullPointerException ne){
-                spokenLanguages = null;
-            }
-
-            RegisteredUserDTO new_registered_user = new RegisteredUserDTO();
-            new_registered_user.setNationality(nationality);
-            new_registered_user.setBirthdate(birthDate);
-            new_registered_user.setSpokenLanguages(spokenLanguages);
-            new_registered_user.setReviews(reviews);
-
-            new_authenticated_user = new_registered_user;
-            targetURL = "user?username="+username;
+            new_authenticated_user = UserUtils.registeredUserDTOFromRequest(req);
+            new_authenticated_user.setUsername(username);
+            targetURL = "user?username="+new_authenticated_user.getUsername();
 
         }else{
-            new_authenticated_user = new AdminDTO();
+            new_authenticated_user = UserUtils.admitDTOFromRequest(req);
+            new_authenticated_user.setUsername(username);
             targetURL = "admin";
         }
 
-        new_authenticated_user.setUsername(username);
-        new_authenticated_user.setFirstName(firstName);
-        new_authenticated_user.setLastName(lastName);
-        new_authenticated_user.setPassword(password);
-        new_authenticated_user.setEmail(email);
-
-        System.out.println(new_authenticated_user);
-
         if(userService.updateUser(new_authenticated_user, user)){
             req.getSession().setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY,new_authenticated_user);
-            System.out.println("Modifica effettuata con successo");
         }else{
-            System.out.println("errore nella modifica");
+            targetURL = "/WEB-INF/pages/unsuccess.jsp";
         }
-
         resp.sendRedirect(targetURL);
-        //RequestDispatcher requestDispatcher = req.getRequestDispatcher(targetJSP);
-        //requestDispatcher.forward(req, resp);
     }
 
 }

@@ -38,7 +38,5 @@ public interface UserService {
 
     boolean setReview(ReviewDTO reviewDTO,OtherUserDTO to);
 
-    boolean updateReview(ReviewDTO review, OtherUserDTO toDTO);
-
     boolean deleteReview(ReviewDTO review, OtherUserDTO toDTO);
 }

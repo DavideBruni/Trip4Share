@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/deleteReview")
-public class DeleteReview extends HttpServlet {
+public class DeleteReviewServlet extends HttpServlet {
     private final UserService userService = ServiceLocator.getUserService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

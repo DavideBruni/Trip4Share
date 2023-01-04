@@ -25,11 +25,11 @@
                         <form method="POST" class="register-form" id="register-form" action="signup">
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="name" id="name" placeholder="Your Name" required/>
+                                <input type="text" name="firstName" id="name" placeholder="Your Name" required/>
                             </div>
                             <div class="form-group">
                                 <label for="surname"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="surname" id="surname" placeholder="Your Surname" required/>
+                                <input type="text" name="lastName" id="surname" placeholder="Your Surname" required/>
                             </div>
                             <div class="form-group">
                                 <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
@@ -44,8 +44,8 @@
                                 <input type="password" name="psw" id="psw" placeholder="Password" required/>
                             </div>
                             <div class="form-group">
-                                <label for="birthday"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="date" name="birthday" id="birthday" placeholder="Password" required/>
+                                <label for="birthDate"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="date" name="birthDate" id="birthDate" placeholder="birthDate" required/>
                             </div>
                             <div class="form-group">
                                 <label for="nationality"><i class="zmdi zmdi-lock-outline"></i></label>

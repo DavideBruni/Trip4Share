@@ -286,7 +286,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public boolean addTrip(TripDetailsDTO tripDetailsDTO){
         Trip t = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
-        if(t.getDepartureDate().isAfter(LocalDate.now()) || t.getDepartureDate().isAfter(t.getReturnDate())){
+        if(t.getDepartureDate().isBefore(LocalDate.now()) || t.getDepartureDate().isAfter(t.getReturnDate())){
             return false;
         }
         String id = tripDetailsDAO.addTrip(t);

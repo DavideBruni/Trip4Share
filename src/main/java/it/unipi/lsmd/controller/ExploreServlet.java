@@ -72,12 +72,6 @@ public class ExploreServlet extends HttpServlet {
 
     }
 
-    // TODO - che farne?
-    private RequestDispatcher cheapestDestinations(HttpServletRequest request, String start, String end, int page) {
-        List<TripSummaryDTO> trips = tripService.cheapestTripForDestinationInPeriod(start,end,page, PagesUtilis.OBJECT_PER_PAGE_SEARCH);
-        request.setAttribute("trips", trips);
-        return  request.getRequestDispatcher("/WEB-INF/pages/explore.jsp");
-    }
 
     // TODO - che farne?
     private RequestDispatcher cheapestDestinationsByAvg(HttpServletRequest request, int page) {

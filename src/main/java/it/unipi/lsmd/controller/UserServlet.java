@@ -79,6 +79,10 @@ public class UserServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
+        if (httpServletRequest.getSession() == null) {
+            httpServletResponse.sendRedirect("login");
+            return;
+        }
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
         if (authenticatedUserDTO == null) {
             httpServletResponse.sendRedirect("login");
@@ -90,7 +94,7 @@ public class UserServlet extends HttpServlet {
             return;
         }
 
-        RequestDispatcher requestDispatcher = null;
+        RequestDispatcher requestDispatcher;
         String me = authenticatedUserDTO.getUsername();
         String username = httpServletRequest.getParameter("username");
         httpServletRequest.setAttribute("itsMe", true);

@@ -62,17 +62,17 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
       <div class="row">
         <label class="small mb-1" >Title</label>
         <% if (t!=null && t.getTitle()!=null){%>
-        <input  class="form-control text-center" name="destination" type="text" placeholder="Insert a Title"  value="<%=t.getTitle()%>" required>
+        <input  class="form-control text-center" name="title" type="text" placeholder="Insert a Title"  value="<%=t.getTitle()%>" required>
         <%}else{%>
-        <input  class="form-control text-center" name="destination" type="text" placeholder="Insert a Title"  required>
+        <input  class="form-control text-center" name="title" type="text" placeholder="Insert a Title"  required>
         <% } %>
       </div>
       <div class="row">
         <label class="small mb-1" >price</label>
         <% if (t!=null && t.getPrice()!=0){%>
-        <input  class="form-control text-center" name="destination" type="number" step=0.01 placeholder="Insert the price"  value="<%=t.getPrice()%>" required>
+        <input  class="form-control text-center" name="price" type="number" step=0.01 placeholder="Insert the price"  value="<%=t.getPrice()%>" required>
         <%}else{%>
-        <input  class="form-control text-center" name="destination" type="number" step=0.01 placeholder="Insert the price"  required>
+        <input  class="form-control text-center" name="price" type="number" step=0.01 placeholder="Insert the price"  required>
         <% } %>
          </div>
 
@@ -88,7 +88,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
       <div class="row">
         <label class="small mb-1" >Return date</label>
         <% if (t!=null && t.getReturnDate()!=null){%>
-        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
+        <input  class="form-control text-center"  name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
         <%}else{%>
         <input  class="form-control text-center" name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
         <% } %>
@@ -132,9 +132,9 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
     <div class="row">
       <label class="small mb-1" >Info about the trip</label>
       <% if (t!=null && t.getInfo()!=null){%>
-      <textarea  class="form-control" id="description" name="description" value="<%=t.getInfo()%>"> Description </textarea>
+      <textarea  class="form-control" id="info" name="info" value="<%=t.getInfo()%>"> Description </textarea>
       <%}else{%>
-      <textarea  class="form-control" id="description" name="description" > Description </textarea>
+      <textarea  class="form-control" id="info" name="info" > Description </textarea>
       <% } %>
     </div>
   </div>

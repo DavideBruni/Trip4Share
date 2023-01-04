@@ -53,7 +53,6 @@ public interface TripUtils {
         trip.setTitle(result.getString("title"));
         trip.setDescription(result.getString("description"));
         trip.setDestination(result.getString("destination").toUpperCase());
-        trip.setImg(result.getString("imgUrl"));
 
         try{
             trip.setLike_counter(result.getInteger("likes"));
@@ -105,6 +104,7 @@ public interface TripUtils {
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setTags(trip.getTags());
+        tripDTO.setLast_modified(trip.getLast_modified());
         tripDTO.setWhatsIncluded(trip.getWhatsIncluded());
         tripDTO.setWhatsNotIncluded(trip.getWhatsNotIncluded());
         tripDTO.setLike_counter(trip.getLike_counter());
@@ -334,13 +334,15 @@ public interface TripUtils {
         return i;
     }
 
-    static TripDetailsDTO tripDetailsDTOfromRequest(HttpServletRequest request){
+    static TripDetailsDTO tripDetailsDTOfromRequest(HttpServletRequest request) throws IncompleteTripException {
         TripDetailsDTO trip = new TripDetailsDTO();
         trip.setDestination(request.getParameter("destination"));
         trip.setTitle(request.getParameter("title"));
         trip.setPrice(Double.parseDouble(request.getParameter("price")));
         trip.setDepartureDate(LocalDate.parse(request.getParameter("departureDate")));
         trip.setReturnDate(LocalDate.parse(request.getParameter("returnDate")));
+        if(trip.getDestination() == null || trip.getTitle()==null || trip.getPrice()==0 || trip.getDepartureDate()==null || trip.getReturnDate()== null)
+            throw new IncompleteTripException();
         List<String> tags = Arrays.asList(request.getParameter("tags").split(","));
         trip.setTags(tags);
         trip.setDescription(request.getParameter("description"));
@@ -358,6 +360,8 @@ public interface TripUtils {
             d.setDescription(description);
             itinerary.add(d);
         }
+        if(itinerary.size()==0)
+            throw new IncompleteTripException();
         trip.setItinerary(itinerary);
         List<String> included = new ArrayList<>();
         List<String> notIncluded = new ArrayList<>();
@@ -378,6 +382,8 @@ public interface TripUtils {
         }
         trip.setWhatsNotIncluded(notIncluded);
         String username = ((RegisteredUserDTO) request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername();
+        if(username==null)
+            throw new IncompleteTripException();
         trip.setOrganizer(username);
         trip.setLast_modified(LocalDateTime.now());
         trip.setInfo(request.getParameter("info"));

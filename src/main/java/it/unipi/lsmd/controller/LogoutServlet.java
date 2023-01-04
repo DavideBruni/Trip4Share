@@ -15,14 +15,21 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        processRequest(httpServletRequest,httpServletResponse);
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        processRequest(httpServletRequest,httpServletResponse);
+    }
+
+    private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         HttpSession session = httpServletRequest.getSession(true);
         if(session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) != null){
             session.removeAttribute(SecurityUtils.AUTHENTICATED_USER_KEY);
             session.invalidate();
         }
         httpServletResponse.sendRedirect("index");
-
     }
 }

@@ -25,7 +25,6 @@ public class UpdateTripServlet extends HttpServlet {
             return;
         }
         TripDetailsDTO trip = tripService.getTrip(id);
-        //TODO - check organizer
         if(trip!=null) {
             request.getSession().setAttribute(SecurityUtils.TRIP, trip);
             request.setAttribute(SecurityUtils.MODIFY_FLAG,true);

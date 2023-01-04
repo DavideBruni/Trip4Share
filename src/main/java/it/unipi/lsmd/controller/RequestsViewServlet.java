@@ -28,13 +28,17 @@ public class RequestsViewServlet extends HttpServlet {
         }
         //get participants and organizer, but if organizer isn't the logged user, return
         InvolvedPeopleDTO inv =tripService.getOrganizerAndJoiners(id);
-        if(inv== null || !inv.getOrganizer().equals(((AuthenticatedUserDTO) req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername())){
-             resp.sendRedirect(req.getContextPath());
-        }else{
-            req.setAttribute(SecurityUtils.JOINERS,inv.getJoiners());
-            req.setAttribute("id",id);
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/pages/requests.jsp");
-            requestDispatcher.forward(req, resp);
+        try {
+            if (inv == null || !inv.getOrganizer().equals(((AuthenticatedUserDTO) req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername())) {
+                resp.sendRedirect(req.getContextPath());
+            } else {
+                req.setAttribute(SecurityUtils.JOINERS, inv.getJoiners());
+                req.setAttribute("id", id);
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/pages/requests.jsp");
+                requestDispatcher.forward(req, resp);
+            }
+        }catch(Exception e){
+            resp.sendRedirect(req.getContextPath());
         }
     }
 

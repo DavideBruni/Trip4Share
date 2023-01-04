@@ -7,10 +7,12 @@ import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import org.bson.Document;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -105,8 +107,6 @@ public interface UserUtils {
                 doc.append("nationality", ((RegisteredUser) u).getNationality());
                 doc.append("spoken_languages", ((RegisteredUser) u).getSpoken_languages());
                 doc.append("birthdate", ((RegisteredUser) u).getBirthdate());
-                // doc.append("phone", ((RegisteredUser) u).getPhone());
-                //doc.append("bio", ((RegisteredUser) u).getBio());   // TODO - se serve lo mettiamo
             }
             return doc;
         }catch(NullPointerException ne){
@@ -151,5 +151,58 @@ public interface UserUtils {
         r.setDate(LocalDate.parse(reviewDTO.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         r.setRating(reviewDTO.getRating());
         return r;
+    }
+
+    static RegisteredUserDTO registeredUserDTOFromRequest(HttpServletRequest httpServletRequest) {
+        RegisteredUserDTO user = new RegisteredUserDTO();
+        user.setFirstName(httpServletRequest.getParameter("firstName"));
+        user.setLastName(httpServletRequest.getParameter("lsatName"));
+        user.setUsername(httpServletRequest.getParameter("username"));
+        user.setEmail(httpServletRequest.getParameter("email"));
+        user.setPassword(httpServletRequest.getParameter("psw"));
+        try {
+            user.setBirthdate(LocalDate.parse(httpServletRequest.getParameter("birthDate")));
+        }catch(Exception e){
+            user.setBirthdate(null);
+        }
+        String nationality = httpServletRequest.getParameter("nationality");
+        user.setNationality(nationality);
+        String listOfSpokenLanguages = httpServletRequest.getParameter("languages");
+        try {
+            List<String> spokenLanguages = Arrays.asList(listOfSpokenLanguages.split(","));
+            user.setSpokenLanguages(spokenLanguages);
+        }catch (Exception e){
+            user.setSpokenLanguages(null);
+        }
+        return user;
+    }
+
+    static RegisteredUserDTO DTOwithoutDetails(RegisteredUserDTO user) {
+        RegisteredUserDTO r = new RegisteredUserDTO();
+        r.setFirstName(user.getFirstName());
+        r.setLastName(user.getLastName());
+        r.setUsername(user.getUsername());
+        r.setNationality(user.getNationality());
+        r.setSpokenLanguages(user.getSpokenLanguages());
+        try {
+            r.setBirthdate(user.getBirthdate());
+        }catch(Exception e){
+            r.setBirthdate(null);
+        }
+        r.setId(user.getId());
+        return r;
+    }
+
+    static boolean complete(String name, String surname, String username, String email, String password) {
+        return name != null && surname != null && username != null && email != null && password != null;
+    }
+
+    static AdminDTO admitDTOFromRequest(HttpServletRequest req) {
+        AdminDTO new_authenticated_user = new AdminDTO();
+        new_authenticated_user.setFirstName(req.getParameter("firstName"));
+        new_authenticated_user.setLastName(req.getParameter("lastName"));
+        new_authenticated_user.setPassword(req.getParameter("password"));
+        new_authenticated_user.setEmail(req.getParameter("email"));
+        return new_authenticated_user;
     }
 }
