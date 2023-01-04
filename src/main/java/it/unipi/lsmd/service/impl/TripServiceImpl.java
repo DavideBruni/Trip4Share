@@ -14,28 +14,27 @@ import it.unipi.lsmd.model.enums.Status;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
 import org.javatuples.Pair;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import org.javatuples.Triplet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TripServiceImpl implements TripService {
 
     private final TripDetailsDAO tripDetailsDAO;
     private final TripDAO tripDAO;
-    private final WishlistRedisDAO wishlistRedisDAO;
-    private final WishlistMongoDAO wishlistMongoDAO;
-
     private final TripNeo4jDAO organizerNeoDAO;
 
     public TripServiceImpl(){
         tripDetailsDAO = DAOLocator.getTripDetailsDAO();
         tripDAO = DAOLocator.getTripDAO();
-        wishlistRedisDAO = new WishlistRedisDAO();
-        wishlistMongoDAO = new WishlistMongoDAO();
         organizerNeoDAO = new TripNeo4jDAO();
     }
 
@@ -75,9 +74,6 @@ public class TripServiceImpl implements TripService {
         return TripUtils.tripModelToDetailedDTO(trip);
     }
 
-    public LocalDateTime wishlistUpdateTime(String username, String trip_id){
-        return wishlistRedisDAO.getUpdateTime(username, trip_id);
-    }
 
 
     public List<TripSummaryDTO> getTripsOrganizedByUser(String username, int size, int page){
@@ -97,42 +93,6 @@ public class TripServiceImpl implements TripService {
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
             trips.add(tripSummaryDTO);
         }
-        return trips;
-    }
-
-    @Override
-    public void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary){
-
-        Trip trip = TripUtils.tripFromTripSummary(tripSummary);
-
-        if(wishlistRedisDAO.addToWishlist(username, trip_id, trip)){
-            wishlistMongoDAO.addToWishlist(trip_id);
-        }else{
-            // TODO - send error message -> trip already added
-            System.out.println("Trip already in wishlist");
-        }
-    }
-
-    @Override
-    public void removeFromWishlist(String username, String trip_id) {
-        if(wishlistRedisDAO.removeFromWishlist(username, trip_id)){
-            wishlistMongoDAO.removeFromWishlist(trip_id);
-        }else{
-            // TODO - send error message -> trip not added yet
-            System.out.println("Trip is not in wishlist");
-        }
-
-    }
-
-    @Override
-    public ArrayList<TripSummaryDTO> getWishlist(String username, int size, int page) {
-
-        ArrayList<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
-
-        for(Trip trip : wishlistRedisDAO.getUserWishlist(username, size, page)){
-            trips.add(TripUtils.tripSummaryDTOFromModel(trip));
-        }
-
         return trips;
     }
 

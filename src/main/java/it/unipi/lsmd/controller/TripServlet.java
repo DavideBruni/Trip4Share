@@ -5,6 +5,7 @@ import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
+import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.SecurityUtils;
 import it.unipi.lsmd.utils.TripUtils;
 
@@ -23,6 +24,7 @@ import java.util.HashMap;
 public class TripServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
+    private final WishlistService wishlistService = ServiceLocator.getWishlistService();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req,resp);
@@ -43,7 +45,7 @@ public class TripServlet extends HttpServlet {
             trip = tripService.getTrip(trip_id);
 
             if (authenticatedUserDTO != null) {
-                LocalDateTime last_update = tripService.wishlistUpdateTime(authenticatedUserDTO.getUsername(), trip.getId());
+                LocalDateTime last_update = wishlistService.wishlistUpdateTime(authenticatedUserDTO.getUsername(), trip.getId());
                 if (last_update == null)
                     trip.setInWishlist(false);
                 try {
@@ -52,10 +54,10 @@ public class TripServlet extends HttpServlet {
 
                     if ((action.equals("add") && last_update == null) || (last_update != null && trip.getLast_modified().isAfter(last_update))) {
                         TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
-                        tripService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
+                        wishlistService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
                         trip.setInWishlist(true);
                     } else if (action.equals("remove") && last_update != null) {
-                        tripService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
+                        wishlistService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
                         trip.setInWishlist(false);
                     }
 

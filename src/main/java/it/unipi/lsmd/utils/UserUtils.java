@@ -147,7 +147,7 @@ public interface UserUtils {
         r.setAuthor(reviewDTO.getAuthor());
         r.setText(reviewDTO.getText());
         r.setTitle(reviewDTO.getTitle());
-        r.setDate(LocalDate.parse(reviewDTO.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        r.setDate(reviewDTO.getDate());
         r.setRating(reviewDTO.getRating());
         return r;
     }

@@ -42,7 +42,7 @@ public class HomeServlet extends HttpServlet {
         try {
             String usernameFromSession = SecurityUtils.getAuthenticatedUser(request).getUsername();
             String targetJSP = "/WEB-INF/pages/registered_home.jsp";
-            List<TripSummaryDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession,PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1,page);
+            List<TripSummaryDTO> trips =  tripService.getTripsOrganizedByFollowers(usernameFromSession,PagesUtilis.OBJECT_PER_PAGE_SEARCH,page);
             request.setAttribute(SecurityUtils.FOLLOWING_USER_TRIPS,trips);
 
             //Show Suggested user

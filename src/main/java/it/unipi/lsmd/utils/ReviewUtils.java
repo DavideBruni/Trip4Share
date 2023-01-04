@@ -34,7 +34,7 @@ public class ReviewUtils {
         reviewDTO.setTitle(review_model.getTitle());
         reviewDTO.setText(review_model.getText());
         reviewDTO.setRating(review_model.getRating());
-        reviewDTO.setDate(reviewDTO.getDate());
+        reviewDTO.setDate(review_model.getDate());
 
         return reviewDTO;
     }

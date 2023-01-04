@@ -76,12 +76,12 @@
                                     <h4><%=reviews.get(i).getTitle()%></h4>
                                     <h4 class="text-right"><%=reviews.get(i).getRating() + "/5 "%></h4>
                                     <p><%=reviews.get(i).getText()%></p>
-                                    <small><%=reviews.get(i).getDate()%></small>
+                                    <small style="color:black;"><%=reviews.get(i).getDate()%></small>
                                     <p class="grey text-right mr-5"><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></p>
                                     <hr class="invis3">
                                 </div><!-- end meta -->
 
-                                <% if(reviews.get(i).getAuthor() == authenticatedUserDTO.getUsername()){ %>
+                                <% if(reviews.get(i).getAuthor().equals(authenticatedUserDTO.getUsername())){ %>
 
                                 <div class="row pull-right justify-content-end">
                                     <a class="text-right btn btn-primary bottone mr-5 mt-5" href="" >Delete review</a>
