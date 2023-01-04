@@ -3,11 +3,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     display: flex;
     display: -webkit-flex; }
   
-  /* @extend list-type-ulli; */
-  list-type-ulli, .socials {
-    list-style-type: none;
-    margin: 0;
-    padding: 0; }
+
   
   /* poppins-300 - latin */
   @font-face {
@@ -185,9 +181,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     font-family: Poppins;
     font-size: 36px; }
   
-  .main {
-    background: #f8f8f8;
-    padding: 150px 0; }
+
   
   .clear {
     clear: both; }
@@ -249,12 +243,11 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%); }
   
-  .signup {
-    margin-bottom: 150px;
-    margin-top: 150px;
-    padding-top: 150px;
-  }
-  
+.signup {
+  margin-bottom: 150px;
+  margin-top: 150px;
+}
+
   .signup-content {
     padding: 75px 0; }
   

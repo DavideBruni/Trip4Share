@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="WebContent/css/signup.css">
 </head>
 <body class="signup">
-<div class="h-25"></div>
-            <div class="container signup">
+
+            <div class="container">
                 <div class="row justify-content-end text-right pr-5 pt-2">
                     <h2 class="signup-image-link mt-4 mr-3"> Go back to homepage!</h2>
                     <a href="home" >

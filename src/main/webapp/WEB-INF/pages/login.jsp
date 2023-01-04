@@ -18,10 +18,10 @@
 
 </head>
 
-<body class="signup">
-<div class="h-25"></div>
-        <div class="container signup" >
-            <div class="row justify-content-end text-right pr-5 pt-2">
+<body>
+<div class="signup">
+        <div class="container" >
+            <div class="row justify-content-end text-right pr-5">
                 <h2 class="signup-image-link mt-4 mr-3"> Go back to homepage!</h2>
                 <a href="home" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="black" viewBox="0 0 16 16">
@@ -73,7 +73,7 @@
 
             </div>
         </div>
-    </section>
+</div>
 
 
 
