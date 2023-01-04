@@ -59,7 +59,7 @@
                                     <%
                                         }else{
                                     %>
-                                    <li><a href="#">SignUp</a></li>
+                                    <li><a href="signup">SignUp</a></li>
                                     <li><a href="login">SignIn</a></li>
                                     <%
                                         }
