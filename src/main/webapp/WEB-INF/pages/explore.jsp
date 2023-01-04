@@ -47,7 +47,7 @@
             String aggregation_title = (String) request.getAttribute(SecurityUtils.SUGGESTIONS_EXPLORE_TITLE);
         %>
 
-        <div class="titlepage">
+        <div class="titlepage mt-5">
             <h2><%=aggregation_title%></h2>
         </div>
 
@@ -60,7 +60,7 @@
 
         %>
 
-        <div>
+        <div class="row justify-content-around">
             <%
                 String current_value = request.getParameter("value").replace(" ", "%20");
                 String search_for = request.getParameter("searchFor");
@@ -68,8 +68,9 @@
 
                 for(int i = 0; i < suggestions.size() && i < PagesUtilis.SUGGESTIONS_EXPLORE; i++ ){
             %>
+
             <a href=<%=suggestion_url.replace(current_value, suggestions.get(i).replace(" ", "%20"))%>>
-                <p><%=suggestions.get(i).toUpperCase()%></p>
+                <h2><%=suggestions.get(i).toUpperCase()%></h2>
             </a>
             <%
                 }
@@ -87,7 +88,7 @@
     String title = (String) request.getAttribute(SecurityUtils.TITLE_PAGE);
 %>
 
-<div class="titlepage">
+<div class="titlepage mt-4">
     <h2><%=title%></h2>
 </div>
 
