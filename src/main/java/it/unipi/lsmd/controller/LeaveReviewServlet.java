@@ -51,7 +51,7 @@ public class LeaveReviewServlet extends HttpServlet {
         reviewDTO.setRating(rank);
         reviewDTO.setText(text);
         reviewDTO.setTitle(title);
-        reviewDTO.setDate(String.valueOf(LocalDate.now()));
+        reviewDTO.setDate(LocalDate.now());
         OtherUserDTO to = new OtherUserDTO();
         to.setUsername(username);
         if(userService.setReview(reviewDTO,to)){

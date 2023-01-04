@@ -75,11 +75,11 @@
                                 <div class="blog-meta big-meta">
                                     <h4><%=reviews.get(i).getRating() + "/5\t\t " + reviews.get(i).getTitle()%></h4>
                                     <p><%=reviews.get(i).getText()%></p>
-                                    <small><%=reviews.get(i).getDate()%></small>
+                                    <small style="color:black;"><%=reviews.get(i).getDate()%></small>
                                     <small><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></small>
                                 </div><!-- end meta -->
 
-                                <% if(reviews.get(i).getAuthor() == authenticatedUserDTO.getUsername()){ %>
+                                <% if(reviews.get(i).getAuthor().equals(authenticatedUserDTO.getUsername())){ %>
 
                                 <div class="row">
                                     <a class="text-right btn btn-primary bottone" href="#" >Delete review</a>

@@ -46,7 +46,7 @@ public class PastTripsServlet extends HttpServlet  {
             page = 1;
         }
 
-        List<TripSummaryDTO> trips = tripService.getPastTrips(authenticatedUserDTO.getUsername(), PagesUtilis.TRIPS_PER_PAGE + 1, page);
+        List<TripSummaryDTO> trips = tripService.getPastTrips(authenticatedUserDTO.getUsername(), PagesUtilis.TRIPS_PER_PAGE, page);
         String targetJSP = "/WEB-INF/pages/trips_board.jsp";
         httpServletRequest.setAttribute(SecurityUtils.TITLE_PAGE, "Past Trips");
         httpServletRequest.setAttribute(SecurityUtils.PAGE, page);

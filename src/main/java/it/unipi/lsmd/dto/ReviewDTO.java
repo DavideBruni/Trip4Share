@@ -1,10 +1,12 @@
 package it.unipi.lsmd.dto;
 
+import java.time.LocalDate;
+
 public class ReviewDTO {
 
     private String text;
     private String title;
-    private String date;    //TODO- cast to date in dataset
+    private LocalDate date;
     private int rating;
 
     private String author;
@@ -33,11 +35,11 @@ public class ReviewDTO {
         this.title = title;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 
 @WebServlet("/deleteReview")
 public class DeleteReviewServlet extends HttpServlet {
@@ -53,7 +54,7 @@ public class DeleteReviewServlet extends HttpServlet {
         review.setText(text);
         review.setAuthor(((AuthenticatedUserDTO)request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername());
         review.setRating(rank);
-        review.setDate(date);
+        review.setDate(LocalDate.parse(date));
         OtherUserDTO toDTO = new OtherUserDTO();
         toDTO.setUsername(to);
         if(userService.deleteReview(review,toDTO)){

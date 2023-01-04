@@ -67,7 +67,6 @@
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
                               Return Date: <%=t.getReturnDate()%>
-                              Organized by <%=t.getOrganizer()%>
                            </p>
                         </div>
                         <% } %>
@@ -108,7 +107,6 @@
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
                               Return Date: <%=t.getReturnDate()%>
-                              Organized by: <%=t.getOrganizer()%>
                            </p>
                         </div>
                         <% } %>

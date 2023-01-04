@@ -87,7 +87,7 @@
                             <% if(trip.getTags()!=null || !trip.getTags().isEmpty()){ %>
                             <h6><%= trip.getTags() %></h6>
                             <% } %>
-                            <h6>Organized By <%= trip.getOrganizer() %></h6>
+                            <h6>Organized By <a href=<%="user?username="+trip.getOrganizer()%>><%=trip.getOrganizer()%></a></h6>
 
                         </div>
                     </div>

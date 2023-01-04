@@ -27,21 +27,21 @@ public class UserServlet extends HttpServlet {
 
     private RequestDispatcher getUserReviews(HttpServletRequest request, String username, int page) {
 
-        List<ReviewDTO> reviews = userService.getReviews(username, PagesUtilis.REVIEWS_PER_PAGE + 1, page);
+        List<ReviewDTO> reviews = userService.getReviews(username, PagesUtilis.REVIEWS_PER_PAGE, page);
         request.setAttribute(SecurityUtils.REVIEWS_KEY, reviews);
         request.setAttribute(SecurityUtils.PAGE, page);
         return request.getRequestDispatcher("/WEB-INF/pages/reviews_board.jsp");
     }
 
     private RequestDispatcher getOrganizedTrips(HttpServletRequest request, String username, int page) {
-        List<TripSummaryDTO> trips = tripService.getTripsOrganizedByUser(username, PagesUtilis.TRIPS_PER_PAGE + 1, page);
+        List<TripSummaryDTO> trips = tripService.getTripsOrganizedByUser(username, PagesUtilis.TRIPS_PER_PAGE, page);
         request.setAttribute(SecurityUtils.TRIPS_RESULT, trips);
         request.setAttribute(SecurityUtils.PAGE, page);
         request.setAttribute(SecurityUtils.TITLE_PAGE, "Trips organized by " + username);
         return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
     }
 
-    private RequestDispatcher getFollowers(HttpServletRequest request, String username, int size, int page) {
+    private RequestDispatcher getFollowers(HttpServletRequest request, String username, int size, int page) {       // TODO page size
         List<OtherUserDTO> followers = userService.getFollowers(username, size, page);
         request.setAttribute(SecurityUtils.USER_RESULTS, followers);
         request.setAttribute(SecurityUtils.PAGE, page);
@@ -49,7 +49,7 @@ public class UserServlet extends HttpServlet {
         return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");
     }
 
-    private RequestDispatcher getFollowing(HttpServletRequest request, String username, int size, int page) {
+    private RequestDispatcher getFollowing(HttpServletRequest request, String username, int size, int page) {   // TODO page size
         List<OtherUserDTO> following = userService.getFollowing(username, size, page);
         request.setAttribute(SecurityUtils.USER_RESULTS, following);
         request.setAttribute(SecurityUtils.PAGE, page);

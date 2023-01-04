@@ -87,13 +87,9 @@
                                     <br>
                                     <span>To: <%= trips.get(i).getReturnDate()%></span>
                                 </div>
-                                <%
-                                    if(trips.get(i).getOrganizer() != null){
-                                %>
                                 <p>By <a href=<%="user?username="+trips.get(i).getOrganizer()%>><%=trips.get(i).getOrganizer()%></a></p>
-                                <%
-                                    }
-                                %>
+                                <p><%=trips.get(i).getLike_counter() + " added this trip to wishlist"%></p>
+
                             </div>
                         </div>
                     </div>

@@ -19,6 +19,7 @@ import it.unipi.lsmd.utils.UserUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,8 @@ import static com.mongodb.client.model.Accumulators.avg;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Sorts.ascending;
+import static com.mongodb.client.model.Sorts.descending;
 import static com.mongodb.client.model.Updates.pull;
 import static com.mongodb.client.model.Updates.pushEach;
 
@@ -74,7 +77,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
     public List<RegisteredUser> searchUser(String username, int limit, int page){
         Bson m1 = match(and(regex("username",".*"+username+".*","i"),eq("type","user")));
-        Bson l1 = limit(limit);
+        Bson l1 = limit(limit + 1);
         AggregateIterable<Document> res;
         if(page!=1) {
             Bson s1 = skip((page - 1) * limit);
@@ -94,16 +97,35 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
 
     @Override
     public List<Review> getReviews(String username, int limit, int page) {
-        Bson query = and(eq("username", username));
-        Bson projection = fields(include("reviews"), excludeId(), slice("reviews", (page - 1)*(limit - 1), limit)); // TODO - non funziona
 
         List<Review> reviews = new ArrayList<Review>();
-        Document document = collection.find(query).projection(projection).first();
 
-        for(Object review : document.get("reviews", ArrayList.class)){
-            Document d = (Document) review;
-            reviews.add(ReviewUtils.reviewFromDocument(d));
+        /*
+            db.users.aggregate([
+                {$match: {username: "Vincenzo0"}},
+                {$unwind: "$reviews"},
+                {$project: {"reviews": 1, "_id": 0}},
+                {$sort: {"reviews.date": -1}},
+                {$skip: 5},
+                {$limit: 2}
+            ])
+         */
+
+        Bson match = match(eq("username", username));
+        Bson unwind = unwind("$reviews");
+        Bson project = project(fields(excludeId(), include("reviews")));
+        Bson sort = sort(descending("reviews.date"));
+        Bson skip = skip((page - 1) * limit);
+        Bson lim = limit(limit + 1);
+        AggregateIterable<Document> results = collection.aggregate(Arrays.asList(match, unwind, project, sort, skip, lim));
+
+        MongoCursor<Document> documents = results.iterator();
+
+        while (documents.hasNext()){
+            Document result = (Document) documents.next().get("reviews");
+            reviews.add(ReviewUtils.reviewFromDocument(result));
         }
+        documents.close();
 
         return reviews;
     }
