@@ -80,15 +80,14 @@
                         <img src="images/signin.jpg">
                     </div>
                     <div class="col-3 pull-right">
-                        <div class="receipe-duration margin_top_50 pdn-top-30 ">
-                            <h6>Price: <%= trip.getPrice() %>€</h6>
-                            <h6>Departure date:<br><%= trip.getDepartureDate() %></h6>
-                            <h6>Return date:<br> <%= trip.getReturnDate() %></h6>
+                        <div class="receipe-duration text-right margin_top_50 pdn-top-30 ">
+                            <h4>Price: <%= trip.getPrice() %>€</h4>
+                            <h4>Departure date:<br><%= trip.getDepartureDate() %></h4>
+                            <h4>Return date:<br> <%= trip.getReturnDate() %></h4>
                             <% if(trip.getTags()!=null || !trip.getTags().isEmpty()){ %>
-                            <h6><%= trip.getTags() %></h6>
+                            <h4><%= trip.getTags() %></h4>
                             <% } %>
-                            <h6>Organized By <%= trip.getOrganizer() %></h6>
-
+                            <h4><a href=<%="user?username="+trip.getOrganizer()%>>Organized By <%= trip.getOrganizer() %></a></h4>
                         </div>
                     </div>
                 </div>
@@ -100,6 +99,11 @@
         <div class="col-1"></div>
         <div class="receipe-ratings my-5 col-12">
             <h6> <%=trip.getDescription()%></h6>
+        </div>
+
+        <div class="receipe-ratings my-5 col-12">
+            <h2>Additional Information:</h2><br>
+            <h6> <%=trip.getInfo()%></h6>
         </div>
 
 
