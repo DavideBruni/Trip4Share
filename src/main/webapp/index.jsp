@@ -19,7 +19,7 @@
    <%@ include file="/WEB-INF/pages/header.jsp" %>
 
    <div class="banner-main">
-         <img src="WebContent/images/banner.jpg" alt="#"/>
+         <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
          <div class="container">
             <div class="text-bg">
                <h1>Welcome to<br><strong class="white">trip4share</strong></h1>
@@ -31,7 +31,9 @@
          <div class="bg">
             <div class="container">
                      <div class="box justify-content-center">
-                        <p> <span>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure thereThere are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there</span></p>
+                        <p>
+
+                        </p>
                        
                      </div>
                  
