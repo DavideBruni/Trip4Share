@@ -272,7 +272,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             trip_list = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (t:Trip)-[:ORGANIZED_BY]->(r:RegisteredUser{username: $username}) " +
                                 "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r.username as organizer " +
-                                "ORDER BY t.departureDate DESC " +
+                                "ORDER BY t.departureDate " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
                         parameters("username", organizer, "skip", ((page-1)*size), "limit", size+1));

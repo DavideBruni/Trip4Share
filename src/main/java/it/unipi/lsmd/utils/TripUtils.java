@@ -258,14 +258,12 @@ public interface TripUtils {
         doc.append("departureDate",t.getDepartureDate());
         doc.append("returnDate",t.getReturnDate());
         doc.append("price",t.getPrice());
-        if(t.getImg()!=null)
-            doc.append("imgUrl",t.getImg());
         if(t.getInfo()!=null)
             doc.append("info",t.getInfo());
         if(t.getDescription()!=null)
             doc.append("description",t.getDescription());
         if(t.getTags()!=null && !t.getTags().isEmpty())
-            doc.append("tags",t.getTags());
+            doc.append("tags",t.getTagsAsStrings());
         if(t.getWhatsIncluded()!=null && !t.getWhatsIncluded().isEmpty())
             doc.append("whatsIncluded",t.getWhatsIncluded());
         if(t.getWhatsNotIncluded()!=null && !t.getWhatsNotIncluded().isEmpty())
