@@ -88,6 +88,7 @@
                             <h4><%= trip.getTags() %></h4>
                             <% } %>
                             <h4><a href=<%="user?username="+trip.getOrganizer()%>>Organized By <%= trip.getOrganizer() %></a></h4>
+                            <h4 class="grey pull-right"><%= trip.getLike_counter() %> Likes</h4>
                         </div>
                     </div>
                 </div>
