@@ -1,7 +1,6 @@
 package it.unipi.lsmd.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Review {
 
@@ -9,13 +8,13 @@ public class Review {
     private String title;
     private LocalDate date;
     private int rating;
-    private String author;
+    private RegisteredUser author;
 
-    public String getAuthor() {
+    public RegisteredUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(RegisteredUser author) {
         this.author = author;
     }
 
@@ -49,5 +48,16 @@ public class Review {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "text='" + text + '\'' +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                ", rating=" + rating +
+                ", author=" + author +
+                '}';
     }
 }

@@ -3,6 +3,7 @@ package it.unipi.lsmd.dao.redis;
 import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.base.BaseDAORedis;
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
 import it.unipi.lsmd.utils.TripUtils;
@@ -22,17 +23,17 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
 
 
     @Override
-    public boolean addToWishlist(String username, String trip_id, TripSummaryDTO trip) {
+    public boolean addToWishlist(RegisteredUser user, TripSummaryDTO trip) {
 
         long ttl = abs(ChronoUnit.DAYS.between(trip.getDepartureDate(), LocalDate.now())) * 86400; // seconds per day
-        String key = REDIS_APP_NAMESPACE + ":" + username + ":" + trip_id;
+        String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":" + trip.getId();
 
         try(Jedis jedis = getConnection()){
 
             if(jedis.get(key) != null){
                 return false;
             }
-            System.out.println(trip);
+
             jedis.set(key, TripUtils.tripToJSONString(trip));
             jedis.expire(key, ttl);
             return true;
@@ -42,8 +43,8 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
     }
 
     @Override
-    public boolean removeFromWishlist(String username, String trip_id) {
-        String key = REDIS_APP_NAMESPACE + ":" + username + ":" + trip_id;
+    public boolean removeFromWishlist(RegisteredUser user, Trip trip) {
+        String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":" + trip.getId();
         try(Jedis jedis = getConnection()){
 
             if(jedis.get(key) == null){
@@ -58,13 +59,13 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
     }
 
     @Override
-    public Wishlist getUserWishlist(String username, int size, int page) {
+    public Wishlist getUserWishlist(RegisteredUser user, int size, int page) {
 
         Wishlist wishlist = new Wishlist();
 
 
         try(Jedis jedis = getConnection()){
-            String key = REDIS_APP_NAMESPACE + ":" + username + ":*";
+            String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":*";
             Set<String> keys = jedis.keys(key);
             int i = 0;
             int start_index = (page-1) * size;
@@ -89,9 +90,9 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
     }
 
     @Override
-    public LocalDateTime getUpdateTime(String username, String trip_id) {
+    public LocalDateTime getUpdateTime(RegisteredUser user, Trip trip) {
         try(Jedis jedis = getConnection()){
-            String key = REDIS_APP_NAMESPACE + ":" + username + ":" + trip_id;
+            String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":" + trip.getId();
             String raw_trip = jedis.get(key);
             if(raw_trip == null)
                 return null;
@@ -102,9 +103,9 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
     }
 
     @Override
-    public boolean flushWishlist(String username) {
+    public boolean flushWishlist(RegisteredUser user) {
         // TODO - non testata
-        String key = REDIS_APP_NAMESPACE + ":" + username + ":*";
+        String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":*";
         try(Jedis jedis = getConnection()){
             Set<String> keys = jedis.keys(key);
             for(String k : keys){

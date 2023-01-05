@@ -8,8 +8,8 @@ import it.unipi.lsmd.model.enums.Status;
 import java.util.List;
 
 public interface TripDAO {
-    List<Trip> getTripsOrganizedByFollower(String follower, int size, int page);
-    List<Trip> getSuggestedTrip(String username, int numTrips);
+    List<Trip> getTripsOrganizedByFollower(RegisteredUser registeredUser, int size, int page);
+    List<Trip> getSuggestedTrip(RegisteredUser registeredUser, int numTrips);
 
     void addTrip(Trip t, RegisteredUser organizer) throws Neo4jException;
 
@@ -27,9 +27,9 @@ public interface TripDAO {
     void setStatusJoin(Trip t, RegisteredUser r, Status status) throws Neo4jException;
     RegisteredUser getOrganizer(Trip trip) throws Neo4jException;
 
-    List<Trip> getTripOrganizedByUser(String organizer, int size, int page);
+    List<Trip> getTripOrganizedByUser(RegisteredUser organizer, int size, int page);
 
-    List<Trip> getPastTrips(String organizer, int size, int page);
+    List<Trip> getPastTrips(RegisteredUser organizer, int size, int page);
 
     void createJoin(Trip t, RegisteredUser r) throws Neo4jException;
 

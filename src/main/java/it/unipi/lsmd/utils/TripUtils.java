@@ -301,7 +301,6 @@ public interface TripUtils {
         t.setId(tripDetailsDTO.getId());
         t.setDepartureDate(tripDetailsDTO.getDepartureDate());
         t.setReturnDate(tripDetailsDTO.getReturnDate());
-        t.setImg(tripDetailsDTO.getImg());
         t.setPrice(tripDetailsDTO.getPrice());
         t.setOrganizer(new RegisteredUser(tripDetailsDTO.getOrganizer()));
         t.setDescription(tripDetailsDTO.getDescription());

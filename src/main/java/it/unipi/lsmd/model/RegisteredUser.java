@@ -1,8 +1,5 @@
 package it.unipi.lsmd.model;
 
-
-import org.neo4j.driver.Value;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +9,15 @@ public class RegisteredUser extends User{
     private List<Review> reviews;
     private List<String> spoken_languages;
     private String nationality;
-    private String phone;
-    private List<RegisteredUser> following; // TODO - da togliere
-    private String bio;
-
-
-    public List<RegisteredUser> getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(List<RegisteredUser> following) {
-        this.following = following;
-    }
+    private List<RegisteredUser> following;
+    private List<RegisteredUser> followers;
+    private List<Trip> past_trips;
+    private List<Trip> organized_trips;
+    private Wishlist wishlist;
 
     public RegisteredUser(){
-        reviews = new ArrayList<Review>();
-        spoken_languages = new ArrayList<String>();
+        reviews = new ArrayList<>();
+        spoken_languages = new ArrayList<>();
     }
 
     public RegisteredUser(String username){
@@ -35,21 +25,6 @@ public class RegisteredUser extends User{
         reviews = new ArrayList<>();
         spoken_languages = new ArrayList<>();
     }
-
-    public RegisteredUser(String username, String profile_pic){
-        super(username,profile_pic);
-        reviews = new ArrayList<>();
-        spoken_languages = new ArrayList<>();
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
 
     public List<Review> getReviews() {
         return reviews;
@@ -87,12 +62,43 @@ public class RegisteredUser extends User{
         this.birthdate = birthdate;
     }
 
-    public String getBio() {
-        return bio;
+    public List<RegisteredUser> getFollowing() {
+        return following;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
+    public void setFollowing(List<RegisteredUser> following) {
+        this.following = following;
     }
 
+    public List<RegisteredUser> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<RegisteredUser> followers) {
+        this.followers = followers;
+    }
+
+    public List<Trip> getPast_trips() {
+        return past_trips;
+    }
+
+    public void setPast_trips(List<Trip> past_trips) {
+        this.past_trips = past_trips;
+    }
+
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
+    }
+
+    public List<Trip> getOrganized_trips() {
+        return organized_trips;
+    }
+
+    public void setOrganized_trips(List<Trip> organized_trips) {
+        this.organized_trips = organized_trips;
+    }
 }

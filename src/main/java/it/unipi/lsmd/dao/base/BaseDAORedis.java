@@ -5,8 +5,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
-import java.net.ConnectException;
-
 public abstract class BaseDAORedis {
 
     private static final String REDIS_HOST = "localhost";

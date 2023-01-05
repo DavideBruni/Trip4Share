@@ -22,8 +22,7 @@ public abstract class BaseDAOMongo {
     }
 
     public static MongoDatabase getConnection(){
-        MongoDatabase database = client.getDatabase(MONGO_DB);
-        return database;
+        return client.getDatabase(MONGO_DB);
     }
 
 

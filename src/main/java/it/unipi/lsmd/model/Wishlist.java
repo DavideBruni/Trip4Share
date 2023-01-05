@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Wishlist {
 
-    List<Trip> wishlist;
+    private List<Trip> wishlist;
 
     public Wishlist() {
         this.wishlist = new ArrayList<Trip>();

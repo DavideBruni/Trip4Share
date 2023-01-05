@@ -22,7 +22,6 @@ public class Trip {
     private List<String> whatsIncluded;
     private List<String> whatsNotIncluded;
     private String info;
-    private String img;
     private Boolean deleted;
     private int like_counter;
     private LocalDateTime last_modified;
@@ -46,14 +45,6 @@ public class Trip {
     }
     public String getId(){return this.id;}
     public void setId(String id){this.id = id;}
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
 
     public Boolean getDeleted() {
         return deleted;
@@ -187,7 +178,6 @@ public class Trip {
                 ", whatsIncluded=" + whatsIncluded +
                 ", whatsNotIncluded=" + whatsNotIncluded +
                 ", info='" + info + '\'' +
-                ", img='" + img + '\'' +
                 ", deleted=" + deleted +
                 ", like_counter=" + like_counter +
                 ", last_modified=" + last_modified +

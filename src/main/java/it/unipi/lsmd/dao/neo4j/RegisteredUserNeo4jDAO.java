@@ -17,7 +17,11 @@ import static org.neo4j.driver.Values.parameters;
 
 public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUserDAO {
 
-    public List<RegisteredUser> getSuggestedUser(String username, int nUser){
+    public List<RegisteredUser> getSuggestedUser(RegisteredUser user, int nUser){
+
+        if(user == null)
+            return null;
+
         List<RegisteredUser> suggested;
         try (Session session = getConnection().session()) {
             suggested = session.readTransaction(tx -> {
@@ -25,7 +29,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                                 "(u2)-[:FOLLOW]->(u3:RegisteredUser) WHERE u1.username <> u3.username AND " +
                                 "(NOT (u1)-[:FOLLOW]->(u3)) RETURN DISTINCT u3.username, rand() as r " +
                                 "ORDER BY r LIMIT $limit",
-                        parameters("username", username, "limit",nUser));
+                        parameters("username", user.getUsername(), "limit",nUser));
                 List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();
@@ -42,7 +46,11 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public List<RegisteredUser> getFollowing(String username, int size, int page){
+    public List<RegisteredUser> getFollowing(RegisteredUser user, int size, int page){
+
+        if(user == null)
+            return null;
+
         List<RegisteredUser> followers;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
@@ -50,7 +58,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                                 "RETURN u2.username " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
-                        parameters("username", username, "skip", ((page-1)*(size-1)), "limit", size));
+                        parameters("username", user.getUsername(), "skip", ((page-1)*size), "limit", size));
                 List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();
@@ -67,7 +75,11 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public List<RegisteredUser> getFollower(String username, int size, int page){
+    public List<RegisteredUser> getFollower(RegisteredUser user, int size, int page){
+
+        if(user == null)
+            return null;
+
         List<RegisteredUser> followers;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
@@ -75,7 +87,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                                 "RETURN u2.username " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
-                        parameters("username", username, "skip", ((page-1)*(size-1)), "limit", size));
+                        parameters("username", user.getUsername(), "skip", ((page-1)*size), "limit", size));
                 List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();
@@ -92,13 +104,17 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public int getNumberOfFollower(String username){
-        int followers = 0;
+    public int getNumberOfFollower(RegisteredUser user){
+
+        if(user == null)
+            return 0;
+
+        int followers;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
                 Result result = tx.run(" MATCH (user:RegisteredUser {username:$username})"+
                                 " WITH size((user)<-[:FOLLOW]-()) as in RETURN in",
-                        parameters("username", username));
+                        parameters("username", user.getUsername()));
                 if(result.hasNext())
                     return result.next().get("in").asInt();
                 else
@@ -111,13 +127,17 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public int getNumberOfFollowing(String username){
+    public int getNumberOfFollowing(RegisteredUser user){
+
+        if(user == null)
+            return 0;
+
         int followers = 0;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
                 Result result = tx.run(" MATCH (user:RegisteredUser {username:$username})"+
                                 " WITH size((user)-[:FOLLOW]->()) as out RETURN out",
-                        parameters("username", username));
+                        parameters("username", user.getUsername()));
                 if(result.hasNext())
                     return result.next().get("out").asInt();
                 else
@@ -130,13 +150,16 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public void follow(String user_1, String user_2) throws Neo4jException {
+    public void follow(RegisteredUser user_1, RegisteredUser user_2) throws Neo4jException {
+
+        if(user_1 == null || user_2 == null)
+            throw new Neo4jException();
 
         try (Session session = getConnection().session()) {
             Boolean exists = session.readTransaction(tx->{
                 Result res = tx.run("MATCH (u1:RegisteredUser {username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
                                     "RETURN f",
-                        parameters("u1", user_1, "u2", user_2));
+                        parameters("u1", user_1.getUsername(), "u2", user_2.getUsername()));
                 return res.hasNext();
 
             });
@@ -144,7 +167,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                 session.writeTransaction(tx -> {
                     tx.run("MATCH (u1:RegisteredUser{username: $u1}), (u2:RegisteredUser{username: $u2}) " +
                                     "CREATE (u1)-[:FOLLOW]->(u2)",
-                            parameters("u1", user_1, "u2", user_2));
+                            parameters("u1", user_1.getUsername(), "u2", user_2.getUsername()));
                     return null;
                 });
             }else{
@@ -157,13 +180,16 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public void unfollow(String user_1, String user_2) throws Neo4jException {
+    public void unfollow(RegisteredUser user_1, RegisteredUser user_2) throws Neo4jException {
+
+        if(user_1 == null || user_2 == null)
+            throw new Neo4jException();
 
         try (Session session = getConnection().session()) {
             Boolean exists = session.readTransaction(tx->{
                 Result res = tx.run("MATCH (u1:RegisteredUser {username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
                                 "RETURN f",
-                        parameters("u1", user_1, "u2", user_2));
+                        parameters("u1", user_1.getUsername(), "u2", user_2.getUsername()));
                 return res.hasNext();
 
             });
@@ -171,7 +197,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                 session.writeTransaction(tx -> {
                     tx.run("MATCH (u1:RegisteredUser{username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
                                     "DELETE f",
-                            parameters("u1", user_1, "u2", user_2));
+                            parameters("u1", user_1.getUsername(), "u2", user_2.getUsername()));
                     return null;
                 });
             }else{
@@ -184,12 +210,16 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     @Override
-    public boolean isFriend(String user_1, String user_2) throws Neo4jException {
+    public boolean isFriend(RegisteredUser user_1, RegisteredUser user_2) throws Neo4jException {
+
+        if(user_1 == null || user_2 == null)
+            throw new Neo4jException();
+
         try (Session session = getConnection().session()) {
             Boolean exists = session.readTransaction(tx->{
                 Result res = tx.run("MATCH (u1:RegisteredUser {username: $u1})-[f:FOLLOW]->(u2:RegisteredUser{username: $u2}) " +
                                 "RETURN f",
-                        parameters("u1", user_1, "u2", user_2));
+                        parameters("u1", user_1.getUsername(), "u2", user_2.getUsername()));
                 return res.hasNext();
 
             });
@@ -201,6 +231,11 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
 
     @Override
     public void createRegistereduser(RegisteredUser user) throws Neo4jException {
+
+        if(user == null)
+            throw new Neo4jException();
+
+
         try (Session session = getConnection().session()) {
              Boolean exists = session.readTransaction(tx->{
                  Result res = tx.run("MATCH (r:RegisteredUser {username: $username}) RETURN r",
@@ -224,6 +259,10 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
 
 
     private void deleteAllFollowingRelationshipRegisteredUser(RegisteredUser user) throws Neo4jException {
+
+        if(user == null)
+            throw new Neo4jException();
+
         try (Session session = getConnection().session()) {
             session.writeTransaction(tx -> {
                     tx.run("MATCH (x:RegisteredUser {username: $username}) -[f1:FOLLOW]->(), (x)<-[f2:FOLLOW]-() " +
@@ -239,6 +278,10 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
 
 
     private void deleteAllFutureOrganizedTrip(RegisteredUser user) throws Neo4jException {
+
+        if(user == null)
+            throw new Neo4jException();
+
         try (Session session = getConnection().session()) {
             List<String> ids =session.readTransaction(tx -> {
                 Result r = tx.run("MATCH (x:RegisteredUser {username: $username})<-[:ORGANIZED_BY]-(t:Trip) " +
@@ -262,6 +305,10 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
 
     @Override
     public void deleteUser(RegisteredUser u) throws Neo4jException {
+
+        if(u == null)
+            throw new Neo4jException();
+
         deleteAllFollowingRelationshipRegisteredUser(u);
         deleteAllFutureOrganizedTrip(u);
         if(!incidentEdges(u)){
@@ -280,6 +327,10 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
     }
 
     private boolean incidentEdges(RegisteredUser u) throws Neo4jException {
+
+        if(u == null)
+            throw new Neo4jException();
+
         try (Session session = getConnection().session()) {
                 Boolean flag = session.readTransaction(tx -> {
                     Result r = tx.run("MATCH (r:RegisteredUser {username: $username})-[]->(), (r)<-[]-() " +

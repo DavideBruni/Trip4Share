@@ -1,13 +1,10 @@
 package it.unipi.lsmd.service.impl;
 
-import it.unipi.lsmd.controller.AddAdminServlet;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.TripDetailsDAO;
-import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
 import it.unipi.lsmd.dao.neo4j.TripNeo4jDAO;
 import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
-import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Tag;
@@ -18,16 +15,11 @@ import it.unipi.lsmd.utils.TripUtils;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 import org.javatuples.Triplet;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TripServiceImpl implements TripService {
@@ -46,7 +38,12 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<TripSummaryDTO> getTripsOrganizedByFollowers(String username, int size, int page) {
-        List<Trip> trips = tripDAO.getTripsOrganizedByFollower(username, size, page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<Trip> trips = tripDAO.getTripsOrganizedByFollower(new RegisteredUser(username), size, page);
+
         if(trips == null || trips.isEmpty()){
             logger.error("Error. No trip found");
             return new ArrayList<>();
@@ -68,6 +65,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public TripDetailsDTO getTrip(String id){
+
         Trip trip = tripDetailsDAO.getTrip(id);
         if(trip == null){
             logger.error("Error. No trip found");
@@ -85,7 +83,11 @@ public class TripServiceImpl implements TripService {
 
 
     public List<TripSummaryDTO> getTripsOrganizedByUser(String username, int size, int page){
-        List<Trip> trips_model = tripDAO.getTripOrganizedByUser(username, size, page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<Trip> trips_model = tripDAO.getTripOrganizedByUser(new RegisteredUser(username), size, page);
         List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
         for(Trip trip : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
@@ -95,7 +97,11 @@ public class TripServiceImpl implements TripService {
     }
 
     public List<TripSummaryDTO> getPastTrips(String username, int size, int page){
-        List<Trip> trips_model = tripDAO.getPastTrips(username, size, page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<Trip> trips_model = tripDAO.getPastTrips(new RegisteredUser(username), size, page);
         List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
         for(Trip trip : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
@@ -106,6 +112,10 @@ public class TripServiceImpl implements TripService {
 
 
     public List<TripSummaryDTO> getTripsByDestination(String destination, String departureDate, String returnDate, int size, int page) {
+
+        if(destination == null || destination.equals(""))
+            return null;
+
 
         LocalDate depDate;
         LocalDate retDate = null;
@@ -129,6 +139,10 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripSummaryDTO> getTripsByTag(String value, String departureDate, String returnDate, int size, int page) {
 
+        if(value == null || value.equals(""))
+            return null;
+
+
         LocalDate depDate;
         LocalDate retDate = null;
         try{
@@ -137,8 +151,7 @@ public class TripServiceImpl implements TripService {
         }catch (DateTimeParseException e){
             depDate = LocalDate.now();
         }
-        Tag tag = new Tag(value);
-        List<Trip> trips= tripDetailsDAO.getTripsByTag(tag, depDate, retDate, size, page);
+        List<Trip> trips= tripDetailsDAO.getTripsByTag(new Tag(value), depDate, retDate, size, page);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
@@ -180,7 +193,12 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<DestinationsDTO> mostPopularDestinationsByTag(String tag, int limit) {
-        List<Pair<String, Integer>> trips= tripDetailsDAO.mostPopularDestinationsByTag(tag, limit);
+
+        if(tag == null || tag.equals(""))
+            return null;
+
+
+        List<Pair<String, Integer>> trips= tripDetailsDAO.mostPopularDestinationsByTag(new Tag(tag), limit);
         List<DestinationsDTO> res = new ArrayList<>();
         for(Pair<String, Integer> x : trips){
             res.add(new DestinationsDTO(x.getValue0(),x.getValue1()));
@@ -262,7 +280,11 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<TripSummaryDTO> getSuggestedTrips(String username, int numTrips) {
-        List<Trip> trips_model = tripDAO.getSuggestedTrip(username, numTrips);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<Trip> trips_model = tripDAO.getSuggestedTrip(new RegisteredUser(username), numTrips);
         List<TripSummaryDTO> trips = new ArrayList<>();
         for(Trip t : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(t);
@@ -273,6 +295,10 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public boolean addTrip(TripDetailsDTO tripDetailsDTO){
+
+        if(tripDetailsDTO == null)
+            return false;
+
         Trip t = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
         if(t.getDepartureDate().isBefore(LocalDate.now()) || t.getDepartureDate().isAfter(t.getReturnDate())){
             logger.error("Error. Invalid dates");
@@ -301,6 +327,10 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public boolean deleteTrip(String id) {
+
+        if(id == null || id.equals(""))
+            return false;
+
         Trip trip = tripDetailsDAO.getTrip(id);
         if(trip!= null && LocalDate.now().isBefore(trip.getDepartureDate())){
 
@@ -324,7 +354,8 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public boolean updateTrip(TripDetailsDTO newTrip, TripDetailsDTO oldTrip){
-        if(newTrip.getId()==oldTrip.getId()) {
+
+        if(newTrip.getId().equals(oldTrip.getId())) {
             Trip n_trip = TripUtils.tripModelFromTripDetailsDTO(newTrip);
             Trip o_trip = TripUtils.tripModelFromTripDetailsDTO(oldTrip);
             boolean flag = tripDetailsDAO.updateTrip(n_trip,o_trip);
@@ -355,7 +386,8 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public InvolvedPeopleDTO getOrganizerAndJoiners(String id){
-        if(id!=null) {
+
+        if(id != null && !id.equals("") ) {
             Trip t = new Trip();
             t.setId(id);
             t = tripDAO.getJoinersAndOrganizer(t);
@@ -366,7 +398,6 @@ public class TripServiceImpl implements TripService {
                 for (Pair<RegisteredUser, Status> x : joiners) {
                     OtherUserDTO o = new OtherUserDTO();
                     o.setUsername(x.getValue0().getUsername());
-                    o.setPic(x.getValue0().getProfile_pic());
                     Pair<OtherUserDTO, Status> j = new Pair<>(o, x.getValue1());
                     inv.addJoiners(j);
                 }
@@ -378,24 +409,29 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public boolean manageTripRequest(String id, String username, String action) {
-            try{
-                Trip t = new Trip();
-                t.setId(id);
-                RegisteredUser r = new RegisteredUser(username);
-                if(action.equals("delete")) {
-                    tripDAO.removeJoin(t,r);
-                }else{
-                    if(action.equals("accept")){
-                        logger.info("User " + r.getUsername() + " has been accepted to join trip " + t.getId());
-                        tripDAO.setStatusJoin(t,r,Status.accepted);
-                    }
-                    else if(action.equals("reject")){
-                        logger.info("User " + r.getUsername() + " has been rejected to join trip " + t.getId());
-                        tripDAO.setStatusJoin(t,r,Status.rejected);
-                    }
-                    else
-                        return false;
+
+        if(username == null || username.equals("") || id == null || id.equals(""))
+            return false;
+
+
+        try{
+            Trip t = new Trip();
+            t.setId(id);
+            RegisteredUser r = new RegisteredUser(username);
+            if(action.equals("delete")) {
+                tripDAO.removeJoin(t,r);
+            }else{
+                if(action.equals("accept")){
+                    logger.info("User " + r.getUsername() + " has been accepted to join trip " + t.getId());
+                    tripDAO.setStatusJoin(t,r,Status.accepted);
                 }
+                else if(action.equals("reject")){
+                    logger.info("User " + r.getUsername() + " has been rejected to join trip " + t.getId());
+                    tripDAO.setStatusJoin(t,r,Status.rejected);
+                }
+                else
+                    return false;
+            }
             }catch (Neo4jException exc){
                 return false;
             }

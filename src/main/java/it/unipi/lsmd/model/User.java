@@ -8,25 +8,10 @@ public abstract class User {
     private String username;
     private String email;
     private String password;
-    private String role;
-    private String profile_pic;
 
     public User(){}
-    public User(String username, String profile_pic){
+    public User(String username){
         this.username=username;
-        this.profile_pic=profile_pic;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getProfile_pic() {
-        return profile_pic;
-    }
-
-    public void setProfile_pic(String profile_pic) {
-        this.profile_pic = profile_pic;
     }
 
     public void setName(String name) {
@@ -65,10 +50,6 @@ public abstract class User {
         return password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -81,8 +62,6 @@ public abstract class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", profile_pic='" + profile_pic + '\'' +
                 '}';
     }
 }

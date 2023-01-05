@@ -20,7 +20,7 @@ public interface TripDetailsDAO {
 
     List<Pair<String, Integer>> mostPopularDestinations(int limit);
 
-    List<Pair<String, Integer>> mostPopularDestinationsByTag(String tag, int limit);
+    List<Pair<String, Integer>> mostPopularDestinationsByTag(Tag tag, int limit);
 
     List<Pair<String, Integer>> mostPopularDestinationsByPrice(double start, double end, int limit);
 
@@ -36,7 +36,7 @@ public interface TripDetailsDAO {
 
     boolean updateTrip(Trip newTrip, Trip oldTrip);
 
-    List<Trip> mostPopularTrips(int tripNumberIndex);
+    List<Trip> mostPopularTrips(int limit);
 
     List<Triplet<String, Integer, Integer>> mostPopularDestinationsOverall(int limit);
 

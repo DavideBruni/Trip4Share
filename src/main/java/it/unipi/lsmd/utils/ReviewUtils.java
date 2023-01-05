@@ -16,8 +16,18 @@ public class ReviewUtils {
 
     public static Review reviewFromDocument(Document result){
 
+        if(result == null)
+            return  null;
+
         Review review = new Review();
-        review.setAuthor(result.getString("author"));
+
+        String username = result.getString("author");
+        if(username == null || username.equals("")){
+            review.setAuthor(null);
+        }else{
+            review.setAuthor(new RegisteredUser(username));
+        }
+
         review.setTitle(result.getString("title"));
         review.setText(result.getString("text"));
         review.setRating(result.getInteger("value"));
@@ -28,9 +38,17 @@ public class ReviewUtils {
 
     public static ReviewDTO reviewModelToDTO(Review review_model){
 
+        if(review_model == null)
+            return null;
+
         ReviewDTO reviewDTO = new ReviewDTO();
 
-        reviewDTO.setAuthor(review_model.getAuthor());
+        try{
+            reviewDTO.setAuthor(review_model.getAuthor().getUsername());
+        }catch (NullPointerException e){
+            reviewDTO.setAuthor(null);
+        }
+
         reviewDTO.setTitle(review_model.getTitle());
         reviewDTO.setText(review_model.getText());
         reviewDTO.setRating(review_model.getRating());

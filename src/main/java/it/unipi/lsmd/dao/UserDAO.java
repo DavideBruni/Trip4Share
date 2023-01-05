@@ -1,6 +1,5 @@
 package it.unipi.lsmd.dao;
 
-import it.unipi.lsmd.dto.ReviewDTO;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Review;
@@ -10,18 +9,19 @@ import java.util.List;
 
 public interface UserDAO {
 
-    RegisteredUser register(RegisteredUser user);
+    /**
+     @param registeredUser  user
+     @return an Admin or a RegisteredUser
+     **/
+    User authenticate(RegisteredUser registeredUser);
 
+    RegisteredUser getUser(RegisteredUser registeredUser);
 
-    User authenticate(String username, String password);
+    List<RegisteredUser> searchUser(RegisteredUser registeredUser, int limit, int page);
 
-    RegisteredUser getUser(String username);
+    List<Review> getReviews(RegisteredUser registeredUser, int limit, int page);
 
-    List<RegisteredUser> searchUser(String username, int limit, int page);
-
-    List<Review> getReviews(String username, int limit, int page);
-
-    double avgRating(String username);
+    double avgRating(RegisteredUser registeredUser);
 
     String createUser(User u);
 

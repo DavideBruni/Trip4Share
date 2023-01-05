@@ -1,45 +1,44 @@
 package it.unipi.lsmd.dao.mongo;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
 import it.unipi.lsmd.model.Trip;
-import it.unipi.lsmd.utils.TripUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-
-import java.util.ArrayList;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.inc;
 
 public class WishlistMongoDAO extends BaseDAOMongo {
 
-    public void addToWishlist(String trip_id) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> trips = database.getCollection("trips");
+    private final MongoCollection<Document> collection = getConnection().getCollection("trips");
+    private static final Logger logger = LoggerFactory.getLogger(WishlistMongoDAO.class);
+
+    public void addToWishlist(Trip trip) {
 
         try{
-            Bson filter = eq("_id", new ObjectId(trip_id));
+            Bson filter = eq("_id", new ObjectId(trip.getId()));
             Bson modifier = inc("likes", 1);
-            trips.updateOne(filter, modifier);
+            collection.updateOne(filter, modifier);
 
-        }catch (IllegalArgumentException e){ }
+        }catch (IllegalArgumentException e){
+            logger.error("Error. Some error occurred " + e);
+        }
 
     }
 
 
-    public void removeFromWishlist(String trip_id) {
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> trips = database.getCollection("trips");
+    public void removeFromWishlist(Trip trip) {
 
         try{
-            Bson filter = eq("_id", new ObjectId(trip_id));
+            Bson filter = eq("_id", new ObjectId(trip.getId()));
             Bson modifier = inc("likes", -1);
-            trips.updateOne(filter, modifier);
+            collection.updateOne(filter, modifier);
 
-        }catch (IllegalArgumentException e){ }
+        }catch (IllegalArgumentException e){
+            logger.error("Error. Some error occurred " + e);
+        }
     }
 }

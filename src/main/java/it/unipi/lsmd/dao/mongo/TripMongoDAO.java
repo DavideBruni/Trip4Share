@@ -4,7 +4,6 @@ import com.mongodb.MongoException;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import it.unipi.lsmd.dao.TripDetailsDAO;
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
@@ -53,12 +52,16 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             res = collection.aggregate(Arrays.asList(m1, srt, l1, p1));
         }
         List<Trip> trips = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            Trip t = TripUtils.tripFromDocument(doc);
-            trips.add(t);
+        try(MongoCursor<Document> it = res.iterator()) {
+            while (it.hasNext()) {
+                Document doc = it.next();
+                Trip t = TripUtils.tripFromDocument(doc);
+                trips.add(t);
+            }
+        }catch (Exception e){
+            return null;
         }
+
         return trips;
     }
 
@@ -83,12 +86,16 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             res = collection.aggregate(Arrays.asList(m1, srt, l1, p1));
         }
         List<Trip> trips = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            Trip t = TripUtils.tripFromDocument(doc);
-            trips.add(t);
+        try(MongoCursor<Document> it = res.iterator()) {
+            while (it.hasNext()) {
+                Document doc = it.next();
+                Trip t = TripUtils.tripFromDocument(doc);
+                trips.add(t);
+            }
+        }catch (Exception e){
+            return null;
         }
+
         return trips;
     }
 
@@ -123,28 +130,31 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             res = collection.aggregate(Arrays.asList(m1, srt, l1, p1));
         }
         List<Trip> trips = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            Trip t = TripUtils.tripFromDocument(doc);
-            trips.add(t);
+        try(MongoCursor<Document> it = res.iterator()){
+            while (it.hasNext()) {
+                Document doc = it.next();
+                Trip t = TripUtils.tripFromDocument(doc);
+                trips.add(t);
+            }
+        }catch (Exception e){
+            return null;
         }
+
         return trips;
     }
 
     @Override
     public Trip getTrip(String id) {
 
-        MongoDatabase database = getConnection();
-        MongoCollection<Document> trips = database.getCollection("trips");
-        Trip trip = null;
+        Trip trip;
         try{
             Bson query = eq("_id", new ObjectId(id));
-            Document result = trips.find(query).first();
-
+            Document result = collection.find(query).first();
             trip = TripUtils.tripFromDocument(result);
 
-        }catch (IllegalArgumentException e){ }
+        }catch (IllegalArgumentException e){
+            return null;
+        }
 
         return trip;
     }
@@ -155,39 +165,47 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         // aggregate([{$group : {"_id":"$destination" total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
+        Bson l1 = limit(limit);
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
 
         List<Pair<String, Integer>> dest = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            String d = doc.getString("_id");
-            Integer like = doc.getInteger("total_like");
-            Pair<String,Integer> p = new Pair<>(d,like);
-            dest.add(p);
+        try(MongoCursor<Document> it = res.iterator()){
+            while (it.hasNext()) {
+                Document doc = it.next();
+                String d = doc.getString("_id");
+                Integer like = doc.getInteger("total_like");
+                Pair<String,Integer> p = new Pair<>(d,like);
+                dest.add(p);
+            }
+        }catch (Exception e){
+            return null;
         }
+
         return dest;
     }
 
     @Override
-    public List<Pair<String, Integer>> mostPopularDestinationsByTag(String tag, int limit) {
+    public List<Pair<String, Integer>> mostPopularDestinationsByTag(Tag tag, int limit) {
+
         // aggregate([{$match : { tags : {$eq : ... }}}, {$group : {"_id":"$destination",
         // total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
-        Bson m1 = match(eq("tags",tag));
+        Bson m1 = match(eq("tags",tag.getTag()));
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
+        Bson l1 = limit(limit);
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<Pair<String, Integer>> dest = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            String d = doc.getString("_id");
-            Integer like = doc.getInteger("total_like");
-            Pair<String,Integer> p = new Pair<>(d,like);
-            dest.add(p);
+        try(MongoCursor<Document> it = res.iterator()){
+            while (it.hasNext()) {
+                Document doc = it.next();
+                String d = doc.getString("_id");
+                Integer like = doc.getInteger("total_like");
+                Pair<String,Integer> p = new Pair<>(d,like);
+                dest.add(p);
+            }
+        }catch (Exception e){
+            return null;
         }
         return dest;
     }
@@ -204,17 +222,20 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
+        Bson l1 = limit(limit);
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
         List<Pair<String, Integer>> dest = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            String d = doc.getString("_id");
-            Integer like = doc.getInteger("total_like");
-            Pair<String,Integer> p = new Pair<>(d,like);
-            dest.add(p);
+        try(MongoCursor<Document> it = res.iterator()){
+            while (it.hasNext()) {
+                Document doc = it.next();
+                String d = doc.getString("_id");
+                Integer like = doc.getInteger("total_like");
+                Pair<String,Integer> p = new Pair<>(d,like);
+                dest.add(p);
+            }
+        }catch (Exception e){
+            return null;
         }
         return dest;
     }
@@ -225,7 +246,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson m1 = match(and(gte("departureDate",depDate),lte("returnDate",retDate)));
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
-        Bson l1 = limit(limit); // No + 1 perche' non ho la paginazione
+        Bson l1 = limit(limit);
         AggregateIterable<Document> res;
         res = collection.aggregate(Arrays.asList(m1, g1, s1, l1));
 
@@ -238,6 +259,8 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
                 Pair<String,Integer> p = new Pair<>(d,like);
                 dest.add(p);
             }
+        }catch (Exception e){
+            return null;
         }
         return dest;
     }
@@ -250,12 +273,16 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         Bson l1 = limit(objectPerPageSearch);
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
         List<Trip> trips = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            Trip t = TripUtils.destinationFromDocument(doc);
-            trips.add(t);
+        try(MongoCursor<Document> it = res.iterator()) {
+            while (it.hasNext()) {
+                Document doc = it.next();
+                Trip t = TripUtils.destinationFromDocument(doc);
+                trips.add(t);
+            }
+        }catch (Exception e){
+            return null;
         }
+
         return trips;
     }
 
@@ -281,12 +308,16 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         }
 
         List<Trip> trips = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            Trip t = TripUtils.tripFromDocument(doc);
-            trips.add(t);
+        try(MongoCursor<Document> it = res.iterator()) {
+            while (it.hasNext()) {
+                Document doc = it.next();
+                Trip t = TripUtils.tripFromDocument(doc);
+                trips.add(t);
+            }
+        }catch (Exception e){
+            return null;
         }
+
         return trips;
     }
 
@@ -296,10 +327,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         try {
             Document doc = TripUtils.documentFromTrip(t);
             return collection.insertOne(doc).getInsertedId().asObjectId().getValue().toString();
-        }catch(IncompleteTripException iexc){
-            //stampare un log di errore
-            return null;
-        }catch(MongoException me){
+        }catch(IncompleteTripException | MongoException | NullPointerException e){
             return null;
         }
     }
@@ -329,45 +357,49 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     private Bson attributeToUpdate(Trip newTrip, Trip oldTrip) throws IncompleteTripException {
         List<Bson> query = new ArrayList<>();
-        if(!newTrip.getItinerary().equals(oldTrip.getItinerary())) {
+
+        if(!newTrip.getItinerary().equals(oldTrip.getItinerary()))
             query.add(Updates.set("itinerary",TripUtils.documentsFromItinerary(newTrip.getItinerary())));
-        }
         if(!newTrip.getTags().equals(oldTrip.getTags()))
             query.add(Updates.set("tags", TripUtils.tagsToString(newTrip.getTags())));
         if(!newTrip.getWhatsNotIncluded().equals(oldTrip.getWhatsNotIncluded()))
             query.add(Updates.set("whatsNotIncluded",newTrip.getWhatsNotIncluded()));
         if(!newTrip.getWhatsIncluded().equals(oldTrip.getWhatsIncluded()))
             query.add(Updates.set("whatsIncluded",newTrip.getWhatsIncluded()));
-        if(newTrip.getDestination()!= oldTrip.getDestination())
+        if(!newTrip.getDestination().equals(oldTrip.getDestination()))
             query.add(Updates.set("destination",newTrip.getDestination()));
-        if(newTrip.getTitle()!= oldTrip.getTitle())
+        if(!newTrip.getTitle().equals(oldTrip.getTitle()))
             query.add(Updates.set("title",newTrip.getDestination()));
-        if(newTrip.getDescription()!= oldTrip.getDescription())
+        if(!newTrip.getDescription().equals(oldTrip.getDescription()))
             query.add(Updates.set("description",newTrip.getDescription()));
-        if(newTrip.getInfo()!= oldTrip.getInfo())
+        if(!newTrip.getInfo().equals(oldTrip.getInfo()))
             query.add(Updates.set("info",newTrip.getInfo()));
-        if(newTrip.getPrice()!= oldTrip.getPrice())
+        if(newTrip.getPrice() != oldTrip.getPrice())
             query.add(Updates.set("price",newTrip.getPrice()));
-        if(newTrip.getDepartureDate()!= oldTrip.getDepartureDate())
+        if(newTrip.getDepartureDate() != oldTrip.getDepartureDate())
             query.add(Updates.set("departureDate",newTrip.getDepartureDate()));
-        if(newTrip.getReturnDate()!= oldTrip.getReturnDate())
+        if(newTrip.getReturnDate() != oldTrip.getReturnDate())
             query.add(Updates.set("returnDate",newTrip.getReturnDate()));
+
         return Updates.combine(query);
     }
 
     @Override
-    public List<Trip> mostPopularTrips(int tripNumberIndex) {
+    public List<Trip> mostPopularTrips(int limit) {
         Bson m1 = match(gt("departureDate", LocalDate.now()));
         Bson s1 = sort(descending("likes"));
-        Bson l1 = limit(tripNumberIndex);
+        Bson l1 = limit(limit);
         AggregateIterable<Document> res;
         res = collection.aggregate(Arrays.asList(m1, s1, l1));
         List<Trip> trips = new ArrayList<>();
-        MongoCursor<Document> it = res.iterator();
-        while (it.hasNext()) {
-            Document doc = it.next();
-            Trip t = TripUtils.tripFromDocument(doc);
-            trips.add(t);
+        try(MongoCursor<Document> it = res.iterator()) {
+            while (it.hasNext()) {
+                Document doc = it.next();
+                Trip t = TripUtils.tripFromDocument(doc);
+                trips.add(t);
+            }
+        }catch (Exception e){
+            return null;
         }
         return trips;
     }
@@ -396,6 +428,8 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
                 Triplet<String,Integer,Integer> t = new Triplet<>(d,like,trips);
                 dest.add(t);
             }
+        }catch (Exception e){
+            return null;
         }
         return dest;
     }
@@ -424,7 +458,10 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
                 Triplet<String,Integer,Integer> t = new Triplet<>(d,like,trips);
                 dest.add(t);
             }
+        }catch (Exception e){
+            return null;
         }
+
         return dest;
     }
 }

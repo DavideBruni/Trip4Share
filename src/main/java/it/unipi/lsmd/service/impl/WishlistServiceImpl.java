@@ -4,6 +4,7 @@ import it.unipi.lsmd.controller.AddAdminServlet;
 import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
 import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
 import it.unipi.lsmd.service.WishlistService;
@@ -29,25 +30,39 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary) {
-        //Trip trip = TripUtils.tripFromTripSummary(tripSummary);
 
-        if(wishlistRedisDAO.addToWishlist(username, trip_id, tripSummary)){
-            wishlistMongoDAO.addToWishlist(trip_id);
+        if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
+            return;
+
+        if(wishlistRedisDAO.addToWishlist(new RegisteredUser(username), tripSummary)){
+            Trip trip = new Trip();
+            trip.setId(trip_id);
+            wishlistMongoDAO.addToWishlist(trip);
         }
     }
 
     @Override
     public void removeFromWishlist(String username, String trip_id) {
 
-        if(wishlistRedisDAO.removeFromWishlist(username, trip_id)){
-            wishlistMongoDAO.removeFromWishlist(trip_id);
+        if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
+            return;
+
+        Trip trip = new Trip();
+        trip.setId(trip_id);
+
+        if(wishlistRedisDAO.removeFromWishlist(new RegisteredUser(username), trip)){
+            wishlistMongoDAO.removeFromWishlist(trip);
         }
     }
 
     @Override
     public ArrayList<TripSummaryDTO> getWishlist(String username, int size, int page) {
-        ArrayList<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
-        Wishlist wishlist = wishlistRedisDAO.getUserWishlist(username, size, page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        ArrayList<TripSummaryDTO> trips = new ArrayList<>();
+        Wishlist wishlist = wishlistRedisDAO.getUserWishlist(new RegisteredUser(username), size, page);
 
         try{
             for(Trip trip : wishlist.getWishlist()){
@@ -62,6 +77,13 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public LocalDateTime wishlistUpdateTime(String username, String trip_id) {
-        return wishlistRedisDAO.getUpdateTime(username, trip_id);
+
+        if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
+            return null;
+
+        Trip trip = new Trip();
+        trip.setId(trip_id);
+
+        return wishlistRedisDAO.getUpdateTime(new RegisteredUser(username), trip);
     }
 }

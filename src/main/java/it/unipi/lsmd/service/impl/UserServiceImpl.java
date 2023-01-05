@@ -37,16 +37,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthenticatedUserDTO authenticate(String username, String password){
+
         if(username==null || password==null)
             return null;
-        User user = userDAO.authenticate(username, password);
+
+        RegisteredUser registeredUser = new RegisteredUser(username);
+        registeredUser.setPassword(password);
+        User user = userDAO.authenticate(registeredUser);
         AuthenticatedUserDTO authenticatedUserDTO;
 
         if(user instanceof RegisteredUser){
             RegisteredUserDTO registeredUserDTO = (RegisteredUserDTO) UserUtils.userModelToDTO(user);
-            registeredUserDTO.setAvg_rating(Math.round(userDAO.avgRating(username) * 100) / 100.0);
-            registeredUserDTO.setN_following(registeredUserDAO.getNumberOfFollowing(username));
-            registeredUserDTO.setN_followers(registeredUserDAO.getNumberOfFollower(username));
+            registeredUserDTO.setAvg_rating(Math.round(userDAO.avgRating(new RegisteredUser(username)) * 100) / 100.0);
+            registeredUserDTO.setN_following(registeredUserDAO.getNumberOfFollowing(new RegisteredUser(username)));
+            registeredUserDTO.setN_followers(registeredUserDAO.getNumberOfFollower(new RegisteredUser(username)));
             authenticatedUserDTO = registeredUserDTO;
         }else{
             AdminDTO adminDTO = (AdminDTO) UserUtils.userModelToDTO(user);
@@ -59,22 +63,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RegisteredUserDTO getUser(String username, String me){
-        RegisteredUser user = userDAO.getUser(username);
+
+        if(username == null || username.equals("") || me == null || me.equals(""))
+            return null;
+
+        RegisteredUser user = userDAO.getUser(new RegisteredUser(username));
         if(user == null)
             return null;
 
         RegisteredUserDTO registeredUser = (RegisteredUserDTO) UserUtils.userModelToDTO(user);
-        registeredUser.setN_following(registeredUserDAO.getNumberOfFollowing(username));
-        registeredUser.setN_followers(registeredUserDAO.getNumberOfFollower(username));
+        registeredUser.setN_following(registeredUserDAO.getNumberOfFollowing(user));
+        registeredUser.setN_followers(registeredUserDAO.getNumberOfFollower(user));
         registeredUser.setFriend(isFriend(me, username));
-        registeredUser.setAvg_rating(Math.round(userDAO.avgRating(username) * 100) / 100.0);
+        registeredUser.setAvg_rating(userDAO.avgRating(user));
 
         return registeredUser;
     }
 
     @Override
     public List<OtherUserDTO> getSuggestedUsers(String username, int nUser){
-        List<RegisteredUser> users = registeredUserDAO.getSuggestedUser(username,nUser);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<RegisteredUser> users = registeredUserDAO.getSuggestedUser(new RegisteredUser(username), nUser);
         List<OtherUserDTO> suggested = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -86,7 +98,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<OtherUserDTO> getFollowing(String username, int size, int page) {
-        List<RegisteredUser> users = registeredUserDAO.getFollowing(username, size, page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<RegisteredUser> users = registeredUserDAO.getFollowing(new RegisteredUser(username), size, page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -96,10 +112,13 @@ public class UserServiceImpl implements UserService {
         return followers;
     }
 
-
     @Override
     public List<OtherUserDTO> getFollowers(String username, int size, int page) {
-        List<RegisteredUser> users = registeredUserDAO.getFollower(username, size, page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<RegisteredUser> users = registeredUserDAO.getFollower(new RegisteredUser(username), size, page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -111,18 +130,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getFollowingNumber(String username) {
-        return registeredUserDAO.getNumberOfFollowing(username);
+
+        if(username == null || username.equals(""))
+            return 0;
+
+        return registeredUserDAO.getNumberOfFollowing(new RegisteredUser(username));
     }
 
     @Override
     public int getFollowersNumber(String username) {
-        return registeredUserDAO.getNumberOfFollower(username);
+
+        if(username == null || username.equals(""))
+            return 0;
+
+        return registeredUserDAO.getNumberOfFollower(new RegisteredUser(username));
     }
 
     @Override
     public String follow(String user_1, String user_2) {
+
+        if(user_1 == null || user_1.equals("") || user_2 == null || user_2.equals(""))
+            return "Error during follow";
+
         try{
-            registeredUserDAO.follow(user_1, user_2);
+            registeredUserDAO.follow(new RegisteredUser(user_1), new RegisteredUser(user_2));
             return "OK";
         }catch (Exception e){
             return "Error during follow";
@@ -131,8 +162,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String unfollow(String user_1, String user_2) {
+
+        if(user_1 == null || user_1.equals("") || user_2 == null || user_2.equals(""))
+            return "Error during unfollow";
+
         try{
-            registeredUserDAO.unfollow(user_1, user_2);
+            registeredUserDAO.unfollow(new RegisteredUser(user_1), new RegisteredUser(user_2));
             return "OK";
         }catch (Exception e){
             return "Error during unfollow";
@@ -141,8 +176,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isFriend(String user_1, String user_2) {
+
+        if(user_1 == null || user_1.equals("") || user_2 == null || user_2.equals(""))
+            return false;
+
         try{
-            return registeredUserDAO.isFriend(user_1, user_2);
+            return registeredUserDAO.isFriend(new RegisteredUser(user_1), new RegisteredUser(user_2));
         }catch (Neo4jException e){
             return false;
         }
@@ -150,8 +189,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<OtherUserDTO> searchUsers(String username, int limit, int page) {
-        // TO-DO
-        List<RegisteredUser> users = userDAO.searchUser(username,limit,page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<RegisteredUser> users = userDAO.searchUser(new RegisteredUser(username), limit, page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -163,12 +205,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public double getRating(String username) {
-        return userDAO.avgRating(username);
+
+        if(username == null || username.equals(""))
+            return 0.0;
+
+        return userDAO.avgRating(new RegisteredUser(username));
     }
 
     @Override
     public List<ReviewDTO> getReviews(String username, int limit, int page) {
-        List<Review> reviews_model = userDAO.getReviews(username, limit, page);
+
+        if(username == null || username.equals(""))
+            return null;
+
+        List<Review> reviews_model = userDAO.getReviews(new RegisteredUser(username), limit, page);
         List<ReviewDTO> reviews = new ArrayList<ReviewDTO>();
         for(Review review : reviews_model){
             reviews.add(ReviewUtils.reviewModelToDTO(review));
@@ -176,7 +226,20 @@ public class UserServiceImpl implements UserService {
         return reviews;
     }
 
+    @Override
+    public String signup(AuthenticatedUserDTO user){
+        if(user instanceof RegisteredUserDTO){
+            return addRegisteredUser((RegisteredUserDTO) user);
+        }else{
+            return addAdmin((AdminDTO) user);
+        }
+    }
+
     private String addRegisteredUser(RegisteredUserDTO u) {
+
+        if(u == null)
+            return "Something gone wrong";
+
         if(u.getBirthdate() == null || u.getBirthdate().isAfter(LocalDate.now())){
             return "Your birthdate is probably wrong";
         }
@@ -196,6 +259,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private String addAdmin(AdminDTO u) {
+
+        if(u == null)
+            return "Something gone wrong";
+
         Admin a = UserUtils.adminFromDTO(u);
         return userDAO.createUser(a);
     }
@@ -204,6 +271,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUser(AuthenticatedUserDTO newUser, AuthenticatedUserDTO oldUser){
+
+        if(newUser == null || oldUser == null)
+            return false;
+
         // fonte: https://www.mongodb.com/community/forums/t/updateone-vs-replaceone-performance/698
         // better update only few attributes instead of the entire document
         try {
@@ -232,23 +303,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public String signup(AuthenticatedUserDTO user){
-        if(user instanceof RegisteredUserDTO){
-            return addRegisteredUser((RegisteredUserDTO) user);
-        }else{
-            return addAdmin((AdminDTO) user);
-        }
-    }
+
 
     @Override
     public boolean deleteUser(String username) {
+
+        if(username == null || username.equals(""))
+            return false;
+
         RegisteredUser user = new RegisteredUser(username);
 
         if(userDAO.deleteUser(user)){
             try{
                 registeredUserDAO.deleteUser(user);
-                wishlistDAO.flushWishlist(username);
+                wishlistDAO.flushWishlist(user);
                 return true;
             }catch (Neo4jException ne){
                 return false;
@@ -260,15 +328,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean setReview(ReviewDTO reviewDTO, OtherUserDTO to) {
-        if(reviewDTO.getTitle()==null || reviewDTO.getRating()<0 || reviewDTO.getRating()>5)
+
+        if(reviewDTO == null || to == null)
+            return false;
+
+        if(reviewDTO.getTitle() ==null || reviewDTO.getRating() < 0 || reviewDTO.getRating() > 5)
             return false;
         Review review = UserUtils.reviewFromDTO(reviewDTO);
+        logger.info(review.toString());
         RegisteredUser r = new RegisteredUser(to.getUsername());
         return userDAO.putReview(review,r);
     }
 
     @Override
     public boolean deleteReview(ReviewDTO review, OtherUserDTO to) {
+
+        if(review == null || to == null)
+            return false;
+
         Review r = UserUtils.reviewFromDTO(review);
         RegisteredUser registeredUser = new RegisteredUser(to.getUsername());
         return userDAO.deleteReview(r,registeredUser);

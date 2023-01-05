@@ -70,7 +70,6 @@ public interface UserUtils {
 
             registeredUserDTO.setNationality(registeredUser.getNationality());
             registeredUserDTO.setSpokenLanguages(registeredUser.getSpoken_languages());
-            registeredUserDTO.setPhone(registeredUser.getPhone());
             registeredUserDTO.setBirthdate(registeredUser.getBirthdate());
 
             try{
@@ -103,12 +102,14 @@ public interface UserUtils {
             doc.append("surname",u.getSurname());
             doc.append("email",u.getEmail());
             doc.append("password",u.getPassword());
-            doc.append("type",u.getRole());
 
             if(u instanceof RegisteredUser){
                 doc.append("nationality", ((RegisteredUser) u).getNationality());
                 doc.append("spoken_languages", ((RegisteredUser) u).getSpoken_languages());
                 doc.append("birthdate", ((RegisteredUser) u).getBirthdate());
+                doc.append("type","user");
+            }else{
+                doc.append("type","admin");
             }
             return doc;
         }catch(NullPointerException ne){
@@ -125,7 +126,6 @@ public interface UserUtils {
         r.setPassword(user.getPassword());
         r.setNationality(user.getNationality());
         r.setSpoken_languages(user.getSpokenLanguages());
-        r.setRole("user");
         try {
             r.setBirthdate(user.getBirthdate());
         }catch(Exception e){
@@ -136,19 +136,23 @@ public interface UserUtils {
     }
 
     static Admin adminFromDTO(AdminDTO u) {
+
         Admin a = new Admin();
         a.setUsername(u.getUsername());
         a.setName(u.getFirstName());
         a.setSurname(u.getLastName());
         a.setEmail(u.getEmail());
         a.setPassword(u.getPassword());
-        a.setRole("admin");
         return a;
     }
 
     static Review reviewFromDTO(ReviewDTO reviewDTO) {
+
+        if(reviewDTO == null)
+            return null;
+
         Review r = new Review();
-        r.setAuthor(reviewDTO.getAuthor());
+        r.setAuthor(new RegisteredUser(reviewDTO.getAuthor()));
         r.setText(reviewDTO.getText());
         r.setTitle(reviewDTO.getTitle());
         r.setDate(reviewDTO.getDate());
