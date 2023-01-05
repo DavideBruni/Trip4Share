@@ -63,7 +63,6 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
 
         Wishlist wishlist = new Wishlist();
 
-
         try(Jedis jedis = getConnection()){
             String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":*";
             Set<String> keys = jedis.keys(key);

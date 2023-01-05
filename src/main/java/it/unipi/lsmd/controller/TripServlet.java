@@ -46,9 +46,11 @@ public class TripServlet extends HttpServlet {
 
         String targetJSP = "/WEB-INF/pages/trip.jsp";
         String trip_id = httpServletRequest.getParameter("id");
-        TripDetailsDTO trip = null;
-        if(trip_id!=null) {
-            trip = tripService.getTrip(trip_id);
+
+
+        TripDetailsDTO trip = tripService.getTrip(trip_id);
+
+        if(trip != null){
 
             if (authenticatedUserDTO != null) {
                 LocalDateTime last_update = wishlistService.wishlistUpdateTime(authenticatedUserDTO.getUsername(), trip.getId());
@@ -70,12 +72,12 @@ public class TripServlet extends HttpServlet {
                 } catch (NullPointerException e) {
                     // no action specified in query
                 }
-                // TODO - [http-nio-8080-exec-7] ERROR it.unipi.lsmd.service.impl.TripServiceImpl - Error. Status not foundjava.lang.NullPointerException: Cannot invoke "it.unipi.lsmd.model.enums.Status.name()" because "status" is null
-                httpServletRequest.setAttribute(SecurityUtils.STATUS, tripService.getJoinStatus(trip_id, authenticatedUserDTO.getUsername()));
+                String join_status = tripService.getJoinStatus(trip_id, authenticatedUserDTO.getUsername());
+                httpServletRequest.setAttribute(SecurityUtils.STATUS, join_status);
             }
+            logger.info(trip.toString());
         }
         httpServletRequest.setAttribute(SecurityUtils.TRIP, trip);
-
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
 

@@ -1,5 +1,6 @@
 package it.unipi.lsmd.controller;
 
+import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
@@ -31,9 +32,9 @@ public class WishlistServlet extends HttpServlet {
 
         logger.info(httpServletRequest.getQueryString());
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
-        if(authenticatedUserDTO == null){
+        if(authenticatedUserDTO == null || authenticatedUserDTO instanceof AdminDTO){
             logger.info("Error. Access denied");
-            httpServletResponse.sendRedirect("login");
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath());
             return;
         }
 

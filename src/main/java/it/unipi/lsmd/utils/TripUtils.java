@@ -250,11 +250,12 @@ public interface TripUtils {
         }catch (NullPointerException ne){
             throw iex;
         }
-        doc.append("destination",t.getDestination().toLowerCase());
-        doc.append("title",t.getTitle());
-        doc.append("departureDate",t.getDepartureDate());
-        doc.append("returnDate",t.getReturnDate());
-        doc.append("price",t.getPrice());
+        doc.append("destination", t.getDestination().toLowerCase());
+        doc.append("title", t.getTitle());
+        doc.append("departureDate", t.getDepartureDate());
+        doc.append("returnDate", t.getReturnDate());
+        doc.append("price", t.getPrice());
+        doc.append("last_modified", t.getLast_modified());
         if(t.getInfo()!=null)
             doc.append("info",t.getInfo());
         if(t.getDescription()!=null)
@@ -311,6 +312,7 @@ public interface TripUtils {
         t.setWhatsIncluded(tripDetailsDTO.getWhatsIncluded());
         t.setWhatsNotIncluded(tripDetailsDTO.getWhatsNotIncluded());
         t.setInfo(tripDetailsDTO.getInfo());
+        t.setLast_modified(tripDetailsDTO.getLast_modified());
         return t;
     }
 
@@ -331,18 +333,26 @@ public interface TripUtils {
 
     static TripDetailsDTO tripDetailsDTOfromRequest(HttpServletRequest request) throws IncompleteTripException {
 
-        TripDetailsDTO trip = new TripDetailsDTO();
-        trip.setDestination(request.getParameter("destination"));
-        trip.setTitle(request.getParameter("title"));
-        trip.setPrice(Double.parseDouble(request.getParameter("price")));
-        trip.setDepartureDate(LocalDate.parse(request.getParameter("departureDate")));
-        trip.setReturnDate(LocalDate.parse(request.getParameter("returnDate")));
-        trip.setDepartureDate(LocalDate.parse(request.getParameter("departureDate")));
-        trip.setReturnDate(LocalDate.parse(request.getParameter("returnDate")));
+        String destination = request.getParameter("destination");
+        String title_trip = request.getParameter("title");
+        String price = request.getParameter("price");
+        String departureDate = request.getParameter("departureDate");
+        String returnDate = request.getParameter("returnDate");
 
-        if(trip.getDestination() == null || trip.getTitle()==null || trip.getPrice()==0 || trip.getDepartureDate()==null || trip.getReturnDate()== null)
+        if(destination == null || destination.equals("") || title_trip == null || title_trip.equals("") ||
+            price == null || price.equals("") || departureDate == null || departureDate.equals("") ||
+            returnDate == null || returnDate.equals("")){
             throw new IncompleteTripException();
+        }
 
+        TripDetailsDTO trip = new TripDetailsDTO();
+        trip.setDestination(destination);
+        trip.setTitle(title_trip);
+        trip.setPrice(Double.parseDouble(price));
+        trip.setDepartureDate(LocalDate.parse(departureDate));
+        trip.setReturnDate(LocalDate.parse(returnDate));
+        System.out.println(LocalDateTime.now());
+        trip.setLast_modified(LocalDateTime.now());
         List<String> tags = Arrays.asList(request.getParameter("tags").split(","));
         trip.setTags(tags);
         trip.setDescription(request.getParameter("description"));
@@ -385,7 +395,6 @@ public interface TripUtils {
         if(username==null)
             throw new IncompleteTripException();
         trip.setOrganizer(username);
-        trip.setLast_modified(LocalDateTime.now());
         trip.setInfo(request.getParameter("info"));
         return trip;
     }

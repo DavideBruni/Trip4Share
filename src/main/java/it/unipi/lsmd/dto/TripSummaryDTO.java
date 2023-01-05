@@ -10,7 +10,7 @@ public class TripSummaryDTO {
     private LocalDate departureDate;
     private LocalDate returnDate;
     private boolean deleted;
-    private String Title;
+    private String title;
     private int like_counter;
     private String organizer;
     private LocalDateTime last_modified;
@@ -41,7 +41,7 @@ public class TripSummaryDTO {
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
     public String getDestination() {
@@ -61,7 +61,7 @@ public class TripSummaryDTO {
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public int getLike_counter() {
@@ -97,7 +97,7 @@ public class TripSummaryDTO {
                 ", departureDate=" + departureDate +
                 ", returnDate=" + returnDate +
                 ", deleted=" + deleted +
-                ", Title='" + Title + '\'' +
+                ", title='" + title + '\'' +
                 ", like_counter=" + like_counter +
                 ", organizer=" + organizer +
                 '}';

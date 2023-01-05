@@ -307,10 +307,10 @@ public class TripServiceImpl implements TripService {
         String id = tripDetailsDAO.addTrip(t);
         if(id!=null){
             t.setId(id);
+            t.setLast_modified(LocalDateTime.now());
             try {
                 RegisteredUser r = new RegisteredUser();
                 r.setUsername(t.getOrganizer().getUsername());
-                t.setLast_modified(LocalDateTime.now());
                 tripDAO.addTrip(t,r);
                 logger.info("New Trip added: " + t);
                 return true;
@@ -474,7 +474,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public String getJoinStatus(String trip_id, String username) {
 
-        if(trip_id!=null && username!=null) {
+        if(trip_id != null && username != null) {
             Trip t = new Trip();
             t.setId(trip_id);
             try {
@@ -482,7 +482,7 @@ public class TripServiceImpl implements TripService {
                 try {
                     return status.name();
                 } catch (NullPointerException ne) {
-                    logger.error("Error. Status not found" + ne);
+                    // status is null
                     return null;
                 }
             }catch (Neo4jException neo4jException){

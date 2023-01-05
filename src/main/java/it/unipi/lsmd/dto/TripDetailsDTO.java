@@ -195,7 +195,8 @@ public class TripDetailsDTO {
                 ", img='" + img + '\'' +
                 ", last_modified=" + last_modified +
                 ", like_counter=" + like_counter +
-                "organizer_username='" + organizer + '\'' +
+                ", organizer='" + organizer + '\'' +
+                ", inWishlist=" + inWishlist +
                 '}';
     }
 }
