@@ -246,7 +246,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     public List<Trip> cheapestDestinationsByAvg(int objectPerPageSearch) {
 
         Bson g1 = group("$destination",avg("agg","$price"));
-        Bson s1 = sort(descending("agg"));
+        Bson s1 = sort(ascending("agg"));
         Bson l1 = limit(objectPerPageSearch);
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
         List<Trip> trips = new ArrayList<>();
