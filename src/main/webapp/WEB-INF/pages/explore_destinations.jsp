@@ -27,33 +27,31 @@
 
 <div class="main-layout .form-horizontal" >
 
-    <div class="banner-main">
-        <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
-        <div class="container">
-            <div class="text-bg">
-                <h1><small>Find out the </small><br><strong class="white">most popular destinations</strong></h1>
-            </div>
-        </div>
+
+    <div class="titlepage">
+        <h3>Find out the most popular destinations</h3>
     </div>
+
+
     <div class="center pdn-top-30">
         <ul class="nav justify-content-center nav-pills" id="pills-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-1" role="tab" aria-controls="pills-home" aria-selected="true">Overall</a>
+                <a class="nav-link active" data-toggle="pill" href="#pills-1" role="tab" aria-controls="pills-home" aria-selected="true">Overall</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-2" role="tab" aria-controls="pills-profile" aria-selected="false">By tags</a>
+                <a class="nav-link"  data-toggle="pill" href="#pills-2" role="tab" aria-controls="pills-profile" aria-selected="false">By tags</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-3" role="tab" aria-controls="pills-contact" aria-selected="false">By price </a>
+                <a class="nav-link"  data-toggle="pill" href="#pills-3" role="tab" aria-controls="pills-contact" aria-selected="false">By price </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-4" role="tab" aria-controls="pills-contact" aria-selected="false">By period </a>
+                <a class="nav-link" data-toggle="pill" href="#pills-4" role="tab" aria-controls="pills-contact" aria-selected="false">By period </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-5" role="tab" aria-controls="pills-contact" aria-selected="false">Most exclusive </a>
+                <a class="nav-link" data-toggle="pill" href="#pills-5" role="tab" aria-controls="pills-contact" aria-selected="false">Most exclusive </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-6" role="tab" aria-controls="pills-contact" aria-selected="false">Cheaper on average </a>
+                <a class="nav-link" data-toggle="pill" href="#pills-6" role="tab" aria-controls="pills-contact" aria-selected="false">Cheaper on average </a>
             </li>
         </ul>
 
@@ -64,8 +62,8 @@
             <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div class=" pdn-top-30 row">
                     <div class=" col-4"></div>
-                    <div class="col-4 justify-content-center">
-                            <button id="overall" class="btn btn-primary mr-5 buttonSearch">Find out!</button>
+                    <div class="col-4 ">
+                            <button id="overall" class=" pull-right btn btn-primary mr-5 buttonSearch">Find out!</button>
                     </div>
                 </div>
             </div>
