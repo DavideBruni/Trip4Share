@@ -228,7 +228,6 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         }
     }
 
-    // TODO: set pending
     @Override
     public void setStatusJoin(Trip t, RegisteredUser r, Status status) throws Neo4jException {
         try (Session session = getConnection().session()) {
