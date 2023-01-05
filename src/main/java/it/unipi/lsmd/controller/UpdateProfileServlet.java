@@ -8,6 +8,8 @@ import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
 import it.unipi.lsmd.utils.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,10 +25,15 @@ import java.util.List;
 @WebServlet("/updateProfile")
 public class UpdateProfileServlet extends HttpServlet {
     UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(UpdateProfileServlet.class);
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        logger.info(request.getQueryString());
         if(request.getSession()==null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+            logger.error("Error. Access denied");
             response.sendRedirect(request.getContextPath());
             return;
         }
@@ -46,6 +53,7 @@ public class UpdateProfileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         if(req.getSession()==null){
+            logger.error("Error. Access denied");
             resp.sendRedirect(req.getContextPath());
             return;
         }
@@ -53,6 +61,7 @@ public class UpdateProfileServlet extends HttpServlet {
         AuthenticatedUserDTO user = ((AuthenticatedUserDTO)(req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)));
 
         if(user == null) {
+            logger.error("Error. Access denied");
             resp.sendRedirect(req.getContextPath());
             return;
         }
@@ -77,6 +86,7 @@ public class UpdateProfileServlet extends HttpServlet {
         }else{
             targetURL = "/WEB-INF/pages/unsuccess.jsp";
         }
+        logger.info(new_authenticated_user.toString());
         resp.sendRedirect(targetURL);
     }
 

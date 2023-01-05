@@ -7,6 +7,8 @@ import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,6 +25,8 @@ public class UserServlet extends HttpServlet {
 
     private TripService tripService = ServiceLocator.getTripService();
     private UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(UserServlet.class);
+
 
 
     private RequestDispatcher getUserReviews(HttpServletRequest request, String username, int page) {
@@ -70,6 +74,7 @@ public class UserServlet extends HttpServlet {
     @Override
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         processRequest(httpServletRequest,httpServletResponse);
     }
 
@@ -79,17 +84,22 @@ public class UserServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
+
         if (httpServletRequest.getSession() == null) {
+            logger.error("Error. Access denied");
             httpServletResponse.sendRedirect("login");
             return;
         }
+
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
         if (authenticatedUserDTO == null) {
+            logger.error("Error. Access denied");
             httpServletResponse.sendRedirect("login");
             return;
         }
 
         if(authenticatedUserDTO instanceof AdminDTO){
+            logger.error("Error. Access denied");
             httpServletResponse.sendRedirect("admin");
             return;
         }
@@ -98,12 +108,12 @@ public class UserServlet extends HttpServlet {
         String me = authenticatedUserDTO.getUsername();
         String username = httpServletRequest.getParameter("username");
         httpServletRequest.setAttribute("itsMe", true);
+        authenticatedUserDTO = userService.getUser(username, me);
 
-        boolean itsMe = username != null && username.equals(authenticatedUserDTO.getUsername());
+        boolean itsMe = username != null && username.equals(me);
 
         // if it's not user's own profile
         if (!itsMe) {
-            authenticatedUserDTO = userService.getUser(username, me);
             httpServletRequest.setAttribute("itsMe", false);
         }
 
@@ -116,7 +126,7 @@ public class UserServlet extends HttpServlet {
             page = 1;
         }
 
-        if(show!=null) {
+        if(show != null) {
             if (show.equals("reviews")) {
                 requestDispatcher = getUserReviews(httpServletRequest, username, page);
             } else if (show.equals("organizedTrips")) {
@@ -126,6 +136,7 @@ public class UserServlet extends HttpServlet {
             } else if (show.equals("following")) {
                 requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
             }else{
+                logger.error("Error. Invalid value for parameter show " + show);
                 requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
             }
         }else if(!itsMe && action!=null){
@@ -139,6 +150,8 @@ public class UserServlet extends HttpServlet {
                 httpServletResponse.setCharacterEncoding("UTF-8");
                 httpServletResponse.getWriter().write(unfollowUser(me,username));
                 return;
+            }else{
+                logger.error("Error. Invalid value for parameter action " + action);
             }
             httpServletRequest.setAttribute(SecurityUtils.USER, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
@@ -146,6 +159,7 @@ public class UserServlet extends HttpServlet {
             httpServletRequest.setAttribute(SecurityUtils.USER, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
         }
+        logger.info(authenticatedUserDTO.toString());
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 }

@@ -4,6 +4,8 @@ import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,8 +18,11 @@ import java.io.IOException;
 @WebServlet("/deleteProfile")
 public class DeleteProfileServlet extends HttpServlet {
     UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(DeleteProfileServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info(req.getQueryString());
         processRequest(req,resp);
     }
 

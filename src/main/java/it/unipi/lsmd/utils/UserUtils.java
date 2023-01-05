@@ -1,11 +1,14 @@
 package it.unipi.lsmd.utils;
 
+import it.unipi.lsmd.controller.SignupServlet;
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -122,6 +125,7 @@ public interface UserUtils {
         r.setPassword(user.getPassword());
         r.setNationality(user.getNationality());
         r.setSpoken_languages(user.getSpokenLanguages());
+        r.setRole("user");
         try {
             r.setBirthdate(user.getBirthdate());
         }catch(Exception e){
@@ -153,24 +157,41 @@ public interface UserUtils {
     }
 
     static RegisteredUserDTO registeredUserDTOFromRequest(HttpServletRequest httpServletRequest) {
+
+        String name = httpServletRequest.getParameter("firstName");
+        String surname = httpServletRequest.getParameter("lastName");
+        String username = httpServletRequest.getParameter("username");
+        String email = httpServletRequest.getParameter("email");
+        String password = httpServletRequest.getParameter("psw");
+        String birthDate = httpServletRequest.getParameter("birthDate");
+        String nationality = httpServletRequest.getParameter("nationality");
+        String listOfSpokenLanguages = httpServletRequest.getParameter("languages");
+
+        try{
+            if(name.equals("") || surname.equals("") || username.equals("") || email.equals("") ||
+                    password.equals("") || birthDate.equals("")){
+                return null;
+            }
+        }catch (NullPointerException e){
+            return null;
+        }
+
         RegisteredUserDTO user = new RegisteredUserDTO();
-        user.setFirstName(httpServletRequest.getParameter("firstName"));
-        user.setLastName(httpServletRequest.getParameter("lsatName"));
-        user.setUsername(httpServletRequest.getParameter("username"));
-        user.setEmail(httpServletRequest.getParameter("email"));
-        user.setPassword(httpServletRequest.getParameter("psw"));
+        user.setFirstName(name);
+        user.setLastName(surname);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
         try {
-            user.setBirthdate(LocalDate.parse(httpServletRequest.getParameter("birthDate")));
+            user.setBirthdate(LocalDate.parse(birthDate));
         }catch(Exception e){
             user.setBirthdate(null);
         }
-        String nationality = httpServletRequest.getParameter("nationality");
         user.setNationality(nationality);
-        String listOfSpokenLanguages = httpServletRequest.getParameter("languages");
         try {
             List<String> spokenLanguages = Arrays.asList(listOfSpokenLanguages.split(","));
             user.setSpokenLanguages(spokenLanguages);
-        }catch (Exception e){
+        }catch (Exception e) {
             user.setSpokenLanguages(null);
         }
         return user;
@@ -181,6 +202,7 @@ public interface UserUtils {
         r.setFirstName(user.getFirstName());
         r.setLastName(user.getLastName());
         r.setUsername(user.getUsername());
+        r.setEmail(user.getEmail());
         r.setNationality(user.getNationality());
         r.setSpokenLanguages(user.getSpokenLanguages());
         try {
@@ -196,12 +218,30 @@ public interface UserUtils {
         return name != null && surname != null && username != null && email != null && password != null;
     }
 
-    static AdminDTO admitDTOFromRequest(HttpServletRequest req) {
+    static AdminDTO admitDTOFromRequest(HttpServletRequest httpServletRequest) {
+
+        String name = httpServletRequest.getParameter("first_name");
+        String surname = httpServletRequest.getParameter("last_name");
+        String username = httpServletRequest.getParameter("username");
+        String email = httpServletRequest.getParameter("email");
+        String password = httpServletRequest.getParameter("password");
+
+        try{
+            if(name.equals("") || surname.equals("") || username.equals("") || email.equals("") ||
+                    password.equals("")){
+                return null;
+            }
+        }catch (NullPointerException e){
+            return null;
+        }
+
+
         AdminDTO new_authenticated_user = new AdminDTO();
-        new_authenticated_user.setFirstName(req.getParameter("firstName"));
-        new_authenticated_user.setLastName(req.getParameter("lastName"));
-        new_authenticated_user.setPassword(req.getParameter("password"));
-        new_authenticated_user.setEmail(req.getParameter("email"));
+        new_authenticated_user.setUsername(username);
+        new_authenticated_user.setFirstName(name);
+        new_authenticated_user.setLastName(surname);
+        new_authenticated_user.setPassword(password);
+        new_authenticated_user.setEmail(email);
         return new_authenticated_user;
     }
 }

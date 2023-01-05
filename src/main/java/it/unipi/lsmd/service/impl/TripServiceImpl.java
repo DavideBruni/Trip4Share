@@ -1,5 +1,6 @@
 package it.unipi.lsmd.service.impl;
 
+import it.unipi.lsmd.controller.AddAdminServlet;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.TripDAO;
 import it.unipi.lsmd.dao.TripDetailsDAO;
@@ -15,6 +16,8 @@ import it.unipi.lsmd.model.enums.Status;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.TripUtils;
 import org.javatuples.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import org.javatuples.Triplet;
 
@@ -32,6 +35,8 @@ public class TripServiceImpl implements TripService {
     private final TripDetailsDAO tripDetailsDAO;
     private final TripDAO tripDAO;
     private final TripNeo4jDAO organizerNeoDAO;
+    private static Logger logger = LoggerFactory.getLogger(TripServiceImpl.class);
+
 
     public TripServiceImpl(){
         tripDetailsDAO = DAOLocator.getTripDetailsDAO();
@@ -43,6 +48,7 @@ public class TripServiceImpl implements TripService {
     public List<TripSummaryDTO> getTripsOrganizedByFollowers(String username, int size, int page) {
         List<Trip> trips = tripDAO.getTripsOrganizedByFollower(username, size, page);
         if(trips == null || trips.isEmpty()){
+            logger.error("Error. No trip found");
             return new ArrayList<>();
         }
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
@@ -53,7 +59,6 @@ public class TripServiceImpl implements TripService {
             tripSummaryDTO.setDepartureDate(t.getDepartureDate());
             tripSummaryDTO.setReturnDate(t.getReturnDate());
             tripSummaryDTO.setTitle(t.getTitle());
-            tripSummaryDTO.setImgUrl(t.getImg());
             tripSummaryDTO.setId(t.getId());
             tripSummaryDTO.setOrganizer(t.getOrganizer().getUsername());
             tripsDTO.add(tripSummaryDTO);
@@ -64,12 +69,14 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripDetailsDTO getTrip(String id){
         Trip trip = tripDetailsDAO.getTrip(id);
-        if(trip == null)
+        if(trip == null){
+            logger.error("Error. No trip found");
             return null;
+        }
         try {
             trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
         } catch (Neo4jException e) {
-            System.out.println(e);
+            logger.error("Error while setting organizer: " + e);
             trip.setOrganizer(null);
         }
         return TripUtils.tripModelToDetailedDTO(trip);
@@ -202,7 +209,7 @@ public class TripServiceImpl implements TripService {
             retDate = LocalDate.parse(returnDate);
             mostPop = tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate, limit);
         }catch (DateTimeParseException e){
-            System.out.println("No date available");
+            logger.error("Error. Invalid date. Showing most popular destination.");
             mostPop = tripDetailsDAO.mostPopularDestinations(limit);
         }catch (Exception e){
             return null;
@@ -268,6 +275,7 @@ public class TripServiceImpl implements TripService {
     public boolean addTrip(TripDetailsDTO tripDetailsDTO){
         Trip t = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
         if(t.getDepartureDate().isBefore(LocalDate.now()) || t.getDepartureDate().isAfter(t.getReturnDate())){
+            logger.error("Error. Invalid dates");
             return false;
         }
         String id = tripDetailsDAO.addTrip(t);
@@ -276,12 +284,15 @@ public class TripServiceImpl implements TripService {
             try {
                 RegisteredUser r = new RegisteredUser();
                 r.setUsername(t.getOrganizer().getUsername());
+                t.setLast_modified(LocalDateTime.now());
                 tripDAO.addTrip(t,r);
+                logger.info("New Trip added: " + t);
                 return true;
             } catch (Neo4jException e) {
-                //logger errore neo4j
-                if(!tripDetailsDAO.deleteTrip(t))
-                    System.err.println("Errore mongo");
+                logger.error("Error. Error while adding new Trip on Neo4J " + e);
+                if(!tripDetailsDAO.deleteTrip(t)){
+                    logger.error("Error. Error while rollback new Trip on MongoDB");
+                }
                 return false;
             }
         }
@@ -301,11 +312,13 @@ public class TripServiceImpl implements TripService {
                     tripDAO.setNotDeleted(trip);
                 }
             } catch (Neo4jException e) {
-                System.err.println("Errore neo4j");
+                logger.error("Error. Error while deleting Trip on Neo4J " + e);
                 return false;
             }
+            logger.info("Trip deleted: " + trip);
             return true;
         }
+        logger.error("Error. Invalid trip");
         return false;
     }
 
@@ -314,13 +327,14 @@ public class TripServiceImpl implements TripService {
         if(newTrip.getId()==oldTrip.getId()) {
             Trip n_trip = TripUtils.tripModelFromTripDetailsDTO(newTrip);
             Trip o_trip = TripUtils.tripModelFromTripDetailsDTO(oldTrip);
-            boolean flag = DAOLocator.getTripDetailsDAO().updateTrip(n_trip,o_trip);
+            boolean flag = tripDetailsDAO.updateTrip(n_trip,o_trip);
             if(flag){
                 try {
-                    DAOLocator.getTripDAO().updateTrip(n_trip,o_trip);
+                    tripDAO.updateTrip(n_trip,o_trip);
+                    logger.info("Trip updated: " + n_trip);
                     return true;
                 } catch (Neo4jException e) {
-                    //logger errore neo4j
+                    logger.error("Error. Error while updating Trip on Neo4J " + e);
                     return false;
                 }
             }
@@ -371,10 +385,14 @@ public class TripServiceImpl implements TripService {
                 if(action.equals("delete")) {
                     tripDAO.removeJoin(t,r);
                 }else{
-                    if(action.equals("accept"))
+                    if(action.equals("accept")){
+                        logger.info("User " + r.getUsername() + " has been accepted to join trip " + t.getId());
                         tripDAO.setStatusJoin(t,r,Status.accepted);
-                    else if(action.equals("reject"))
+                    }
+                    else if(action.equals("reject")){
+                        logger.info("User " + r.getUsername() + " has been rejected to join trip " + t.getId());
                         tripDAO.setStatusJoin(t,r,Status.rejected);
+                    }
                     else
                         return false;
                 }
@@ -399,12 +417,17 @@ public class TripServiceImpl implements TripService {
             t.setId(trip_id);
             RegisteredUser r = new RegisteredUser(username);
             try{
-                if(action.equals("set"))
+                if(action.equals("set")){
                     tripDAO.createJoin(t,r);
-                else
+                    logger.info("User " + username + " joined trip " + trip_id + " correctly");
+                }
+                else{
                     tripDAO.cancelJoin(t,r);
+                    logger.info("User " + username + " cancelled join request from trip " + trip_id + " correctly");
+                }
                 return "OK";
             }catch(Neo4jException ne){
+                logger.error("Error on setJoin/cancelJoin " + ne);
                 return "Error";
             }
         }else{
@@ -414,6 +437,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public String getJoinStatus(String trip_id, String username) {
+
         if(trip_id!=null && username!=null) {
             Trip t = new Trip();
             t.setId(trip_id);
@@ -422,12 +446,15 @@ public class TripServiceImpl implements TripService {
                 try {
                     return status.name();
                 } catch (NullPointerException ne) {
+                    logger.error("Error. Status not found" + ne);
                     return null;
                 }
             }catch (Neo4jException neo4jException){
+                logger.error("Error while getting join status " + neo4jException);
                 return null;
             }
         }
+        logger.error("Error. Invalid username or trip_id");
         return null;
     }
 

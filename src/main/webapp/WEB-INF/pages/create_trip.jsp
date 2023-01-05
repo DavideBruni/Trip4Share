@@ -20,10 +20,11 @@
 
 <body class="tripbgd main-form">
 <%@ include file="header.jsp" %>
-<% Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
+<%
+  Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
   TripDetailsDTO t = null;
-if(flag!=null){
-t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
+  if(flag != null){
+    t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
 %>
 <form method="post" action="updateTrip">
           <%}else{ %>
@@ -80,18 +81,18 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
       <div class="row">
         <label class="small mb-1" >Departure Date</label>
         <% if (t!=null && t.getDepartureDate()!=null){%>
-        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getDepartureDate()%>" required>
+        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" value="<%=t.getDepartureDate()%>" required>
         <%}else{%>
-        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
+        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" required>
         <% } %>
       </div>
 
       <div class="row">
         <label class="small mb-1" >Return date</label>
         <% if (t!=null && t.getReturnDate()!=null){%>
-        <input  class="form-control text-center"  name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
+        <input  class="form-control text-center"  name="returnDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
         <%}else{%>
-        <input  class="form-control text-center" name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
+        <input  class="form-control text-center" name="returnDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" required>
         <% } %>
 
       </div>

@@ -3,6 +3,8 @@ package it.unipi.lsmd.controller;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,8 @@ import java.io.IOException;
 @WebServlet("/joinManager")
 public class JoinManagerServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
+    private static Logger logger = LoggerFactory.getLogger(JoinManagerServlet.class);
+
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
@@ -22,6 +26,7 @@ public class JoinManagerServlet extends HttpServlet {
         // only authenticated users can view it and only if parameters aren't null
         if(id==null || username==null || action == null || req.getSession()==null ||
                 req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
+            logger.error("Error. Access denied");
             resp.sendRedirect(req.getContextPath());
             return;
         }
@@ -34,13 +39,14 @@ public class JoinManagerServlet extends HttpServlet {
         }
         else {
             resp.getWriter().write("ERROR");
-            System.out.println("Error");
+            logger.error("Error while managing trip request");
         }
 
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info(req.getQueryString());
         processRequest(req, resp);
     }
 

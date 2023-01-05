@@ -67,7 +67,6 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         Bson projection = fields(exclude("password"), slice("reviews", 0, PagesUtilis.REVIEWS_IN_USER_PROFILE));
         Document result = collection.find(query).projection(projection).first();
         User u = UserUtils.userFromDocument(result);
-        // TODO what if username is not found?
         if(u instanceof Admin){
             return null;
         }else{
@@ -207,7 +206,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             query.add(Updates.set("surname", new_user.getSurname()));
         if(!new_user.getEmail().equals("") && !new_user.getEmail().equals(old_user.getEmail()))
             query.add(Updates.set("email", new_user.getEmail()));
-        if(new_user.getPassword() != null && !new_user.getPassword().equals(old_user.getPassword()))
+        if(!new_user.getPassword().equals("") && !new_user.getPassword().equals(old_user.getPassword()))
             query.add(Updates.set("password", new_user.getPassword()));
         //if(! new_user.getProfile_pic().equals(old_user.getProfile_pic()))
             //query.add(Updates.set("img_url", new_user.getProfile_pic()));

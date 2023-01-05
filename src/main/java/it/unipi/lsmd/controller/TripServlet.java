@@ -8,6 +8,8 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.SecurityUtils;
 import it.unipi.lsmd.utils.TripUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,6 +27,8 @@ public class TripServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
     private final WishlistService wishlistService = ServiceLocator.getWishlistService();
+    private static Logger logger = LoggerFactory.getLogger(TripServlet.class);
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req,resp);
@@ -32,7 +36,9 @@ public class TripServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         processRequest(httpServletRequest,httpServletResponse);
+
     }
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
@@ -62,7 +68,9 @@ public class TripServlet extends HttpServlet {
                     }
 
                 } catch (NullPointerException e) {
+                    // no action specified in query
                 }
+                // TODO - [http-nio-8080-exec-7] ERROR it.unipi.lsmd.service.impl.TripServiceImpl - Error. Status not foundjava.lang.NullPointerException: Cannot invoke "it.unipi.lsmd.model.enums.Status.name()" because "status" is null
                 httpServletRequest.setAttribute(SecurityUtils.STATUS, tripService.getJoinStatus(trip_id, authenticatedUserDTO.getUsername()));
             }
         }

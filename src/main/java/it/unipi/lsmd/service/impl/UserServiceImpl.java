@@ -1,5 +1,6 @@
 package it.unipi.lsmd.service.impl;
 
+import it.unipi.lsmd.controller.AddAdminServlet;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
@@ -13,6 +14,8 @@ import it.unipi.lsmd.model.User;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.ReviewUtils;
 import it.unipi.lsmd.utils.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     private RegisteredUserDAO registeredUserDAO;
     private WishlistDAO wishlistDAO;
+    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
 
     public UserServiceImpl(){
         userDAO = DAOLocator.getUserDAO();
@@ -39,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
         if(user instanceof RegisteredUser){
             RegisteredUserDTO registeredUserDTO = (RegisteredUserDTO) UserUtils.userModelToDTO(user);
-            registeredUserDTO.setAvg_rating(userDAO.avgRating(username));
+            registeredUserDTO.setAvg_rating(Math.round(userDAO.avgRating(username) * 100) / 100.0);
             registeredUserDTO.setN_following(registeredUserDAO.getNumberOfFollowing(username));
             registeredUserDTO.setN_followers(registeredUserDAO.getNumberOfFollower(username));
             authenticatedUserDTO = registeredUserDTO;
@@ -62,7 +67,7 @@ public class UserServiceImpl implements UserService {
         registeredUser.setN_following(registeredUserDAO.getNumberOfFollowing(username));
         registeredUser.setN_followers(registeredUserDAO.getNumberOfFollower(username));
         registeredUser.setFriend(isFriend(me, username));
-        registeredUser.setAvg_rating(userDAO.avgRating(username));
+        registeredUser.setAvg_rating(Math.round(userDAO.avgRating(username) * 100) / 100.0);
 
         return registeredUser;
     }
@@ -172,7 +177,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private String addRegisteredUser(RegisteredUserDTO u) {
-        if(u.getBirthdate()==null || u.getBirthdate().isAfter(LocalDate.now())){
+        if(u.getBirthdate() == null || u.getBirthdate().isAfter(LocalDate.now())){
             return "Your birthdate is probably wrong";
         }
         RegisteredUser r = UserUtils.registeredUserFromDTO(u);

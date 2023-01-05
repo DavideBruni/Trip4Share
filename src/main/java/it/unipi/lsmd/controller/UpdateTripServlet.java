@@ -5,6 +5,8 @@ import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.SecurityUtils;
 import it.unipi.lsmd.utils.TripUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,8 +19,12 @@ import java.io.IOException;
 @WebServlet("/updateTrip")
 public class UpdateTripServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
+    private static Logger logger = LoggerFactory.getLogger(UpdateTripServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        logger.info(request.getQueryString());
         String id = request.getParameter("id");
         if(request.getSession()==null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null || id == null) {
             response.sendRedirect(request.getContextPath());

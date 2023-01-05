@@ -6,6 +6,8 @@ import it.unipi.lsmd.dto.PriceDestinationDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.PagesUtilis;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +20,8 @@ import java.util.List;
 @WebServlet("/destinations")
 public class DestinationsServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
+    private static Logger logger = LoggerFactory.getLogger(DestinationsServlet.class);
+
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -80,6 +84,7 @@ public class DestinationsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info(req.getQueryString());
         processRequest(req, resp);
     }
 
