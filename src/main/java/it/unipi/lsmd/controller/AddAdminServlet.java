@@ -1,10 +1,14 @@
 package it.unipi.lsmd.controller;
 
+import it.unipi.lsmd.config.AppServletContextListener;
 import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import it.unipi.lsmd.utils.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,9 +22,13 @@ import java.io.IOException;
 public class AddAdminServlet extends HttpServlet {
 
     private UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(AddAdminServlet.class);
+
+
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
 
         if(!(authenticatedUserDTO instanceof AdminDTO)){
@@ -36,26 +44,17 @@ public class AddAdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        String username = httpServletRequest.getParameter("username");
-        String first_name = httpServletRequest.getParameter("first_name");
-        String last_name = httpServletRequest.getParameter("last_name");
-        String password = httpServletRequest.getParameter("password");
-        String email = httpServletRequest.getParameter("email");
+        AdminDTO adminDTO = UserUtils.admitDTOFromRequest(httpServletRequest);
 
-
-        // TODO - se almeno un campo e' nullo, abort
-
-        AdminDTO adminDTO = new AdminDTO();
-        adminDTO.setUsername(username);
-        adminDTO.setFirstName(first_name);
-        adminDTO.setLastName(last_name);
-        adminDTO.setPassword(password);
-        adminDTO.setEmail(email);
-
-        // TODO - check se username duplicato
+        if(adminDTO == null){
+            logger.error("Error. Missing values");
+            RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/create_admin.jsp");
+            requestDispatcher.forward(httpServletRequest, httpServletResponse);
+            return;
+        }
 
         userService.signup(adminDTO);
+        logger.info("New Admin: " + adminDTO);
         httpServletResponse.sendRedirect("../admin");
-
     }
 }

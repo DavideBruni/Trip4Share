@@ -6,6 +6,8 @@ import it.unipi.lsmd.dto.ReviewDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +20,11 @@ import java.time.LocalDate;
 @WebServlet("/deleteReview")
 public class DeleteReviewServlet extends HttpServlet {
     private final UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(DeleteReviewServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info(req.getQueryString());
         processRequest(req,resp);
     }
 

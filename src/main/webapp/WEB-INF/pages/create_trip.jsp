@@ -20,10 +20,11 @@
 
 <body class="tripbgd main-form">
 <%@ include file="header.jsp" %>
-<% Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
+<%
+  Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
   TripDetailsDTO t = null;
-if(flag!=null){
-t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
+  if(flag != null){
+    t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
 %>
 <form method="post" action="updateTrip">
           <%}else{ %>
@@ -80,18 +81,18 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
       <div class="row">
         <label class="small mb-1" >Departure Date</label>
         <% if (t!=null && t.getDepartureDate()!=null){%>
-        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getDepartureDate()%>" required>
+        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" value="<%=t.getDepartureDate()%>" required>
         <%}else{%>
-        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
+        <input  class="form-control text-center"  name="departureDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" required>
         <% } %>
       </div>
 
       <div class="row">
         <label class="small mb-1" >Return date</label>
         <% if (t!=null && t.getReturnDate()!=null){%>
-        <input  class="form-control text-center"  name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
+        <input  class="form-control text-center"  name="returnDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" value="<%=t.getReturnDate()%>" required>
         <%}else{%>
-        <input  class="form-control text-center" name="returnDate" type="text" placeholder="12/02/1022" onclick="(this.type='date')" required>
+        <input  class="form-control text-center" name="returnDate" type="text" placeholder="DD/MM/AAAA" onclick="(this.type='date')" required>
         <% } %>
 
       </div>
@@ -147,7 +148,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
         <div class="col-8" >
           <h2>ITINERARIO</h2>
           <div id="wrapper">
-            <% if(t!=null || t.getItinerary()!=null || !t.getItinerary().isEmpty()){
+            <% if(t != null && t.getItinerary() != null && !t.getItinerary().isEmpty()){
             List<DailyScheduleDTO> it = t.getItinerary();
             for(DailyScheduleDTO d : it){
               int day = d.getDay();
@@ -189,7 +190,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
             <h2 class="text-center pdn-top-30">INCLUDED</h2>
 
             <div class="custom-control" id="included">
-              <% if(t!=null || t.getWhatsIncluded()!=null || !t.getWhatsIncluded().isEmpty()){
+              <% if(t != null && t.getWhatsIncluded() != null && !t.getWhatsIncluded().isEmpty()){
                 List<String> it = t.getWhatsIncluded();
                 int i=0;
                 for(String d : it){
@@ -211,7 +212,7 @@ t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);
           <div class="justify-content-center mt-6 pdn-top-30">
             <h2 class="text-center mt-6">NOT INCLUDED</h2>
             <div class="custom-control" id="notincluded">
-              <% if(t!=null || t.getWhatsNotIncluded()!=null || !t.getWhatsNotIncluded().isEmpty()){
+              <% if(t != null && t.getWhatsNotIncluded() != null && !t.getWhatsNotIncluded().isEmpty()){
               List<String> it = t.getWhatsNotIncluded();
               int i=0;
               for(String d : it){

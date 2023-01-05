@@ -7,6 +7,8 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,12 +23,16 @@ import java.util.ArrayList;
 public class WishlistServlet extends HttpServlet {
 
     private final WishlistService wishlistService = ServiceLocator.getWishlistService();
+    private static Logger logger = LoggerFactory.getLogger(WishlistServlet.class);
+
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
+        logger.info(httpServletRequest.getQueryString());
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
         if(authenticatedUserDTO == null){
+            logger.info("Error. Access denied");
             httpServletResponse.sendRedirect("login");
             return;
         }
@@ -44,6 +50,8 @@ public class WishlistServlet extends HttpServlet {
         httpServletRequest.setAttribute(SecurityUtils.TITLE_PAGE, "Wishlist");
         httpServletRequest.setAttribute(SecurityUtils.PAGE, page);
         httpServletRequest.setAttribute(SecurityUtils.TRIPS_RESULT, wishlist);
+
+        logger.info(wishlist.toString());
 
         RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(httpServletRequest, httpServletResponse);

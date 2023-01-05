@@ -6,6 +6,8 @@ import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +22,7 @@ import java.util.List;
 public class PastTripsServlet extends HttpServlet  {
 
     private TripService tripService = ServiceLocator.getTripService();
+    private static Logger logger = LoggerFactory.getLogger(PastTripsServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,6 +31,7 @@ public class PastTripsServlet extends HttpServlet  {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         processRequest(httpServletRequest,httpServletResponse);
     }
 
@@ -35,6 +39,7 @@ public class PastTripsServlet extends HttpServlet  {
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
         // check if user is authenticated
         if(authenticatedUserDTO == null){
+            logger.error("Error. Access denied");
             httpServletResponse.sendRedirect("login");
             return;
         }

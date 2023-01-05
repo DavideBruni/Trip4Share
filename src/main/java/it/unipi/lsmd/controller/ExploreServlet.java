@@ -8,6 +8,8 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,6 +26,7 @@ public class ExploreServlet extends HttpServlet {
 
     private TripService tripService = ServiceLocator.getTripService();
     private UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(ExploreServlet.class);
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
@@ -107,6 +110,7 @@ public class ExploreServlet extends HttpServlet {
         try{
             min = Double.parseDouble(min_price);
         }catch (NumberFormatException e){
+            logger.error("Error. Invalid price " + e);
             return request.getRequestDispatcher("search");
         }
         try{
@@ -133,6 +137,7 @@ public class ExploreServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         processRequest(httpServletRequest, httpServletResponse);
     }
 

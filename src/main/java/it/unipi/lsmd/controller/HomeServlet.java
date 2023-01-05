@@ -22,9 +22,9 @@ import java.util.List;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
-    private static Logger logger = LoggerFactory.getLogger(HomeServlet.class);
     private final TripService tripService = ServiceLocator.getTripService();
     private final UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(HomeServlet.class);
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Show Trips
@@ -57,6 +57,7 @@ public class HomeServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
             requestDispatcher.forward(request, response);
         }catch (NullPointerException ne){
+            logger.error("Error while loading homepage " + ne);
             response.sendRedirect(request.getContextPath());
         }
 
@@ -64,6 +65,7 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         processRequest(httpServletRequest, httpServletResponse);
     }
 

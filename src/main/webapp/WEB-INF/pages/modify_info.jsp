@@ -64,12 +64,12 @@
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputOrgName">Email address</label>
-                                <input   class="form-control" id="inputOrgName" type="email" placeholdere="Start Bootstrap" name="email" value="<%=user.getEmail()%>">
+                                <input   class="form-control" id="inputOrgName" type="email" placeholdere="Start Bootstrap" name="email" value=<%=user.getEmail()%>>
                             </div>
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLocation">Password</label>
-                                <input   class="form-control" id="inputLocation" type="password" name="password" value="password">
+                                <input   class="form-control" id="inputLocation" type="password" name="password" value="">
                             </div>
                         </div>
                         <!-- Form Group (email address)-->

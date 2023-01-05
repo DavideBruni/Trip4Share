@@ -1,5 +1,6 @@
 package it.unipi.lsmd.service.impl;
 
+import it.unipi.lsmd.controller.AddAdminServlet;
 import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
 import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
@@ -7,6 +8,8 @@ import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
 import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.TripUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.time.LocalDateTime;
@@ -16,6 +19,8 @@ public class WishlistServiceImpl implements WishlistService {
 
     private final WishlistRedisDAO wishlistRedisDAO;
     private final WishlistMongoDAO wishlistMongoDAO;
+    private static Logger logger = LoggerFactory.getLogger(WishlistServiceImpl.class);
+
 
     public WishlistServiceImpl() {
         wishlistRedisDAO = new WishlistRedisDAO();

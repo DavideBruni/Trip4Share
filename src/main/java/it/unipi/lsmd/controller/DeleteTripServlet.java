@@ -3,6 +3,8 @@ package it.unipi.lsmd.controller;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,8 +17,11 @@ import java.io.IOException;
 @WebServlet("/deleteTrip")
 public class DeleteTripServlet extends HttpServlet {
     TripService tripService = ServiceLocator.getTripService();
+    private static Logger logger = LoggerFactory.getLogger(DeleteTripServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info(req.getQueryString());
         processRequest(req, resp);
     }
 

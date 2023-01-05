@@ -6,6 +6,8 @@ import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,13 +21,17 @@ import java.io.IOException;
 public class BanUserServlet extends HttpServlet {
 
     private UserService userService = ServiceLocator.getUserService();
+    private static Logger logger = LoggerFactory.getLogger(BanUserServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+
+        logger.info(httpServletRequest.getQueryString());
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
 
         if(!(authenticatedUserDTO instanceof AdminDTO)){
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath());
+            logger.error("Error. Access denied.");
             return;
         }
 

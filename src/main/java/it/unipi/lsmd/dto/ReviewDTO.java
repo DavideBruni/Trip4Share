@@ -51,14 +51,14 @@ public class ReviewDTO {
         this.rating = rating;
     }
 
-
     @Override
     public String toString() {
         return "ReviewDTO{" +
                 "text='" + text + '\'' +
                 ", title='" + title + '\'' +
-                ", date='" + date + '\'' +
+                ", date=" + date +
                 ", rating=" + rating +
+                ", author='" + author + '\'' +
                 '}';
     }
 }

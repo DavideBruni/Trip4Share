@@ -11,6 +11,8 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,7 +31,10 @@ import java.util.List;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-     static void redirectUser(HttpServletResponse httpServletResponse, AuthenticatedUserDTO authenticatedUserDTO) throws IOException {
+    private static Logger logger = LoggerFactory.getLogger(LoginServlet.class);
+
+
+    static void redirectUser(HttpServletResponse httpServletResponse, AuthenticatedUserDTO authenticatedUserDTO) throws IOException {
         if(authenticatedUserDTO instanceof RegisteredUserDTO){
             httpServletResponse.sendRedirect("user?username="+authenticatedUserDTO.getUsername());
         }else{
@@ -46,6 +51,7 @@ public class LoginServlet extends HttpServlet {
 
         // check if user is already authenticated
         if(authenticatedUserDTO != null){
+            logger.error("Error. User already authenticated");
             redirectUser(httpServletResponse, authenticatedUserDTO);
             return;
         }
@@ -82,7 +88,7 @@ public class LoginServlet extends HttpServlet {
                     httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
                 }
             } catch (Exception e) {
-                System.out.println(e);
+                logger.error("Error. Invalid username or Password " + e);
                 httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
             }
             RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(targetJSP);
@@ -94,6 +100,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         processRequest(httpServletRequest, httpServletResponse);
     }
 

@@ -5,6 +5,8 @@ import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -16,9 +18,11 @@ import java.util.List;
 public class IndexServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
+    private static Logger logger = LoggerFactory.getLogger(IndexServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        logger.info(httpServletRequest.getQueryString());
         processRequest(httpServletRequest, httpServletResponse);
     }
 

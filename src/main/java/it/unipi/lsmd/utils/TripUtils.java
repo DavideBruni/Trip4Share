@@ -336,14 +336,17 @@ public interface TripUtils {
     }
 
     static TripDetailsDTO tripDetailsDTOfromRequest(HttpServletRequest request) throws IncompleteTripException {
+
         TripDetailsDTO trip = new TripDetailsDTO();
         trip.setDestination(request.getParameter("destination"));
         trip.setTitle(request.getParameter("title"));
         trip.setPrice(Double.parseDouble(request.getParameter("price")));
         trip.setDepartureDate(LocalDate.parse(request.getParameter("departureDate")));
         trip.setReturnDate(LocalDate.parse(request.getParameter("returnDate")));
+
         if(trip.getDestination() == null || trip.getTitle()==null || trip.getPrice()==0 || trip.getDepartureDate()==null || trip.getReturnDate()== null)
             throw new IncompleteTripException();
+
         List<String> tags = Arrays.asList(request.getParameter("tags").split(","));
         trip.setTags(tags);
         trip.setDescription(request.getParameter("description"));

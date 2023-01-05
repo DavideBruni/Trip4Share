@@ -7,6 +7,8 @@ import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,44 +21,10 @@ import java.util.List;
 
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
-    private UserService userService = ServiceLocator.getUserService();
-    private TripService tripService = ServiceLocator.getTripService();
 
-    /*
-    private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        // TODO - handle nullPointerException when do getParameter and other possible exceptions
-
-        int page;
-        try {
-            page = Integer.parseInt(httpServletRequest.getParameter("page"));
-        } catch (NumberFormatException e) {
-            page = 1;
-        }
-
-        RequestDispatcher requestDispatcher = null;
-        if (httpServletRequest.getMethod().equals("POST")) {
-            String username = httpServletRequest.getParameter("username");
-            if (username != null) {
-                requestDispatcher = searchUser(httpServletRequest, username, page);
-            } else {
-                String destination = httpServletRequest.getParameter("destination");
-                String tags = httpServletRequest.getParameter("tags");
-                if (destination != null) {
-                    requestDispatcher = searchDest(httpServletRequest, destination, page);
-                } else if (tags != null) {
-                    requestDispatcher = searchTags(httpServletRequest, tags, page);
-                } else {
-                    // TODO - filter by price
-                    requestDispatcher = null;
-                }
-            }
-        } else {
-            requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search.jsp");
-        }
-        requestDispatcher.forward(httpServletRequest, httpServletResponse);
-    }
-
-     */
+    //private UserService userService = ServiceLocator.getUserService();
+    //private TripService tripService = ServiceLocator.getTripService();
+    private static Logger logger = LoggerFactory.getLogger(SearchServlet.class);
 
 
     @Override
