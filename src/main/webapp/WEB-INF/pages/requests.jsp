@@ -14,24 +14,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body class="justify-content-center main-layout">
-<div class="titlepage text-center pb-5 col-12">
+<div class="titlepage text-center pb-5 mt-5">
     <h2>People who request to join your trip </h2>
 </div>
-<div class="row mt-5">
+<div class="col-12 mt-5">
     <div class="row justify-content-center">
-        <div class="col-5 list-group-item flex-column text-center">
-            <div class="titlepage">
+        <div class="col-5 flex-column text-center">
+            <div>
                 <h2>User</h2>
             </div>
 
         </div>
-        <div class="col-3  list-group-item flex-column text-center">
-            <div class="titlepage">
+        <div class="col-3 flex-column text-center">
+            <div>
                 <h2>Status</h2>
             </div>
         </div>
-        <div class="col-3  list-group-item flex-column text-center">
-            <div class="titlepage">
+        <div class="col-4 flex-column text-center">
+            <div>
                 <h2>Action</h2>
             </div>
         </div>
@@ -45,6 +45,7 @@
                 String id = (String) request.getAttribute("id");
     %>
     <!-- Utente -->
+    <div class="row">
     <div class="col-5 justify-content-center">
         <div class="sidebar">
             <div class="widget">
@@ -89,7 +90,7 @@
         </div>
     </div><!-- end blog-list -->
 
-
+    </div>
 
     <%
                 i++;
