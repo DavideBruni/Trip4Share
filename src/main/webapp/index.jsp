@@ -63,7 +63,7 @@
                      <div class="owl-carousel owl-theme">
                         <% for(TripSummaryDTO t : mostPopulars){ %>
                         <div class="item">
-                           <img class="img-responsive" src="<%= t.getImgUrl()%>" alt="Image of a trip" />
+                           <img class="img-responsive" src="WebContent/images/trip_pic1.jpg" alt="Image of a trip" />
                            <h3><a class=""text-decoration-none href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %></a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
@@ -103,7 +103,7 @@
                      <div class="owl-carousel owl-theme">
                         <% for(TripSummaryDTO t : cheapest){ %>
                         <div class="item">
-                           <img class="img-responsive" src="<%= t.getImgUrl()%>" alt="Image of a trip" />
+                           <img class="img-responsive" src="WebContent/images/trip_pic1.jpg" alt="Image of a trip" />
                            <h3> <a class="text-decoration-none" href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %> </a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>

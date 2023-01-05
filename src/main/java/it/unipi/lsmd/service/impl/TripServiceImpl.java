@@ -59,7 +59,6 @@ public class TripServiceImpl implements TripService {
             tripSummaryDTO.setDepartureDate(t.getDepartureDate());
             tripSummaryDTO.setReturnDate(t.getReturnDate());
             tripSummaryDTO.setTitle(t.getTitle());
-            tripSummaryDTO.setImgUrl(t.getImg());
             tripSummaryDTO.setId(t.getId());
             tripSummaryDTO.setOrganizer(t.getOrganizer().getUsername());
             tripsDTO.add(tripSummaryDTO);
@@ -77,7 +76,7 @@ public class TripServiceImpl implements TripService {
         try {
             trip.setOrganizer(organizerNeoDAO.getOrganizer(trip));
         } catch (Neo4jException e) {
-            System.out.println(e);
+            logger.error("Error while setting organizer: " + e);
             trip.setOrganizer(null);
         }
         return TripUtils.tripModelToDetailedDTO(trip);
@@ -210,7 +209,7 @@ public class TripServiceImpl implements TripService {
             retDate = LocalDate.parse(returnDate);
             mostPop = tripDetailsDAO.mostPopularDestinationsByPeriod(depDate, retDate, limit);
         }catch (DateTimeParseException e){
-            System.out.println("No date available");
+            logger.error("Error. Invalid date. Showing most popular destination.");
             mostPop = tripDetailsDAO.mostPopularDestinations(limit);
         }catch (Exception e){
             return null;
@@ -285,6 +284,7 @@ public class TripServiceImpl implements TripService {
             try {
                 RegisteredUser r = new RegisteredUser();
                 r.setUsername(t.getOrganizer().getUsername());
+                t.setLast_modified(LocalDateTime.now());
                 tripDAO.addTrip(t,r);
                 logger.info("New Trip added: " + t);
                 return true;

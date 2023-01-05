@@ -29,9 +29,9 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary) {
-        Trip trip = TripUtils.tripFromTripSummary(tripSummary);
+        //Trip trip = TripUtils.tripFromTripSummary(tripSummary);
 
-        if(wishlistRedisDAO.addToWishlist(username, trip_id, trip)){
+        if(wishlistRedisDAO.addToWishlist(username, trip_id, tripSummary)){
             wishlistMongoDAO.addToWishlist(trip_id);
         }
     }

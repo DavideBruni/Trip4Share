@@ -77,7 +77,7 @@
 
                 <div class="row">
                     <div class="col-9">
-                        <img src="images/signin.jpg">
+                        <img src="WebContent/images/trip_pic2.jpeg">
                     </div>
                     <div class="col-3 pull-right">
                         <div class="receipe-duration text-right margin_top_50 pdn-top-30 ">

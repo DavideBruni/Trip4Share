@@ -139,7 +139,6 @@ public interface TripUtils {
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setLike_counter(trip.getLike_counter());
-        tripDTO.setImgUrl(trip.getImg());
         try {
             tripDTO.setOrganizer(trip.getOrganizer().getUsername());
         }catch(NullPointerException ex){
@@ -158,7 +157,6 @@ public interface TripUtils {
         tripDTO.setDestination(trip.getDestination());
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
-        tripDTO.setImgUrl(trip.getImg());
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setOrganizer(trip.getOrganizer());
         tripDTO.setLast_modified(trip.getLast_modified());
@@ -182,7 +180,7 @@ public interface TripUtils {
         return trip;
     }
 
-    static String tripToJSONString(Trip trip){
+    static String tripToJSONString(TripSummaryDTO trip){
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -192,13 +190,13 @@ public interface TripUtils {
         return gson.toJson(trip);
     }
 
-    static Trip tripFromJSONString(String jsonString){
+    static TripSummaryDTO tripFromJSONString(String jsonString){
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
-        return gson.fromJson(jsonString, Trip.class);
+        return gson.fromJson(jsonString, TripSummaryDTO.class);
     }
 
     
@@ -219,7 +217,6 @@ public interface TripUtils {
         trip.setId(r.get("t._id").asString());
         trip.setDestination(r.get("t.destination").asString());
         trip.setTitle(r.get("t.title").asString());
-        trip.setImg(r.get("t.imgUrl").asString());
         trip.setOrganizer(new RegisteredUser(r.get("organizer").asString()));
 
 
@@ -263,7 +260,7 @@ public interface TripUtils {
         if(t.getDescription()!=null)
             doc.append("description",t.getDescription());
         if(t.getTags()!=null && !t.getTags().isEmpty())
-            doc.append("tags",t.getTagsAsStrings());
+            doc.append("tags",TripUtils.tagsToString(t.getTags()));
         if(t.getWhatsIncluded()!=null && !t.getWhatsIncluded().isEmpty())
             doc.append("whatsIncluded",t.getWhatsIncluded());
         if(t.getWhatsNotIncluded()!=null && !t.getWhatsNotIncluded().isEmpty())
@@ -339,6 +336,8 @@ public interface TripUtils {
         trip.setDestination(request.getParameter("destination"));
         trip.setTitle(request.getParameter("title"));
         trip.setPrice(Double.parseDouble(request.getParameter("price")));
+        trip.setDepartureDate(LocalDate.parse(request.getParameter("departureDate")));
+        trip.setReturnDate(LocalDate.parse(request.getParameter("returnDate")));
         trip.setDepartureDate(LocalDate.parse(request.getParameter("departureDate")));
         trip.setReturnDate(LocalDate.parse(request.getParameter("returnDate")));
 

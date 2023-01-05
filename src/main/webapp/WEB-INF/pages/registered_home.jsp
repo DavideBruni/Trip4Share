@@ -103,9 +103,7 @@
                      <div class="col-1"></div>
                      <div class="col-5">
                         <div class="single-blog-thumbnail">
-                           <!-- <img src="<%= t.getImgUrl() %>" alt="Immagine di viaggio"> -->
                             <img src="WebContent/images/blog-image.jpg">
-
                         </div>
                      </div>
                      
@@ -165,8 +163,8 @@
                <div class="list-group">
                <% for(OtherUserDTO u : users){ %>
                        <div class="w-100 justify-content-between">
-                            <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4" >
-                           <a href=<%="user?username="+u.getUsername()%> class="list-group-item list-group-item-action flex-column align-items-start">
+                           <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4">
+                           <a class="list-group-item list-group-item-action flex-column align-items-start" href=<%="user?username="+u.getUsername()%>>
                            <h5 class="mb-1"><%=u.getUsername()%></h5>
                            </a>
                         </div>

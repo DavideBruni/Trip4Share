@@ -68,8 +68,9 @@ public class TripServlet extends HttpServlet {
                     }
 
                 } catch (NullPointerException e) {
-                    logger.error("Error while updating wishlist" + e);
+                    // no action specified in query
                 }
+                // TODO - [http-nio-8080-exec-7] ERROR it.unipi.lsmd.service.impl.TripServiceImpl - Error. Status not foundjava.lang.NullPointerException: Cannot invoke "it.unipi.lsmd.model.enums.Status.name()" because "status" is null
                 httpServletRequest.setAttribute(SecurityUtils.STATUS, tripService.getJoinStatus(trip_id, authenticatedUserDTO.getUsername()));
             }
         }

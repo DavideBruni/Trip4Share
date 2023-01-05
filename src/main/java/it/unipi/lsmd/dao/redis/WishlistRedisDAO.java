@@ -2,6 +2,7 @@ package it.unipi.lsmd.dao.redis;
 
 import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.base.BaseDAORedis;
+import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
 import it.unipi.lsmd.utils.TripUtils;
@@ -10,6 +11,7 @@ import redis.clients.jedis.Jedis;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Set;
 
 import static java.lang.Math.abs;
@@ -20,7 +22,7 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
 
 
     @Override
-    public boolean addToWishlist(String username, String trip_id, Trip trip) {
+    public boolean addToWishlist(String username, String trip_id, TripSummaryDTO trip) {
 
         long ttl = abs(ChronoUnit.DAYS.between(trip.getDepartureDate(), LocalDate.now())) * 86400; // seconds per day
         String key = REDIS_APP_NAMESPACE + ":" + username + ":" + trip_id;
@@ -76,7 +78,8 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
                     break;
 
                 String raw_trip = jedis.get(k);
-                wishlist.addToWishlist(TripUtils.tripFromJSONString(raw_trip));
+                TripSummaryDTO tripSummaryDTO = TripUtils.tripFromJSONString(raw_trip);
+                wishlist.addToWishlist(TripUtils.tripFromTripSummary(tripSummaryDTO));
                 i++;
             }
         }catch (Exception e){

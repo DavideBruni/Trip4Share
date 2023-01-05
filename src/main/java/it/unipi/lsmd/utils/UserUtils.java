@@ -169,7 +169,7 @@ public interface UserUtils {
 
         try{
             if(name.equals("") || surname.equals("") || username.equals("") || email.equals("") ||
-                    password.equals("") || birthDate.equals("") || nationality.equals("") || listOfSpokenLanguages.equals("")){
+                    password.equals("") || birthDate.equals("")){
                 return null;
             }
         }catch (NullPointerException e){

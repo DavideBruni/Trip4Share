@@ -11,7 +11,6 @@ public class TripSummaryDTO {
     private LocalDate returnDate;
     private boolean deleted;
     private String Title;
-    private String imgUrl;
     private int like_counter;
     private String organizer;
     private LocalDateTime last_modified;
@@ -43,14 +42,6 @@ public class TripSummaryDTO {
 
     public void setTitle(String title) {
         Title = title;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
     }
 
     public String getDestination() {
@@ -107,7 +98,6 @@ public class TripSummaryDTO {
                 ", returnDate=" + returnDate +
                 ", deleted=" + deleted +
                 ", Title='" + Title + '\'' +
-                ", imgUrl='" + imgUrl + '\'' +
                 ", like_counter=" + like_counter +
                 ", organizer=" + organizer +
                 '}';
