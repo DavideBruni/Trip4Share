@@ -60,7 +60,7 @@ public interface TripUtils {
         }catch (NullPointerException e){ }
 
         try{
-            trip.setPrice(result.getDouble( "price"));
+            trip.setPrice(Math.round(result.getDouble( "price") * 100) / 100.0);
         }catch (NullPointerException e){ }
 
         trip.setDepartureDate(LocalDateAdapter.convertToLocalDateViaInstant(result.getDate("departureDate")));

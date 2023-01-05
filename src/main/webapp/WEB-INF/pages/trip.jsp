@@ -50,7 +50,9 @@
                 <h2 class="pdn-top-40 mt-6 text-center triptitle"><%= trip.getTitle() %></h2>
                 <%
                     String url = "trip?id=" + trip.getId() + "&action=";
-                    if(trip.isInWishlist()){
+                    boolean isLogged = (SecurityUtils.getAuthenticatedUser(request) != null);
+                    if(isLogged){
+                        if(trip.isInWishlist()){
                 %>
                 <a href=<%=url + "remove"%>>
                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-star-fill mt-2" viewBox="0 0 16 16">
@@ -58,7 +60,7 @@
                     </svg>
                 </a>
                 <%
-                    }else{
+                        }else{
                 %>
                 <a href=<%=url + "add"%>>
                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="black" class="bi bi-star mt-2" viewBox="0 0 16 16">
@@ -66,6 +68,7 @@
                     </svg>
                 </a>
                 <%
+                        }
                     }
                 %>
 

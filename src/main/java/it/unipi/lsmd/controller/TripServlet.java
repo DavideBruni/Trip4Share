@@ -54,8 +54,8 @@ public class TripServlet extends HttpServlet {
 
             if (authenticatedUserDTO != null) {
                 LocalDateTime last_update = wishlistService.wishlistUpdateTime(authenticatedUserDTO.getUsername(), trip.getId());
-                if (last_update == null)
-                    trip.setInWishlist(false);
+                trip.setInWishlist(last_update != null);
+
                 try {
 
                     String action = httpServletRequest.getParameter("action");

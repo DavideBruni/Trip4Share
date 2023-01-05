@@ -54,7 +54,11 @@
                         <div href="single.html" class=" ml-5 list-group-item list-group-item-action flex-column align-items-center">
                             <div class="row justify-content-center mt-3">
                                 <i><img src="WebContent/icon/travel-icon.png" alt="icon" width="40%"/></i>
-                                <div id=<%=i+"_username"%>><%= j.getValue0().getUsername()%></div>
+                                <div id=<%=i+"_username"%>>
+                                    <a href=<%="user?username=" + j.getValue0().getUsername()%>>
+                                        <%= j.getValue0().getUsername()%>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
