@@ -88,6 +88,7 @@
                             <h4><%= trip.getTags() %></h4>
                             <% } %>
                             <h4><a href=<%="user?username="+trip.getOrganizer()%>>Organized By <%= trip.getOrganizer() %></a></h4>
+                            <h4 class="grey pull-right"><%= trip.getLike_counter() %> Likes</h4>
                         </div>
                     </div>
                 </div>
@@ -190,15 +191,16 @@
             <div class="row">
             <a class="text-right btn btn-primary bottone ml-3" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
             <a class="text-right btn btn-primary bottone ml-3" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
-            <a class="text-right btn btn-primary bottone ml-3" href="#" >View Pending Requests</a>
+            <a class="text-right btn btn-primary bottone ml-3" href="<%="requests?id="+trip.getId()%>" >View Pending Requests</a>
             </div>
             <% }%>
         </div>
         <div class="row" id="join_div">
             <% String status = (String) request.getAttribute(SecurityUtils.STATUS);
-            if(status==null){ %>
+            if(status==null){
+            if(!trip.getOrganizer().equals(username)){%>
             <button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>
-            <% }else{
+            <%} }else{
                 %>
             <span id="status_span"><%="Join request status: "+status+" "%></span><br>
             <%

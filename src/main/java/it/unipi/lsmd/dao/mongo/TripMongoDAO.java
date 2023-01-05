@@ -246,7 +246,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     public List<Trip> cheapestDestinationsByAvg(int objectPerPageSearch) {
 
         Bson g1 = group("$destination",avg("agg","$price"));
-        Bson s1 = sort(descending("agg"));
+        Bson s1 = sort(ascending("agg"));
         Bson l1 = limit(objectPerPageSearch);
         AggregateIterable<Document> res = collection.aggregate(Arrays.asList(g1, s1, l1));
         List<Trip> trips = new ArrayList<>();
@@ -320,7 +320,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
         try{
             Document q1 = new Document().append("_id", new ObjectId(newTrip.getId()));
             Bson q2 = attributeToUpdate(newTrip, oldTrip);
-            //problema: DailySchedule
             collection.updateOne(q1, q2);
             return true;
         }catch(Exception e){
@@ -334,7 +333,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             query.add(Updates.set("itinerary",TripUtils.documentsFromItinerary(newTrip.getItinerary())));
         }
         if(!newTrip.getTags().equals(oldTrip.getTags()))
-            query.add(Updates.set("tags",newTrip.getTags()));
+            query.add(Updates.set("tags",newTrip.getTagsAsStrings()));
         if(!newTrip.getWhatsNotIncluded().equals(oldTrip.getWhatsNotIncluded()))
             query.add(Updates.set("whatsNotIncluded",newTrip.getWhatsNotIncluded()));
         if(!newTrip.getWhatsIncluded().equals(oldTrip.getWhatsIncluded()))

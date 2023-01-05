@@ -27,13 +27,9 @@
 
 <div class=".form-horizontal main-layout" >
 
-    <div class="banner-main">
-        <img src="WebContent/images/night-skyline-wallpaper-25.jpg" alt="#"/>
-        <div class="container">
-            <div class="text-bg">
-                <h1><small>What are you</small><br><strong class="white">looking for?</strong></h1>
-            </div>
-        </div>
+
+    <div class="titlepage">
+        <h3>What are you looking for?</h3>
     </div>
 
 

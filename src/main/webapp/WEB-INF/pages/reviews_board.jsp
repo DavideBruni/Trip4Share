@@ -78,10 +78,12 @@
                                     <p><%=reviews.get(i).getText()%></p>
                                     <small style="color:black;"><%=reviews.get(i).getDate()%></small>
                                     <p class="grey text-right mr-5"><a href=<%="user?username="+reviews.get(i).getAuthor()%>><%=reviews.get(i).getAuthor()%></a></p>
-                                    <% if(reviews.get(i).getAuthor().equals(authenticatedUserDTO.getUsername())){ %>
 
-                                    <div class="row pull-right justify-content-end">
-                                        <button class="text-right btn btn-primary bottone mr-5 mt-5 delButton" id="<%=i%>" value="<%="deleteReview?to="+request.getParameter("username")+"&date="+reviews.get(i).getDate()%>" >Delete review</button>
+                                    <% if(reviews.get(i).getAuthor().equals(authenticatedUserDTO.getUsername())){ %>
+                                    <div class="row">
+                                        <div class="pull-left justify-content-start">
+                                            <button class="text-right btn btn-primary bottone delButton" id="<%=i%>" value="<%="deleteReview?to="+request.getParameter("username")+"&date="+reviews.get(i).getDate()%>" >Delete review</button>
+                                        </div>
                                     </div>
 
                                     <%}%>

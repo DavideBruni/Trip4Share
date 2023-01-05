@@ -108,7 +108,7 @@
           }
         %>
         <input  class="form-control text-center" name="tags" type="text" placeholder="Insert tags separated by comma" value="<%=tags%>">
-        <%}else{%>this.type='date')"
+        <%}else{%>
         <input  class="form-control text-center" name="tags" type="text" placeholder="Insert tags separated by comma">
         <% } %>
       </div>
@@ -148,7 +148,7 @@
         <div class="col-8" >
           <h2>ITINERARIO</h2>
           <div id="wrapper">
-            <% if(t != null && t.getItinerary() != null && !t.getItinerary().isEmpty()){
+            <% if(t!=null && t.getItinerary()!=null && !t.getItinerary().isEmpty()){
             List<DailyScheduleDTO> it = t.getItinerary();
             for(DailyScheduleDTO d : it){
               int day = d.getDay();
@@ -170,7 +170,7 @@
               <div class="col">
                 <h4 class="pdn-top-30 mb-2">Day 1</h4>
                 <label class="small mb-1" >Title</label>
-                <input type="text" name="title1>" required>
+                <input type="text" name="title1" required>
                 <label class="small mb-1 ml-4" >Subtitle</label>
                 <input type="text" name="subtitle1" >
                 <textarea  class="form-control mt-4" name="day1">Add description of the day
@@ -190,15 +190,15 @@
             <h2 class="text-center pdn-top-30">INCLUDED</h2>
 
             <div class="custom-control" id="included">
-              <% if(t != null && t.getWhatsIncluded() != null && !t.getWhatsIncluded().isEmpty()){
+              <% if(t!=null && t.getWhatsIncluded()!=null && !t.getWhatsIncluded().isEmpty()){
                 List<String> it = t.getWhatsIncluded();
                 int i=0;
                 for(String d : it){
               %>
-              <input  class="form-control text-center" name="<%="notIncluded"+i%>" type="text" value="<%=d%>">
+              <input  class="form-control text-center" name="<%="included"+i%>" type="text" value="<%=d%>">
               <%
                   i++;}}else{%>
-              <input  class="form-control text-center" name="notIncluded0" type="text" placeholder="Insert an option">
+              <input  class="form-control text-center" name="included0" type="text" placeholder="Insert an option">
               <%}%>
             </div>
             <div class="row justify-content-end mr-4">
@@ -212,7 +212,7 @@
           <div class="justify-content-center mt-6 pdn-top-30">
             <h2 class="text-center mt-6">NOT INCLUDED</h2>
             <div class="custom-control" id="notincluded">
-              <% if(t != null && t.getWhatsNotIncluded() != null && !t.getWhatsNotIncluded().isEmpty()){
+              <% if(t!=null && t.getWhatsNotIncluded()!=null && !t.getWhatsNotIncluded().isEmpty()){
               List<String> it = t.getWhatsNotIncluded();
               int i=0;
               for(String d : it){
@@ -274,12 +274,12 @@
   <% if(t!=null && t.getWhatsIncluded()!=null && !t.getWhatsIncluded().isEmpty()){%>
   included = <%=t.getWhatsIncluded().size()+1%>;
   <%}else{%>
-  included=2;
+  included=1;
   <%}%>
   <% if(t!=null && t.getWhatsNotIncluded()!=null && !t.getWhatsNotIncluded().isEmpty()){%>
   not_included = <%=t.getWhatsNotIncluded().size()+1%>;
   <%}else{%>
-  not_included=2;
+  not_included=1;
   <%}%>
 
   function add_day() {

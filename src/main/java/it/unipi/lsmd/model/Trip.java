@@ -115,6 +115,14 @@ public class Trip {
         return tags;
     }
 
+    public List<String> getTagsAsStrings(){
+        List<String> tags_string = new ArrayList<>();
+        for(Tag t : tags){
+            tags_string.add(t.getTag());
+        }
+        return tags_string;
+    }
+
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
