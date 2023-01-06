@@ -7,7 +7,7 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 
 public abstract class BaseDAORedis {
 
-    private static final String REDIS_HOST = "localhost";
+    private static final String REDIS_HOST = "172.16.5.22";
     private static final Integer REDIS_PORT = 6379;
     private static JedisPool pool;
 
@@ -18,7 +18,7 @@ public abstract class BaseDAORedis {
     public Jedis getConnection() throws ConnectionToDatabaseException {
         try {
             Jedis connection = pool.getResource();
-            //connection.auth("the password goes here");
+            connection.auth("Trip4Share");
             return connection;
         }catch(JedisConnectionException je){
             throw new ConnectionToDatabaseException();

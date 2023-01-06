@@ -37,7 +37,8 @@ class Neo4jDAO:
         with self.driver.session() as session:
             res = session.execute_write(self._create_follow_rel, to_follow, follower)
             print(res) 
-            
+
+
     @staticmethod
     def _create_follow_rel(tx, to_follow, follower):
         result = tx.run("MATCH (r1:RegisteredUser {username: $user1}),(r2:RegisteredUser {username: $user2}) "
@@ -105,10 +106,10 @@ if __name__ == "__main__":
         data = json.load(f)
     data[0].keys()
 
-    with open('dataset_users.json', 'r', encoding="utf8") as f:
+    with open('dataset_users_extende_mongo.json', 'r', encoding="utf8") as f:
         users = json.load(f)
-        connection = Neo4jDAO("bolt://localhost:7687", "neo4j", "root")
-    
+    connection = Neo4jDAO("bolt://172.16.5.21:7687", "neo4j", "Trip4Share")
+
     # ----------------------  START CYPHER ------------------
     
     #TRIPS
