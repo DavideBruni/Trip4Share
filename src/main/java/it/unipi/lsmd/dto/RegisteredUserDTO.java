@@ -11,12 +11,10 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     private String nationality;
     private List<String> spokenLanguages;
-    private String phone;
     private List<ReviewDTO> reviews;
     private int n_followers;
     private int n_following;
     private LocalDate birthdate;
-    private String bio;
     private double avg_rating;
     private boolean isFriend;
 
@@ -25,13 +23,6 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
         reviews = new ArrayList<ReviewDTO>();
     }
 
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
 
     public String getNationality() {
         return nationality;
@@ -47,14 +38,6 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
 
     public void setSpokenLanguages(List<String> spoken_languages) {
         this.spokenLanguages = spoken_languages;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public void addReview(ReviewDTO review){
@@ -120,12 +103,10 @@ public class RegisteredUserDTO extends AuthenticatedUserDTO{
                 ", password='" + getPassword() + '\'' +
                 ", nationality='" + nationality + '\'' +
                 ", spokenLanguages=" + spokenLanguages +
-                ", phone='" + phone + '\'' +
                 ", reviews=" + reviews +
                 ", n_followers=" + n_followers +
                 ", n_following=" + n_following +
                 ", birthdate=" + birthdate +
-                ", bio='" + bio + '\'' +
                 ", avg_rating=" + avg_rating +
                 ", isFriend=" + isFriend +
                 '}';

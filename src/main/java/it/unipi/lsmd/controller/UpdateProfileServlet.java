@@ -68,26 +68,34 @@ public class UpdateProfileServlet extends HttpServlet {
 
         String targetURL;
         String username = user.getUsername();
-        AuthenticatedUserDTO new_authenticated_user;
+        AuthenticatedUserDTO new_authenticated_user = null;
 
-        if(user instanceof RegisteredUserDTO){
-            new_authenticated_user = UserUtils.registeredUserDTOFromRequest(req);
-            new_authenticated_user.setUsername(username);
-            targetURL = "user?username="+new_authenticated_user.getUsername();
+        try{
+            if(user instanceof RegisteredUserDTO){
+                new_authenticated_user = UserUtils.registeredUserDTOFromRequest(req);
+                new_authenticated_user.setUsername(username);
+                targetURL = "user?username="+new_authenticated_user.getUsername();
 
-        }else{
-            new_authenticated_user = UserUtils.admitDTOFromRequest(req);
-            new_authenticated_user.setUsername(username);
-            targetURL = "admin";
+            }else{
+                new_authenticated_user = UserUtils.admitDTOFromRequest(req);
+                new_authenticated_user.setUsername(username);
+                targetURL = "admin";
+            }
+
+            if(userService.updateUser(new_authenticated_user, user)){
+                logger.info(new_authenticated_user.toString());
+                req.getSession().setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY,new_authenticated_user);
+                resp.sendRedirect(targetURL);
+                return;
+            }
+
+        }catch (Exception e){
+            logger.error("Error, something went wrong " + e);
         }
 
-        if(userService.updateUser(new_authenticated_user, user)){
-            req.getSession().setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY,new_authenticated_user);
-        }else{
-            targetURL = "/WEB-INF/pages/unsuccess.jsp";
-        }
-        logger.info(new_authenticated_user.toString());
-        resp.sendRedirect(targetURL);
+        targetURL = "/WEB-INF/pages/unsuccess.jsp";
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(targetURL);
+        requestDispatcher.forward(req, resp);
     }
 
 }

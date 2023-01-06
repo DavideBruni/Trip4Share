@@ -46,7 +46,7 @@
                         <!-- Form Group (username)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
-                            <input   class="form-control" id="inputUsername" type="text" readonly value=<%=user.getUsername()%>>
+                            <input   class="form-control" id="inputUsername" name="username" type="text" readonly value=<%=user.getUsername()%>>
                         </div>
                         <!-- Form Row-->
                         <div class="row gx-3 mb-3">
@@ -69,7 +69,7 @@
                             <!-- Form Group (location)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLocation">Password</label>
-                                <input   class="form-control" id="inputLocation" type="password" name="password" value="">
+                                <input   class="form-control" id="inputLocation" type="password" name="psw" value=<%=user.getPassword()%>>
                             </div>
                         </div>
                         <!-- Form Group (email address)-->
