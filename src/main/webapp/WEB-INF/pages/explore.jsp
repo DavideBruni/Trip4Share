@@ -161,8 +161,8 @@
 
                     <%
                         LocalDate todayDate = LocalDate.now();
-                       if(trips.get(i).getDepartureDate().isAfter(todayDate);
-                    }
+                       if(trips.get(i).getDepartureDate().isBefore(todayDate)){
+
                     %>
 
                     <!-- viaggio scaduto -->
@@ -210,6 +210,7 @@
                     </div>
                 </div>
                 <%
+                        }
                     }
                 %>
 
