@@ -59,9 +59,59 @@
             <div class="col-12 ">
                 <%
                     for(int i = 0; i < trips.size() && i < PagesUtilis.TRIPS_PER_PAGE; i++){
+                        if(trips.get(i).isDeleted()){
                 %>
+
+
+                <!-- grafica del cancellato -->
+
+                <div disabled class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                    Trip was Deleted
+                </div>
+
+                <div>
+                    <div class="row align-items-center">
+                        <div class="col-1"></div>
+                        <div class="col-5">
+                            <div class="single-blog-thumbnail">
+                                <img src="WebContent/images/trip_pic2.jpeg">
+                            </div>
+                            <p class="pull-left text-left ml-5 mt-5"><%=trips.get(i).getLike_counter()%> Likes</p>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <!-- Blog Content -->
+                            <div class="single-blog-content">
+                                <div class="line"></div>
+                                <h4><p class="post-headline">
+                                    <strong> Title:  </strong><%=trips.get(i).getTitle()%></p>
+                                </h4>
+                                <a href=<%="trip?id="+trips.get(i).getId()%> class="post-tag"><strong> Destination: </strong><%=trips.get(i).getDestination()%></a>
+
+                                <div class="post-date">
+                                    <span>From: <%= trips.get(i).getDepartureDate()%></span>
+                                    <br>
+                                    <span>To: <%= trips.get(i).getReturnDate()%></span>
+                                </div>
+                                <%
+                                    if(trips.get(i).getOrganizer() != null){
+                                %>
+                                <p>By <a href=<%="user?username="+trips.get(i).getOrganizer()%>><%=trips.get(i).getOrganizer()%></a></p>
+                                <%
+                                    }
+                                %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%}else{%>
                 <hr class="invis3">
-                <!-- Single Blog Area  -->
+                <!-- grafica del normale -->
                 <div>
                     <div class="row align-items-center">
                         <div class="col-1"></div>

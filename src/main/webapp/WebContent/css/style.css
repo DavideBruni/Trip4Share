@@ -2355,6 +2355,11 @@ ul.location_icon span {
      line-height: 1.4;
 }
 
+.bg-disabled{
+     background-color: rgba(162, 164, 169, 0.67);
+     color:  rgba(162, 164, 169, 0.67);
+}
+
 
 
 
