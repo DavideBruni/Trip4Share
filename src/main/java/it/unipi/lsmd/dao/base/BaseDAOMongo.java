@@ -17,7 +17,7 @@ public abstract class BaseDAOMongo {
         ConnectionString uri = new ConnectionString(url);
         MongoClientSettings mcs = MongoClientSettings.builder()
                 .applyConnectionString(uri).readPreference(ReadPreference.nearest())
-                .retryWrites(true).writeConcern(WriteConcern.ACKNOWLEDGED).build();
+                .retryWrites(true).writeConcern(WriteConcern.W1).build();
 
         client = MongoClients.create(mcs);
         System.out.println("MongoDB: Connected");
