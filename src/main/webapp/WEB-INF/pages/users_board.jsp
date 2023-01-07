@@ -80,7 +80,7 @@
                         <div class=" row">
                             <div class="col-3"></div>
                             <a class="list-group-item list-group-item-action flex-column align-items-center col-6" href=<%="user?username="+users.get(i).getUsername()%>>
-                                <div class="row justify-content-center">
+                                <div class="row">
                                     <i><img src="WebContent/images/profile2.jpeg" alt="icon" width="40%"/></i>
                                     <h3 class="mt-3"><%=users.get(i).getUsername()%></h3>
                                 </div>
