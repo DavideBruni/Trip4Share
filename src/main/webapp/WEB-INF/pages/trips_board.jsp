@@ -145,7 +145,7 @@
                                 <h4><a href=<%="trip?id="+trips.get(i).getId()%> class="post-headline">
                                     <strong> Title:  </strong><%=trips.get(i).getTitle()%></a>
                                 </h4>
-                                <a href=<%="trip?id="+trips.get(i).getId()%> class="post-tag"><strong> Destination: </strong><%=trips.get(i).getDestination()%></a>
+                                <p><strong> Destination: </strong><%=trips.get(i).getDestination()%></p>
 
                                 <div class="post-date">
                                     <span>From: <%= trips.get(i).getDepartureDate()%></span>

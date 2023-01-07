@@ -163,7 +163,7 @@
                <div class="list-group">
                <% for(OtherUserDTO u : users){ %>
                        <div class="w-100 justify-content-between">
-                           <img src="WebContent/icon/travel-icon.png" alt="" class="img-fluid float-left col-4">
+                           <img src="WebContent/images/profile1.png" alt="" class="img-fluid float-left col-4">
                            <a class="list-group-item list-group-item-action flex-column align-items-start" href=<%="user?username="+u.getUsername()%>>
                            <h5 class="mb-1"><%=u.getUsername()%></h5>
                            </a>
