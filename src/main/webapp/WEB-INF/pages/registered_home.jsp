@@ -79,9 +79,12 @@
 
          </div>
 
- <% } %>
+ <% }else{ %>
  <!-- End suggested travels -->
-      
+ <div class="row">
+     <h3>We are very sorry you don't follow enough users for us to recommend you some trips<br> Please start following someone and try again ;)</h3>
+ </div>
+ <%}%>
       
 <div class="row">
    <div class="container col-9">
@@ -145,6 +148,11 @@
             </div><!-- end row -->
          </div>
       </div>
+       <%}else{%>
+       <!-- Se non ci sono suggerimenti -->
+       <div class="row">
+           <h3>We are very sorry you don't follow enough users for us to recommend you some trips<br> Please start following someone and try again ;)</h3>
+       </div>
        <%}%>
    </div>
 
@@ -177,8 +185,13 @@
              <!-- end blog-list -->
 
    </div>
-    <% } %>
+    <% }else{ %>
 
+    <div class="col-3">
+        <h3>We are very sorry you don't follow enough users for us to recommend you other users to follow<br> Please start following someone and try again ;)</h3>
+    </div>
+
+    <%}%>
 </div>
 
 
