@@ -53,7 +53,7 @@
                <div class="col-md-12">
                   <div class="titlepage mt-5">
                      <h2>Most popular trips</h2>
-                     <span>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</span>
+                     <span>Hei there! Welcome on our website! Here we introduce you some of the most popular trips amongst out user to get you started</span>
                   </div>
                </div>
             </div>
@@ -93,7 +93,7 @@
                <div class="col-md-12">
                   <div class="titlepage">
                      <h2>Cheapest Trips</h2>
-                     <span>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</span> 
+                     <span>We will all travel so much more if only trips were free... Unfortunately we still can't do that. <br> But in the mean time here are the cheapest trips on out website!</span>
                   </div>
                </div>
             </div>
