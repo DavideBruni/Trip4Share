@@ -162,10 +162,10 @@
             <div class="blog-list-widget">
                <div class="list-group">
                <% for(OtherUserDTO u : users){ %>
-                       <div class="w-100">
-                           <img src="WebContent/images/profile1.png" alt="" class="img-fluid float-left col-4">
-                           <a class="list-group-item list-group-item-action flex-column align-items-start" href=<%="user?username="+u.getUsername()%>>
-                           <h5 class="mb-1"><%=u.getUsername()%></h5>
+                       <div class="row card-body align-items-start ">
+                           <img src="WebContent/images/profile2.jpeg" alt="" class="col-4">
+                           <a class=" col-8" href=<%="user?username="+u.getUsername()%>>
+                           <h5 class="mt-4"><%=u.getUsername()%></h5>
                            </a>
                         </div>
 
