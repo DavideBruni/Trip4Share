@@ -112,8 +112,8 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         int followers;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
-                Result result = tx.run(" MATCH (user:RegisteredUser {username:$username})"+
-                                " WITH size((user)<-[:FOLLOW]-()) as in RETURN in",
+                Result result = tx.run(" MATCH (user:RegisteredUser {username:$username})<-[:FOLLOW]-()"+
+                                " RETURN count(*) as in",
                         parameters("username", user.getUsername()));
                 if(result.hasNext())
                     return result.next().get("in").asInt();
@@ -135,7 +135,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
         int followers = 0;
         try (Session session = getConnection().session()) {
             followers = session.readTransaction(tx -> {
-                Result result = tx.run("MATCH (user:RegisteredUser {username:$username})-[:FOLLOW]->(x)"+
+                Result result = tx.run("MATCH (user:RegisteredUser {username:$username})-[:FOLLOW]->()"+
                                 " RETURN count(*) as out",
                         parameters("username", user.getUsername()));
                 if(result.hasNext())

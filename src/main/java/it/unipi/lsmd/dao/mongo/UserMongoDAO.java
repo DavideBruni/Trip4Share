@@ -2,6 +2,7 @@ package it.unipi.lsmd.dao.mongo;
 
 import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -162,7 +163,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         Document doc = UserUtils.documentFromUser(u);
         if(doc != null){
             try{
-                return collection.insertOne(doc).getInsertedId().asObjectId().getValue().toString();
+                return collection.withWriteConcern(WriteConcern.MAJORITY).insertOne(doc).getInsertedId().asObjectId().getValue().toString();
             }catch(DuplicateKeyException de){
                 return "Duplicate key";
             }catch(MongoException | NullPointerException me){
