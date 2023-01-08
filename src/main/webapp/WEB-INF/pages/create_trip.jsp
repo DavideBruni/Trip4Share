@@ -14,6 +14,13 @@
   <!-- <link rel="stylesheet" href="css/signup.css"> -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+  <% Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
+
+    if(flag!=null){%>
+  <title>Edit a trip</title>
+   <% }else{ %>
+  <title>Create a trip</title>
+  <%}%>
 
 </head>
 
@@ -21,7 +28,7 @@
 <body class="tripbgd main-form tripbgd2">
 <%@ include file="header.jsp" %>
 <%
-  Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
+
   TripDetailsDTO t = null;
   if(flag != null){
     t = (TripDetailsDTO) session.getAttribute(SecurityUtils.TRIP);

@@ -1,4 +1,5 @@
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
+<%@ page import="it.unipi.lsmd.dto.AuthenticatedUserDTO" %>
 <%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmd.dto.OtherUserDTO" %>
@@ -29,6 +30,11 @@
       <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+       <%
+           AuthenticatedUserDTO user = (AuthenticatedUserDTO) request.getAttribute("user");
+       %>
+       <title><%=user.getUsername() %></title>
    </head>
 
 
