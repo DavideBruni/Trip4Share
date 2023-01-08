@@ -206,12 +206,14 @@
             if(!trip.getOrganizer().equals(username) && (trip.getDepartureDate().isAfter(todayDate))){%>
             <button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>
             <%} }else{
+                if(!trip.getOrganizer().equals(username)){
                 %>
             <span id="status_span"><%="Join request status: "+status+" "%></span><br>
             <%
-            if(status!="rejected"){ %>
+            if(!status.equals("rejected")){ %>
             <button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>
             <% }
+            }
             } %>
         </div>
 
