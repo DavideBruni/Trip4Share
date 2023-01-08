@@ -2,14 +2,11 @@ package it.unipi.lsmd.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.unipi.lsmd.dto.RegisteredUserDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Tag;
 import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
-import it.unipi.lsmd.dto.DailyScheduleDTO;
-import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Trip;
 import org.json.JSONObject;
@@ -180,7 +177,31 @@ public interface TripUtils {
         return trip;
     }
 
-    static String tripToJSONString(TripSummaryDTO trip){
+    static Trip tripFromTripWishlist(TripWishlistDTO tripWishlist){
+        Trip trip = new Trip();
+
+        trip.setTitle(tripWishlist.getTitle());
+        trip.setDestination(tripWishlist.getDestination());
+        trip.setDepartureDate(tripWishlist.getDepartureDate());
+        trip.setReturnDate(tripWishlist.getReturnDate());
+        trip.setLast_modified(tripWishlist.getLast_modified());
+
+        return trip;
+    }
+
+    static TripWishlistDTO tripWishlistFromSummary(TripSummaryDTO tripSummary){
+        TripWishlistDTO tripWishlistDTO = new TripWishlistDTO();
+
+        tripWishlistDTO.setTitle(tripSummary.getTitle());
+        tripWishlistDTO.setDestination(tripSummary.getDestination());
+        tripWishlistDTO.setDepartureDate(tripSummary.getDepartureDate());
+        tripWishlistDTO.setReturnDate(tripSummary.getReturnDate());
+        tripWishlistDTO.setLast_modified(tripSummary.getLast_modified());
+
+        return tripWishlistDTO;
+    }
+
+    static String tripToJSONString(TripWishlistDTO trip){
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -190,13 +211,13 @@ public interface TripUtils {
         return gson.toJson(trip);
     }
 
-    static TripSummaryDTO tripFromJSONString(String jsonString){
+    static TripWishlistDTO tripFromJSONString(String jsonString){
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
-        return gson.fromJson(jsonString, TripSummaryDTO.class);
+        return gson.fromJson(jsonString, TripWishlistDTO.class);
     }
 
     

@@ -65,7 +65,7 @@ public class TripServlet extends HttpServlet {
                         wishlistService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
                         trip.setInWishlist(true);
                     } else if (action.equals("remove") && last_update != null) {
-                        wishlistService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id);
+                        wishlistService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id, true);
                         trip.setInWishlist(false);
                     }
 

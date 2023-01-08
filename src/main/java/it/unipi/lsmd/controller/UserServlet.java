@@ -159,7 +159,6 @@ public class UserServlet extends HttpServlet {
             httpServletRequest.setAttribute(SecurityUtils.USER, authenticatedUserDTO);
             requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
         }
-        logger.info(authenticatedUserDTO.toString());
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 }

@@ -88,7 +88,7 @@
                             <h4>Price: <%= trip.getPrice() %>€</h4>
                             <h4>Departure date:<br><%= trip.getDepartureDate() %></h4>
                             <h4>Return date:<br> <%= trip.getReturnDate() %></h4>
-                            <% if(trip.getTags()!=null || !trip.getTags().isEmpty()){ %>
+                            <% if(trip.getTags() != null && !trip.getTags().isEmpty()){ %>
                             <h4><%= trip.getTags() %></h4>
                             <% } %>
                             <h4><a href=<%="user?username="+trip.getOrganizer()%>>Organized By <%= trip.getOrganizer() %></a></h4>

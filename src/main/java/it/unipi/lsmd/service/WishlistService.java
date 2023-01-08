@@ -9,7 +9,7 @@ public interface WishlistService {
 
     void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary);
 
-    void removeFromWishlist(String username, String trip_id);
+    void removeFromWishlist(String username, String trip_id, boolean decrease_counter);
 
     ArrayList<TripSummaryDTO> getWishlist(String username, int size, int page);
 

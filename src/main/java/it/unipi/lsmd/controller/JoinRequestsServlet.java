@@ -3,6 +3,7 @@ package it.unipi.lsmd.controller;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
+import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,8 @@ import java.io.IOException;
 
 @WebServlet("/join")
 public class JoinRequestsServlet extends HttpServlet {
-    TripService tripService = ServiceLocator.getTripService();
+    private final TripService tripService = ServiceLocator.getTripService();
+    private final WishlistService wishlistService = ServiceLocator.getWishlistService();
     private static Logger logger = LoggerFactory.getLogger(JoinRequestsServlet.class);
 
     @Override
@@ -50,7 +52,10 @@ public class JoinRequestsServlet extends HttpServlet {
         if(username!=null && trip_id!=null) {
             String action = request.getParameter("action");
             if(action != null && action.equals("join")){
-                response.getWriter().write(tripService.setJoin(username,trip_id));
+                String result = tripService.setJoin(username,trip_id);
+                if(!result.equals("Error"))
+                    wishlistService.removeFromWishlist(username, trip_id, false);
+                response.getWriter().write(result);
             }else if (action != null && action.equals("cancel")) {
                 response.getWriter().write(tripService.cancelJoin(username,trip_id));
             }else{

@@ -4,6 +4,7 @@ import it.unipi.lsmd.controller.AddAdminServlet;
 import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
 import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.TripWishlistDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
@@ -34,7 +35,8 @@ public class WishlistServiceImpl implements WishlistService {
         if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
             return;
 
-        if(wishlistRedisDAO.addToWishlist(new RegisteredUser(username), tripSummary)){
+        TripWishlistDTO tripWishlist = TripUtils.tripWishlistFromSummary(tripSummary);
+        if(wishlistRedisDAO.addToWishlist(new RegisteredUser(username), tripSummary.getId(), tripWishlist)){
             Trip trip = new Trip();
             trip.setId(trip_id);
             wishlistMongoDAO.addToWishlist(trip);
@@ -42,7 +44,7 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    public void removeFromWishlist(String username, String trip_id) {
+    public void removeFromWishlist(String username, String trip_id, boolean decrease_counter) {
 
         if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
             return;
@@ -50,7 +52,7 @@ public class WishlistServiceImpl implements WishlistService {
         Trip trip = new Trip();
         trip.setId(trip_id);
 
-        if(wishlistRedisDAO.removeFromWishlist(new RegisteredUser(username), trip)){
+        if(wishlistRedisDAO.removeFromWishlist(new RegisteredUser(username), trip) && decrease_counter){
             wishlistMongoDAO.removeFromWishlist(trip);
         }
     }

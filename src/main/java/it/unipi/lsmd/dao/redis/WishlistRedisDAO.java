@@ -3,6 +3,7 @@ package it.unipi.lsmd.dao.redis;
 import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.base.BaseDAORedis;
 import it.unipi.lsmd.dto.TripSummaryDTO;
+import it.unipi.lsmd.dto.TripWishlistDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
@@ -23,10 +24,10 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
 
 
     @Override
-    public boolean addToWishlist(RegisteredUser user, TripSummaryDTO trip) {
+    public boolean addToWishlist(RegisteredUser user, String trip_id, TripWishlistDTO trip) {
 
         long ttl = abs(ChronoUnit.DAYS.between(trip.getDepartureDate(), LocalDate.now())) * 86400; // seconds per day
-        String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":" + trip.getId();
+        String key = REDIS_APP_NAMESPACE + ":" + user.getUsername() + ":" + trip_id;
 
         try(Jedis jedis = getConnection()){
 
@@ -78,8 +79,10 @@ public class WishlistRedisDAO extends BaseDAORedis implements WishlistDAO {
                     break;
 
                 String raw_trip = jedis.get(k);
-                TripSummaryDTO tripSummaryDTO = TripUtils.tripFromJSONString(raw_trip);
-                wishlist.addToWishlist(TripUtils.tripFromTripSummary(tripSummaryDTO));
+                TripWishlistDTO tripWishlistDTO = TripUtils.tripFromJSONString(raw_trip);
+                Trip trip = TripUtils.tripFromTripWishlist(tripWishlistDTO);
+                trip.setId(k.split(":")[2]);
+                wishlist.addToWishlist(trip);
                 i++;
             }
         }catch (Exception e){
