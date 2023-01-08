@@ -34,10 +34,23 @@
 
    <%@ include file="header.jsp" %>
 
-<body class="main-layout">
+
+
+<body class="main-layout col-12 justify-content-center">
  <!-- Suggested travels -->
+
+ <% List<TripSummaryDTO> trips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.FOLLOWING_USER_TRIPS);
+     List<TripSummaryDTO> suggestedTrips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.SUGGESTED_TRIPS);
+     List<OtherUserDTO> users = (List<OtherUserDTO>) request.getAttribute(SecurityUtils.SUGGESTED_USERS);
+
+     if(trips!=null && suggestedTrips!=null && users!=null){ %>
+
+ <div class="row text-center titlepage ml-4 mr-4 mt-4">
+     <h2>We are very sorry you don't follow enough users for us to recommend you something<br> Please start following someone and try again ;)</h2>
+ </div>
+
+ <%  }else{ %>
  <%
-    List<TripSummaryDTO> suggestedTrips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.SUGGESTED_TRIPS);
     if(suggestedTrips!= null && !suggestedTrips.isEmpty()){
  %>
           <div>
@@ -79,20 +92,20 @@
 
          </div>
 
- <% }else{ %>
+ <% }else{%>
  <!-- End suggested travels -->
- <div class="row">
-     <h3>We are very sorry you don't follow enough users for us to recommend you some trips<br> Please start following someone and try again ;)</h3>
+ <div class="col-9 text-center">
+     <h3>We are sorry! We still don't have trips to recommend you<br> Please follow some more people and try again ;)</h3>
  </div>
- <%}%>
-      
+
+   <%}%>
 <div class="row">
    <div class="container col-9">
       <div class="titlepage">
          <h3 > Organized trips by people you follow</h3>
       </div>
        <%
-           List<TripSummaryDTO> trips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.FOLLOWING_USER_TRIPS);
+
            if(trips!= null && !trips.isEmpty()){
        %>
       <div class="row">
@@ -150,14 +163,14 @@
       </div>
        <%}else{%>
        <!-- Se non ci sono suggerimenti -->
-       <div class="row">
-           <h3>We are very sorry you don't follow enough users for us to recommend you some trips<br> Please start following someone and try again ;)</h3>
+       <div class="col-12 text-center">
+           <h3>We are sorry! The people you follow haven't organized any trip yet<br> Please follow some more people and try again ;)</h3>
        </div>
        <%}%>
    </div>
 
     <%
-        List<OtherUserDTO> users = (List<OtherUserDTO>) request.getAttribute(SecurityUtils.SUGGESTED_USERS);
+
         if(users!= null && !users.isEmpty()){
     %>
   
@@ -187,14 +200,13 @@
    </div>
     <% }else{ %>
 
-    <div class="col-3">
-        <h3>We are very sorry you don't follow enough users for us to recommend you other users to follow<br> Please start following someone and try again ;)</h3>
+    <div class="col-3 text-center">
+        <h3>We are sorry! We still don't have users to recommend you<br> Please follow some more people and try again ;)</h3>
     </div>
-
     <%}%>
 </div>
 
-
+ <% }%>
  <%@ include file="footer.jsp" %>
 
       <!-- Javascript files-->
