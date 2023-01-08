@@ -19,14 +19,15 @@
 <body class="main-layout col-12">
 <%@ include file="header.jsp" %>
 <div class="container-xl px-4 mt-4 col-12 justify-content-center">
-
-
-
+    <div class="titlepage">
+    <h2> Leave a review to <%=session.getAttribute(SecurityUtils.REVIEW_TO)%></h2>
+    </div>
     <div class="row justify-content-center pdn-top-30">
         <div class="col-xl-8 justify-content-center">
             <!-- Account details card-->
             <div class="card mb-4 ">
-                <h2> Leave a review to <%=session.getAttribute(SecurityUtils.REVIEW_TO)%></h2>
+
+
                 <div class="card-header text-center">Create Edit your review</div>
                 <div class="card-body">
                     <form action="leaveReview" method="post">
