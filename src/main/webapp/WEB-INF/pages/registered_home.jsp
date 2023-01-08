@@ -43,7 +43,7 @@
      List<TripSummaryDTO> suggestedTrips = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.SUGGESTED_TRIPS);
      List<OtherUserDTO> users = (List<OtherUserDTO>) request.getAttribute(SecurityUtils.SUGGESTED_USERS);
 
-     if(trips!=null && suggestedTrips!=null && users!=null){ %>
+     if(trips==null && suggestedTrips==null && users==null){ %>
 
  <div class="row text-center titlepage ml-4 mr-4 mt-4">
      <h2>We are very sorry you don't follow enough users for us to recommend you something<br> Please start following someone and try again ;)</h2>
@@ -68,7 +68,7 @@
                      <div class="col-1"> </div>
                      <% for(TripSummaryDTO t : suggestedTrips){ %>
                      <div class="col-2">
-                        <div class="traveling-box">
+                        <div class="row">
                             <i><img class="myimg" src="WebContent/images/trip_pic1.jpg" alt="icon" width="40%"/></i>
                             <h5>
                                 <strong>
