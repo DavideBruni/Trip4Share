@@ -102,7 +102,7 @@
                     </div><!-- end blog-grid-system -->
                 </div><!-- end page-wrapper -->
 
-                <hr class="invis3">
+
 
 
 
