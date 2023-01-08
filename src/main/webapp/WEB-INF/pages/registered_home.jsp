@@ -68,18 +68,18 @@
                      <div class="col-1"> </div>
                      <% for(TripSummaryDTO t : suggestedTrips){ %>
                      <div class="col-2">
-                        <div class="row">
-                            <i><img class="myimg" src="WebContent/images/trip_pic1.jpg" alt="icon" width="40%"/></i>
-                            <h5>
+                        <div class="traveling-box">
+                            <img class="myimg" src="WebContent/images/trip_pic1.jpg" alt="icon"/>
+                            <h2>
                                 <strong>
                                     <a href=<%="trip?id="+t.getId()%> class="post-headline">
                                         <%=t.getDestination() %></a>
                                 </strong>
-                           </h5>
+                           </h2>
                         <h6>
                               <%= "<strong>From:</strong><br>"+t.getDepartureDate()+"<br><strong>to:</strong><br>"+t.getReturnDate() %>
                         </h6>
-                        </div>
+                     </div>
                      </div>
                      <% }%>
 
