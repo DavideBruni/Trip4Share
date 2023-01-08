@@ -1,22 +1,17 @@
 package it.unipi.lsmd.utils;
 
-import it.unipi.lsmd.controller.SignupServlet;
+
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Review;
 import it.unipi.lsmd.model.User;
 import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public interface UserUtils {

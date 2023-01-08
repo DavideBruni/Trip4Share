@@ -1,16 +1,10 @@
 package it.unipi.lsmd.utils;
 
 import it.unipi.lsmd.dto.ReviewDTO;
-import it.unipi.lsmd.model.Admin;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Review;
-import it.unipi.lsmd.model.User;
 import org.bson.Document;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class ReviewUtils {
 
