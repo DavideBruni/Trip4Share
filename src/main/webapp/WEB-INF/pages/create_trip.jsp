@@ -18,7 +18,7 @@
 </head>
 
 
-<body class="tripbgd main-form">
+<body class="tripbgd main-form tripbgd2">
 <%@ include file="header.jsp" %>
 <%
   Object flag = request.getAttribute(SecurityUtils.MODIFY_FLAG);
@@ -30,7 +30,7 @@
           <%}else{ %>
             <form method="post" action="addTrip">
   <% } %>
-<div class="col-sm-9 mx-auto border border-4 mt-4 tripbgd2 ">
+<div class="col-sm-9 mx-auto border border-4 mt-4  ">
 
 
 
@@ -154,12 +154,15 @@
               int day = d.getDay();
             %>
               <div class="single-preparation-step d-flex" >
-                <div class="col">
+                <div class="col-12">
                   <h4 class="pdn-top-30 mb-2">Day <%=day%></h4>
-                  <label class="small mb-1" >Title</label>
-                  <input type="text" name="<%="title"+day%>" required value="<%=d.getTitle()%>">
-                  <label class="small mb-1 ml-4" >Subtitle</label>
-                  <input type="text" name="<%="subtitle"+day%>" value="<%=d.getSubtitle()%>">
+
+                    <label class="small mb-1" for="<%="title"+day%>">Title</label>
+                    <input type="text" name="<%="title"+day%>" required value="<%=d.getTitle()%>">
+
+                    <label class="small mb-1 ml-4" >Subtitle</label>
+                    <input type="text" name="<%="subtitle"+day%>" value="<%=d.getSubtitle()%>">
+
                   <textarea  class="form-control mt-4" name="<%="day"+day%>"><% if(d.getDescription()==null){ %>Add description of the day<%}else{%><%=d.getDescription()%><%}%>
                   </textarea>
                 </div>
@@ -167,12 +170,14 @@
             <% }
             }else{%>
             <div class="single-preparation-step d-flex" >
-              <div class="col">
+              <div class="col-8">
                 <h4 class="pdn-top-30 mb-2">Day 1</h4>
-                <label class="small mb-1" >Title</label>
-                <input type="text" name="title1" required>
-                <label class="small mb-1 ml-4" >Subtitle</label>
+                <div class="row justify-content-around">
+                  <label class="small mb-1" >Title</label>
+                  <input type="text" name="title1" required>
+                  <label class="small mb-1 ml-4" >Subtitle</label>
                 <input type="text" name="subtitle1" >
+                </div>
                 <textarea  class="form-control mt-4" name="day1">Add description of the day
                   </textarea>
               </div>
@@ -235,28 +240,25 @@
 
     </div>
 
+  <div class="row">
+      <div class="col-8 text-center">
 
+        <div class="row pull-right">
+          <button class="btn btn-primary ml-4" type="button" onclick="add_day();">Add Day</button>
+          <button class="btn btn-primary ml-4" type="button" onclick="remove_day();">Remove Day</button>
+        </div>
 
-    <div class="col-8 text-center" >
-      <div class="row pull-right">
-
-        <button class="btn btn-primary ml-4" type="button" onclick="add_day();">Add Day</button>
-        <button class="btn btn-primary ml-4" type="button" onclick="remove_day();">Remove Day</button>
       </div>
+    <div class="col-4"></div>
+  </div>
 
-
-    </div>
-
-
-
-    <div class="col-8 main-form mt-5 mb-5 text-center">
-      <button type="submit" class="btn btn-primary btn-info btn-lg ml-4 pull-right">Create!</button>
-    </div>
-
+  <div class="row mt-5 mb-5 text-center">
+    <button type="submit" class="btn btn-primary btn-info btn-lg ml-4 pull-right">Create!</button>
   </div>
 
   </div>
-  </div>
+
+
 </form>
 
             <%@ include file="footer.jsp" %>
@@ -282,11 +284,14 @@
   not_included=1;
   <%}%>
 
+
+
+
   function add_day() {
-    document.getElementById('wrapper').innerHTML += '<div class="single-preparation-step d-flex" > <div class="col"> <h4 class="pdn-top-30">Day '+day+' </h4><label class="small mb-1" >Title</label>' +
+    document.getElementById('wrapper').innerHTML += '<div class="single-preparation-step d-flex" > <div class="col-8"> <h4 class="pdn-top-30">Day '+day+'</h4> <div class="row justify-content-center>"<label class="small mb-1" >Title</label>' +
             '              <input type="text" name="title'+day+'" required>' +
-            '              <label class="small mb-1" >Subtitle</label>' +
-            '              <input type="text" name="subtitle'+day+'">  <textarea  class="form-control" name="day'+day+'"> Add description of the day </textarea> </div> </div>';
+            '              <label class="small mb-1 ml-4" >Subtitle</label>' +
+            '              <input type="text" name="subtitle'+day+'"> </div>  <textarea class="form-control mt-4" name="day'+day+'"> Add description of the day </textarea> </div> </div>';
     day++;
   }
 
