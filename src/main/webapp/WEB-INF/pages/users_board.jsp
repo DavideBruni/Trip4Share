@@ -59,7 +59,7 @@
         String title = (String) request.getAttribute(SecurityUtils.TITLE_PAGE);
     %>
 
-    <div class="titlepage">
+    <div class=" mt-5 titlepage">
         <h2><%=title%></h2>
     </div>
 
