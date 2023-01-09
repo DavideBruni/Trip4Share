@@ -29,6 +29,7 @@ public class Trip {
     private List<Pair<RegisteredUser, Status>> joiners;
 
     public Trip(){
+        deleted=false;
         tags = new ArrayList<>();
         itinerary = new ArrayList<>();
         whatsIncluded = new ArrayList<>();

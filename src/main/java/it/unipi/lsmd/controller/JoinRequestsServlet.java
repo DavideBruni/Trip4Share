@@ -54,7 +54,7 @@ public class JoinRequestsServlet extends HttpServlet {
             if(action != null && action.equals("join")){
                 String result = tripService.setJoin(username,trip_id);
                 if(!result.equals("Error"))
-                    wishlistService.removeFromWishlist(username, trip_id, false);
+                    wishlistService.removeFromWishlist(username, trip_id);
                 response.getWriter().write(result);
             }else if (action != null && action.equals("cancel")) {
                 response.getWriter().write(tripService.cancelJoin(username,trip_id));

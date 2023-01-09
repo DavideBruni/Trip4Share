@@ -15,6 +15,9 @@ public class TripSummaryDTO {
     private String organizer;
     private LocalDateTime last_modified;
 
+    public TripSummaryDTO(){
+        deleted=false;
+    }
 
     public String getId() {
         return id;

@@ -1,7 +1,6 @@
 package it.unipi.lsmd.config;
 
 import it.unipi.lsmd.dao.base.BaseDAOMongo;
-import it.unipi.lsmd.dao.base.BaseDAORedis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,13 +14,11 @@ public class AppServletContextListener implements ServletContextListener {
     private static Logger logger = LoggerFactory.getLogger(AppServletContextListener.class);
 
     public void contextInitialized(ServletContextEvent sce) {
-        BaseDAORedis.initPool();
         BaseDAOMongo.init();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        BaseDAORedis.closePool();
     }
 
 

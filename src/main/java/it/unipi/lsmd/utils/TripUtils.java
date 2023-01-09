@@ -1,7 +1,6 @@
 package it.unipi.lsmd.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Tag;
@@ -9,14 +8,12 @@ import it.unipi.lsmd.utils.exceptions.IncompleteTripException;
 import org.bson.Document;
 import it.unipi.lsmd.model.DailySchedule;
 import it.unipi.lsmd.model.Trip;
-import org.json.JSONObject;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.exceptions.value.Uncoercible;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 
@@ -136,6 +133,7 @@ public interface TripUtils {
         tripDTO.setDepartureDate(trip.getDepartureDate());
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setLike_counter(trip.getLike_counter());
+        tripDTO.setDeleted(trip.getDeleted());
         try {
             tripDTO.setOrganizer(trip.getOrganizer().getUsername());
         }catch(NullPointerException ex){
@@ -177,50 +175,6 @@ public interface TripUtils {
         return trip;
     }
 
-    static Trip tripFromTripWishlist(TripWishlistDTO tripWishlist){
-        Trip trip = new Trip();
-
-        trip.setTitle(tripWishlist.getTitle());
-        trip.setDestination(tripWishlist.getDestination());
-        trip.setDepartureDate(tripWishlist.getDepartureDate());
-        trip.setReturnDate(tripWishlist.getReturnDate());
-        trip.setLast_modified(tripWishlist.getLast_modified());
-
-        return trip;
-    }
-
-    static TripWishlistDTO tripWishlistFromSummary(TripSummaryDTO tripSummary){
-        TripWishlistDTO tripWishlistDTO = new TripWishlistDTO();
-
-        tripWishlistDTO.setTitle(tripSummary.getTitle());
-        tripWishlistDTO.setDestination(tripSummary.getDestination());
-        tripWishlistDTO.setDepartureDate(tripSummary.getDepartureDate());
-        tripWishlistDTO.setReturnDate(tripSummary.getReturnDate());
-        tripWishlistDTO.setLast_modified(tripSummary.getLast_modified());
-
-        return tripWishlistDTO;
-    }
-
-    static String tripToJSONString(TripWishlistDTO trip){
-
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
-
-        return gson.toJson(trip);
-    }
-
-    static TripWishlistDTO tripFromJSONString(String jsonString){
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
-
-        return gson.fromJson(jsonString, TripWishlistDTO.class);
-    }
-
-    
     static Trip destinationFromDocument(Document doc) {
         Trip t = new Trip();
         t.setDestination(doc.getString("_id"));

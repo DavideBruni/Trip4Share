@@ -30,8 +30,6 @@ public class ExploreServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
-        String targetJSP = "/WEB-INF/pages/trips_board.jsp";
-
         String value = httpServletRequest.getParameter("value");
         int page;
         try{

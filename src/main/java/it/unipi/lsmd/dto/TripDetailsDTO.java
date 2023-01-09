@@ -20,13 +20,19 @@ public class TripDetailsDTO {
     private List<String> whatsIncluded;
     private List<String> whatsNotIncluded;
     private String info;
-    private String img;
     private LocalDateTime last_modified;
     private int like_counter;
     private String organizer;
 
     private boolean inWishlist;
 
+    public TripDetailsDTO(String id){
+        this.id=id;
+        tags = new ArrayList<>();
+        itinerary = new ArrayList<>();
+        whatsIncluded = new ArrayList<>();
+        whatsNotIncluded = new ArrayList<>();
+    }
 
     public TripDetailsDTO(){
         tags = new ArrayList<>();
@@ -135,14 +141,6 @@ public class TripDetailsDTO {
         this.info = info;
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
 
     public String getOrganizer() {
         return organizer;
@@ -191,7 +189,6 @@ public class TripDetailsDTO {
                 ", whatsIncluded=" + whatsIncluded +
                 ", whatsNotIncluded=" + whatsNotIncluded +
                 ", info='" + info + '\'' +
-                ", img='" + img + '\'' +
                 ", last_modified=" + last_modified +
                 ", like_counter=" + like_counter +
                 ", organizer='" + organizer + '\'' +

@@ -18,9 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 @WebServlet("/trip")
 public class TripServlet extends HttpServlet {
@@ -59,14 +57,14 @@ public class TripServlet extends HttpServlet {
                 try {
 
                     String action = httpServletRequest.getParameter("action");
+                    trip.setInWishlist(wishlistService.isInWishlist(authenticatedUserDTO.getUsername(), trip));
 
-                    if ((action.equals("add") && last_update == null) || (last_update != null && trip.getLast_modified().isAfter(last_update))) {
-                        TripSummaryDTO tripSummary = TripUtils.tripSummaryFromTripDetails(trip);
-                        wishlistService.addToWishlist(authenticatedUserDTO.getUsername(), trip_id, tripSummary);
-                        trip.setInWishlist(true);
-                    } else if (action.equals("remove") && last_update != null) {
-                        wishlistService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip_id, true);
-                        trip.setInWishlist(false);
+                    if (action.equals("add") && !trip.isInWishlist()) {
+                        boolean inWishlist = wishlistService.addToWishlist(authenticatedUserDTO.getUsername(), trip);
+                        trip.setInWishlist(inWishlist);
+                    } else if (action.equals("remove") && trip.isInWishlist()) {
+                        boolean inWishlsit = wishlistService.removeFromWishlist(authenticatedUserDTO.getUsername(), trip);
+                        trip.setInWishlist(inWishlsit);
                     }
 
                 } catch (NullPointerException e) {

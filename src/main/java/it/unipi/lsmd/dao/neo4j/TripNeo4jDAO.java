@@ -31,7 +31,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             tripsList = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (r1:RegisteredUser{username : $username})-[:FOLLOW]->(r2:RegisteredUser) <-" +
                         "[:ORGANIZED_BY]-(t:Trip) WHERE t.deleted = FALSE AND t.departureDate > date() " +
-                        " RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r2.username as organizer" +
+                        " RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, r2.username as organizer" +
                         " ORDER BY t.departureDate SKIP $skip LIMIT $limit",
                         parameters("username", registeredUser.getUsername(), "skip", ((page-1)*size),"limit",size+1));
                 List trips = new ArrayList<>();
@@ -60,7 +60,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
             tripsList = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (r1:RegisteredUser{username : $username})-[:FOLLOW]->(r2:RegisteredUser) -[:JOIN]->(t:Trip) " +
                                 "WHERE t.departureDate > date() AND (NOT (r1)-[:JOIN]->(t)) AND (NOT (t)-[:ORGANIZED_BY] -> (r1)) AND t.deleted = FALSE " +
-                                "RETURN t._id, t.destination, t.departureDate, t.returnDate,t.title, t.deleted, t.imgUrl, r2.username as organizer, rand() as ord " +
+                                "RETURN t._id, t.destination, t.departureDate, t.returnDate,t.title, t.deleted, r2.username as organizer, rand() as ord " +
                                 "ORDER BY ord LIMIT $limit",
                         parameters("username", registeredUser.getUsername(), "limit", numTrips));
                 List trips = new ArrayList<>();
@@ -279,8 +279,8 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         try (Session session = getConnection().session()) {
             trip_list = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (t:Trip)-[:ORGANIZED_BY]->(r:RegisteredUser{username: $username}) " +
-                                "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r.username as organizer " +
-                                "ORDER BY t.departureDate " +
+                                "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, r.username as organizer " +
+                                "ORDER BY t.departureDate DESC " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
                         parameters("username", organizer.getUsername(), "skip", ((page-1)*size), "limit", size+1));
@@ -310,7 +310,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
         try (Session session = getConnection().session()) {
             trip_list = session.readTransaction(tx -> {
                 Result result = tx.run("MATCH (r:RegisteredUser{username: $username})-[:JOIN]->(t:Trip)-[:ORGANIZED_BY]->(r1:RegisteredUser) " +
-                                "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, t.imgUrl, r1.username as organizer " +
+                                "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, r1.username as organizer " +
                                 "ORDER BY t.departureDate DESC " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",

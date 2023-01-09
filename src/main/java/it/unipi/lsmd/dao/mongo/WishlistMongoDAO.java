@@ -16,29 +16,30 @@ public class WishlistMongoDAO extends BaseDAOMongo {
     private final MongoCollection<Document> collection = getConnection().getCollection("trips");
     private static final Logger logger = LoggerFactory.getLogger(WishlistMongoDAO.class);
 
-    public void addToWishlist(Trip trip) {
+    public boolean addToWishlist(Trip trip) {
 
         try{
             Bson filter = eq("_id", new ObjectId(trip.getId()));
             Bson modifier = inc("likes", 1);
             collection.updateOne(filter, modifier);
-
+            return true;
         }catch (IllegalArgumentException e){
             logger.error("Error. Some error occurred " + e);
         }
-
+        return false;
     }
 
 
-    public void removeFromWishlist(Trip trip) {
+    public boolean removeFromWishlist(Trip trip) {
 
         try{
             Bson filter = eq("_id", new ObjectId(trip.getId()));
             Bson modifier = inc("likes", -1);
             collection.updateOne(filter, modifier);
-
+            return true;
         }catch (IllegalArgumentException e){
             logger.error("Error. Some error occurred " + e);
         }
+        return false;
     }
 }

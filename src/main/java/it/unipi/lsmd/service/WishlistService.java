@@ -1,5 +1,6 @@
 package it.unipi.lsmd.service;
 
+import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 
 import java.time.LocalDateTime;
@@ -7,12 +8,14 @@ import java.util.ArrayList;
 
 public interface WishlistService {
 
-    void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary);
+    boolean addToWishlist(String username, TripDetailsDTO tripDetailsDTO);
 
-    void removeFromWishlist(String username, String trip_id, boolean decrease_counter);
+    boolean removeFromWishlist(String username, TripDetailsDTO tripDetailsDTO);
+
+    boolean removeFromWishlist(String username, String trip_id);
 
     ArrayList<TripSummaryDTO> getWishlist(String username, int size, int page);
 
-    LocalDateTime wishlistUpdateTime(String username, String trip_id);
+    boolean isInWishlist(String username, TripDetailsDTO tripDetailsDTO);
 
 }

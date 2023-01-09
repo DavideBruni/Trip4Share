@@ -1,60 +1,75 @@
 package it.unipi.lsmd.service.impl;
 
-import it.unipi.lsmd.controller.AddAdminServlet;
+import it.unipi.lsmd.dao.DAOLocator;
+import it.unipi.lsmd.dao.WishlistDAO;
 import it.unipi.lsmd.dao.mongo.WishlistMongoDAO;
-import it.unipi.lsmd.dao.redis.WishlistRedisDAO;
+import it.unipi.lsmd.dao.neo4j.exceptions.Neo4jException;
+import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
-import it.unipi.lsmd.dto.TripWishlistDTO;
 import it.unipi.lsmd.model.RegisteredUser;
 import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.model.Wishlist;
 import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.TripUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class WishlistServiceImpl implements WishlistService {
 
-    private final WishlistRedisDAO wishlistRedisDAO;
+    private final WishlistDAO wishlistDAO;
     private final WishlistMongoDAO wishlistMongoDAO;
-    private static Logger logger = LoggerFactory.getLogger(WishlistServiceImpl.class);
 
 
     public WishlistServiceImpl() {
-        wishlistRedisDAO = new WishlistRedisDAO();
+        wishlistDAO = DAOLocator.getWishlistDAO();
         wishlistMongoDAO = new WishlistMongoDAO();
     }
 
     @Override
-    public void addToWishlist(String username, String trip_id, TripSummaryDTO tripSummary) {
+    public boolean addToWishlist(String username, TripDetailsDTO tripDetailsDTO) {
 
-        if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
-            return;
+        if(username == null || username.equals("") || tripDetailsDTO==null)
+            return false;
 
-        TripWishlistDTO tripWishlist = TripUtils.tripWishlistFromSummary(tripSummary);
-        if(wishlistRedisDAO.addToWishlist(new RegisteredUser(username), tripSummary.getId(), tripWishlist)){
-            Trip trip = new Trip();
-            trip.setId(trip_id);
-            wishlistMongoDAO.addToWishlist(trip);
+        Trip trip = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
+        try {
+            if(wishlistDAO.addToWishlist(new RegisteredUser(username), trip)){
+                if(wishlistMongoDAO.addToWishlist(trip))
+                    return true;
+                else {
+                    wishlistDAO.removeFromWishlist(new RegisteredUser(username), trip);
+                }
+            }
+            return false;
+        } catch (Neo4jException e) {
+            return false;
         }
     }
 
     @Override
-    public void removeFromWishlist(String username, String trip_id, boolean decrease_counter) {
+    public boolean removeFromWishlist(String username, TripDetailsDTO tripDetailsDTO) {
 
-        if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
-            return;
+        if(username == null || username.equals("") || tripDetailsDTO==null)
+            return false;
 
-        Trip trip = new Trip();
-        trip.setId(trip_id);
-
-        if(wishlistRedisDAO.removeFromWishlist(new RegisteredUser(username), trip) && decrease_counter){
-            wishlistMongoDAO.removeFromWishlist(trip);
+        Trip trip = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
+        try {
+            if(wishlistDAO.removeFromWishlist(new RegisteredUser(username), trip)){
+                if(wishlistMongoDAO.removeFromWishlist(trip))
+                    return true;
+                else{
+                    wishlistDAO.addToWishlist(new RegisteredUser(username), trip);
+                }
+            }
+            return false;
+        } catch (Neo4jException e) {
+            return false;
         }
+    }
+
+    @Override
+    public boolean removeFromWishlist(String username, String trip_id) {
+        return removeFromWishlist(username,new TripDetailsDTO(trip_id));
     }
 
     @Override
@@ -64,7 +79,7 @@ public class WishlistServiceImpl implements WishlistService {
             return null;
 
         ArrayList<TripSummaryDTO> trips = new ArrayList<>();
-        Wishlist wishlist = wishlistRedisDAO.getUserWishlist(new RegisteredUser(username), size, page);
+        Wishlist wishlist = wishlistDAO.getUserWishlist(new RegisteredUser(username), size, page);
 
         try{
             for(Trip trip : wishlist.getWishlist()){
@@ -78,14 +93,15 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    public LocalDateTime wishlistUpdateTime(String username, String trip_id) {
+    public boolean isInWishlist(String username, TripDetailsDTO tripDetailsDTO) {
+        if(username == null || username.equals("") || tripDetailsDTO==null)
+            return false;
 
-        if(username == null || username.equals("") || trip_id == null || trip_id.equals(""))
-            return null;
-
-        Trip trip = new Trip();
-        trip.setId(trip_id);
-
-        return wishlistRedisDAO.getUpdateTime(new RegisteredUser(username), trip);
+        Trip trip = TripUtils.tripModelFromTripDetailsDTO(tripDetailsDTO);
+        try {
+            return wishlistDAO.isInWishlist(new RegisteredUser(username), trip);
+        } catch (Neo4jException e) {
+            return false;
+        }
     }
 }
