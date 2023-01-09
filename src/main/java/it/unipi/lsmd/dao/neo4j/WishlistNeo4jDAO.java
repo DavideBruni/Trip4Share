@@ -24,14 +24,14 @@ public class WishlistNeo4jDAO extends BaseDAONeo4J implements WishlistDAO {
 
         try (Session session = getConnection().session()) {
             Boolean b = session.readTransaction(tx->{
-                Result res = tx.run("MATCH (t:Trip{_id:$id})<-[j:LIKES]-(r:RegisteredUser{username:$username}) " +
+                Result res = tx.run("MATCH (t:Trip{_id:$id})<-[j:LIKE]-(r:RegisteredUser{username:$username}) " +
                         "RETURN j", parameters("id", trip.getId(), "username", user.getUsername()));
                 return res.hasNext();
             });
             if(!b) {    //if b --> relation already exist, we don't want duplicate join
                 return session.writeTransaction(tx -> {
                     tx.run("MATCH (t:Trip{_id:$id}),(r:RegisteredUser{username:$username}) " +
-                            "CREATE (t)<-[j:LIKES]-(r) " +
+                            "CREATE (t)<-[j:LIKE]-(r) " +
                             "RETURN j", parameters("id", trip.getId(), "username", user.getUsername())).consume();
                     return true;
                 });
@@ -50,7 +50,7 @@ public class WishlistNeo4jDAO extends BaseDAONeo4J implements WishlistDAO {
 
         try (Session session = getConnection().session()) {
             return session.writeTransaction(tx -> {
-                tx.run("MATCH (t:Trip{_id:$id})<-[j:LIKES]-(r:RegisteredUser{username:$username}) " +
+                tx.run("MATCH (t:Trip{_id:$id})<-[j:LIKE]-(r:RegisteredUser{username:$username}) " +
                         "DELETE j", parameters("id", trip.getId(), "username", user.getUsername())).consume();
                 return true;
             });
@@ -67,7 +67,7 @@ public class WishlistNeo4jDAO extends BaseDAONeo4J implements WishlistDAO {
         Wishlist wishlist = new Wishlist();
         try (Session session = getConnection().session()) {
             List<Trip> listTrips = session.readTransaction(tx -> {
-                Result result = tx.run("MATCH (r:RegisteredUser{username: $username}) -[:LIKES]->(t:Trip) " +
+                Result result = tx.run("MATCH (r:RegisteredUser{username: $username}) -[:LIKE]->(t:Trip) " +
                                 "WHERE t.deleted = FALSE AND t.departureDate > date() " +
                                 "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted " +
                                 "ORDER BY t.departureDate " +
@@ -97,7 +97,7 @@ public class WishlistNeo4jDAO extends BaseDAONeo4J implements WishlistDAO {
             return false;
         try (Session session = getConnection().session()) {
             return session.writeTransaction(tx -> {
-                tx.run("MATCH (r:RegisteredUser{username:$username})-[l:LIKES]->() " +
+                tx.run("MATCH (r:RegisteredUser{username:$username})-[l:LIKE]->() " +
                         "DELETE l", parameters( "username", user.getUsername())).consume();
                 return true;
             });
@@ -113,7 +113,7 @@ public class WishlistNeo4jDAO extends BaseDAONeo4J implements WishlistDAO {
 
         try (Session session = getConnection().session()) {
             return session.readTransaction(tx->{
-                Result res = tx.run("MATCH (t:Trip{_id:$id})<-[j:LIKES]-(r:RegisteredUser{username:$username}) " +
+                Result res = tx.run("MATCH (t:Trip{_id:$id})<-[j:LIKE]-(r:RegisteredUser{username:$username}) " +
                         "RETURN j", parameters("id", trip.getId(), "username", user.getUsername()));
                 return res.hasNext();
             });
