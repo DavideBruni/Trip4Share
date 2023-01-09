@@ -33,7 +33,7 @@
 
 
 
-<body class="tripbgd">
+<body class="tripbgd main-form">
 
 <%@ include file="header.jsp" %>
 
@@ -196,9 +196,9 @@
             if(username.equals(trip.getOrganizer()) && (trip.getDepartureDate().isAfter(todayDate))){
             %>
             <div class="row">
-            <a class="text-right btn btn-primary bottone ml-3" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
-            <a class="text-right btn btn-primary bottone ml-3" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
-            <a class="text-right btn btn-primary bottone ml-3" href="<%="requests?id="+trip.getId()%>" >View Pending Requests</a>
+            <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
+            <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
+            <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="requests?id="+trip.getId()%>" >View Pending Requests</a>
             </div>
             <% }%>
         </div>
@@ -206,14 +206,14 @@
             <% String status = (String) request.getAttribute(SecurityUtils.STATUS);
             if(status==null){
             if(!trip.getOrganizer().equals(username) && (trip.getDepartureDate().isAfter(todayDate))){%>
-            <button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>
+            <button class="text-right btn btn-primary bottone send-button mb-5 ml-5" id="join_button">Join!</button>
             <%} }else{
                 if(!trip.getOrganizer().equals(username)){
                 %>
-            <span id="status_span"><%="Join request status: "+status+" "%></span><br>
+            <span class="ml-5" id="status_span"><%="Join request status: "+status+" "%></span><br>
             <%
             if(!status.equals("rejected")){ %>
-            <button class="text-right mr-5 btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>
+            <button class="text-right  btn btn-primary bottone send-button ml-5 mb-5" id="cancel_button">Cancel request</button>
             <% }
             }
             } %>
@@ -261,11 +261,11 @@
             if (responseText == "OK") {
                 if(button_id=="join_button"){
                     $("#join_button").remove();
-                    $("#join_div").append('<button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>');
+                    $("#join_div").append('<button class="text-right btn btn-primary bottone send-button ml-5 mb-5" id="cancel_button">Cancel request</button>');
                 }else{
                     $("#cancel_button").remove();
                     $("#status_span").remove();
-                    $("#join_div").append('<button class="text-right btn btn-primary bottone send-button" id="join_button">Join!</button>');
+                    $("#join_div").append('<button class="text-right btn btn-primary bottone send-button ml-5 mb-5" id="join_button">Join!</button>');
                 }
             } else {
                 alert("Errore durante l'operazione");

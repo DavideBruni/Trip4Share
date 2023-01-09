@@ -47,7 +47,7 @@
     %>
     <!-- Utente -->
     <div class="row">
-    <div class="col-5 justify-content-center">
+    <div class="col-5 align-content-center">
         <div class="sidebar">
             <div class="widget">
                 <div class="blog-list-widget">
@@ -84,7 +84,7 @@
 
     <div class="col-3 list-group-item  flex-column ">
 
-        <div class="row justify-content-center">
+        <div class="row align-content-center">
             <% if(j.getValue1().equals(Status.pending)){ %>
             <button id=<%="ba_"+i+"_"+id%> class="accept btn btn-primary mt-3" >Accept </button>
             <button id=<%="br_"+i+"_"+id%> class="reject btn btn-primary mt-3 ml-4">Reject </button>
