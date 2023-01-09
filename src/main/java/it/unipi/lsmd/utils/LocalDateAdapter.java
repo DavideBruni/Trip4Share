@@ -7,18 +7,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
+public class LocalDateAdapter {
 
-    @Override
-    public LocalDate deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-        String ldtString = jsonElement.getAsString();
-        return LocalDate.parse(ldtString,DateTimeFormatter.ISO_LOCAL_DATE);
-    }
-
-    @Override
-    public JsonElement serialize(LocalDate localDate, Type type, JsonSerializationContext jsonSerializationContext) {
-        return new JsonPrimitive(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
-    }
 
     public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()
