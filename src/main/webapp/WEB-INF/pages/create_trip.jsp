@@ -8,7 +8,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+  <link rel="stylesheet" href="WebContent/css/responsive.css">
   <link rel="stylesheet" href="WebContent/css/style.css">
   <link rel="stylesheet" href="WebContent/css/profile.css">
   <!-- <link rel="stylesheet" href="css/signup.css"> -->
@@ -160,35 +160,37 @@
             for(DailyScheduleDTO d : it){
               int day = d.getDay();
             %>
-              <div class="single-preparation-step d-flex" >
-                <div class="col-12">
+                <div class="col-8">
                   <h4 class="pdn-top-30 mb-2">Day <%=day%></h4>
-
+                  <div class="row">
                     <label class="small mb-1" for="<%="title"+day%>">Title</label>
                     <input type="text" name="<%="title"+day%>" required value="<%=d.getTitle()%>">
-
-                    <label class="small mb-1 ml-4" >Subtitle</label>
+                  </div>
+                  <div class="row mt-2">
+                    <label class="small " >Subtitle</label>
                     <input type="text" name="<%="subtitle"+day%>" value="<%=d.getSubtitle()%>">
-
+                  </div>
                   <textarea  class="form-control mt-4" name="<%="day"+day%>"><% if(d.getDescription()==null){ %>Add description of the day<%}else{%><%=d.getDescription()%><%}%>
                   </textarea>
                 </div>
-              </div>
+
             <% }
             }else{%>
-            <div class="single-preparation-step d-flex" >
+
               <div class="col-8">
                 <h4 class="pdn-top-30 mb-2">Day 1</h4>
-                <div class="row justify-content-around">
+                <div class="row ">
                   <label class="small mb-1" >Title</label>
                   <input type="text" name="title1" required>
-                  <label class="small mb-1 ml-4" >Subtitle</label>
+                </div>
+                <div class="row mt-2">
+                  <label class="small " >Subtitle</label>
                 <input type="text" name="subtitle1" >
                 </div>
                 <textarea  class="form-control mt-4" name="day1">Add description of the day
                   </textarea>
               </div>
-            </div>
+
             <% } %>
           </div>
         </div>
@@ -302,10 +304,10 @@
 
 
   function add_day() {
-    document.getElementById('wrapper').innerHTML += '<div class="single-preparation-step d-flex" > <div class="col-8"> <h4 class="pdn-top-30">Day '+day+'</h4> <div class="row justify-content-center>"<label class="small mb-1" >Title</label>' +
+    document.getElementById('wrapper').innerHTML += '<div class="col-8"> <h4 class="pdn-top-30">Day '+day+'</h4> <div class="row>"<label class="small mb-1" >Title</label>' +
             '              <input type="text" name="title'+day+'" required>' +
-            '              <label class="small mb-1 ml-4" >Subtitle</label>' +
-            '              <input type="text" name="subtitle'+day+'"> </div>  <textarea class="form-control mt-4" name="day'+day+'"> Add description of the day </textarea> </div> </div>';
+            '              </div><div class="row mt-2"><label class="small" >Subtitle</label>' +
+            '              <input type="text" name="subtitle'+day+'"> </div>  <textarea class="form-control mt-4" name="day'+day+'"> Add description of the day </textarea> </div> ';
     day++;
   }
 
