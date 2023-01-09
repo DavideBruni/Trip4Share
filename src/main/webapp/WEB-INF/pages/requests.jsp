@@ -19,7 +19,7 @@
     <h2>People who request to join your trip </h2>
 </div>
 <div class="col-12 mt-5">
-    <div class="row justify-content-center">
+    <div class="row text-center">
         <div class="col-5 flex-column text-center">
             <div>
                 <h2>User</h2>
@@ -47,7 +47,7 @@
     %>
     <!-- Utente -->
     <div class="row">
-    <div class="col-5 align-content-center">
+    <div class="col-5 align-items-center">
         <div class="sidebar">
             <div class="widget">
                 <div class="blog-list-widget">
@@ -84,7 +84,7 @@
 
     <div class="col-3 list-group-item  flex-column ">
 
-        <div class="row align-content-center">
+        <div class="row justify-content-center">
             <% if(j.getValue1().equals(Status.pending)){ %>
             <button id=<%="ba_"+i+"_"+id%> class="accept btn btn-primary mt-3" >Accept </button>
             <button id=<%="br_"+i+"_"+id%> class="reject btn btn-primary mt-3 ml-4">Reject </button>
