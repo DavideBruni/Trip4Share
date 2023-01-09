@@ -17,7 +17,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <%
-        String username = ((AuthenticatedUserDTO)session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername();
+        AuthenticatedUserDTO user = ((AuthenticatedUserDTO)session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY));
+        String username=null;
+        if(user!=null) {
+            username = user.getUsername();
+        }
         TripDetailsDTO trip = (TripDetailsDTO) request.getAttribute("trip");
         if(trip != null){
     %>
@@ -53,7 +57,7 @@
                 <%
                     String url = "trip?id=" + trip.getId() + "&action=";
                     boolean isLogged = (SecurityUtils.getAuthenticatedUser(request) != null);
-                    if(isLogged && (!trip.getOrganizer().equals(username))){
+                    if(isLogged && !(trip.getOrganizer().equals(username))){
                         if(trip.isInWishlist()){
                 %>
 
