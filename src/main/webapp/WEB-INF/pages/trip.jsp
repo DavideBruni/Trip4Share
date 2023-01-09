@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <%
+        String username = ((AuthenticatedUserDTO)session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername();
         TripDetailsDTO trip = (TripDetailsDTO) request.getAttribute("trip");
         if(trip != null){
     %>
@@ -47,14 +48,15 @@
 
         <div class="container justify-content-center text-center my-30 ">
 
-            <div class="row justify-content-between">
+
                 <h2 class="pdn-top-40 mt-6 text-center triptitle"><%= trip.getTitle() %></h2>
                 <%
                     String url = "trip?id=" + trip.getId() + "&action=";
                     boolean isLogged = (SecurityUtils.getAuthenticatedUser(request) != null);
-                    if(isLogged){
+                    if(isLogged && (!trip.getOrganizer().equals(username))){
                         if(trip.isInWishlist()){
                 %>
+
                 <a href=<%=url + "remove"%>>
                     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-star-fill mt-2" viewBox="0 0 16 16">
                         <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
@@ -189,7 +191,7 @@
         %>
 
         <div class="row">
-            <% String username = ((AuthenticatedUserDTO)session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername();
+            <%
                 LocalDate todayDate = LocalDate.now();
             if(username.equals(trip.getOrganizer()) && (trip.getDepartureDate().isAfter(todayDate))){
             %>
@@ -211,7 +213,7 @@
             <span id="status_span"><%="Join request status: "+status+" "%></span><br>
             <%
             if(!status.equals("rejected")){ %>
-            <button class="text-right btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>
+            <button class="text-right mr-5 btn btn-primary bottone send-button" id="cancel_button">Cancel request</button>
             <% }
             }
             } %>

@@ -260,7 +260,14 @@
   </div>
 
   <div class="row mt-5 mb-5 text-center">
-    <button type="submit" class="btn btn-primary btn-info btn-lg ml-4 pull-right">Create!</button>
+
+    <% if(flag!=null){%>
+    <button type="submit" class="btn btn-primary btn-info btn-lg ml-4 pull-right">Edit</button>
+    <% }else{ %>
+    <button type="submit" class="btn btn-primary btn-info btn-lg ml-4 pull-right">Create</button>
+    <%}%>
+
+
   </div>
 
   </div>
