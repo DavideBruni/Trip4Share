@@ -1,6 +1,5 @@
 package it.unipi.lsmd.dto;
 
-import it.unipi.lsmd.model.RegisteredUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,10 +29,10 @@ public class TripDetailsDTO {
 
 
     public TripDetailsDTO(){
-        tags = new ArrayList<String>();
-        itinerary = new ArrayList<DailyScheduleDTO>();
-        whatsIncluded = new ArrayList<String>();
-        whatsNotIncluded = new ArrayList<String>();
+        tags = new ArrayList<>();
+        itinerary = new ArrayList<>();
+        whatsIncluded = new ArrayList<>();
+        whatsNotIncluded = new ArrayList<>();
     }
 
     public String getId() {

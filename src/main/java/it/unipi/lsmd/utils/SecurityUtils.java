@@ -11,14 +11,11 @@ public class SecurityUtils {
     public static final String AUTHENTICATED_USER_KEY = "authenticatedUser";
     public static final String WISHLIST_KEY = "wishlist";
     public static final String REVIEWS_KEY = "reviews";
-
-    public static final String USERS_FOLLOWERS_KEY = "followers";
     public static final String CHEAPEST_TRIPS = "cheapest";
     public static final String MOST_POPULAR = "most_populars";
     public static final String FOLLOWING_USER_TRIPS = "trip";
     public static final String SUGGESTED_USERS = "suggested_users";
     public static final String SUGGESTED_TRIPS = "suggested_trips";
-    public static final String SEARCH_RESULTS = "search_results";
     public static final String PAGE = "page";
     public static final String JOINERS = "joiners";
     public static final String SIGNUP_ERROR = "error_message";

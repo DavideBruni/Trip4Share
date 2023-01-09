@@ -1,11 +1,8 @@
 package it.unipi.lsmd.dto;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 public abstract class AuthenticatedUserDTO {
 
-    private String id;  // TODO - togliere
+    private String id;
     private String username;
     private String firstName;
     private String lastName;
