@@ -59,8 +59,8 @@
                         <div class="limit-box">
                             <nav class="main-menu">
                                 <ul class="menu-area-main">
-                                    <li><a href="management/banUser">Ban Users</a></li>
-                                    <li><a href="management/addAdmin">Add a new Admin</a></li>
+                                    <li><a href="banUser">Ban Users</a></li>
+                                    <li><a href="addAdmin">Add a new Admin</a></li>
                                     <li><a href="logout">Logout</a></li>
                                 </ul>
                             </nav>

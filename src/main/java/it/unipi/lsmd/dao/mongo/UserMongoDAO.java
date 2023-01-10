@@ -163,7 +163,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
         Document doc = UserUtils.documentFromUser(u);
         if(doc != null){
             try{
-                return collection.withWriteConcern(WriteConcern.MAJORITY).insertOne(doc).getInsertedId().asObjectId().getValue().toString();
+                return collection.withWriteConcern(WriteConcern.W3).insertOne(doc).getInsertedId().asObjectId().getValue().toString();
             }catch(DuplicateKeyException de){
                 return "Duplicate key";
             }catch(MongoException | NullPointerException me){

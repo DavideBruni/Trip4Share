@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/management/banUser")
+@WebServlet("/banUser")
 public class BanUserServlet extends HttpServlet {
 
     private UserService userService = ServiceLocator.getUserService();
@@ -44,7 +44,7 @@ public class BanUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
         String username = httpServletRequest.getParameter("username");
-        String targetURL = "../admin";
+        String targetURL = "admin";
         if(username == null || username.equals("")){
             httpServletRequest.setAttribute(SecurityUtils.ERROR_MESSAGE, "Invalid Username!"); // TODO sistemarlo bene nel jsp
             targetURL = "banUser";

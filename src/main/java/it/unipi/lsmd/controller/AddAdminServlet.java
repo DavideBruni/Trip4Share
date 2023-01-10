@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/management/addAdmin")
+@WebServlet("/addAdmin")
 public class AddAdminServlet extends HttpServlet {
 
     private UserService userService = ServiceLocator.getUserService();
@@ -55,6 +55,6 @@ public class AddAdminServlet extends HttpServlet {
 
         userService.signup(adminDTO);
         logger.info("New Admin: " + adminDTO);
-        httpServletResponse.sendRedirect("../admin");
+        httpServletResponse.sendRedirect("admin");
     }
 }
