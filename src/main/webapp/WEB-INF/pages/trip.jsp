@@ -37,7 +37,7 @@
 
 
 
-<body class="tripbgd main-form">
+<body class="tripbgd">
 
 <%@ include file="header.jsp" %>
 
@@ -114,7 +114,11 @@
 
         <div class="receipe-ratings my-5 col-12">
             <h2>Additional Information:</h2><br>
-            <h6> <%=trip.getInfo()%></h6>
+            <%if(trip.getInfo()==null){ %>
+            <h6>Non sono presenti ulteriori informazioni</h6>
+           <% }else{%>
+            <h6><%=trip.getInfo()%></h6>
+            <%}%>
         </div>
 
 
@@ -202,7 +206,7 @@
             <div class="row">
             <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
             <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
-            <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="requests?id="+trip.getId()%>" >View Pending Requests</a>
+            <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="requests?id="+trip.getId()%>" >View Pending Requests</a><p class="grey pull-right ">Last Modified:  <%= trip.getLast_modified()%></p>
             </div>
             <% }%>
         </div>
@@ -227,7 +231,11 @@
                 //request to do based on current status
             }
         %>
-        <p class="grey pull-right ">Last Modified:  <%= trip.getLast_modified()%></p>
+
+        <div class="row justify-content-end mb-3 mr-4">
+            <p class="grey text-right">Last Modified:  <%= trip.getLast_modified()%></p>
+        </div>
+
         </div>
 
     </div>
@@ -238,15 +246,15 @@
 }else{
 %>
 
-<div class="titlepage">
+<div class="titlepage text-center">
     <h2>Trip not found!</h2>
 </div>
 
 <%
     }
 %>
-<%@include file="footer.jsp"%>
 </body>
+<%@include file="footer.jsp"%>
 
 <% if (session.getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)!=null){ %>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>

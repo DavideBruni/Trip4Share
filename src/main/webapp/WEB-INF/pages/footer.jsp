@@ -4,10 +4,10 @@
       <div class="row pdn-top-30">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
           <ul class="location_icon">
-            <li> <a href="#"><img src="WebContent/icon/facebook.png"></a></li>
-            <li> <a href="#"><img src="WebContent/icon/Twitter.png"></a></li>
-            <li> <a href="#"><img src="WebContent/icon/linkedin.png"></a></li>
-            <li> <a href="#"><img src="WebContent/icon/instagram.png"></a></li>
+            <li> <a disabled><img src="WebContent/icon/facebook.png"></a></li>
+            <li> <a disabled ><img src="WebContent/icon/Twitter.png"></a></li>
+            <li> <a disabled><img src="WebContent/icon/linkedin.png"></a></li>
+            <li> <a disabled><img src="WebContent/icon/instagram.png"></a></li>
           </ul>
         </div>
         <div class="col-4">
@@ -22,11 +22,11 @@
           <div class="Follow">
             <h3>ADDITIONAL LINKS</h3>
             <ul class="link">
-              <li> <a href="#">About us</a></li>
-              <li> <a href="#">Terms and conditions</a></li>
-              <li> <a href="#"> Privacy policy</a></li>
-              <li> <a href="#">News</a></li>
-              <li> <a href="#"> Contact us</a></li>
+              <li> <a disabled>About us</a></li>
+              <li> <a disabled>Terms and conditions</a></li>
+              <li> <a disabled> Privacy policy</a></li>
+              <li> <a disabled>News</a></li>
+              <li> <a disabled> Contact us</a></li>
             </ul>
           </div>
         </div>
@@ -34,9 +34,9 @@
           <div class="Follow">
             <h3>REALIZED BY</h3>
             <ul class="link">
-              <li><a href="#">Caterina Bruchi</a></li>
-              <li><a href="#">Davide Bruni</a></li>
-              <li><a href="#"  >Francesco Grillea</a></li>
+              <li><a disabled>Caterina Bruchi</a></li>
+              <li><a disabled>Davide Bruni</a></li>
+              <li><a disabled  >Francesco Grillea</a></li>
             </ul>
           </div>
         </div>
