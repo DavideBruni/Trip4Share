@@ -408,11 +408,11 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     public List<Triplet<String, Integer, Integer>> mostPopularDestinationsOverall(int limit){
         //db.trips.aggregate([{$match : {departureDate : {$gte : new Date(Date.now() - 24*60*60*1000*365)}}},
         // {$group : {"_id":"$destination", "tot_trips": {$sum : 1},"total_like":{$sum : "$likes"}}},
-        // {$match : { $and : [{tot_trips : {$gte : 25}},{tot_likes : {$gte : 5000}}]}}, {$sort : {tot_likes : -1}},
+        // {$match : { $and : [{tot_trips : {$gte : 40}},{tot_likes : {$gte : 1200}}]}}, {$sort : {tot_likes : -1}},
         // {$limit : 5}])
         Bson m1 = match(gte("departureDate",LocalDate.now().minusYears(1)));
         Bson g1 = group("$destination",sum("total_like","$likes"),sum("total_trips",1));
-        Bson m2 = match((and(gte("total_trips",25),gte("total_like",5000))));
+        Bson m2 = match((and(gte("total_trips",40),gte("total_like",1200))));
         Bson s1 = sort(descending("total_like"));
         Bson l1 = limit(limit);
         AggregateIterable<Document> res;
@@ -438,11 +438,11 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     public List<Triplet<String, Integer, Integer>> mostExclusive(int limit){
         // db.trips.aggregate([{$match : {departureDate : {$gte : new Date(Date.now() - 24*60*60*1000*365)}}},
         // {$group : {"_id":"$destination", "tot_trips": {$sum : 1},"tot_likes":{$sum : "$likes"}}},
-        // {$match : { $and : [{tot_trips : {$lte : 5}},{tot_likes : {$gte : 1000}}]}},
+        // {$match : { $and : [{tot_trips : {$lte : 5}},{tot_likes : {$gte : 150}}]}},
         // {$sort : {tot_likes : -1}}, {$limit : 5}])
         Bson m1 = match(gte("departureDate",LocalDate.now().minusYears(1)));
         Bson g1 = group("$destination",sum("total_like","$likes"),sum("total_trips",1));
-        Bson m2 = match((and(lte("total_trips",5),gte("total_like",1000))));
+        Bson m2 = match((and(lte("total_trips",5),gte("total_like",150))));
         Bson s1 = sort(descending("total_like"));
         Bson l1 = limit(limit);
         AggregateIterable<Document> res;
