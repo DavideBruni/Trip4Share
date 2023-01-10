@@ -63,9 +63,9 @@
                         <%
                             if(!itsMe){
                         %>
-                                <a  id="follow_button" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href=<%="user?username="+user.getUsername()+"&action=follow"%> data-abc="true"><%
+                                <button  id="follow_button" class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href=<%="user?username="+user.getUsername()+"&action=follow"%> data-abc="true"><%
                                         if(!user.isFriend()){
-                                %>Follow<% }else{%>Unfollow<%}%></a>
+                                %>Follow<% }else{%>Unfollow<%}%></button>
                             <a  class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded" href="<%="leaveReview?username="+user.getUsername()%>">Leave a review</a>
                             <%}else{%>
                         <div class="row justify-content-center">
