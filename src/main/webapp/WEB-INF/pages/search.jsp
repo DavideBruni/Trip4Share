@@ -61,6 +61,7 @@
                             <label >Insert destination</label>
                             <input class="form-control" placeholder="" type="text" name="destination" size="50">
 
+                            <p class="text-center">Optional fields:</p>
                             <label >Departure Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="departure_date">
 
@@ -82,9 +83,10 @@
                     <div class="col-4">
 
                         <form action="search" method="POST">
-                            <label >Insert destination</label>
+                            <label >Insert tag </label>
                             <input class="form-control" placeholder="" type="text" name="tag" size="50">
 
+                            <p class="text-center">Optional fields:</p>
                             <label >Departure Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="departure_date">
 
@@ -112,7 +114,7 @@
 
                             <label >Max Price</label>
                             <input class="form-control" placeholder="00.0" type="number" step="0.01" name="max_price">
-
+                            <p class="text-center">Optional fields:</p>
                             <label >Departure Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="departure_date">
 
