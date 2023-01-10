@@ -249,7 +249,9 @@
             </div>
         </div>
         <%}else{%>
-        No Trips found!
+        <div class="text-center">
+            No Trips found!
+        </div>
         <%
             }
         %>

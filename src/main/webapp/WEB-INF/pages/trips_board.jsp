@@ -206,8 +206,8 @@
             </div>
         </div>
         <%}else{%>
-        <div class="titlepage">
-            <h2>No Trips Found</h2>
+        <div class="text-center">
+            No Trips found!
         </div>
 
         <%
