@@ -98,9 +98,7 @@
                                     <br>
                                     <span>To: <%= trips.get(i).getReturnDate()%></span>
                                 </div>
-                                <%
-                                    if(trips.get(i).getOrganizer() != null){
-                                %>
+                                <% if((trips.get(i).getOrganizer() != null)&& !title.equals("Wishlist")){ %>
                                 <p>By <a href=<%="user?username="+trips.get(i).getOrganizer()%>><%=trips.get(i).getOrganizer()%></a></p>
                                 <%
                                     }
@@ -153,9 +151,7 @@
                                     <br>
                                     <span>To: <%= trips.get(i).getReturnDate()%></span>
                                 </div>
-                                <%
-                                    if(trips.get(i).getOrganizer() != null){
-                                %>
+                                <% if(trips.get(i).getOrganizer() != null && !title.equals("Wishlist")){ %>
                                 <p>By <a href=<%="user?username="+trips.get(i).getOrganizer()%>><%=trips.get(i).getOrganizer()%></a></p>
                                 <%
                                     }
