@@ -25,7 +25,7 @@
 </head>
 
 
-<body class="tripbgd main-form tripbgd2">
+<body class=" tripbgd2">
 <%@ include file="header.jsp" %>
 <%
 
@@ -277,9 +277,12 @@
 
 </form>
 
-<%@ include file="footer.jsp" %>
 
 </body>
+
+<%@ include file="footer.jsp" %>
+
+
 <script>
   var included;
   var not_included;
