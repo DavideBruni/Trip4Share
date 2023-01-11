@@ -2,7 +2,7 @@ package it.unipi.lsmd.model;
 
 public class Tag {
 
-    String tag;
+    private String tag;
 
     public Tag(String tag) {
         this.tag = tag;
