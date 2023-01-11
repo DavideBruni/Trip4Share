@@ -34,7 +34,7 @@ public class RequestsViewServlet extends HttpServlet {
         //get participants and organizer, but if organizer isn't the logged user, return
         InvolvedPeopleDTO inv =tripService.getOrganizerAndJoiners(id);
         try {
-            if (inv == null || !inv.getOrganizer().equals(((AuthenticatedUserDTO) req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername())) {
+            if (inv == null || (inv.getOrganizer()!=null && !inv.getOrganizer().equals(((AuthenticatedUserDTO) req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY)).getUsername()))) {
                 logger.error("Error. Access denied");
                 resp.sendRedirect(req.getContextPath());
             } else {

@@ -407,8 +407,8 @@ public class TripServiceImpl implements TripService {
             Trip t = new Trip();
             t.setId(id);
             t = tripDAO.getJoinersAndOrganizer(t);
-            if(t != null) {
-                InvolvedPeopleDTO inv = new InvolvedPeopleDTO();
+            InvolvedPeopleDTO inv = new InvolvedPeopleDTO();
+            if(t != null && t.getOrganizer()!=null) {
                 inv.setOrganizer(t.getOrganizer().getUsername());
                 List<Pair<RegisteredUser, Status>> joiners = t.getJoiners();
                 for (Pair<RegisteredUser, Status> x : joiners) {
@@ -417,8 +417,8 @@ public class TripServiceImpl implements TripService {
                     Pair<OtherUserDTO, Status> j = new Pair<>(o, x.getValue1());
                     inv.addJoiners(j);
                 }
-                return inv;
             }
+            return inv;
         }
         return null;
     }
