@@ -26,4 +26,4 @@ In a future version these parameters are going to be moved to an external config
 Open the maven project in IntelliJ. After that, follow <a href="https://www.jetbrains.com/idea/guide/tutorials/working-with-apache-tomcat/using-existing-application/">these steps</a> to run the application.
 
 ## Running the application directly from Apache Tomcat 9.x
-The [a relative link](Trip4Share.war) is provided. Follow <a href="https://tomcat.apache.org/tomcat-9.0-doc/deployer-howto.html">these steps</a> to run the application.
+The [Trip4Share.war](Trip4Share.war) file is provided. Follow <a href="https://tomcat.apache.org/tomcat-9.0-doc/deployer-howto.html">these steps</a> to run the application.
