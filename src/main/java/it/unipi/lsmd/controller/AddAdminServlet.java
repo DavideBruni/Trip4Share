@@ -1,6 +1,5 @@
 package it.unipi.lsmd.controller;
 
-import it.unipi.lsmd.config.AppServletContextListener;
 import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
@@ -21,8 +20,8 @@ import java.io.IOException;
 @WebServlet("/addAdmin")
 public class AddAdminServlet extends HttpServlet {
 
-    private UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(AddAdminServlet.class);
+    private final UserService userService = ServiceLocator.getUserService();
+    private static final Logger logger = LoggerFactory.getLogger(AddAdminServlet.class);
 
 
 

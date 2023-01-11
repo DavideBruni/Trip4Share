@@ -2,12 +2,10 @@ package it.unipi.lsmd.controller;
 
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.TripDetailsDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.SecurityUtils;
-import it.unipi.lsmd.utils.TripUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,14 +16,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @WebServlet("/trip")
 public class TripServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
     private final WishlistService wishlistService = ServiceLocator.getWishlistService();
-    private static Logger logger = LoggerFactory.getLogger(TripServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(TripServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

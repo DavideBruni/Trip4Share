@@ -19,7 +19,7 @@ import java.io.IOException;
 public class JoinRequestsServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
     private final WishlistService wishlistService = ServiceLocator.getWishlistService();
-    private static Logger logger = LoggerFactory.getLogger(JoinRequestsServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(JoinRequestsServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {

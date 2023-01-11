@@ -3,7 +3,6 @@ package it.unipi.lsmd.controller;
 import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
-import it.unipi.lsmd.dto.ReviewDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -18,14 +17,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 @WebServlet("/updateProfile")
 public class UpdateProfileServlet extends HttpServlet {
     UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(UpdateProfileServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(UpdateProfileServlet.class);
 
 
     @Override
@@ -68,7 +64,7 @@ public class UpdateProfileServlet extends HttpServlet {
 
         String targetURL;
         String username = user.getUsername();
-        AuthenticatedUserDTO new_authenticated_user = null;
+        AuthenticatedUserDTO new_authenticated_user;
 
         try{
             if(user instanceof RegisteredUserDTO){

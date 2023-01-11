@@ -20,10 +20,10 @@ import java.io.IOException;
 public class RequestsViewServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(RequestsViewServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestsViewServlet.class);
 
 
-    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("id");
         // only authenticated users can view it and only if id isn't null
         if(id==null || req.getSession()==null || req.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {

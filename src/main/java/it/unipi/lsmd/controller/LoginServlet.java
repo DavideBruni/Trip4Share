@@ -1,15 +1,9 @@
 package it.unipi.lsmd.controller;
 
-import it.unipi.lsmd.dao.neo4j.RegisteredUserNeo4jDAO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.RegisteredUserDTO;
-import it.unipi.lsmd.model.DailySchedule;
-import it.unipi.lsmd.model.RegisteredUser;
-import it.unipi.lsmd.model.Trip;
 import it.unipi.lsmd.service.ServiceLocator;
-import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
-import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,16 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private static Logger logger = LoggerFactory.getLogger(LoginServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);
 
 
     static void redirectUser(HttpServletResponse httpServletResponse, AuthenticatedUserDTO authenticatedUserDTO) throws IOException {
@@ -70,7 +59,6 @@ public class LoginServlet extends HttpServlet {
                 if (username != null && password != null && !username.isEmpty() && !password.isEmpty()){
                     authenticatedUserDTO = userService.authenticate(username, password);
 
-                    // TODO - controllare anche come ha fatto davide
                     if(authenticatedUserDTO == null){
                         httpServletRequest.setAttribute("errorMessage", "Invalid username or password.");
 

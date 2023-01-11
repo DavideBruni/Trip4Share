@@ -54,7 +54,7 @@ public class SignupServlet extends HttpServlet {
         if(!result.equals("Something gone wrong") && !result.equals("Duplicate key")){
             //okay, login
             user.setId(result);
-            AuthenticatedUserDTO authenticatedUserDTO = UserUtils.DTOwithoutDetails(user);  //TODO - perche' questo? Non posso passargli tutto il RegisteredUserDTO?
+            AuthenticatedUserDTO authenticatedUserDTO = UserUtils.DTOwithoutDetails(user);
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute(SecurityUtils.AUTHENTICATED_USER_KEY, authenticatedUserDTO);
             session.setAttribute("itsMe", true);

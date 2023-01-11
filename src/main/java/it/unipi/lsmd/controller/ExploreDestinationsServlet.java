@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/exploreDestinations")
 public class ExploreDestinationsServlet extends HttpServlet {
 
-    private static Logger logger = LoggerFactory.getLogger(ExploreDestinationsServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExploreDestinationsServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

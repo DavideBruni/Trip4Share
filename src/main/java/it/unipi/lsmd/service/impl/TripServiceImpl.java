@@ -27,7 +27,7 @@ public class TripServiceImpl implements TripService {
     private final TripDetailsDAO tripDetailsDAO;
     private final TripDAO tripDAO;
     private final TripNeo4jDAO organizerNeoDAO;
-    private static Logger logger = LoggerFactory.getLogger(TripServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(TripServiceImpl.class);
 
 
     public TripServiceImpl(){
@@ -88,7 +88,7 @@ public class TripServiceImpl implements TripService {
             return null;
 
         List<Trip> trips_model = tripDAO.getTripOrganizedByUser(new RegisteredUser(username), size + 1, page);
-        List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
+        List<TripSummaryDTO> trips = new ArrayList<>();
         for(Trip trip : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
             trips.add(tripSummaryDTO);
@@ -102,7 +102,7 @@ public class TripServiceImpl implements TripService {
             return null;
 
         List<Trip> trips_model = tripDAO.getPastTrips(new RegisteredUser(username), size + 1, page);
-        List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
+        List<TripSummaryDTO> trips = new ArrayList<>();
         for(Trip trip : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
             trips.add(tripSummaryDTO);

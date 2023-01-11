@@ -4,7 +4,6 @@ import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.UserService;
-import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +19,8 @@ import java.io.IOException;
 @WebServlet("/banUser")
 public class BanUserServlet extends HttpServlet {
 
-    private UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(BanUserServlet.class);
+    private final UserService userService = ServiceLocator.getUserService();
+    private static final Logger logger = LoggerFactory.getLogger(BanUserServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
@@ -46,7 +45,7 @@ public class BanUserServlet extends HttpServlet {
         String username = httpServletRequest.getParameter("username");
         String targetURL = "admin";
         if(username == null || username.equals("")){
-            httpServletRequest.setAttribute(SecurityUtils.ERROR_MESSAGE, "Invalid Username!"); // TODO sistemarlo bene nel jsp
+            httpServletRequest.setAttribute(SecurityUtils.ERROR_MESSAGE, "Invalid Username!");
             targetURL = "banUser";
         }else {
             userService.deleteUser(username);

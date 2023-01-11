@@ -24,10 +24,9 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
     private final UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(HomeServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(HomeServlet.class);
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Show Trips
         if(request.getSession()==null || request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY) == null) {
             response.sendRedirect(request.getContextPath());
             return;

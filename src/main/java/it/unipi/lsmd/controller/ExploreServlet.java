@@ -24,9 +24,9 @@ import java.util.List;
 @WebServlet("/explore")
 public class ExploreServlet extends HttpServlet {
 
-    private TripService tripService = ServiceLocator.getTripService();
-    private UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(ExploreServlet.class);
+    private final TripService tripService = ServiceLocator.getTripService();
+    private final UserService userService = ServiceLocator.getUserService();
+    private static final Logger logger = LoggerFactory.getLogger(ExploreServlet.class);
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
 
@@ -40,7 +40,7 @@ public class ExploreServlet extends HttpServlet {
         httpServletRequest.setAttribute(SecurityUtils.PAGE, page);
 
         String searchFor = httpServletRequest.getParameter("searchFor");
-        RequestDispatcher requestDispatcher = null;
+        RequestDispatcher requestDispatcher;
         if(searchFor != null && searchFor.equals("destination")){
             requestDispatcher = searchDestination(httpServletRequest, value, page);
         }else if(searchFor != null && searchFor.equals("user")){

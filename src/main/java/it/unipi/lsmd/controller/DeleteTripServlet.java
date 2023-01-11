@@ -16,8 +16,8 @@ import java.io.IOException;
 
 @WebServlet("/deleteTrip")
 public class DeleteTripServlet extends HttpServlet {
-    TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(DeleteTripServlet.class);
+    private final TripService tripService = ServiceLocator.getTripService();
+    private static final Logger logger = LoggerFactory.getLogger(DeleteTripServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

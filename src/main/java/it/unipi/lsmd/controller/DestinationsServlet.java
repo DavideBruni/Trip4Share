@@ -20,10 +20,10 @@ import java.util.List;
 @WebServlet("/destinations")
 public class DestinationsServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(DestinationsServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(DestinationsServlet.class);
 
 
-    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getParameter("action");
         if(action == null) {
             resp.sendRedirect(req.getContextPath());

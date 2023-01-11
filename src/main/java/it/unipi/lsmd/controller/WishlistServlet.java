@@ -4,7 +4,6 @@ import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
-import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.WishlistService;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -24,12 +23,19 @@ import java.util.ArrayList;
 public class WishlistServlet extends HttpServlet {
 
     private final WishlistService wishlistService = ServiceLocator.getWishlistService();
-    private static Logger logger = LoggerFactory.getLogger(WishlistServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(WishlistServlet.class);
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req,resp);
+    }
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        processRequest(httpServletRequest,httpServletResponse);
+    }
 
+    private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         logger.info(httpServletRequest.getQueryString());
         AuthenticatedUserDTO authenticatedUserDTO = SecurityUtils.getAuthenticatedUser(httpServletRequest);
         if(authenticatedUserDTO == null || authenticatedUserDTO instanceof AdminDTO){
@@ -58,9 +64,5 @@ public class WishlistServlet extends HttpServlet {
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO
-        super.doPost(req, resp);
-    }
+
 }

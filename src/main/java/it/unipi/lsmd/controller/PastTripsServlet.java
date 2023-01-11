@@ -21,8 +21,8 @@ import java.util.List;
 @WebServlet("/pastTrips")
 public class PastTripsServlet extends HttpServlet  {
 
-    private TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(PastTripsServlet.class);
+    private final TripService tripService = ServiceLocator.getTripService();
+    private static final Logger logger = LoggerFactory.getLogger(PastTripsServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

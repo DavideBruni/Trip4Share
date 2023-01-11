@@ -1,15 +1,5 @@
 package it.unipi.lsmd.controller;
 
-import it.unipi.lsmd.dto.OtherUserDTO;
-import it.unipi.lsmd.dto.TripSummaryDTO;
-import it.unipi.lsmd.service.ServiceLocator;
-import it.unipi.lsmd.service.TripService;
-import it.unipi.lsmd.service.UserService;
-import it.unipi.lsmd.utils.PagesUtilis;
-import it.unipi.lsmd.utils.SecurityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,15 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
-
-    //private UserService userService = ServiceLocator.getUserService();
-    //private TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(SearchServlet.class);
-
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {

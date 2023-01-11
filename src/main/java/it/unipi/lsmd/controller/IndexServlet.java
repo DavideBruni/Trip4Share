@@ -19,7 +19,7 @@ import java.util.List;
 public class IndexServlet extends HttpServlet {
 
     private final TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(IndexServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(IndexServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {

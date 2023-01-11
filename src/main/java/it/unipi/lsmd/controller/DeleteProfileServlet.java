@@ -17,8 +17,8 @@ import java.io.IOException;
 
 @WebServlet("/deleteProfile")
 public class DeleteProfileServlet extends HttpServlet {
-    UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(DeleteProfileServlet.class);
+    private final UserService userService = ServiceLocator.getUserService();
+    private static final Logger logger = LoggerFactory.getLogger(DeleteProfileServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

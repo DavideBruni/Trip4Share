@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @WebServlet("/deleteReview")
 public class DeleteReviewServlet extends HttpServlet {
     private final UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(DeleteReviewServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeleteReviewServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

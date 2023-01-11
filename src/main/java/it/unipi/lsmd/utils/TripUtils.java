@@ -64,7 +64,6 @@ public interface TripUtils {
             trip.setLast_modified(LocalDateTimeAdapter.convertToLocalDateTimeViaInstant(result.getDate("last_modified")));
         }catch (NullPointerException e){ }
 
-        //ArrayList<String> tags_strings = result.get("tags", ArrayList.class);
         trip.setTags(stringToTag(result.get("tags", ArrayList.class)));
 
         ArrayList<Document> itinerary = result.get("itinerary", ArrayList.class);

@@ -221,8 +221,6 @@ public class ScraperKeTrip {
 
             trips.add(trip);
             System.out.println(trip.toString());
-
-            //TODO save into a json file
         }
 
 

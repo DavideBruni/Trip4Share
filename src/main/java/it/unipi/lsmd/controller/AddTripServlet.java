@@ -19,7 +19,7 @@ import java.io.IOException;
 @WebServlet("/addTrip")
 public class AddTripServlet extends HttpServlet{
     private final TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(AddTripServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddTripServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

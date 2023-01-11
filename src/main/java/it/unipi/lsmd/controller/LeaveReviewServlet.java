@@ -21,7 +21,7 @@ import java.time.LocalDate;
 @WebServlet("/leaveReview")
 public class LeaveReviewServlet extends HttpServlet {
     private final UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(LeaveReviewServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(LeaveReviewServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,7 +41,7 @@ public class LeaveReviewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String text = request.getParameter("text");
-        int rank = 0;
+        int rank;
         try{
             rank= Integer.parseInt(request.getParameter("value"));
         }catch (Exception ne){
@@ -58,7 +58,7 @@ public class LeaveReviewServlet extends HttpServlet {
         String username = (String) request.getSession().getAttribute(SecurityUtils.REVIEW_TO);
         request.getSession().removeAttribute(SecurityUtils.REVIEW_TO);
 
-        RequestDispatcher requestDispatcher = null;
+        RequestDispatcher requestDispatcher;
 
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setAuthor(((AuthenticatedUserDTO)(request.getSession().getAttribute(SecurityUtils.AUTHENTICATED_USER_KEY))).getUsername());

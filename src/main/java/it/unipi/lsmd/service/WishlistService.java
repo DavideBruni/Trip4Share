@@ -3,7 +3,6 @@ package it.unipi.lsmd.service;
 import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public interface WishlistService {

@@ -4,7 +4,6 @@ import it.unipi.lsmd.dto.*;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
 import it.unipi.lsmd.service.UserService;
-import it.unipi.lsmd.service.impl.UserServiceImpl;
 import it.unipi.lsmd.utils.PagesUtilis;
 import it.unipi.lsmd.utils.SecurityUtils;
 import org.slf4j.Logger;
@@ -17,15 +16,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
 
-    private TripService tripService = ServiceLocator.getTripService();
-    private UserService userService = ServiceLocator.getUserService();
-    private static Logger logger = LoggerFactory.getLogger(UserServlet.class);
+    private final TripService tripService = ServiceLocator.getTripService();
+    private final UserService userService = ServiceLocator.getUserService();
+    private static final Logger logger = LoggerFactory.getLogger(UserServlet.class);
 
 
 
@@ -127,17 +125,23 @@ public class UserServlet extends HttpServlet {
         }
 
         if(show != null) {
-            if (show.equals("reviews")) {
-                requestDispatcher = getUserReviews(httpServletRequest, username, page);
-            } else if (show.equals("organizedTrips")) {
-                requestDispatcher = getOrganizedTrips(httpServletRequest, username, page);
-            } else if (show.equals("followers")) {
-                requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
-            } else if (show.equals("following")) {
-                requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
-            }else{
-                logger.error("Error. Invalid value for parameter show " + show);
-                requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
+            switch (show) {
+                case "reviews":
+                    requestDispatcher = getUserReviews(httpServletRequest, username, page);
+                    break;
+                case "organizedTrips":
+                    requestDispatcher = getOrganizedTrips(httpServletRequest, username, page);
+                    break;
+                case "followers":
+                    requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
+                    break;
+                case "following":
+                    requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
+                    break;
+                default:
+                    logger.error("Error. Invalid value for parameter show " + show);
+                    requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");
+                    break;
             }
         }else if(!itsMe && action!=null){
             if (action.equals("follow")) {

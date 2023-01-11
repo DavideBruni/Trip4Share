@@ -22,10 +22,10 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
-    private RegisteredUserDAO registeredUserDAO;
-    private WishlistDAO wishlistDAO;
-    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final UserDAO userDAO;
+    private final RegisteredUserDAO registeredUserDAO;
+    private final WishlistDAO wishlistDAO;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 
     public UserServiceImpl(){

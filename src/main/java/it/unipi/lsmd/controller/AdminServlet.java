@@ -1,6 +1,5 @@
 package it.unipi.lsmd.controller;
 
-import it.unipi.lsmd.config.AppServletContextListener;
 import it.unipi.lsmd.dto.AdminDTO;
 import it.unipi.lsmd.dto.AuthenticatedUserDTO;
 import it.unipi.lsmd.utils.SecurityUtils;
@@ -18,7 +17,7 @@ import java.io.IOException;
 @WebServlet("/admin")
 public class AdminServlet  extends HttpServlet {
 
-    private static Logger logger = LoggerFactory.getLogger(AdminServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {

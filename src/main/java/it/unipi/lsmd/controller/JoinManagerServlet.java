@@ -16,10 +16,10 @@ import java.io.IOException;
 @WebServlet("/joinManager")
 public class JoinManagerServlet extends HttpServlet {
     private final TripService tripService = ServiceLocator.getTripService();
-    private static Logger logger = LoggerFactory.getLogger(JoinManagerServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(JoinManagerServlet.class);
 
 
-    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("id");
         String username = req.getParameter("username");
         String action = req.getParameter("action");
