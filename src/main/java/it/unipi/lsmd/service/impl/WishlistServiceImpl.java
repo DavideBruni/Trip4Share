@@ -79,7 +79,7 @@ public class WishlistServiceImpl implements WishlistService {
             return null;
 
         ArrayList<TripSummaryDTO> trips = new ArrayList<>();
-        Wishlist wishlist = wishlistDAO.getUserWishlist(new RegisteredUser(username), size, page);
+        Wishlist wishlist = wishlistDAO.getUserWishlist(new RegisteredUser(username), size + 1, page);
 
         try{
             for(Trip trip : wishlist.getWishlist()){

@@ -42,7 +42,7 @@ public class TripServiceImpl implements TripService {
         if(username == null || username.equals(""))
             return null;
 
-        List<Trip> trips = tripDAO.getTripsOrganizedByFollower(new RegisteredUser(username), size, page);
+        List<Trip> trips = tripDAO.getTripsOrganizedByFollower(new RegisteredUser(username), size + 1, page);
 
         if(trips == null || trips.isEmpty()){
             logger.error("Error. No trip found");
@@ -87,7 +87,7 @@ public class TripServiceImpl implements TripService {
         if(username == null || username.equals(""))
             return null;
 
-        List<Trip> trips_model = tripDAO.getTripOrganizedByUser(new RegisteredUser(username), size, page);
+        List<Trip> trips_model = tripDAO.getTripOrganizedByUser(new RegisteredUser(username), size + 1, page);
         List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
         for(Trip trip : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
@@ -101,7 +101,7 @@ public class TripServiceImpl implements TripService {
         if(username == null || username.equals(""))
             return null;
 
-        List<Trip> trips_model = tripDAO.getPastTrips(new RegisteredUser(username), size, page);
+        List<Trip> trips_model = tripDAO.getPastTrips(new RegisteredUser(username), size + 1, page);
         List<TripSummaryDTO> trips = new ArrayList<TripSummaryDTO>();
         for(Trip trip : trips_model){
             TripSummaryDTO tripSummaryDTO = TripUtils.tripSummaryDTOFromModel(trip);
@@ -121,12 +121,16 @@ public class TripServiceImpl implements TripService {
         LocalDate retDate = null;
         try{
             depDate = LocalDate.parse(departureDate);
-            retDate = LocalDate.parse(returnDate);
+            try {
+                retDate = LocalDate.parse(returnDate);
+            }catch (DateTimeParseException e){
+                retDate = null;
+            }
         }catch (DateTimeParseException e){
             depDate = LocalDate.now();
         }
 
-        List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination, depDate, retDate, size, page);
+        List<Trip> trips= tripDetailsDAO.getTripsByDestination(destination, depDate, retDate, size + 1, page);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
@@ -147,11 +151,15 @@ public class TripServiceImpl implements TripService {
         LocalDate retDate = null;
         try{
             depDate = LocalDate.parse(departureDate);
-            retDate = LocalDate.parse(returnDate);
+            try {
+                retDate = LocalDate.parse(returnDate);
+            }catch (DateTimeParseException e){
+                retDate = null;
+            }
         }catch (DateTimeParseException e){
             depDate = LocalDate.now();
         }
-        List<Trip> trips= tripDetailsDAO.getTripsByTag(new Tag(value), depDate, retDate, size, page);
+        List<Trip> trips= tripDetailsDAO.getTripsByTag(new Tag(value), depDate, retDate, size + 1, page);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
@@ -163,16 +171,22 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripSummaryDTO> getTripsByPrice(double min_price, double max_price, String departureDate, String returnDate, int size, int page) {
 
+        if(min_price>max_price || min_price<0 || max_price<0)
+            return new ArrayList<>();
         LocalDate depDate;
         LocalDate retDate = null;
         try{
             depDate = LocalDate.parse(departureDate);
-            retDate = LocalDate.parse(returnDate);
+            try {
+                retDate = LocalDate.parse(returnDate);
+            }catch (DateTimeParseException e){
+                retDate = null;
+            }
         }catch (DateTimeParseException e){
             depDate = LocalDate.now();
         }
 
-        List<Trip> trips= tripDetailsDAO.getTripsByPrice(min_price, max_price, depDate, retDate, size, page);
+        List<Trip> trips= tripDetailsDAO.getTripsByPrice(min_price, max_price, depDate, retDate, size + 1, page);
         List<TripSummaryDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
             TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
@@ -208,6 +222,8 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<DestinationsDTO> mostPopularDestinationsByPrice(double start, double end, int limit) {
+        if(start>end || start<0 || end<0)
+            return new ArrayList<>();
         List<Pair<String, Integer>> trips= tripDetailsDAO.mostPopularDestinationsByPrice(start, end, limit);
         List<DestinationsDTO> res = new ArrayList<>();
         for(Pair<String, Integer> x : trips){
@@ -255,7 +271,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public  List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch) {
+    public  List<TripDetailsDTO> cheapestTripForDestinationInPeriod(String start, String end, int objectPerPageSearch) {
         LocalDate depDate;
         LocalDate retDate;
         try {
@@ -269,10 +285,10 @@ public class TripServiceImpl implements TripService {
             depDate = LocalDate.now();
             retDate=null;
         }
-        List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,page, objectPerPageSearch);
-        List<TripSummaryDTO> tripsDTO = new ArrayList<>();
+        List<Trip> trips = tripDetailsDAO.cheapestTripForDestinationInPeriod(depDate,retDate,objectPerPageSearch);
+        List<TripDetailsDTO> tripsDTO = new ArrayList<>();
         for(Trip t : trips){
-            TripSummaryDTO tDTO = TripUtils.tripSummaryDTOFromModel(t);
+            TripDetailsDTO tDTO = TripUtils.tripModelToDetailedDTO(t);
             tripsDTO.add(tDTO);
         }
         return tripsDTO;

@@ -45,7 +45,7 @@ public class UserServlet extends HttpServlet {
         return request.getRequestDispatcher("/WEB-INF/pages/trips_board.jsp");
     }
 
-    private RequestDispatcher getFollowers(HttpServletRequest request, String username, int size, int page) {       // TODO page size
+    private RequestDispatcher getFollowers(HttpServletRequest request, String username, int size, int page) {
         List<OtherUserDTO> followers = userService.getFollowers(username, size, page);
         request.setAttribute(SecurityUtils.USER_RESULTS, followers);
         request.setAttribute(SecurityUtils.PAGE, page);
@@ -53,7 +53,7 @@ public class UserServlet extends HttpServlet {
         return request.getRequestDispatcher("/WEB-INF/pages/users_board.jsp");
     }
 
-    private RequestDispatcher getFollowing(HttpServletRequest request, String username, int size, int page) {   // TODO page size
+    private RequestDispatcher getFollowing(HttpServletRequest request, String username, int size, int page) {
         List<OtherUserDTO> following = userService.getFollowing(username, size, page);
         request.setAttribute(SecurityUtils.USER_RESULTS, following);
         request.setAttribute(SecurityUtils.PAGE, page);
@@ -132,9 +132,9 @@ public class UserServlet extends HttpServlet {
             } else if (show.equals("organizedTrips")) {
                 requestDispatcher = getOrganizedTrips(httpServletRequest, username, page);
             } else if (show.equals("followers")) {
-                requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
+                requestDispatcher = getFollowers(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
             } else if (show.equals("following")) {
-                requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.USERS_PER_PAGE + 1, page);
+                requestDispatcher = getFollowing(httpServletRequest, authenticatedUserDTO.getUsername(), PagesUtilis.OBJECT_PER_PAGE_SEARCH + 1, page);
             }else{
                 logger.error("Error. Invalid value for parameter show " + show);
                 requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/user.jsp");

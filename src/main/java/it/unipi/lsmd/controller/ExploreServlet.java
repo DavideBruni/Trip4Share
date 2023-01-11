@@ -51,8 +51,8 @@ public class ExploreServlet extends HttpServlet {
         }else if(searchFor != null && searchFor.equals("tags")){
             requestDispatcher = searchTags(httpServletRequest, value, page);
         }else{
-            //TODO
-            requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/error404.jsp");
+            httpServletRequest.removeAttribute(SecurityUtils.PAGE);
+            requestDispatcher = httpServletRequest.getRequestDispatcher("/WEB-INF/pages/search.jsp");
         }
         requestDispatcher.forward(httpServletRequest, httpServletResponse);
     }

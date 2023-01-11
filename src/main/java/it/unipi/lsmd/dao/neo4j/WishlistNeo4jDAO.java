@@ -72,7 +72,7 @@ public class WishlistNeo4jDAO extends BaseDAONeo4J implements WishlistDAO {
                                 "RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted " +
                                 "ORDER BY t.departureDate " +
                                 "SKIP $skip LIMIT $limit",
-                        parameters("username", user.getUsername(), "skip", ((page-1)*size),"limit",size+1));
+                        parameters("username", user.getUsername(), "skip", ((page-1)*size),"limit",size));
                 List<Trip> trips = new ArrayList<>();
 
                 while (result.hasNext()) {

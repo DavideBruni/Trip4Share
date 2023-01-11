@@ -33,7 +33,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
                         "[:ORGANIZED_BY]-(t:Trip) WHERE t.deleted = FALSE AND t.departureDate > date() " +
                         " RETURN t._id, t.destination, t.departureDate, t.returnDate, t.title, t.deleted, r2.username as organizer" +
                         " ORDER BY t.departureDate SKIP $skip LIMIT $limit",
-                        parameters("username", registeredUser.getUsername(), "skip", ((page-1)*size),"limit",size+1));
+                        parameters("username", registeredUser.getUsername(), "skip", ((page-1)*size),"limit",size));
                 List trips = new ArrayList<>();
 
                 while (result.hasNext()) {
@@ -283,7 +283,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
                                 "ORDER BY t.departureDate DESC " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
-                        parameters("username", organizer.getUsername(), "skip", ((page-1)*size), "limit", size+1));
+                        parameters("username", organizer.getUsername(), "skip", ((page-1)*size), "limit", size));
                 List<Trip> trips = new ArrayList<Trip>();
                 while(result.hasNext()){
                     Record r = result.next();
@@ -314,7 +314,7 @@ public class TripNeo4jDAO extends BaseDAONeo4J implements TripDAO {
                                 "ORDER BY t.departureDate DESC " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
-                        parameters("username", registeredUser.getUsername(), "skip", ((page-1)*size), "limit", size+1));
+                        parameters("username", registeredUser.getUsername(), "skip", ((page-1)*size), "limit", size));
                 List<Trip> trips = new ArrayList<Trip>();
                 while(result.hasNext()){
                     Record r = result.next();

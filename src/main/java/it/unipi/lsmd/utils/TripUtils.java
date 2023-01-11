@@ -119,7 +119,6 @@ public interface TripUtils {
         return tripDTO;
     }
 
-    // TODO - change name in tripModelToSummaryDTO
     static TripSummaryDTO tripSummaryDTOFromModel(Trip trip){
 
         if(trip == null){
@@ -139,7 +138,6 @@ public interface TripUtils {
         }catch(NullPointerException ex){
             tripDTO.setOrganizer(null);
         }
-        tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
     }
@@ -154,7 +152,6 @@ public interface TripUtils {
         tripDTO.setReturnDate(trip.getReturnDate());
         tripDTO.setLike_counter(trip.getLike_counter());
         tripDTO.setOrganizer(trip.getOrganizer());
-        tripDTO.setLast_modified(trip.getLast_modified());
 
         return tripDTO;
     }
@@ -170,7 +167,6 @@ public interface TripUtils {
         trip.setReturnDate(tripSummary.getReturnDate());
         trip.setLike_counter(tripSummary.getLike_counter());
         trip.setOrganizer(new RegisteredUser(tripSummary.getOrganizer()));
-        trip.setLast_modified(tripSummary.getLast_modified());
 
         return trip;
     }
@@ -379,7 +375,7 @@ public interface TripUtils {
         if(tags == null)
             return null;
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for(Tag tag : tags){
             list.add(tag.getTag());
         }
@@ -391,7 +387,7 @@ public interface TripUtils {
         if(tags == null)
             return null;
 
-        List<Tag> list = new ArrayList<Tag>();
+        List<Tag> list = new ArrayList<>();
         for(String tag : tags){
             list.add(new Tag(tag));
         }

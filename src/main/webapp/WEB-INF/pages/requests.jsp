@@ -1,5 +1,4 @@
 
-<%@ page import="it.unipi.lsmd.dto.InvolvedPeopleDTO" %>
 <%@ page import="it.unipi.lsmd.model.enums.Status" %>
 <%@ page import="org.javatuples.Pair" %>
 <%@ page import="java.util.List" %>
@@ -84,7 +83,7 @@
 
     <div class="col-3 list-group-item  flex-column ">
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" id="div_<%=i%>">
             <% if(j.getValue1().equals(Status.pending)){ %>
             <button id=<%="ba_"+i+"_"+id%> class="accept btn btn-primary mt-3" >Accept </button>
             <button id=<%="br_"+i+"_"+id%> class="reject btn btn-primary mt-3 ml-4">Reject </button>
@@ -113,12 +112,12 @@
         var last_ = button_id.indexOf("_",3);
         var id = button_id.substring(last_+1);
         var i =button_id.substring(3,last_);
-        var username = $("#"+i+"_username").text();
+        var username = $("#"+i+"_username").text().trim();
         $.get("joinManager?id="+id+"&username="+username+"&action=accept", function(responseText) {
             if(responseText == "OK"){
                 $( "#ba_"+i+"_"+id).remove();
                 $( "#br_"+i+"_"+id).remove();
-                $( "#div_"+i).append( "<button id=<\"bd_"+i+"_"+id+"\" class=\"delete\" >Remove </button>" );
+                $( "#div_"+i).append( "<button id=<\"bd_"+i+"_"+id+"\" class=\"delete btn btn-primary mt-3\" >Remove </button>" );
                 $("#"+i+"_status").text("accepted");
             }else{
                 alert("Errore durante l'operazione");
@@ -132,7 +131,7 @@
         var last_ = button_id.indexOf("_",3);
         var id = button_id.substring(last_+1);
         var i =button_id.substring(3,last_);
-        var username = $("#"+i+"_username").text();
+        var username = $("#"+i+"_username").text().trim();
         $.get("joinManager?id="+id+"&username="+username+"&action=reject", function(responseText) {
             if(responseText == "OK"){
                 $( "#ba_"+i+"_"+id).remove();
@@ -149,7 +148,7 @@
         var last_ = button_id.indexOf("_",3);
         var id = button_id.substring(last_+1);
         var i =button_id.substring(3,last_);
-        var username = $("#"+i+"_username").text();
+        var username = $("#"+i+"_username").text().trim();
         $.get("joinManager?id="+id+"&username="+username+"&action=delete", function(responseText) {
             if (responseText == "OK") {
                 $("#div_" + i).remove();

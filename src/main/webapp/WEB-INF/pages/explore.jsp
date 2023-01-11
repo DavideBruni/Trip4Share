@@ -5,6 +5,7 @@
 <%@ page import="it.unipi.lsmd.utils.PagesUtilis" %>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="javax.sound.midi.Soundbank" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
@@ -53,10 +54,13 @@
             <h2><%=aggregation_title%></h2>
         </div>
 
+        <h4 class="text-center mb-4">FOR THE PARAMETERS OF YOUR RESEARCH</h4>
         <%
             List<String> suggestions = (List<String>) request.getAttribute(SecurityUtils.SUGGESTIONS_EXPLORE);
             String new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
             String url = request.getQueryString();
+            url = url.substring(0, url.lastIndexOf("page="))+"page=1";
+            System.out.println(url);
             if(url != null)
                 new_url = new_url + url;
 
@@ -220,6 +224,8 @@
                             <ul class="pagination justify-content-end">
                                 <%
                                     // http://localhost:8080/Trip4Share_war_exploded/explore?searchFor=destination&value=islanda&return=&departure=&page=1
+                                    new_url = request.getAttribute("javax.servlet.forward.request_uri").toString() + "?";
+                                    url = request.getQueryString();
                                     int page_index = (int) request.getAttribute(SecurityUtils.PAGE);
                                     if(url != null)
                                         new_url = new_url + url;

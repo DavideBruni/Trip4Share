@@ -75,7 +75,7 @@
                 <div class="widget">
 
                     <%
-                        for(int i = 0; i < users.size() && i < PagesUtilis.USERS_PER_PAGE; i++){
+                        for(int i = 0; i < users.size() && i < PagesUtilis.OBJECT_PER_PAGE_SEARCH; i++){
                     %>
                     <div class="blog-list-widget">
                         <div class=" row">
@@ -118,7 +118,7 @@
                                         if(page_index != 1){
                                     %>
                                     <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index - 1)%>>Previous</a></li>
-                                    <%} if(users.size() > PagesUtilis.USERS_PER_PAGE) {
+                                    <%} if(users.size() > PagesUtilis.OBJECT_PER_PAGE_SEARCH) {
                                     %>
                                     <li class="page-item"><a class="page-link" href=<%=new_url+ (page_index + 1)%>>Next</a></li>
                                     <% }%>

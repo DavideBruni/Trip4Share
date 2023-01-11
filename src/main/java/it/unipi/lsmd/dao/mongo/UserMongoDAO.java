@@ -75,7 +75,7 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             return null;
 
         Bson m1 = match(and(regex("username",".*"+registeredUser.getUsername()+".*","i"),eq("type","user")));
-        Bson l1 = limit(limit + 1);
+        Bson l1 = limit(limit);
         AggregateIterable<Document> res;
 
         if(page!=1) {
@@ -105,24 +105,13 @@ public class UserMongoDAO extends BaseDAOMongo implements UserDAO {
             return null;
 
 
-        /*
-            db.users.aggregate([
-                {$match: {username: "Vincenzo0"}},
-                {$unwind: "$reviews"},
-                {$project: {"reviews": 1, "_id": 0}},
-                {$sort: {"reviews.date": -1}},
-                {$skip: 5},
-                {$limit: 2}
-            ])
-         */
-
         List<Review> reviews = new ArrayList<>();
         Bson match = match(eq("username", registeredUser.getUsername()));
         Bson unwind = unwind("$reviews");
         Bson project = project(fields(excludeId(), include("reviews")));
         Bson sort = sort(descending("reviews.date"));
         Bson skip = skip((page - 1) * limit);
-        Bson lim = limit(limit + 1);
+        Bson lim = limit(limit);
         AggregateIterable<Document> results = collection.aggregate(Arrays.asList(match, unwind, project, sort, skip, lim));
 
         try(MongoCursor<Document> documents = results.iterator()){

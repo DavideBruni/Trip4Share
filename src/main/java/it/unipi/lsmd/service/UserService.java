@@ -13,11 +13,8 @@ public interface UserService {
     List<OtherUserDTO> getSuggestedUsers(String username, int nUsers);
 
     List<OtherUserDTO> getFollowers(String username, int size, int page);
+
     List<OtherUserDTO> getFollowing(String username, int size, int page);
-
-    int getFollowingNumber(String username);
-
-    int getFollowersNumber(String username);
 
     String follow(String user_1, String user_2);
 
@@ -28,7 +25,6 @@ public interface UserService {
     List<OtherUserDTO> searchUsers(String username, int limit, int page);
 
     List<ReviewDTO> getReviews(String username, int limit, int page);
-    double getRating(String username);
 
     boolean updateUser(AuthenticatedUserDTO newUser, AuthenticatedUserDTO oldUser);
 

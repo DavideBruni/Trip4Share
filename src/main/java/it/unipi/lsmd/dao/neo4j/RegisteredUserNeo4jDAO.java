@@ -58,7 +58,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                                 "RETURN u2.username " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
-                        parameters("username", user.getUsername(), "skip", ((page-1)*size), "limit", size + 1));
+                        parameters("username", user.getUsername(), "skip", ((page-1)*size), "limit", size ));
                 List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();
@@ -87,7 +87,7 @@ public class RegisteredUserNeo4jDAO extends BaseDAONeo4J implements RegisteredUs
                                 "RETURN u2.username " +
                                 "SKIP $skip " +
                                 "LIMIT $limit",
-                        parameters("username", user.getUsername(), "skip", ((page-1)*size), "limit", size + 1));
+                        parameters("username", user.getUsername(), "skip", ((page-1)*size), "limit", size));
                 List<RegisteredUser> users = new ArrayList<>();
                 while (result.hasNext()) {
                     Record r = result.next();

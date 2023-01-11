@@ -2,8 +2,6 @@ package it.unipi.lsmd.service;
 
 import it.unipi.lsmd.dto.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TripService {
@@ -30,10 +28,10 @@ public interface TripService {
 
     List<PriceDestinationDTO> cheapestDestinationsByAvg(int objectPerPageSearch);
 
-    List<TripSummaryDTO> cheapestTripForDestinationInPeriod(String start, String end, int page, int objectPerPageSearch);
+    List<TripDetailsDTO> cheapestTripForDestinationInPeriod(String start, String end, int objectPerPageSearch);
+
     List<TripSummaryDTO> getSuggestedTrips(String username, int numTrips);
 
-    // change Parameter to DTO
     boolean addTrip(TripDetailsDTO tripDetailsDTO);
 
     boolean deleteTrip(String id);

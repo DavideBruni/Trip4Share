@@ -1,5 +1,6 @@
 package it.unipi.lsmd.controller;
 
+import it.unipi.lsmd.dto.TripDetailsDTO;
 import it.unipi.lsmd.dto.TripSummaryDTO;
 import it.unipi.lsmd.service.ServiceLocator;
 import it.unipi.lsmd.service.TripService;
@@ -27,7 +28,7 @@ public class IndexServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        List<TripSummaryDTO> cheapest = tripService.cheapestTripForDestinationInPeriod(null,null,1, PagesUtilis.TRIP_NUMBER_INDEX);
+        List<TripDetailsDTO> cheapest = tripService.cheapestTripForDestinationInPeriod(null,null, PagesUtilis.TRIP_NUMBER_INDEX);
         List<TripSummaryDTO> mostPopulars = tripService.mostPopularTrips(PagesUtilis.TRIP_NUMBER_INDEX);
         httpServletRequest.setAttribute(SecurityUtils.CHEAPEST_TRIPS,cheapest);
         httpServletRequest.setAttribute(SecurityUtils.MOST_POPULAR,mostPopulars);

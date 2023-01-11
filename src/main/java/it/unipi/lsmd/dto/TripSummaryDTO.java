@@ -13,7 +13,6 @@ public class TripSummaryDTO {
     private String title;
     private int like_counter;
     private String organizer;
-    private LocalDateTime last_modified;
 
     public TripSummaryDTO(){
         deleted=false;
@@ -84,13 +83,6 @@ public class TripSummaryDTO {
         this.organizer = organizer;
     }
 
-    public LocalDateTime getLast_modified() {
-        return last_modified;
-    }
-
-    public void setLast_modified(LocalDateTime last_modified) {
-        this.last_modified = last_modified;
-    }
 
     @Override
     public String toString() {

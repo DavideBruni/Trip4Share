@@ -110,10 +110,10 @@
 
                         <form action="search" method="POST">
                             <label >Min Price</label>
-                            <input class="form-control" placeholder="00.0" type="number" step="0.01" name="min_price">
+                            <input class="form-control" placeholder="00.0" type="number" min="0" step="0.01" name="min_price">
 
                             <label >Max Price</label>
-                            <input class="form-control" placeholder="00.0" type="number" step="0.01" name="max_price">
+                            <input class="form-control" placeholder="00.0" type="number" min="0" step="0.01" name="max_price">
                             <p class="text-center">Optional fields:</p>
                             <label >Departure Date</label>
                             <input class="form-control" placeholder="Any" type="date" name="departure_date">

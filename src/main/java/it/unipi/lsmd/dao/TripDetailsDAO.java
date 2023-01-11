@@ -28,7 +28,7 @@ public interface TripDetailsDAO {
 
     List<Trip> cheapestDestinationsByAvg(int objectPerPageSearch);
 
-    List<Trip> cheapestTripForDestinationInPeriod(LocalDate start, LocalDate end, int page, int objectPerPageSearch);
+    List<Trip> cheapestTripForDestinationInPeriod(LocalDate start, LocalDate end, int objectPerPageSearch);
 
     String addTrip(Trip t);
 

@@ -13,9 +13,9 @@
         <div class="col-4">
           <div class="Follow">
             <h3>CONTACT US</h3>
-            <span>123 Second Street Fifth <br>Avenue,<br>
-                       Manhattan, New York<br>
-                       +987 654 3210</span>
+            <span>Pisa, Via Diotisalvi 1 <br>
+                       Tuscany, Italy
+                       </span>
           </div>
         </div>
         <div class="col-4">

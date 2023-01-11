@@ -40,9 +40,10 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             m1 = match(and(eq("destination", destination.toLowerCase()), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
-        Bson l1 = limit(size + 1);
-        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
         Bson srt = sort(ascending("departureDate"));
+        Bson l1 = limit(size);
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
+
 
         AggregateIterable<Document> res;
         if (page != 1) {
@@ -74,9 +75,10 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             m1 = match(and(eq("tags", tag.getTag()), gte("departureDate", departureDate),
                     lte("returnDate", returnDate)));
         }
-        Bson l1 = limit(size + 1);
-        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
         Bson srt = sort(ascending("departureDate"));
+        Bson l1 = limit(size);
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
+
 
         AggregateIterable<Document> res;
         if (page != 1) {
@@ -117,7 +119,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
             }
 
         }
-        Bson l1 = limit(size + 1);
+        Bson l1 = limit(size);
         Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes")));
         Bson srt = sort(ascending("price"));
 
@@ -162,7 +164,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     @Override
     public List<Pair<String, Integer>> mostPopularDestinations(int limit) {
 
-        // aggregate([{$group : {"_id":"$destination" total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
         Bson l1 = limit(limit);
@@ -187,8 +188,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     @Override
     public List<Pair<String, Integer>> mostPopularDestinationsByTag(Tag tag, int limit) {
 
-        // aggregate([{$match : { tags : {$eq : ... }}}, {$group : {"_id":"$destination",
-        // total_like:{$sum:"$like"}}}, {$sort: {total_like : -1}}, {$limit : 5}])
         Bson m1 = match(eq("tags",tag.getTag()));
         Bson g1 = group("$destination",sum("total_like","$likes"));
         Bson s1 = sort(descending("total_like"));
@@ -287,25 +286,20 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
     }
 
     @Override
-    public List<Trip> cheapestTripForDestinationInPeriod(LocalDate start, LocalDate end,int page, int objectPerPageSearch) {
+    public List<Trip> cheapestTripForDestinationInPeriod(LocalDate start, LocalDate end, int objectPerPageSearch) {
 
-        // db.trips.aggregate([{$match : {$and : {"departureDate" : {$gte : new Date()}},{"returnDate" : {$lte : new Date('2024-12-12')}}} }},{ $sort: { price : 1 } }, { $group: { _id: "$destination", doc_with_max_ver: { $first: "$$ROOT" } } },{ $replaceWith: "$doc_with_max_ver" }
         Bson m1;
         if(end != null)
             m1  = match(and(gte("departureDate",start),lte("returnDate",end)));
         else
             m1 = match(gte("departureDate",start));
-        Bson s1 = sort(ascending("price"));
-        Bson g1 = group("$destination",first("doc_with_max_ver","$$ROOT"));
+
+        Bson g1 = group("$destination",min("min_price","$price"),first("doc_with_max_ver","$$ROOT"));
         Bson r1 = replaceWith("$doc_with_max_ver");
-        Bson l1 = limit(objectPerPageSearch + 1);
-        AggregateIterable<Document> res;
-        if (page != 1) {
-            Bson sk1 = skip((page - 1) * objectPerPageSearch);
-            res = collection.aggregate(Arrays.asList(m1, s1, g1,r1, sk1, l1));
-        } else {
-            res = collection.aggregate(Arrays.asList(m1, s1, g1,r1, l1));
-        }
+        Bson s1 = sort(ascending("price"));
+        Bson l1 = limit(objectPerPageSearch);
+        Bson p1 = project(fields(include("_id", "destination", "title", "departureDate", "returnDate", "likes","price")));
+        AggregateIterable<Document> res = collection.aggregate(Arrays.asList(m1, g1,r1, s1, l1, p1));
 
         List<Trip> trips = new ArrayList<>();
         try(MongoCursor<Document> it = res.iterator()) {
@@ -406,10 +400,7 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<Triplet<String, Integer, Integer>> mostPopularDestinationsOverall(int limit){
-        //db.trips.aggregate([{$match : {departureDate : {$gte : new Date(Date.now() - 24*60*60*1000*365)}}},
-        // {$group : {"_id":"$destination", "tot_trips": {$sum : 1},"total_like":{$sum : "$likes"}}},
-        // {$match : { $and : [{tot_trips : {$gte : 40}},{tot_likes : {$gte : 1200}}]}}, {$sort : {tot_likes : -1}},
-        // {$limit : 5}])
+
         Bson m1 = match(gte("departureDate",LocalDate.now().minusYears(1)));
         Bson g1 = group("$destination",sum("total_like","$likes"),sum("total_trips",1));
         Bson m2 = match((and(gte("total_trips",40),gte("total_like",1200))));
@@ -436,10 +427,6 @@ public class TripMongoDAO extends BaseDAOMongo implements TripDetailsDAO {
 
     @Override
     public List<Triplet<String, Integer, Integer>> mostExclusive(int limit){
-        // db.trips.aggregate([{$match : {departureDate : {$gte : new Date(Date.now() - 24*60*60*1000*365)}}},
-        // {$group : {"_id":"$destination", "tot_trips": {$sum : 1},"tot_likes":{$sum : "$likes"}}},
-        // {$match : { $and : [{tot_trips : {$lte : 5}},{tot_likes : {$gte : 150}}]}},
-        // {$sort : {tot_likes : -1}}, {$limit : 5}])
         Bson m1 = match(gte("departureDate",LocalDate.now().minusYears(1)));
         Bson g1 = group("$destination",sum("total_like","$likes"),sum("total_trips",1));
         Bson m2 = match((and(lte("total_trips",5),gte("total_like",150))));

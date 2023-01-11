@@ -1,6 +1,7 @@
 <%@ page import="it.unipi.lsmd.dto.TripSummaryDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="it.unipi.lsmd.utils.SecurityUtils" %>
+<%@ page import="it.unipi.lsmd.dto.TripDetailsDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
    <head>
@@ -64,7 +65,7 @@
                         <% for(TripSummaryDTO t : mostPopulars){ %>
                         <div class="item">
                            <img class="img-responsive" src="WebContent/images/trip_pic1.jpg" alt="Image of a trip" />
-                           <h3><a class=""text-decoration-none href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %></a></h3>
+                           <h3><a href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %></a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
                               Return Date: <%=t.getReturnDate()%>
@@ -84,7 +85,7 @@
 
        <!--Cheapest trips -->
       <%
-         List<TripSummaryDTO> cheapest = (List<TripSummaryDTO>) request.getAttribute(SecurityUtils.CHEAPEST_TRIPS);
+         List<TripDetailsDTO> cheapest = (List<TripDetailsDTO>) request.getAttribute(SecurityUtils.CHEAPEST_TRIPS);
          if(cheapest!= null && !cheapest.isEmpty()){
       %>
        <div class="Tours pt-5 pb-5 mb-5">
@@ -101,13 +102,14 @@
                <div class="row">
                   <div class="col-md-12">
                      <div class="owl-carousel owl-theme">
-                        <% for(TripSummaryDTO t : cheapest){ %>
+                        <% for(TripDetailsDTO t : cheapest){ %>
                         <div class="item">
                            <img class="img-responsive" src="WebContent/images/trip_pic1.jpg" alt="Image of a trip" />
                            <h3> <a class="text-decoration-none" href=<%="trip?id="+t.getId()%>> <%= t.getTitle() %> </a></h3>
                            <p>Destination: <%= t.getDestination()%> <br>
                               Departure Date: <%=t.getDepartureDate()%> <br>
-                              Return Date: <%=t.getReturnDate()%>
+                              Return Date: <%=t.getReturnDate()%> <br>
+                              Price: <%=t.getPrice()%>
                            </p>
                         </div>
                         <% } %>

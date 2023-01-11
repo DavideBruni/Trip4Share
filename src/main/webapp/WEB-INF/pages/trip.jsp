@@ -206,7 +206,7 @@
             <div class="row">
             <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="updateTrip?id="+trip.getId()%>" >Modify your trip</a>
             <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="deleteTrip?id="+trip.getId()%>" >Delete your trip</a>
-            <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="requests?id="+trip.getId()%>" >View Pending Requests</a><p class="grey pull-right ">Last Modified:  <%= trip.getLast_modified()%></p>
+            <a class="text-right btn btn-primary bottone ml-3 mb-3" href="<%="requests?id="+trip.getId()%>" >View Pending Requests</a>
             </div>
             <% }%>
         </div>
@@ -220,7 +220,7 @@
                 %>
             <span class="ml-5" id="status_span"><%="Join request status: "+status+" "%></span><br>
             <%
-            if(!status.equals("rejected")){ %>
+            if(!status.equals("rejected") && (trip.getDepartureDate().isAfter(todayDate)) ){ %>
             <button class="text-right  btn btn-primary bottone send-button ml-5 mb-5" id="cancel_button">Cancel request</button>
             <% }
             }

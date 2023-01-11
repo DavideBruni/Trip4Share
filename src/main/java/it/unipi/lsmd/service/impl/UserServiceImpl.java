@@ -1,6 +1,5 @@
 package it.unipi.lsmd.service.impl;
 
-import it.unipi.lsmd.controller.AddAdminServlet;
 import it.unipi.lsmd.dao.DAOLocator;
 import it.unipi.lsmd.dao.RegisteredUserDAO;
 import it.unipi.lsmd.dao.UserDAO;
@@ -102,7 +101,7 @@ public class UserServiceImpl implements UserService {
         if(username == null || username.equals(""))
             return null;
 
-        List<RegisteredUser> users = registeredUserDAO.getFollowing(new RegisteredUser(username), size, page);
+        List<RegisteredUser> users = registeredUserDAO.getFollowing(new RegisteredUser(username), size + 1, page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -118,7 +117,7 @@ public class UserServiceImpl implements UserService {
         if(username == null || username.equals(""))
             return null;
 
-        List<RegisteredUser> users = registeredUserDAO.getFollower(new RegisteredUser(username), size, page);
+        List<RegisteredUser> users = registeredUserDAO.getFollower(new RegisteredUser(username), size + 1, page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -126,24 +125,6 @@ public class UserServiceImpl implements UserService {
             followers.add(otherUserDTO);
         }
         return followers;
-    }
-
-    @Override
-    public int getFollowingNumber(String username) {
-
-        if(username == null || username.equals(""))
-            return 0;
-
-        return registeredUserDAO.getNumberOfFollowing(new RegisteredUser(username));
-    }
-
-    @Override
-    public int getFollowersNumber(String username) {
-
-        if(username == null || username.equals(""))
-            return 0;
-
-        return registeredUserDAO.getNumberOfFollower(new RegisteredUser(username));
     }
 
     @Override
@@ -193,7 +174,7 @@ public class UserServiceImpl implements UserService {
         if(username == null || username.equals(""))
             return null;
 
-        List<RegisteredUser> users = userDAO.searchUser(new RegisteredUser(username), limit, page);
+        List<RegisteredUser> users = userDAO.searchUser(new RegisteredUser(username), limit + 1, page);
         List<OtherUserDTO> followers = new ArrayList<>();
         for(RegisteredUser r : users){
             OtherUserDTO otherUserDTO = new OtherUserDTO();
@@ -203,14 +184,6 @@ public class UserServiceImpl implements UserService {
         return followers;
     }
 
-    @Override
-    public double getRating(String username) {
-
-        if(username == null || username.equals(""))
-            return 0.0;
-
-        return userDAO.avgRating(new RegisteredUser(username));
-    }
 
     @Override
     public List<ReviewDTO> getReviews(String username, int limit, int page) {
@@ -218,7 +191,7 @@ public class UserServiceImpl implements UserService {
         if(username == null || username.equals(""))
             return null;
 
-        List<Review> reviews_model = userDAO.getReviews(new RegisteredUser(username), limit, page);
+        List<Review> reviews_model = userDAO.getReviews(new RegisteredUser(username), limit + 1, page);
         List<ReviewDTO> reviews = new ArrayList<ReviewDTO>();
         for(Review review : reviews_model){
             reviews.add(ReviewUtils.reviewModelToDTO(review));
