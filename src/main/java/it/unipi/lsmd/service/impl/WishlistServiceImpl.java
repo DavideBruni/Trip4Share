@@ -104,4 +104,9 @@ public class WishlistServiceImpl implements WishlistService {
             return false;
         }
     }
+
+    @Override
+    public boolean isInWishlist(String username, String trip_id) {
+        return isInWishlist(username, new TripDetailsDTO(trip_id));
+    }
 }

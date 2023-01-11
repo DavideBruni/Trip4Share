@@ -16,5 +16,5 @@ public interface WishlistService {
     ArrayList<TripSummaryDTO> getWishlist(String username, int size, int page);
 
     boolean isInWishlist(String username, TripDetailsDTO tripDetailsDTO);
-
+    boolean isInWishlist(String username, String trip_id);
 }

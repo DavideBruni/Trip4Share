@@ -53,7 +53,7 @@ public class JoinRequestsServlet extends HttpServlet {
             String action = request.getParameter("action");
             if(action != null && action.equals("join")){
                 String result = tripService.setJoin(username,trip_id);
-                if(!result.equals("Error"))
+                if(!result.equals("Error") && wishlistService.isInWishlist(username, trip_id))
                     wishlistService.removeFromWishlist(username, trip_id);
                 response.getWriter().write(result);
             }else if (action != null && action.equals("cancel")) {
