@@ -170,7 +170,7 @@
                     <label class="small " >Subtitle</label>
                     <input type="text" name="<%="subtitle"+day%>" value="<%=d.getSubtitle()%>">
                   </div>
-                  <textarea  class="form-control mt-4" name="<%="day"+day%>"><% if(d.getDescription()==null){ %>Add description of the day<%}else{%><%=d.getDescription()%><%}%>
+                  <textarea  class="form-control mt-4" name="<%="description"+day%>"><% if(d.getDescription()==null){ %>Add description of the day<%}else{%><%=d.getDescription()%><%}%>
                   </textarea>
                 </div>
 
@@ -187,7 +187,7 @@
                   <label class="small " >Subtitle</label>
                 <input type="text" name="subtitle1" >
                 </div>
-                <textarea  class="form-control mt-4" name="day1">Add description of the day
+                <textarea  class="form-control mt-4" name="description1">Add description of the day
                   </textarea>
               </div>
 
@@ -310,7 +310,7 @@
     document.getElementById('wrapper').innerHTML += '<div class="col-8"> <h4 class="pdn-top-30">Day '+day+'</h4> <div class="row>"<label class="small mb-1" >Title</label>' +
             '              <input type="text" name="title'+day+'" required>' +
             '              </div><div class="row mt-2"><label class="small" >Subtitle</label>' +
-            '              <input type="text" name="subtitle'+day+'"> </div>  <textarea class="form-control mt-4" name="day'+day+'"> Add description of the day </textarea> </div> ';
+            '              <input type="text" name="subtitle'+day+'"> </div>  <textarea class="form-control mt-4" name="description'+day+'"> Add description of the day </textarea> </div> ';
     day++;
   }
 
